@@ -1,0 +1,74 @@
+<nav id="sidebar">
+    <ul class="list-unstyled components">
+        <li>
+            <a href="/dashboard">
+                <img src="assets/icons/dashboard.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/dashboard.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/gateway-management">
+                <img src="assets/icons/gateway.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/gateway.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Gateway Management</span>
+            </a>
+        </li>
+        <li class="route-mngmnt-link d-none">
+            <a routerLink="/route-management">
+                <img src="assets/icons/route.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/route.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Route Management</span>
+            </a>
+        </li>
+        <li class="route-mngmnt-dropdown">
+            <a routerLink="/route-management" class="dropdown-toggle" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="route-management">
+                <img src="assets/icons/route.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/route.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Route Management</span>
+            </a>
+            <ul id="route-management" [ngbCollapse]="isCollapsed">
+                <li>
+                    <a routerLink="/route-management/least-cost-route">Least Cost Routing</a>
+                </li>
+                <li>
+                    <a routerLink="/route-management/pool-route">Pool Route</a>
+                </li>
+                <li>
+                    <a routerLink="/route-management/custom-route">Custom Route</a>
+                </li>
+                <li>
+                    <a  routerLink="/route-management/blacklist">Blacklist</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a routerLink="/billplan-management">
+                <img src="assets/icons/billplan.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/billplan.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Bill Plan Management</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/customer-management">
+                <img src="assets/icons/customer.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/customer.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Customer Management</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/reports">
+                <img src="assets/icons/report.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/report.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Reports</span>
+            </a>
+        </li>
+        <li>
+            <a routerLink="/settings">
+                <img src="assets/icons/configure.png" alt="sidebar-icons" />
+                <img src="assets/icons/selected/configure.png" class="d-none selected-icon" alt="sidebar-icons" />
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+</nav>

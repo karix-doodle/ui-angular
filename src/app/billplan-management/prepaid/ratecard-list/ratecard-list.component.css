@@ -1,0 +1,9 @@
+.scheduled-rate-card td{
+text-decoration:underline;
+}
+.scheduled-rate-card td .delete-icon{
+    display:block;
+}
+.delete-icon{
+    display:none
+}

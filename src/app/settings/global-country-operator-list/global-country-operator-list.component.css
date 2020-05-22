@@ -1,0 +1,60 @@
+.send-test-msg {
+    background-color: #3E4B5B;
+    padding: 20px;
+    width:max-content;
+    position: absolute;
+    right:0;
+    top:-15px;
+
+}
+.test-msg-popup{
+    text-decoration: underline;
+}
+
+.send-test-msg .form-control {
+    background-color: #E9EDF4;
+    font-size: 14px !important;
+}
+
+.close-btn {
+    border-radius: 100%;
+    border: none;
+    background-color: #E9EDF4;
+    font-weight: bold;
+    padding: 0px 7px;
+    position: absolute;
+    right: 10px;
+    top: -30px;
+}
+.settings-senderid-edit .form-control{
+background-color:#fff;
+}
+.erp-list-table tr{
+    cursor:default;
+}
+.modal-upload-btn {
+    font-size:12px;
+    margin-top:40px;
+}
+.dark-form{
+    background-color: #E9EDF4 !important;
+}
+.mobile-series-section{
+    margin:auto 0;
+    border:1px solid #E9EDF4;
+    padding:5px;
+    border-radius:5px;
+    max-height:150px;
+    overflow-y:auto;
+}
+.mobile-series-value{
+    background:#E9EDF4;
+    border-radius:5px;
+    color:#3E4B5B;
+    padding:5px;
+    font-size:14px;
+    margin-bottom:5px;
+}
+.mobile-series-value span{
+    color:#B4282E;
+}

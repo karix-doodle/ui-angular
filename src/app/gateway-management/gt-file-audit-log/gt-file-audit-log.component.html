@@ -1,0 +1,86 @@
+<div class="row btm-border headings-div">
+    <div class="col-12">
+        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span> <a routerLink="/gateway-management/gateway-details">NX - NEXMO</a> / FILE AUDIT LOG</span>
+    </div>
+</div>
+<div class="row btm-border second-row-det">
+    <div class="col-7">
+        <div class="row">
+            <div class="col-12">
+                <label class="mr-2"><b>Total</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark"><b>435</b></span>
+            </div>
+        </div>
+        <div class="row gateway-count">
+            <div class="col-3">
+                <label>Success <span class=" ml-3 badge badge-dark"><b>290</b></span>
+                </label>
+            </div>
+            <div class="col-3 gateway-detail">
+                <label>Failure <span class="badge badge-dark ml-3"><b>290</b></span></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-5 text-right mt-1">
+        <div class="row">
+            <div class="col-6 form-group dropdown" ngbDropdown >
+                <button class="btn dropdown-basic dropdown-toggle"  id="erp-dropdown" ngbDropdownToggle>
+                    File Audit Log</button>
+                <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
+                    <a class="dropdown-item" routerLink="/gateway-management/country-list">Country List</a>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <app-calendar-picker></app-calendar-picker>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="main-container table-responsive audit-log-list">
+    <table class="table table-borderless erp-list-table audit-log-list-table">
+        <thead>
+            <tr>
+                <th class="col-hover">File Name</th>
+                <th>Upload Date & Time <i class="fa fa-caret-down"></i></th>
+                <th>Uploaded By</th>
+                <th>Uploaded File</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">
+                <a routerLink="/gateway-management/file-audit-log-view">Priceless.xlsx</a></td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Yousuff</td>
+                <td>Download | <a routerLink="/gateway-management/file-audit-log-view">View</a></td>
+                <td>Success</td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">
+                <a routerLink="/gateway-management/file-audit-log-view">Upload.xlsx</a></td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Yousuff</td>
+                <td>Download | <a routerLink="/gateway-management/file-audit-log-view">View</a></td>
+                <td>Failure</td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">
+                <a routerLink="/gateway-management/file-audit-log-view">Priceless.xlsx</a></td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Yousuff</td>
+                <td>Download | <a routerLink="/gateway-management/file-audit-log-view">View</a></td>
+                <td>Success</td>
+            </tr>
+
+        </tbody>
+
+
+    </table>
+</div>

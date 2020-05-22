@@ -1,0 +1,140 @@
+<div class="row btm-border headings-div">
+    <div class="col-8">
+        <label class="main-heading">
+        <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
+        <span> POOL ROUTE </span>
+    </div>
+    <div class="col-4 text-right">
+        <a routerLink="/route-management/pool-route/create-pool" class="btn erp-intl-btn">Create Route</a>
+    </div>
+</div>
+<div class="row btm-border second-row-pr">
+    <div class="col-9 mt-2">
+        <label class="mr-2"><b>Total Routes</b></label>
+        <span class="border-right">&nbsp;</span>
+        <span class="ml-3 badge badge-dark"><b>435</b></span>
+    </div>
+
+    <div class="col-3 text-right">
+        <input type="search" class="form-control" placeholder="&#xf002; Search by Route Name" />
+    </div>
+
+</div>
+<div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table row-hover-effect">
+        <thead>
+            <tr>
+                <th>Route Name</th>
+                <th>No. Of Countries</th>
+                <th>No. Of Accounts Tagged</th>
+                <th>Created Date & Time</th>
+                <th>Created By</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold">
+                    <a routerLink="/route-management/pool-route/account-wise-view">NX</a>
+                    </td>
+                <td>12</td>
+                <td><a (click)="open(acntsTagged)">15</a></td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Nawal</td>
+                <td>
+                    <a routerLink="/route-management/pool-route/create-pool">
+                     <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon"/>
+                  </a>
+                </td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"/></td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold">
+                    <a routerLink="/route-management/pool-route/account-wise-view">MB</a>
+                </td>
+                <td>14</td>
+                <td>11</td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Yousuff</td>
+                <td>
+                    <a routerLink="/route-management/pool-route/create-pool">
+                     <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon"/>
+                  </a>
+                </td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"/></td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold"> <a routerLink="/route-management/pool-route/account-wise-view">TN</a></td>
+                <td>15</td>
+                <td>20</td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Nawal</td>
+                <td>
+                    <a routerLink="/route-management/pool-route/create-pool">
+                     <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon"/>
+                  </a>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- modal pop-up -->
+<ng-template #acntsTagged let-c="close" let-d="dismiss" >
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+        <div class="modal-body gt-det-modal">
+            <form action="">
+
+                    <div class="row mb-2">
+                              <label class="mr-2"><b>ROUTE NAME</b></label>
+                              <span class="border-right">&nbsp;</span>
+                              <span class="ml-3"><b>route name123</b></span>
+                    </div>
+        
+                        <div class="row mb-2">
+                            <div class="col-7 pl-0">
+                                <label>No. Of Accounts Tagged</label><span class="badge badge-dark ml-3">200</span>
+                            </div>
+                            <div class="col-5 text-right"><label>Created By</label><span class="badge badge-dark ml-3">Nawal</span></div>
+                        </div>
+                        <div class="row mb-2 mr-0">
+                            <input type="search" class="form-control" id="" placeholder="&#xf002; Search By ESME Addr." />
+                        </div>
+
+                    <div class="main-container table-responsive">
+                        <table class="table table-borderless erp-list-table row-hover-effect">
+                            <thead>
+                                <tr>
+                                    <th>ESME ADDR.</th>
+                                    <th>Tagged Date</th>
+                                    <th>Tagged By</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-semi-bold">70000 100000011</td>
+                                    <td>21/11/2019</td>
+                                    <td>Sanal</td>
+                                  
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-semi-bold">70000 100000011</td>
+                                    <td>21/11/2019</td>
+                                    <td>Sanal</td>
+                                  
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-semi-bold">70000 100000011</td>
+                                    <td>21/11/2019</td>
+                                    <td>Sanal</td>
+                                  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </form>
+        </div> 
+
+</ng-template>

@@ -1,0 +1,25 @@
+<div class="row btm-border headings-div">
+  <div class="col-12">
+      <label class="main-heading">CUSTOMER MANAGEMENT</label>
+  </div>
+
+</div>
+<nav mat-tab-nav-bar disableRipple>
+  <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive"  [routerLinkActiveOptions]="{exact:
+    true}">
+      {{link.label}}
+  </a>
+</nav>
+<div class="row btm-border second-row-pr">
+  <div class="col-7 mt-2">
+      <label class="mr-2"><b>Total ESME Addr.</b></label>
+      <span class="border-right">&nbsp;</span>
+      <span class="ml-3 badge badge-dark"><b>435</b></span>
+  </div>
+
+  <div class="col-5 text-right">
+      <input type="search" class="form-control" placeholder="&#xf002; Search by ESME Addr., BillPlan, RateCard" />
+  </div>
+
+</div>
+<router-outlet></router-outlet>

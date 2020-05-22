@@ -1,0 +1,166 @@
+<div class="row btm-border headings-div first-row">
+    <div class="col-12 mt-1">
+        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span><a routerLink="/gateway-management/gateway-details"> NX - NEXMO /</a> UPLOAD FILE</span>
+    </div>
+</div>
+<div class="data-container mb-3">
+    <form action="">
+        <section class="main-section">
+            <div class="row">
+                <div class="col-9">
+                    <label>Upload Gateway Price List File</label>
+                    <div class="form-group row">
+                        <div class="upload-btn-wrapper col-7">
+                            <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Drag and drop / Browse the file from Computer</button>
+                            <input type="file" name="" />
+                        </div>
+                        <input type="submit" value="Upload" class="col-2 btn erp-intl-btn file-upload-btn"/>
+                    </div>
+                </div>
+                <div class="col-3 text-center">
+                    <label>Use default Template Rule to update price from File</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="switch-btn" />
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="main-section">
+            <div class="row">
+                <div class="col-12">
+                    <label class="gateway-section-heading">Price List Mapping</label>
+                </div>
+
+                <div class="col-4 text-center">
+                    <div class="card price-list-map-card bg-grey mb-3">
+                        <div class=""><label>Country Name</label></div>
+                    </div>
+                    <div class="card price-list-map-card bg-grey mb-3">
+                        <div class=""><label>Operator Name</label></div>
+                    </div>
+                    <div class="card price-list-map-card bg-grey mb-3">
+                        <div class=""><label>MCC</label></div>
+                    </div>
+                    <div class="card price-list-map-card bg-grey mb-3">
+                        <div class=""><label>MNC</label></div>
+                    </div>
+                    <div class="card price-list-map-card bg-grey mb-3">
+                        <div class=""><label>Price</label></div>
+                    </div>
+                    <div class="card price-list-map-card bg-grey mb-3">
+                        <div class=""><label>Effective From</label></div>
+                    </div>
+                    <div class="card price-list-map-card bg-grey mb-3">
+                        <div class=""><label>Change Type</label></div>
+                    </div>
+                </div>
+                <div class="col-5 text-center">
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body"><label>Drop Country Name here</label></div>
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop Operator / Network Name Here</label>
+                        </div>
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop MCC Here</label>
+                        </div>
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop MNC Here</label>
+                        </div>
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop MCC + MNC Here (Optional)</label>
+                        </div>
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop Price / New Price Here</label>
+                        </div>
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop Effective From Here</label>
+                        </div>  
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop Change Type Here</label>
+                        </div>
+                    </div>
+                    <div class="card price-list-map-card mb-3">
+                        <div class="card-body">
+                            <label>Drop Old Price Here (Optional)</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-3 pl-0 text-center time-date-div">
+                    <app-date-time-picker></app-date-time-picker>
+                </div>
+            </div>
+        </section>
+        <section class="main-section">
+            <div class="row update-gateway-drag-drop">
+                <div class="col-4 text-center gateway-activity-detail">
+                    <label class="col-12 mb-4">Auto Compile</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="switch-btn" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <input type="text" class="col-12 bg-grey form-control mt-4" placeholder="Enter Notification Mail Id" />
+                </div>
+                <div class="col-2 px-0 auto-compile-div">
+                    <label class="checkbox-label ml-15 mt-1" for="from-email">From E-Mail ID
+                        <input type="checkbox" checked="checked" id="from-email">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label ml-15" for="from-subject">From Subject
+                        <input type="checkbox" id="from-subject">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label ml-15" for="from-body">From Body
+                        <input type="checkbox" id="from-body">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label ml-15" for="from-attachment">From Attachment
+                        <input type="checkbox" id="from-attachment">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="col-12 bg-grey form-control mb-2" placeholder="Enter Mail ID" />
+                    <input type="text" class="col-12 bg-grey form-control" placeholder="Enter Subject Line" />
+                </div>
+            </div>
+        </section>
+
+        <section class="main-section">
+            <div class="row">
+                <div class="col-12">
+                    <label class="gateway-section-heading">Comment</label>
+                </div>
+                <div class="col-12">
+                    <textarea class="w-100" placeholder="Enter Comment Here"></textarea>
+                </div>
+            </div>
+
+        </section>
+        <div class="row">
+            <div class="col-12 text-center">
+                <input type="reset" class="btn btn-basic mr-3" value="Cancel" data-dismiss="modal">
+                <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
+            </div>
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,112 @@
+<div class="row btm-border">
+    <div class="col-8 pt-10">
+        <label class="main-heading"><a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
+        <span><a routerLink="/route-management/blacklist/mobile"> BLACKLISTED - MOBILE /</a> ADD NEW</span>
+    </div>
+    <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
+        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+            Mobile Number</button>
+        <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
+            <a class="dropdown-item" routerLink="/route-management/blacklist/add-route/senderid-route">SenderID + Template</a>
+            <a class="dropdown-item" routerLink="/route-management/blacklist/add-route/senderid-mobile-route">Mobile + SenderID</a>
+        </div>
+
+    </div>
+</div>
+<div class="main-container p-4">
+
+    <mat-radio-group class="mat-radio-group" (change)="changeComboo($event)" [(ngModel)]="accountType">
+        <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
+            {{labelname}}
+        </mat-radio-button>
+    </mat-radio-group>
+
+
+    <div class="input-container">
+        <div *ngIf="accountType=='Global'">
+            <div class="create-custom-route-div">
+                <div class="row">
+                    <div class=" form-group col-4">
+                        <label>Mobile Number</label>
+                        <input type="text" class="form-control" placeholder="Enter Mobile Number" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="row p-3">
+                <label class="w-100">Add File List</label>
+                <div class="form-group">
+                    <div class="upload-btn-wrapper">
+                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Excel file to upload</button>
+                        <input type="file" name="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <input type="reset" class="btn btn-basic mr-3" value="Cancel">
+                <input type="submit" class="btn erp-intl-btn save-btn" value="Block">
+            </div>
+        </div>
+        <div *ngIf="accountType=='Gateway'">
+            <div class="create-custom-route-div">
+                <div class="row">
+                    <div class=" form-group col-4">
+                        <label>Gateway</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Gateway</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Mobile Number</label>
+                        <input type="text" class="form-control" placeholder="Enter Mobile Number" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row px-3 pt-2">
+                <label class="w-100">Add File List</label>
+                <div class="form-group">
+                    <div class="upload-btn-wrapper">
+                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Excel file to upload</button>
+                        <input type="file" name="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <input type="reset" class="btn btn-basic mr-3" value="Cancel">
+                <input type="submit" class="btn erp-intl-btn save-btn" value="Block">
+            </div>
+        </div>
+        <div *ngIf="accountType=='Account'">
+            <div class="create-custom-route-div">
+                <div class="row">
+                    <div class=" form-group col-4">
+                        <label>ESME Address</label>
+                        <input type="text" class="form-control" placeholder="Enter ESME Addr." />
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Mobile Number</label>
+                        <input type="text" class="form-control" placeholder="Enter Mobile Number" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row px-3 pt-2">
+                <label class="w-100">Add File List</label>
+                <div class="form-group">
+                    <div class="upload-btn-wrapper">
+                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Excel file to upload</button>
+                        <input type="file" name="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <input type="reset" class="btn btn-basic mr-3" value="Cancel">
+                <input type="submit" class="btn erp-intl-btn save-btn" value="Block">
+            </div>
+        </div>
+    </div>
+</div>

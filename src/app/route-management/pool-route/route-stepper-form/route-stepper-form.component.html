@@ -1,0 +1,324 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <section class="mb-2">
+                <div class="row">
+                    <div class="col-3 form-group">
+                        <label>Country</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Country</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="col-3 form-group">
+                        <label>Operator</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Operator</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row gt-ratio-div">
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-4 mb-2">
+                                <div class="row">
+                                    <label class="col-5">Gateway</label>
+                                    <label class=" pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
+                                </div>
+                                <div class="row ml-0">
+                                    <div class="col-7 p-0">
+                                        <select class="dropdown-select w-100">
+                                            <option value="" default>Select Gateway</option>
+                                            <option value="">option1</option>
+                                            <option value="">option2</option>
+                                            <option value="">option3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-5 p-0">
+                                        <input matInput placeholder="%" class="ratio-text" required>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-4 mb-2">
+                                <div class="row">
+                                    <label class="col-5">Gateway</label>
+                                    <label class=" pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
+                                </div>
+                                <div class="row ml-0">
+                                    <div class="col-7 p-0">
+                                        <select class="dropdown-select w-100">
+                                            <option value="" default>Select Gateway</option>
+                                            <option value="">option1</option>
+                                            <option value="">option2</option>
+                                            <option value="">option3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-5 p-0 ">
+                                        <input matInput placeholder="%" class="ratio-text" required>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-4 mb-2">
+                                <div class="row">
+                                    <label class="col-5">Gateway</label>
+                                    <label class=" pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
+                                </div>
+                                <div class="row ml-0">
+                                    <div class="col-7 p-0">
+                                        <select class="dropdown-select w-100">
+                                            <option value="" default>Select Gateway</option>
+                                            <option value="">option1</option>
+                                            <option value="">option2</option>
+                                            <option value="">option3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-5 p-0">
+                                        <input matInput placeholder="%" class="ratio-text" required>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-2 add-div-btn">
+                        <button type="button" class="btn btn-light">+</button>
+                    </div>
+
+                </div>
+            </section>
+            <div>
+
+            </div>
+            <div class="row mt-4 create-route-section">
+                <div class="col-6">
+                    <button type="button" class="btn btn-dark">ADD NEW</button>
+                </div>
+                <div class="col-6 text-right save-form-div">
+                    <a routerLink="/route-management/pool-route/account-wise-view" class="btn btn-basic mr-3" mat-button>Cancel</a>
+                    <button class="btn erp-intl-btn" mat-button matStepperNext>Next</button>
+                </div>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <div class="main-container p-4">
+                <div class="row">
+                    <label class="font-weight-bold col-12 mb-4">REST OF THE WORLD (ROW)</label>
+                    <div class="col-5">
+                        <div class="row">
+                            <div class=" form-group col-4 pr-0">
+                                <input type="radio" name="row" id="block-row" checked>
+                                <label for="block-row" class="radio-inline">Block ROW</label>
+                            </div>
+                            <div class="form-group col-4 p-0">
+                                <input type="radio" name="row" id="row-lcr">
+                                <label for="row-lcr" class="radio-inline">ROW on LCR</label>
+                            </div>
+                            <div class="form-group col-4 p-0">
+                                <input type="radio" name="row" id="define-row">
+                                <label for="define-row" class="radio-inline">Define ROW</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-7 text-right"><label class="font-weight-bold">Note: If there is no specific ROW Routing, you may Skip and Save</label></div>
+                </div>
+
+
+                <div class="row gt-ratio-div">
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="row">
+                                    <label class="col-5">Gateway</label>
+                                    <label class=" pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
+                                </div>
+                                <div class="row ml-0">
+                                    <div class="col-7 p-0">
+                                        <select class="dropdown-select w-100">
+                                            <option value="" default>Select Gateway</option>
+                                            <option value="">option1</option>
+                                            <option value="">option2</option>
+                                            <option value="">option3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-5 p-0">
+
+                                        <input type="text" placeholder="%" class="ratio-text" />
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <label class="col-5">Gateway</label>
+                                    <label class=" pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
+                                </div>
+                                <div class="row ml-0">
+                                    <div class="col-7 p-0">
+                                        <select class="dropdown-select w-100">
+                                            <option value="" default>Select Gateway</option>
+                                            <option value="">option1</option>
+                                            <option value="">option2</option>
+                                            <option value="">option3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-5 p-0 ">
+
+                                        <input type="text" placeholder="%" class="ratio-text" />
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <label class="col-5">Gateway</label>
+                                    <label class=" pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
+                                </div>
+                                <div class="row ml-0">
+                                    <div class="col-7 p-0">
+                                        <select class="dropdown-select w-100">
+                                            <option value="" default>Select Gateway</option>
+                                            <option value="">option1</option>
+                                            <option value="">option2</option>
+                                            <option value="">option3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-5 p-0">
+
+                                        <input type="text" placeholder="%" class="ratio-text" />
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 add-div-btn">
+                        <button type="button" class="btn btn-light">+</button>
+                    </div>
+
+
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <Label class="font-weight-bold mb-3">Comments</Label>
+                        <textarea rows="4" class="w-100" placeholder="Enter Comment here"></textarea>
+                    </div>
+                </div>
+
+
+                    <div class="row mt-4 create-route-section">
+
+                        <div class="col-3">
+                            <button class="btn btn-dark" (click)="open(previewModal)">Preview</button>
+                        </div>
+                        <div class="col-6 text-center">
+                            <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
+                            <button class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
+                        </div>
+                    </div>
+
+            </div>
+
+        </form>
+    </mat-step>
+
+</mat-horizontal-stepper>
+
+<!-- modal pop-up -->
+<ng-template #previewModal let-c="close" let-d="dismiss" >
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+        <div class="modal-body gt-det-modal">
+            <form action="">
+
+                    <div class="row">
+                        <div class="col-4 p-0">
+                              <label class="mr-2"><b>ROUTE NAME</b></label>
+                              <span class="border-right">&nbsp;</span>
+                              <span class="ml-3"><b>Australia</b></span>
+                        </div>
+                         <div class="col-4 p-0">
+                              <label class="mr-2"><b>Total Continents Added</b></label>
+                              <span class="border-right">&nbsp;</span>
+                              <span class="ml-3"><b>2</b></span>
+                         </div>
+                         <div class="col-4 p-0">
+                            <label class="mr-2"><b>Total Countries Added</b></label>
+                            <span class="border-right">&nbsp;</span>
+                            <span class="ml-3"><b>12</b></span>
+                       </div>
+                    </div>
+                    <div class="row my-3">
+                        <label class="table-heading w-100">ROW (Defined)</label>
+                        <div class="col-5 row-details">
+                            <label class="mt-1">Nexmo</label><span class="badge badge-white">80%</span>
+                            <label class="mt-1">Message Bird</label><span class="badge badge-white">50%</span>
+                        </div>
+                    </div>
+
+                    <div class="main-container table-responsive">
+                        <table class="table table-borderless erp-list-table row-hover-effect">
+                            <thead>
+                                <tr>
+                                    <th>Continent</th>
+                                    <th>Country</th>
+                                    <th>Operator</th>
+                                    <th>MCC + MNC</th>
+                                    <th>Distributed Gateway and Ratio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-semi-bold">Asia</td>
+                                    <td class="font-weight-semi-bold">Australia</td>
+                                    <td>Australian Telecom</td>
+                                    <td>345-345</td>
+                                    <td>
+                                        <span class="badge badge-success">G1- 20%</span>
+                                    </td>
+                                  
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-semi-bold">Asia</td>
+                                    <td class="font-weight-semi-bold">Australia</td>
+                                    <td>Australian Telecom</td>
+                                    <td>345-345</td>
+                                    <td><span class="badge badge-success">G1- 40%</span></td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-semi-bold">Asia</td>
+                                    <td class="font-weight-semi-bold">Australia</td>
+                                    <td>Australian Telecom</td>
+                                    <td>345-345</td>
+                                    <td><span class="badge badge-success">G1- 40%</span></td>
+                                  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                     <div class="row">
+                      <div class="col-12 text-center mt-3">
+                        <button type="button" class="btn erp-intl-btn" aria-label="Close" (click)="d('Cross click')">Close</button>
+                      </div>
+                    </div>
+                      
+
+            </form>
+        </div> 
+
+</ng-template>

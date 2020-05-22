@@ -1,0 +1,103 @@
+.billplan-view{
+    border-radius:5px;
+    background-color:#E9EDF4;
+    margin-top:20px;border-radius: 5px;
+    background-color: #E9EDF4;
+    margin-top: 32px;
+    padding: 5px 15px 30px;
+    max-width: fit-content;
+    height: 30px;
+}
+
+.route-det-div{
+    padding:20px 0;
+}
+.route-edit-div{
+    width:100%;
+    background:#3E4B5B;
+    padding:15px;
+    border-radius:5px;
+    margin-top:8px;
+}
+.process-det-div{
+    padding:20px;
+    margin-top:20px;
+}
+.process-det-div label{
+    font-weight:600;  
+}
+.process-det-div input{
+    background:#3E4B5B;  
+    color:#fff;
+    margin-right:20px;
+}
+.process-det-div input::placeholder{
+    color:#fff;  
+    opacity:0.5;
+}
+.process-det-div .brder-right{
+border-right:1px solid #fff;
+margin:0 20px 0 0;
+}
+.day-light-check label{
+    font-weight:normal;
+}
+.day-light-check .checkbox-label input:checked~.checkmark{
+    background:#3E4B5B; 
+}
+.checkbox-label input~.checkmark {
+    background-color: #ccc;
+}
+.day-light-check .checkbox-label .checkmark:after{
+border:solid #FFFFFF;
+border-width:0 2px 2px 0;
+}
+.routing-div-radio [type="radio"]:checked+label:before, 
+.routing-div-radio [type="radio"]:not(:checked)+label:before{
+    background:#3E4B5B;
+}
+.routing-div-radio [type="radio"]:checked+label:after, 
+.routing-div-radio [type="radio"]:not(:checked)+label:after{
+    background:#fff;
+}
+.msg-notify-label{
+    font-size:16px !important;
+}
+.esme-addr{
+    font-size:16px;
+}
+.second-row-det .badge-dark{
+    font-size:14px;
+    padding:2px 5px 4px;
+}
+.triangle-up {
+    top: 28px;
+    left: 55px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 10px solid #3E4B5B;
+    position: absolute;
+}
+.modal-heading{
+    font-weight:bold;
+    font-size:16px;
+}
+.route-det-div .checkbox-label input~.checkmark {
+    background:#fff;
+}
+.route-det-div label{
+    font-weight:bold;
+}
+.route-det-div .dropdown-select{
+    background-color:transparent;
+    border:none;
+    font-weight:bold;
+}
+.route-det-div .bg-grey{
+    padding:5px 0 0;
+}
+/* .routing-div-radio .erp-intl-modal-link {
+  
+} */

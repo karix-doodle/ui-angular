@@ -1,0 +1,21 @@
+.row-details{
+    font-size:14px;
+    padding:0px 10px;
+    background:#E9EDF4;
+    border-radius:5px;
+    max-width:max-content;
+}
+.badge-white{
+    background:#fff;
+    margin:0 5px;
+}
+.lcr-value{
+margin-top:6px;
+}
+.lcr-value span{
+    padding:8px 16px;
+    font-size:16px;
+    background-color: #E9EDF4;
+    color: #3E4B5B;
+    border-radius:5px;
+}

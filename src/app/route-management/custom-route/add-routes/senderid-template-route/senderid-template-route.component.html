@@ -1,0 +1,200 @@
+<div class="row btm-border">
+    <div class="col-8 pt-10">
+            <label class="main-heading">
+            <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
+            <span><a routerLink="/route-management/custom-route/sender-id"> CUSTOM ROUTE - SENDERID & CONTENT /</a> CREATE NEW</span>
+    </div>
+    <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
+        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+         SenderID + Template</button>
+        <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
+            <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/mobile-route">Mobile Number</a>
+            <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-mobile-route"> Mobile + SenderID</a>
+        </div>
+       
+    </div>
+</div>
+  
+  <div class="main-container p-4">
+  
+    <mat-radio-group class="mat-radio-group" (change)="changeComboo($event)" [(ngModel)]="accountType">
+        <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
+            {{labelname}}
+        </mat-radio-button>
+    </mat-radio-group>
+  
+  
+    <div class="input-container">
+        <div *ngIf="accountType=='Global'">
+            <div class="create-custom-route-div">
+              <div class="row">
+                <div class=" form-group col-4">
+                    <label>Country</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Country</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+                <div class="form-group col-4">
+                    <label>Operator</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Operator</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+  
+            </div>
+                <div class="row">
+                    <div class=" form-group col-4">
+                        <label>Type Template</label>
+                        <input type="text" class="form-control" placeholder="Type Template" />
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Type SenderID</label>
+                        <input type="text" class="form-control" placeholder="Type SenderID" />
+                    </div>
+                    <div class="form-group col-4">
+                      <label>Priority</label>
+                      <select class="dropdown-select w-100">
+                          <option value="" default>Select Priority</option>
+                          <option value="">option1</option>
+                          <option value="">option2</option>
+                          <option value="">option3</option>
+                      </select>
+                  </div>
+  
+                </div>
+                <div class="row">
+                    <div class=" form-group col-4">
+                        <label>Primary Gateway</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Primary Gateway</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>Fallback Gateway</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Fallback Gateway</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+  
+                </div>
+            </div>
+            <div class="row p-3">
+                <label class="w-100">Add File List</label>
+                <div class="form-group">
+                    <div class="upload-btn-wrapper">
+                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Excel file to upload</button>
+                        <input type="file" name="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+              <input type="reset" class="btn btn-basic mr-3" value="Cancel">
+              <input type="submit" class="btn erp-intl-btn save-btn" value="Add Route">
+          </div>
+        </div>
+        <div *ngIf="accountType=='Account'">
+          <div class="create-custom-route-div">
+            <div class="row">
+                <div class=" form-group col-4">
+                    <label>ESME Address</label>
+                    <input type="text" class="form-control" placeholder="Enter ESME Addr." />
+                </div>
+                <div class=" form-group col-4">
+                    <label>Country</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Country</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                    <!-- <div class="form-group col-4 float-right mt-2">
+                        <label class="checkbox-label" for="transactional">Default
+                            <input type="checkbox"  id="transactional">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div> -->
+                </div>
+                <div class="form-group col-4">
+                    <label>Operator</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Operator</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" form-group col-4">
+                    <label>Template</label>
+                    <input type="text" class="form-control" placeholder="Type Template" />
+                </div>
+                <div class="form-group col-4">
+                    <label>SenderID</label>
+                    <input type="text" class="form-control" placeholder="Type SenderID" />
+                </div>
+                <div class="form-group col-4">
+                  <label>Priority</label>
+                  <select class="dropdown-select w-100">
+                      <option value="" default>Select Priority</option>
+                      <option value="">option1</option>
+                      <option value="">option2</option>
+                      <option value="">option3</option>
+                  </select>
+              </div>
+
+            </div>
+            <div class="row">
+                <div class=" form-group col-4">
+                    <label>Primary Gateway</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Primary Gateway</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+                <div class="form-group col-4">
+                    <label>Fallback Gateway</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Fallback Gateway</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+  
+            </div>
+          </div>
+          <div class="row px-3 pt-2">
+              <label class="w-100">Add File List</label>
+              <div class="form-group">
+                  <div class="upload-btn-wrapper">
+                      <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Excel file to upload</button>
+                      <input type="file" name="" />
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+            <label class="col-12">Comments</label>
+              <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4"></textarea>
+          </div>
+          <div class="col-12 text-center mt-4">
+            <input type="reset" class="btn btn-basic mr-3" value="Cancel">
+            <input type="submit" class="btn erp-intl-btn save-btn" value="Add Route">
+          </div>
+        </div>
+    </div>
+  </div>

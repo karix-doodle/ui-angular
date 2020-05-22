@@ -1,0 +1,38 @@
+.send-test-msg {
+    background-color: #3E4B5B;
+    padding: 20px;
+    width:max-content;
+    position: absolute;
+    right:0;
+    top:-15px;
+    border-radius:5px;
+
+}
+.test-msg-popup{
+    text-decoration: underline;
+}
+
+.send-test-msg .form-control {
+    background-color: #E9EDF4;
+    font-size: 14px !important;
+}
+
+.close-btn {
+    border-radius: 100%;
+    border: none;
+    background-color: #E9EDF4;
+    font-weight: bold;
+    padding: 2px 8px;
+    position: absolute;
+    right: 10px;
+    top: -33px;
+}
+
+#recent-rate-change-list {
+    background-color: #E9EDF4;
+    padding: 20px;
+}
+.rate-change-list-btn{
+    background-color:inherit;
+    border:none;
+}

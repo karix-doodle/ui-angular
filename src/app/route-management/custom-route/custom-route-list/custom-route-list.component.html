@@ -1,0 +1,15 @@
+<div class="row btm-border headings-div">
+  <div class="col-12">
+    <label class="main-heading">
+      <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
+      <span> <a routerLink="/route-management/custom-route"> CUSTOM ROUTE</a></span>
+  </div>
+
+</div>
+<nav mat-tab-nav-bar disableRipple>
+    <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive"  [routerLinkActiveOptions]="{exact:
+      true}">
+        {{link.label}}
+    </a>
+  </nav>
+  <router-outlet></router-outlet>

@@ -1,0 +1,170 @@
+<div class="row btm-border headings-div">
+    <div class="col-8 pr-0">
+        <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
+        <span><a routerLink="/customer-management/customer-management-view"> 70000 100000011 /</a> ALLOWED COUNTRY & OPERATOR LIST</span>
+    </div>
+    <div class="col-2 text-right senderid-div">
+        <button class="btn erp-intl-btn" (click)="open(senderIdModal)">Add SenderID</button>
+    </div>
+    <div class="bill-submt-div px-0">
+        <button class="btn erp-intl-btn" (click)="open(billOnSubmit)">Add Bill on Submission</button>
+    </div>
+</div>
+<div class="row btm-border second-row-det">
+    <div class="col-8">
+        <div class="row">
+            <div class="col-12">
+                <label class="mr-2"><b>Country</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3"><b>India</b></span>
+            </div>
+        </div>
+        <div class="row gateway-count">
+            <div class="col-3 pr-0">
+                <label>SenderID Type <span class="badge badge-dark ml-2 f-14"><b>Static</b></span>
+                </label>
+            </div>
+            <div class="col-4 gateway-detail">
+                <label>Default SenderID <span class="badge badge-dark ml-2 f-14"><b>BankAlerts</b></span></label>
+            </div>
+            <div class="col-4 gateway-detail">
+                <label>Bill On Submission <span class="badge badge-dark ml-2 f-14"><b>Yes</b></span></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 text-right mt-2">
+        <div class="form-group">
+            <input type="search" class="form-control" placeholder="&#xf002; Search By Country, Operator" />
+        </div>
+    </div>
+
+</div>
+<div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table">
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Operator</th>
+                <th>MCC + MNC</th>
+                <th>SenderID Type</th>
+                <th>Default SenderID</th>
+                <th>Alternate SenderID</th>
+                <th>Status</th>
+                <th>Bill on Submission</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold">India</td>
+                <td>Airtel</td>
+                <td>345-345</td>
+                <td>Static</td>
+                <td>Bank Alerts</td>
+                <td>Null</td>
+                <td>Active</td>
+                <td>Yes</td> 
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold">India</td>
+                <td>Airtel</td>
+                <td>345-345</td>
+                <td>Static</td>
+                <td>Bank Alerts</td>
+                <td>Null</td>
+                <td>Inactive</td>
+                <td>No</td> 
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold">India</td>
+                <td>Airtel</td>
+                <td>345-345</td>
+                <td>Static</td>
+                <td>Bank Alerts</td>
+                <td>Null</td>
+                <td>Active</td>
+                <td>Yes</td> 
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- modal pop-up -->
+<ng-template #senderIdModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+        <div class="modal-body">
+            <form action="">
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <label>Country</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Country</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Operator</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Operator</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6 my-2">
+                        <label>SenderID Type</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select SenderID</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6 my-2">
+                        <label>Default SenderID</label>
+                        <input type="search" class="form-control" id="" placeholder="Enter Default SenderID" />
+                    </div>
+                    <div class="form-group col-6 my-2">
+                        <label>Alternate SenderID</label>
+                        <input type="search" class="form-control" id="" placeholder="Enter Alternate SenderID" />
+                    </div>
+                    <div class="col-12 text-center mt-2">
+                        <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="d('Cross click')">
+                        <input type="submit" class="btn erp-intl-btn save-btn" (click)="c('Save click')"  value="Save">
+                    </div>
+                </div>
+            </form>
+        </div> 
+
+</ng-template>
+
+<ng-template #billOnSubmit let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+        <div class="modal-body">
+            <form action="">
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <label>Country</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Select Country</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>Bill On Submission</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>Yes</option>
+                            <option value="">No</option>
+                        </select>
+                    </div>
+                    <div class="col-12 text-center mt-2">
+                        <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="d('Cross click')">
+                        <input type="submit" class="btn erp-intl-btn save-btn" (click)="c('Save click')"  value="Save">
+                    </div>
+                </div>
+            </form>
+        </div> 
+
+</ng-template>

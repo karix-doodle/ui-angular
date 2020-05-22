@@ -1,0 +1,125 @@
+<div class="row btm-border">
+    <div class="col-7 pt-10">
+        <label class="main-heading">BILL PLAN MANAGEMENT /</label>
+         <span> ASSIGN RATECARD / VIEW</span>
+    </div>
+    <div class="col-5 dropdown text-right pt-2 mb-2" ngbDropdown>
+        <span class="green-heading">BILL TYPE - POSTPAID</span>
+
+        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+           Country + Operator </button>
+        <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
+            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country/assigned-ratecard-view">Country</a>
+            <a class="dropdown-item" routerLink="/billplan-management/postpaid/flat-fixed/assigned-ratecard-view">Flat / Fixed</a>
+            <a class="dropdown-item" routerLink="/billplan-management/postpaid/group/assigned-ratecard-view">Group</a>
+            <a class="dropdown-item" routerLink="/billplan-management/postpaid/slab/assigned-ratecard-view">Slab</a>
+        </div>
+
+    </div>
+</div>
+<div class="row btm-border second-row-det">
+
+    <div class="col-3 ">
+        <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
+    </div>
+    <div class="col-3 offset-6 text-right">
+        <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
+    </div>
+
+</div>
+
+<div class="row btm-border second-row-det">
+    <div class="col-7">
+        <div class="row mt-1">
+            <div class="col-4">
+                <label class="mr-2"><b>Total Groups</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark"><b>435</b></span>
+            </div>
+            <div class="col-7">
+                <label class="mr-2"><b>Total Countries</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark"><b>435</b></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-5 text-right">
+        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Continent, Country, Operator" />
+    </div>
+
+</div>
+<div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table row-hover-effect">
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Operator</th>
+                <th>MCC + MNC</th>
+                <th>Billing Rate (€)</th>
+                <th>Normalize Rate (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>Australian Telecom</td>
+                <td>345-365</td>
+                <td>0.0045</td>
+                <td>0.0080</td>
+              
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>Australian Telecom</td>
+                <td>345-345</td>
+                <td>0.0045</td>
+                <td>0.0080</td>
+               
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>Australian Telecom</td>
+                <td>345-375</td>
+                <td>0.0045</td>
+                <td>0.0080</td>
+              
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="main-container row">
+    <div class="col-6 table-responsive px-0 mt-4">
+        <label class="sub-heading mx-4">ROW</label>
+        <table class="table table-borderless erp-list-table row-hover-effect">
+            <thead>
+                <tr>
+                    <th>Billing Rate (€)</th>
+                    <th>Normalize Rate (€)</th>
+                    <th>Discount(%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0.0045</td>
+                     <td>0.0080</td>
+                    <td>4%</td>
+                </tr>
+                <tr>
+                    <td>0.0045</td>
+                    <td>0.0080</td>
+                    <td>4%</td>
+                </tr>
+                <tr>
+                    <td>0.0045</td>
+                    <td>0.0080</td>
+                    <td>4%</td> 
+                </tr>
+            </tbody>
+        </table>
+        <div class="col-12 my-4">
+            <label class="sub-heading">Description</label>
+            <textarea rows="4" class="w-100" placeholder="Enter short Description here"></textarea>
+        </div>
+    </div>
+</div>

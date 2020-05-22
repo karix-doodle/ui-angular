@@ -1,0 +1,84 @@
+<div class="row btm-border headings-div">
+    <div class="col-12">
+        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span> <a routerLink="/gateway-management/gateway-details"> NX - NEXMO</a><a routerLink="/gateway-management/file-audit-log"> / FILE AUDIT LOG</a> / File Name</span>
+    </div>
+</div>
+<div class="row btm-border second-row-det">
+    <div class="col-6">
+        <div class="row mt-1">
+            <div class="col-6">
+                <label class="mr-2"><b>Total Countries</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark"><b>435</b></span>
+            </div>
+            <div class="col-6">
+                <label class="mr-2"><b>Total Operators</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark"><b>435</b></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <select class="dropdown-select w-100">
+            <option value="">
+                All Country
+            </option>
+        </select>
+    </div>
+    <div class="col-3 text-right">
+            <select class="dropdown-select w-100">
+            <option value="">
+                All Operators
+            </option>
+        </select>
+    </div>
+
+</div>
+<div class="main-container table-responsive audit-log-list">
+    <table class="table table-borderless erp-list-table audit-log-list-table">
+        <thead>
+            <tr>
+                <th class="col-hover">Country</th>
+                <th>Operators</th>
+                <th>MCC</th>
+                <th>MNC</th>
+                <th>Old Rate (€)</th>
+                <th>New Rate (€)</th>
+                <th>Change Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold col-hover" >Australia</td>
+                <td>Australian Telecom</td>
+                <td>345</td>
+                <td>355</td>
+                <td>0.0050</td>
+                <td>0.0050</td>
+                <td>Increase</td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">India</td>
+                <td>BSNL</td>
+                <td>345</td>
+                <td>355</td>
+                <td>0.0050</td>
+                <td>0.0050</td>
+                <td>Decrease</td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">Dubai</td>
+                <td>Etisalat</td>
+                <td>345</td>
+                <td>355</td>
+                <td>0.0050</td>
+                <td>0.0050</td>
+                <td>Increase</td>
+            </tr>
+
+        </tbody>
+
+
+    </table>
+</div>

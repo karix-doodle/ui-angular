@@ -1,0 +1,123 @@
+<div class="row btm-border headings-div">
+    <div class="col-11">
+        <label class="main-heading">
+             <a routerLink="/settings">SETTINGS /</a>
+        </label>
+        <span> DEFAULT RATE CARD </span>
+    </div>
+    <div class="col-1">
+        <button class="icon-btn"><i aria-hidden="true" class="fa fa-download"></i></button>
+    </div>
+</div>
+<div class="row btm-border second-row-pr">
+    <div class="col-3 mt-2">
+        <label class="mr-2"><b>Total Countries</b></label>
+        <span class="border-right">&nbsp;</span>
+        <span class="ml-3 badge badge-dark"><b>435</b></span>
+    </div>
+    <div class="col-3 mt-2">
+        <label class="mr-2"><b>Total Operators</b></label>
+        <span class="border-right">&nbsp;</span>
+        <span class="ml-3 badge badge-dark"><b>435</b></span>
+    </div>
+
+    <div class="col-6 text-right billplan-radio mt-2">
+        <mat-radio-group class="mat-radio-group" (change)="changeComboo($event)" [(ngModel)]="accountType">
+            <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
+                {{labelname}}
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+</div>
+
+<div class="input-container">
+    <div *ngIf="accountType=='Country & Operator'">
+        <div class="main-container table-responsive">
+            <table class="table table-borderless erp-list-table row-hover-effect">
+                <thead>
+                    <tr>
+                        <th>Continent</th>
+                        <th>Country</th>
+                        <th>Operator</th>
+                        <th>MCC + MNC</th>
+                        <th>Billing Currency</th>
+                        <th>Billing rate</th>
+                        <th>Normalize rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-weight-semi-bold">Asia</td>
+                        <td>India</td>
+                        <td>Nexmo</td>
+                        <td>91 - 311</td>
+                        <td>€</td>
+                        <td>1.5000</td>
+                        <td>1.5000</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-semi-bold">Asia</td>
+                        <td>India</td>
+                        <td>Nexmo</td>
+                        <td>91 - 311</td>
+                        <td>€</td>
+                        <td>1.5000</td>
+                        <td>1.5000</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-semi-bold">Asia</td>
+                        <td>India</td>
+                        <td>Nexmo</td>
+                        <td>91 - 311</td>
+                        <td>€</td>
+                        <td>1.5000</td>
+                        <td>1.5000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="accountType=='Country'">
+        <div class="main-container table-responsive">
+            <table class="table table-borderless erp-list-table row-hover-effect">
+                <thead>
+                    <tr>
+                        <th>Continent</th>
+                        <th>Country</th>
+                        <th>MCC</th>
+                        <th>Billing Currency</th>
+                        <th>Billing rate</th>
+                        <th>Normalize rate</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-weight-semi-bold">Asia</td>
+                        <td>India</td>
+                        <td>91</td>
+                        <td>€</td>
+                        <td>1.5000</td>
+                        <td>1.5000</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-semi-bold">Asia</td>
+                        <td>India</td>
+                        <td>91</td>
+                        <td>€</td>
+                        <td>1.5000</td>
+                        <td>1.5000</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-semi-bold">Asia</td>
+                        <td>India</td>
+                        <td>91</td>
+                        <td>€</td>
+                        <td>1.5000</td>
+                        <td>1.5000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

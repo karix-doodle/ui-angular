@@ -1,0 +1,157 @@
+<div class="row btm-border headings-div">
+    <div class="col-12">
+        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span> CREATE GATEWAY</span>
+    </div>
+</div>
+<div class="main-container p-15">
+    <form action="">
+        <section class="main-section">
+            <div class="row">
+                <div class="col-4 form-group">
+                    <label>Gateway Name</label>
+                    <input type="search" class="form-control" id="" placeholder="Enter Gateway Name" />
+                </div>
+                <div class="col-4 form-group">
+                    <label>Gateway ID</label>
+                    <input type="search" class="form-control" id="" placeholder="Enter Gateway ID" />
+                </div>
+                <div class="col-4 form-group">
+                    <label>Gateway Currency</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Gateway Currency</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    <label>Gateway Timezone</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Gateway Timezone</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+                <div class="col-4 form-group">
+                    <label>Gateway Type</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Gateway Type</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-4 form-group">
+                    <label>Billing Type</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Billing Type</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+                <div class="col-5 form-group row">
+                    <label class="col-12">Message Type</label>
+                    <label class="checkbox-label col-4 ml-15" for="transactional">Transactional
+                        <input type="checkbox" checked="checked" id="transactional">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label col-4" for="promotional">Promotional
+                        <input type="checkbox" id="promotional">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label col-3" for="transcrub">Transcrub
+                        <input type="checkbox" id="transcrub">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-3 form-group lcr-exclusion">
+                    <label class="checkbox-label" for="bill-submission"><b>Bill On Submission</b>
+                        <input type="checkbox" id="bill-submission">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label mt-3" for="lcr-exclude"><b>Exclude from LCR</b>
+                        <input type="checkbox" id="lcr-exclude">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+            </div>
+        </section>
+        <section class="main-section">
+            <div class="row">
+                <div class="col-4 form-group">
+                    <label>Throughput per second (TPS)</label>
+                    <input type="search" class="form-control" id="" placeholder="Enter TPS" />
+                </div>
+
+                <div class="col-4 form-group">
+                    <label>DLR Type</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select DLR Type</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+                <div class="col-4 form-group row">
+                    <label class="col-12">CharSet Encoding Supported</label>
+                    <label class="checkbox-label col-4 ml-15" for="asci">ASCI
+                        <input type="checkbox" checked="checked" id="asci">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label col-4" for="iso">ISO
+                        <input type="checkbox" id="iso">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label col-3" for="gsm">GSM
+                        <input type="checkbox" id="gsm">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+        <section class="main-section">
+            <div class="row">
+                <div class="col-3 text-center form-group">
+                    <label class="col-12 px-0 text-left">Sender ID Whitelisting Required</label>
+                    <label class="toggle-switch mt-3">
+                        <input type="checkbox" class="switch-btn">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="col-4 offset-1 form-group">
+                    <label>Sender ID Type</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Sender ID Type</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        <section class="main-section">
+            <div class="row">
+                <div class="col-12 form-group">
+                    <label>Description</label>
+                    <textarea class="form-group w-100 p-3" rows="3" placeholder="Enter Short Description"></textarea>
+                </div>
+            </div>
+        </section>
+        <div class="row">
+            <div class="col-12 text-center">
+                <input type="reset" class="btn btn-basic mr-3" value="Cancel">
+                <input type="submit" class="btn erp-intl-btn" value="Create Gateway">
+            </div>
+        </div>
+    </form>
+</div>

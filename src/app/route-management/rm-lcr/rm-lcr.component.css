@@ -1,0 +1,16 @@
+    /*lcr route management*/
+    .lcr-popup-card,
+    .lcr-popup-card .card-header{
+        background-color:#E9EDF4;
+    }
+    .lcr-popup-card .card-header{
+        font-weight:bold;
+        text-align:center;
+        border-bottom-color:#fff;
+    }
+    .gt-badges{
+        margin-right:5px;
+        border:none;
+        border-radius:5px;
+    }
+    

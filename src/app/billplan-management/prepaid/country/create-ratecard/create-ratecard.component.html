@@ -1,0 +1,102 @@
+<div class="row btm-border">
+    <div class="col-8 pt-10">
+        <label class="main-heading">
+            <a routerLink="/billplan-management">BILLPLAN MANAGEMENT /</a></label>
+        <span><a routerLink="/billplan-management/home"> BILLPLAN /</a> CREATE NEW</span>
+    </div>
+    <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
+        <span class="green-heading">BILL TYPE - PREPAID</span>
+
+        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+            Country</button>
+            <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
+             <a class="dropdown-item" routerLink="/billplan-management/prepaid/country-operator/create-ratecard">Country + Operator</a>
+             <a class="dropdown-item" routerLink="/billplan-management/prepaid/flat-fixed/create-ratecard">Flat / Fixed</a>
+         </div>
+
+    </div>
+</div>
+<div class="btm-border second-row-pr mb_10">
+    <div class="row">
+        <div class="col-3 text-right">
+            <div class="form-group">
+                <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
+            </div>
+        </div>
+        <div class="col-3 offset-6 text-right">
+            <div class="form-group">
+                <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main-container p-4">
+    <app-country-stepper-form></app-country-stepper-form>
+</div>
+<div class="row btm-border second-row-det">
+    <div class="col-7">
+        <div class="row mt-1">
+            <div class="col-4">
+                <label class="mr-2"><b>Total Groups</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark"><b>435</b></span>
+            </div>
+            <div class="col-6">
+                <label class="mr-2"><b>Total Countries</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark"><b>435</b></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-5 text-right">
+        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Group, Continent, Country, Operator" />
+    </div>
+
+</div>
+<div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table row-hover-effect">
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>MCC</th>
+                <th>Billing Rate (€)</th>
+                <th>Normalize Rate (€)</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>345</td>
+                <td>0.0045</td>
+                <td>0.0080</td>
+                <td>
+                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
+                </td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>345</td>
+                <td>0.0045</td>
+                <td>0.0080</td>
+                <td>
+                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
+                </td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>345</td>
+                <td>0.0045</td>
+                <td>0.0080</td>
+                <td>
+                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
+                </td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,457 @@
+<div class="row btm-border headings-div first-row">
+    <div class="col-5">
+        <label class="main-heading pl-2">
+            <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span> NX - NEXMO</span>
+    </div>
+    <div class="col-7 text-right">
+        <div class="row">
+            <div class="col-8 border-right">
+                <a routerLink="/gateway-management/country-list" class="btn btn-basic mr-2 ">Countries List</a>
+                <a routerLink="/gateway-management/file-audit-log" class="btn erp-intl-btn">File Audit</a>
+            </div>
+            <div class="col-2 border-right text-center">
+                <a routerLink="/gateway-management/update-gateway" class="fa-2x icon-btn icons-div"><i class="fa fa-upload" aria-hidden="true"></i></a>
+            </div>
+            <div class="col-2 text-center">
+                <a routerLink="/gateway-management/edit-gateway" class="fa-2x icon-btn icons-div"><img src="assets/icons/edit-icon.svg" alt="edit"/></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row second-row-det">
+    <div class="col-4">
+        <div class="row mb-2">
+            <div class="col-5 border-right"><label>Gateway ID</label></div>
+            <div class="col-6"><span><b>NX</b></span></div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-5 pr-0 border-right"><label>Gateway Name</label></div>
+            <div class="col-6"><span><b>Nexmo</b></span></div>
+        </div>
+        <div class="row">
+            <div class="col-5 border-right"><label>Gateway Type</label></div>
+            <div class="col-6"><span><b>Direct </b>(Non-LCR)</span></div>
+        </div>
+    </div>
+    <div class="col-8 p-0 gateway-description">
+        <div class="row ">
+            <div class="border-right ">
+                <label>Status</label>
+                <span class="badge badge-white mr-3">Active</span>
+            </div>
+            <div class="ml-3">
+                <label>Message Type</label>
+                <span class="badge badge-white">Transactional, Promotional, Transcrub</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="border-right">
+                <span class="badge badge-white mr-3">Bill on Submission</span>
+            </div>
+            <div class="border-right ml-3">
+                <label>Billing Type</label>
+                <span class="badge badge-white mr-3">Postpaid</span>
+            </div>
+            <div class="ml-3 border-right">
+                <label>Gateway Currency</label>
+                <span class="badge badge-white mr-3">€</span>
+            </div>
+            <div class="ml-3">
+                <label>Gateway Timezone</label>
+                <span class="badge badge-white">UTC</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="border-right ">
+                <label>Throughput</label>
+                <span class="badge badge-white mr-3">1000 TPS</span>
+            </div>
+            <div class="ml-3 border-right">
+                <label>CharSet Encoding</label>
+                <span class="badge badge-white mr-3">ASCII, ISO, GSM</span>
+            </div>
+            <div class="ml-3">
+                <label>DLR Type</label>
+                <span class="badge badge-white">Handset</span>
+            </div>
+        </div>
+    </div>
+</div>
+<section>
+    <div class="data-container mb-3">
+        <label class="gateway-section-heading">VALIDATION</label>
+        <section class="main-section validation-section">
+            <div class="row">
+                <div class="form-group col-4">
+                    <div class="row ml-2">
+                        <label class="col-8">Sender ID Whitelisting Required</label>
+                        <div class="col-4">
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="switch-btn" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-3">
+                    <label class="col-5 px-0">Sender ID Type</label>
+                    <span class="badge badge-light col-5"><b>Whitelist</b></span>
+                </div>
+                <div class="form-group col-5 row pl-0 mx-0">
+                    <label class="col-4">Mobile Blacklisted</label>
+                    <div class="col-2">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="switch-btn" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row validation-det mb-3">
+                <div class="col-3 text-center bg-grey" (click)="open(countryListModal)">
+                    <label class="box-heading">Supported Destination</label>
+                    <div class="row">
+                        <div class="col-6 box-data"><label>Active<span><b>180</b></span></label></div>
+                        <div class="col-6 box-data">
+                            <label>In-active<span><b>180</b></span></label>
+                        </div>
+                        <div class="col-12">
+                            <span class="number-data">210</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-3 text-center bg-grey">
+                    <a routerLink="/gateway-management/sender-id-whitelist">
+                        <label class="box-heading">Sender IDs Whitelisted</label>
+                        <div class="row">
+                            <div class="col-6 box-data"><label>Numeric<span><b>180</b></span></label>
+                            </div>
+                            <div class="col-6 box-data">
+                                <label>Alphabetic<span><b>180</b></span></label>
+                            </div>
+                            <div class="col-12 text-center">
+                                <span class="number-data">210</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+               
+                <div class="col-3 text-center bg-grey">
+                    <a routerLink="/route-management/custom-route/sender-id">
+                        <label class="box-heading">Sender ID + Content Blocked</label>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span class="number-data">210</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-3 text-center bg-grey"  (click)="open(esmeAddrModal)">
+                    <label class="box-heading">No. of ESMEAddr routed
+                        <br>(On Gateway directly)
+                    </label>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <span class="number-data">210</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <div class="data-container mb-3">
+        <div class="row">
+            <label class="gateway-section-heading col-6">GATEWAY ACTIVITIES</label>
+            <div class="col-6 text-right f-12">
+                <a routerLink="/gateway-management/details-view-log" class="font-weight-bold">
+                    View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+        <section class="main-section validation-section">
+            <div class="row">
+                <div class="form-group col-3 gateway-activity-detail">
+                    <label class="col-12">Creation Date & Time</label>
+                    <div class="row ml-1 font-weight-bold">
+                        <div class="col-7 border-right">
+                            <span>23/10/2019</span>
+                        </div>
+                        <div class="col-5">
+                            <span>14:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-3 gateway-activity-detail">
+                    <label class="col-12">Last Modification Date & Time</label>
+                    <div class="row font-weight-bold ml-1">
+                        <div class="col-7 border-right">
+                            <span>23/10/2019</span>
+                        </div>
+                        <div class="col-5">
+                            <span>14:30</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-2 gateway-activity-detail">
+                    <label class="col-12">Last Modified User</label>
+                    <span class="col-12 font-weight-bold"><img src="assets/images/user-image.png" alt="user" class="username-img" /> username</span>
+
+                </div>
+                <div class="form-group col-3">
+                    <label class="col-12">Last Price Change Date & Time</label>
+                    <div class="row ml-1 font-weight-bold">
+                        <div class="col-6 border-right">
+                            <span>23/10/2019</span>
+                        </div>
+                        <div class="col-6">
+                            <span>14:30</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row validation-det mb-3">
+                <div class="card bg-grey text-center" (click)="open(countryListModal)">
+                    <div class="card-body">
+                        <label class="box-heading">No. of Countries Added
+                            <br>(In Current Month)</label>
+                        <div class="row">
+
+                            <div class="col-12">
+                                <span class="number-data">38</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-grey text-center" (click)="open(countryListModal)">
+                    <div class="card-body">
+                        <label class="box-heading">No. of Countries Inactivated
+                            <br>(In Current Month)</label>
+                        <div class="row">
+
+                            <div class="col-12">
+                                <span class="number-data">38</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-grey text-center" (click)="open(countryListModal)">
+                    <div class="card-body">
+                        <label class="box-heading">Price Changed for No. of Countries
+                            <br>(In Current Month)</label>
+                        <div class="row">
+
+                            <div class="col-12">
+                                <span class="number-data">38</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <div class="data-container mb-3">
+        <label class="gateway-section-heading">GLIMPSE ON PERFORMANCE</label>
+        <section class="main-section performance-section">
+            <div class="row performance-det mb-3">
+                <div class="col-3 bg-grey text-center">
+                    <label class="box-heading">Current Month</label>
+
+                    <span class="number-data">2,38,90,135</span>
+
+                </div>
+                <div class="col-3 traffic-destination mt-2">
+                    <label>Top 5 Traffic Destination</label>
+                    <div class="row">
+                        <div class="col-6 mb-1 ">
+                            <span class="badge badge-light">
+                                India
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Australia
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Dubai
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Germany
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                new Zealand
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 traffic-destination mt-2">
+                    <label>Top 5 Profitable Destination</label>
+                    <div class="row">
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                India
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Australia
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Dubai
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Germany
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                new Zealand
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 traffic-destination mt-2">
+                    <label>Least 5 Profitable Destination</label>
+                    <div class="row">
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                India
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Australia
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Dubai
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                Germany
+                            </span>
+                        </div>
+                        <div class="col-6 mb-1">
+                            <span class="badge badge-light">
+                                new Zealand
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</section>
+<!-- modal pop-up -->
+<ng-template #esmeAddrModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-4 border-right"><label>Gateway Name</label></div>
+                <div class="col-7 ml-1"><span>Nexmo</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-4"><label>No. Of ESME Addr.</label></div>
+                <div class="col-8"><span class="badge badge-dark">17</span></div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                            <tr>
+                                <td>70000 100000011</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #countryListModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-4 border-right"><label>Gateway Name</label></div>
+                <div class="col-7 ml-1"><span>Nexmo</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-3"><label>Total Countries</label></div>
+                <div class="col-9"><span class="badge badge-dark">17</span></div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr>
+                                <td>India</td>
+                            </tr>
+                            <tr>
+                                <td>Australia</td>
+                            </tr>
+                            <tr>
+                                <td>United Arab Emirates</td>
+                            </tr>
+                            <tr>
+                                <td>United States of America</td>
+                            </tr>
+                            <tr>
+                                <td>Australia</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

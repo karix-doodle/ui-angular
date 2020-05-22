@@ -1,0 +1,633 @@
+<div class="row btm-border headings-div first-row">
+    <div class="col-12">
+        <label class="main-heading pl-2"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
+        <span> 70000 100000011</span>
+    </div>
+
+</div>
+<div class="row second-row-det">
+    <div class="col-5">
+        <div class="row mb-2">
+            <div class="col-5 border-right"><label>ESME Addr.</label></div>
+            <div class="col-7"><span><b>70000 100000011</b></span></div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-5 border-right"><label>Client Name</label></div>
+            <div class="col-7"><span><b>ABC HYIUO</b></span></div>
+        </div>
+        <div class="row">
+            <div class="col-5 border-right"><label>Customer Type</label></div>
+            <div class="col-7"><span><b>International</b></span></div>
+        </div>
+        <div class="row">
+            <div class="col-5 border-right"><label>Services</label></div>
+            <div class="col-7"><span>
+                    <a class="erp-intl-modal-link" (click)="open(assignedServices)">Assigned Services</a>
+                </span></div>
+        </div>
+    </div>
+    <div class="col-7 gateway-description text-right">
+       <div class="row mb-2 float-right">
+           <div class="border-right ">
+                <label>Billing Contact Name</label>
+                <span class="badge badge-white mr-3">XYRJKV</span>
+           </div>
+           <div class="ml-3">
+                <label>Sales Manager</label>
+                <span class="badge badge-white">ABX XYZ HJK</span>
+          </div>
+       </div>
+       <div class="row mb-2 float-right">
+            <div class="border-right ">
+                <label>Message Type</label>
+                <span class="badge badge-white mr-3">Transactional</span>
+            </div>
+            <div class="ml-3">
+                    <label>Billing Type</label>
+                    <span class="badge badge-white">Postpaid with Top Up</span>
+            </div>
+        </div>
+        <div class="row mb-2 float-right">
+            <div class="border-right ">
+                <label>SMTP Bind Allowed</label>
+                <span class="badge badge-white mr-3">TX, RX, TRX</span>
+            </div>
+            <div class="ml-3 border-right">
+                    <label>No. Of Binds Allowed</label>
+                    <span class="badge badge-white mr-3">23</span>
+            </div>
+            <div class="ml-3">
+                    <label>Char. Set Encoding</label>
+                    <span class="badge badge-white">GSM</span>
+            </div>
+        </div>
+        <div class="row mb-2 float-right">
+            <div class="border-right ">
+                <label>SLA Configuration</label>
+                <span class="badge badge-white mr-3">Same Day</span>
+            </div>
+            <div class="ml-3 border-right">
+                    <label>DLR Type</label>
+                    <span class="badge badge-white mr-3">SMSC DLR</span>
+            </div>
+            <div class="ml-3">
+                    <label>DLR Configuration</label>
+                    <span class="badge badge-white">Call Back API</span>
+            </div>
+        </div>
+    </div>
+</div>
+<section>
+    <div class="data-container cm-view-section mb-3">
+        <div class="row">
+            <div class="col-5">
+                <label class="gateway-section-heading">VALIDATION</label>
+                <section class="main-section">
+                    <div class="row">
+                        <div class="col-6 border-right">
+                            <label>Sender ID Type</label>
+                            <p><b>Listing</b></p>
+
+                        </div>
+                        <div class="col-5 offset-1">
+                            <label>Default Sender ID</label>
+                            <p><b>Alerts</b></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 border-right">
+                            <label>Template Failed<br> Sender ID</label>
+                            <p><b>Notify</b></p>
+
+                        </div>
+                        <div class="col-4 offset-1">
+                            <label>Block SMS to India</label>
+                            <p><b>Allowed</b></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="cm-view-btn-div text-center mb-3">
+                        <button class="btn erp-intl-btn mr-3" (click)="open(senderIdModal)">Sender ID's</button>
+                        <button class="btn btn-basic" (click)="open(blockedSenderIdModal)">Blocked Sender ID's</button>
+                    </div>
+
+                </section>
+                <div class="cm-view-btn-div">
+                    <button class="btn erp-intl-btn mr-3" (click)="open(blacklistTemplateModal)">Blacklisted Template</button>
+                    <button class="btn btn-basic" (click)="open(templateType)">Templates Type (Listing)</button>
+                </div>
+            </div>
+            <div class="col-5">
+                <label class="gateway-section-heading">ROUTING</label>
+                <section class="main-section">
+                    <div class="row">
+                        <div class="col-6 border-right">
+                            <label>Routing Type</label>
+                            <p><b>Gateway</b></p>
+
+                        </div>
+                        <div class="col-5 offset-1">
+                            <label>Routing Name</label>
+                            <p><b>XYZ ABC TYU</b></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 border-right">
+                            <label>Countries Allowed</label>
+                            <p class="mt-4"><b>120</b>(Active - 110 <br> inactive-10)</p>
+
+                        </div>
+                        <div class="col-5 offset-1">
+                            <label>Countries Blocked @ Platform</label>
+                            <p><b>5</b></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>ROW Allowed</label>
+                            <p><b>Blocked</b></p>
+                        </div>
+                    </div>
+
+                </section>
+                <div class="cm-view-btn-div">
+                    <a routerLink="/customer-management/allowed-country-operator-list" class="btn btn-basic w-100">Allowed Country & Operator List</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<section class="row">
+    <div class="data-container cm-view-section mb-3 col-5 ml-15">
+        <div class="row">
+            <div class="col-12">
+                <label class="gateway-section-heading">BILLING INFO</label>
+                <section class="main-section">
+                    <div class="row">
+                        <div class="col-5 border-right">
+                            <label>Bill Plan Name</label>
+                            <p><b>XYZ ABC TYU</b></p>
+
+                        </div>
+                        <div class="col-5 offset-1">
+                            <label>Rate Card Type</label>
+                            <p><b>Group</b></p>
+                            
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-5 border-right">
+                            <label>Billing Currency</label>
+                            <p><b>€</b></p>
+
+                        </div>
+                        <div class="col-6 offset-1">
+                            <label>Applicable Taxation</label>
+                            <p><b>International Customer</b></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-8">
+                            <label class="font-weight-bold">BillPlan Change Notification to Client</label>
+                        </div>
+                        <div class="col-4 text-right">
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="switch-btn" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="data-container cm-view-section mb-3 col-5 ml-4">
+        <div class="row">
+            <div class="col-12">
+                <label class="gateway-section-heading">SETTINGS</label>
+                <section class="main-section">
+                    <div class="row">
+                        <div class="col-5 border-right">
+                            <label>Process ROW</label>
+                            <p><b>Allowed</b></p>
+
+                        </div>
+                        <div class="col-5 offset-1">
+                            <label>Process @ Loss</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="switch-btn" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-5 border-right">
+                            <label>Loss Threshold</label>
+                            <p><b>1000 €</b></p>
+                        </div>
+                        <div class="col-5 offset-1">
+                            <label>Billing Timezone</label>
+                            <p><b>UTC</b></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-8">
+                            <label class="font-weight-bold">Failure Notification to Sales And International Team</label>
+                        </div>
+                        <div class="col-4 text-right">
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="switch-btn" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="data-container mb-3">
+    <div class="row">
+        <label class="gateway-section-heading col-6">ACCOUNT ACTIVITIES</label>
+        <div class="col-6 text-right f-12">
+            <a routerLink="/customer-management/customer-management-view-log" class="font-weight-bold">
+                View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>
+            </a>
+        </div>
+    </div>
+    <section class="main-section validation-section account-activity-section">
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-4 gateway-activity-detail">
+                        <label class="col-12">Creation Date & Time</label>
+                        <div class="row ml-1 font-weight-bold">
+                            <div class="col-7 border-right">
+                                <span>23/10/2019</span>
+                            </div>
+                            <div class="col-5">
+                                <span>14:30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-5 gateway-activity-detail">
+                        <label class="col-12">Last Modification Date & Time</label>
+                        <div class="row font-weight-bold ml-1">
+                            <div class="col-7 border-right">
+                                <span>23/10/2019</span>
+                            </div>
+                            <div class="col-5">
+                                <span>14:30</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-3 p-0">
+                        <label class="col-12">Last Modified User</label>
+                        <span class="col-12 font-weight-bold">
+                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> username</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-4 gateway-activity-detail">
+                        <label class="col-12 pr-0">Rate Card Assign Date & Time</label>
+                        <div class="row ml-1 font-weight-bold">
+                            <div class="col-7 border-right">
+                                <span>23/10/2019</span>
+                            </div>
+                            <div class="col-5">
+                                <span>14:30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-5 gateway-activity-detail">
+                        <label class="col-12">Bill Plan Last Modification Date & Time</label>
+                        <div class="row font-weight-bold ml-1">
+                            <div class="col-7 border-right">
+                                <span>23/10/2019</span>
+                            </div>
+                            <div class="col-5">
+                                <span>14:30</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-3 p-0">
+                        <label class="col-12">Bill Plan Modified By</label>
+                        <span class="col-12 font-weight-bold">
+                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> username</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 bg-grey">
+                <div class="row">
+                    <div class="col-5 pr-0">
+                        <label>RateCard Name</label>
+                    </div>
+                    <div class="col-7 pl-0">
+                        <label>Effective Date</label>
+                    </div>
+                </div>
+                <div class="row account-activity-data">
+                    <div class="col-5 px-0">
+                        <p><b>card name 1</b></p>
+                        <p><b>card name 1</b></p>
+                        <p><b>card name 1</b></p>
+                        <p><b>card name 1</b></p>
+                        <p><b>card name 1</b></p>
+                    </div>
+                    <div class="col-7 p-0">
+                        <p><b>02/01/2020 - Present</b></p>
+                        <p><b>25/12/2019 -01/01/2020</b></p>
+                        <p><b>25/12/2019 -01/01/2020</b></p>
+                        <p><b>25/12/2019 -01/01/2020</b></p>
+                        <p><b>25/12/2019 -01/01/2020</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- modal pop-up -->
+<ng-template #senderIdModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-3 border-right"><label>ESME Addr.</label></div>
+                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-3"><label>Sender IDs</label></div>
+                <div class="col-9"><span class="badge badge-dark">25</span></div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #blockedSenderIdModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-3 border-right"><label>ESME Addr.</label></div>
+                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-4 "><label>Blocked Sender IDs</label></div>
+                <div class="col-8"><span class="badge badge-dark">25</span></div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #blacklistTemplateModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-3 border-right"><label>ESME Addr.</label></div>
+                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-4"><label>Blacklisted Templates</label></div>
+                <div class="col-8"><span class="badge badge-dark">25</span></div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #templateType let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-3 border-right"><label>ESME Addr.</label></div>
+                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-2"><label>Templates</label></div>
+                <div class="col-9"><span class="badge badge-dark">25</span></div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                            <tr>
+                                <td>senderid name</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- modal pop-up assigned services -->
+<ng-template #assignedServices let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <div class="modal-body assigned-services">
+        <form action="">
+            <div class="row">
+                <label class=" col-12 font-weight-bold">ASSIGNED SERVICES</label>
+                <div class="col-1 font-weight-bold f-14"><label>MEDIA</label></div>
+                <div class="col-11 f-14">
+                    <div class="row">
+                        <div class="col-2">
+                            <label class="checkbox-label col-4 ml-15" for="sms">SMS
+                                <input type="checkbox" checked="checked" id="sms">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-3">
+                            <label class="checkbox-label col-4 ml-15" for="voice">Voice
+                                <input type="checkbox" checked="checked" id="voice">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="main-section mt-2">
+                <div class="row">
+                    <label class="checkbox-label col-4 ml-15" for="globalOne">GlobalOne
+                        <input type="checkbox" checked="checked" id="globalOne">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-label col-12 ml-15 my-2" for="powerApi">Power API
+                        <input type="checkbox" checked="checked" id="powerApi">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkbox-label col-12 ml-15 mt-2" for="smpp">SMPP
+                        <input type="checkbox" checked="checked" id="smpp">
+                        <span class="checkmark"></span>
+                    </label>
+
+                    <label class="checkbox-label col-12 ml-15 my-2" for="intl-msg">International Messages
+                        <input type="checkbox" id="intl-msg">
+                        <span class="checkmark"></span>
+                    </label>
+
+                </div>
+                <div class="col-12 text-center mt-3">
+                    <button type="button" class="btn erp-intl-btn w-25" aria-label="Close" (click)="d('Cross click')">OK</button>
+                </div>
+
+            </section>
+
+
+        </form>
+    </div>
+</ng-template>

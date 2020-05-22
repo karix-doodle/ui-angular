@@ -1,0 +1,17 @@
+.navbar-top {
+	background-color: #F2F4F8;
+    color: #3E4B5B;
+    border-bottom: 1px solid #E6E8EB;
+}
+/* Shrinking the sidebar*/
+.sidebar-div.active {
+    max-width: 90px;
+    text-align: center;
+}
+.detail-container.active{
+    max-width:93%;
+}
+.profile{
+    font-size:14px;
+    margin:5px 10px 0 0;
+}

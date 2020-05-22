@@ -1,0 +1,22 @@
+.cm-view-section .main-section {
+font-size:16px !important;
+padding-bottom:0;
+}
+
+.bg-grey label{
+    font-size:16px !important;
+}
+.account-activity-data{
+    overflow-y:auto;
+    height:150px;
+    margin :auto -5px auto 0;
+}
+.account-activity-section{
+  padding:15px 40px 15px 15px;
+}
+.cm-view-btn-div .btn{
+    padding:5px 16px;
+}
+.username-img{
+    width:20px;
+}

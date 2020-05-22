@@ -1,0 +1,23 @@
+.row-details{
+    font-size:14px;
+    padding:0px 10px;
+    background:#E9EDF4;
+    border-radius:5px;
+    max-width:fit-content;
+}
+.gt-ratio-div{
+    padding:10px 20px 5px;
+    border:1px solid #3E4B5B;
+    border-radius:5px;
+    margin:0;
+
+}
+.second-form-div .gt-ratio-div{
+    width:fit-content;
+}
+.mt-31{
+    margin-top:31px;
+}
+.save-form-div .btn{
+    padding:0 50px;
+}

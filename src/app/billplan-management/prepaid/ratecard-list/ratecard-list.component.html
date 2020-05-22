@@ -1,0 +1,119 @@
+<div class="row btm-border headings-div">
+    <div class="col-12">
+        <label class="main-heading">
+            <a routerLink="/billplan-management">BILLPLAN MANAGEMENT /</a></label>
+        <span><a routerLink="/billplan-management/home"> BILLPLAN /</a> CREATE-ASSIGN RATECARD</span>
+    </div>
+</div>
+
+<div class="row second-row-det">
+    <div class="col-7">
+        <div class="row">
+            <div class="col-12">
+                <label class="mr-2"><b>Bill Plan Name</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-2"><b>name123</b></span>
+            </div>
+        </div>
+        <div class="row gateway-count">
+            <div class="col-12">
+                <label>Billplan Type <span class=" ml-2 badge badge-dark f-14"><b>Prepaid</b></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row btm-border mt-2 second-row-det">
+    <div class="col-4">
+        <label>Rate Card Type</label>
+        <select class="dropdown-select w-100 dark-input disabled-option" [(ngModel)]="rateCardType" >
+            <option value="country" default>Country</option>
+            <option value="country-operator">Country + Operator</option>
+            <option value="flat-fixed">Flat / Fixed</option>
+        </select>
+    </div>
+    <div class="col-4">
+        <div class="form-group">
+            <label>Ratecard Name</label>
+            <input type="search" class="form-control dark-input" placeholder="Enter Rate Card Name" />
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group dark-date-time-div">
+            <label>Effective Date & Time from</label>
+            <app-date-time-picker></app-date-time-picker>
+        </div>
+    </div>
+    <div class="col-12 text-center">
+        <div class="form-group" *ngIf="rateCardType === 'country'">
+            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
+            <a routerLink="/billplan-management/prepaid/country/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
+        </div>
+    </div>
+    <div class="col-12 text-center">
+        <div class="form-group" *ngIf="rateCardType === 'country-operator'">
+            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
+            <a routerLink="/billplan-management/prepaid/country-operator/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
+        </div>
+    </div>
+    <div class="col-12 text-center">
+        <div class="form-group" *ngIf="rateCardType === 'flat-fixed'">
+            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
+            <a routerLink="/billplan-management/prepaid/flat-fixed/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
+        </div>
+    </div>
+</div>
+
+<div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table">
+        <thead>
+            <tr>
+                <th>Rate Card Name</th>
+                <th>Rate Card Type</th>
+                <th>Effective Period</th>
+                <th>Upload Date & Time</th>
+                <th>Uploaded By</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>   
+                <td  class="font-weight-semi-bold">
+                    <a *ngIf="rateCardType === 'country'" routerLink="/billplan-management/prepaid/country/assigned-ratecard-view">Test Name123 country</a>
+                    <a *ngIf="rateCardType === 'country-operator'" routerLink="/billplan-management/prepaid/country-operator/assigned-ratecard-view">Test Name123 country+operator</a>
+                    <a *ngIf="rateCardType === 'flat-fixed'" routerLink="/billplan-management/prepaid/flat-fixed/assigned-ratecard-view">Test Name123 country</a>
+                </td>  
+                <td>Group</td>
+                <td>28/10/2019 | Present</td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Yousuff</td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid delete-icon" alt="delete icon" /></td>
+            </tr>
+            <tr class="scheduled-rate-card">
+                <td  class="font-weight-semi-bold">
+                    <a *ngIf="rateCardType === 'country'" routerLink="/billplan-management/prepaid/country/assigned-ratecard-view">Test Name123 country</a>
+                    <a *ngIf="rateCardType === 'country-operator'" routerLink="/billplan-management/prepaid/country-operator/assigned-ratecard-view">Test Name123 country+operator</a>
+                    <a *ngIf="rateCardType === 'flat-fixed'" routerLink="/billplan-management/prepaid/flat-fixed/assigned-ratecard-view">Test Name123 country</a>
+                </td> 
+                <td>Group</td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Yousuff</td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid delete-icon" alt="delete icon" /></td>
+            </tr>
+            <tr>
+                <td  class="font-weight-semi-bold">
+                    <a *ngIf="rateCardType === 'country'" routerLink="/billplan-management/prepaid/country/assigned-ratecard-view">Test Name123 country</a>
+                    <a *ngIf="rateCardType === 'country-operator'" routerLink="/billplan-management/prepaid/country-operator/assigned-ratecard-view">Test Name123 country+operator</a>
+                    <a *ngIf="rateCardType === 'flat-fixed'" routerLink="/billplan-management/prepaid/flat-fixed/assigned-ratecard-view">Test Name123 country</a>
+                </td>  
+                <td>Group</td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>28/10/2019 | 23:25:00</td>
+                <td>Yousuff</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+

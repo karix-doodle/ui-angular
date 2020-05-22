@@ -1,0 +1,192 @@
+<div class="row btm-border headings-div">
+    <div class="col-5">
+        <label class="main-heading">SETTINGS</label>
+    </div>
+    <div class="col-7 text-right">
+        <a routerLink="/settings/default-rate-card" class="btn btn-basic mr-3">Default Rate Card</a>
+        <a routerLink="/settings/global-country-operator-list" class="btn erp-intl-btn">Global Country Operator Listing</a>
+    </div>
+</div>
+<div class="data-container m-lr_15">
+    <!-- <div class="row">
+        <label class="gateway-section-heading col-6">CURRENCY CONVERSION RATE<span class="badge rounded-question" title="tooltip data">?</span></label>
+        <div class="col-6 text-right setting-select">
+            <input type="radio" name="settings" id="manual" checked /><label for="manual" class="mr-2">Manual</label>
+            <input type="radio" name="settings" id="automatic" /><label for="automatic">Automatic</label>
+        </div>
+    </div>
+    <section class="main-section">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-3 form-group">
+                        <label>From Currency</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>USD</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="col-3 form-group">
+                        <label>To Currency</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>€</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="col-4 form-group">
+                        <label>Conversion Rate</label>
+                        <input type="search" class="form-control" id="" placeholder="Enter Conversion Rate" />
+                    </div>
+                    <div class="col-2 add-div-btn">
+                        <button class="btn btn-light">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 text-right">
+                <button class="btn btn-light">View Audit</button>
+            </div>
+        </div>
+    </section> -->
+    <div class="row">
+        <label class="gateway-section-heading col-6">INVOICE BILL PLAN CONVERSION RATE<span class="badge rounded-question" title="tooltip data">?</span></label>
+        <div class="col-6 text-right setting-select">
+            <input type="radio" name="invoiceBillplan" id="manual2" checked /><label for="manual2" class="mr-2">Manual</label>
+            <input type="radio" name="invoiceBillplan" id="automatic2" /><label for="automatic2">Automatic</label>
+        </div>
+    </div>
+    <section class="main-section">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-3 form-group">
+                        <label>From Currency</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>USD</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="col-3 form-group">
+                        <label>To Currency</label>
+                        <select class="dropdown-select w-100">
+                            <option value="" default>€</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="col-4 form-group">
+                        <label>Conversion Rate</label>
+                        <input type="search" class="form-control" id="" placeholder="Enter Conversion Rate" />
+                    </div>
+                    <div class="col-2 add-div-btn">
+                        <button class="btn btn-light">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 text-right">
+                <button class="btn btn-light" (click)="open(viewAudit)" >View Audit</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="row">
+        <div class="col-4">
+            <label class="gateway-section-heading">NORMALIZE RATE SETTINGS<span class="badge rounded-question" title="tooltip data">?</span></label>
+            <section class="main-section">
+                <div class="form-group">
+                    <label>Normalize Currency</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>USD</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+            </section>
+        </div>
+        <div class="col-5">
+            <label class="gateway-section-heading">TIMEZONE<span class="badge rounded-question" title="tooltip data">?</span></label>
+
+                <section class="main-section">
+                    <div class="row">
+                        <div class="col-5"><label>TIMEZONE</label></div>
+                        <div class="col-7 day-light-check text-right">
+                            <label class="checkbox-label" for="day-light">Day Light
+                                <input type="checkbox" id="day-light">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        
+                        <select class="dropdown-select w-100">
+                            <option value="" default>USD</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                </section>
+
+        </div>
+    </div>
+</div>
+<!-- modal pop-up -->
+<ng-template #viewAudit let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+        <div class="modal-body ">
+            <form action="">
+                <label class="view-audit-head">View Audit</label>
+                <div class="row">
+                    <table class="table table-borderless erp-list-table row-hover-effect erp-table-scroll">
+                        <thead>
+                            <tr>
+                                <th>From Currency</th>
+                                <th>To Currency</th>
+                                <th>Conversion Rate</th>
+                                <th>Conversion Type</th>
+                                <th>Conversion Date & Tme</th>
+                                <th>Converted By User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-weight-semi-bold">Inr (₹)</td>
+                                <td class="font-weight-semi-bold">Euro (€)</td>
+                                <td>14.567</td>
+                                <td>Manual</td>
+                                <td>28/10/2019 | 23:25:00</td>
+                                <td>Nawal</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-semi-bold col-hover">Inr (₹)</td>
+                                <td class="font-weight-semi-bold">Euro (€)</td>
+                                <td>14.567</td>
+                                <td>Manual</td>
+                                <td>28/10/2019 | 23:25:00</td>
+                                <td>Nawal</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-semi-bold">Inr (₹)</td>
+                                <td class="font-weight-semi-bold">Euro (€)</td>
+                                <td>14.567</td>
+                                <td>Manual</td>
+                                <td>28/10/2019 | 23:25:00</td>
+                                <td>Nawal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-12 text-center">
+                        <input type="reset" class="btn erp-intl-btn mr-3" value="Close" aria-label="Close" (click)="d('Cross click')">     
+                    </div>
+                </div>
+            </form>
+        </div> 
+
+</ng-template>

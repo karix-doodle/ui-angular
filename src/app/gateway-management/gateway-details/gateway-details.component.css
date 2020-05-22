@@ -1,0 +1,16 @@
+.username-img{
+    width:20px;
+}
+.traffic-destination span.badge{
+    font-size:14px;
+}
+.gateway-description .row{
+float:right;
+margin:0 0 8px;
+}
+.badge-white{
+    font-size:12px;
+}
+.validation-det .bg-grey{
+    cursor:pointer;
+}

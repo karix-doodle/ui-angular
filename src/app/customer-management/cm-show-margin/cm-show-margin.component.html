@@ -1,0 +1,107 @@
+<div class="row btm-border headings-div">
+    <div class="col-12">
+        <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
+        <span><a routerLink="/customer-management/customer-management-edit"> 70000 100000011 /</a> MARGIN</span>
+    </div>
+</div>
+<div class="row btm-border second-row-det">
+    <div class="col-8">
+        <div class="row">
+            <div class="col-12">
+                <label class="mr-2"><b>ESME Addr.</b></label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-3 badge badge-dark esme-addr"><b>70000 100000011</b></span>
+            </div>
+        </div>
+        <div class="row gateway-count">
+            <div class="col-4">
+                <label>Company Name <span class="badge badge-dark ml-2"><b>name</b></span>
+                </label>
+            </div>
+            <div class="col-4 gateway-detail">
+                <label>Billing Type <span class="badge badge-dark ml-2"><b>Postpaid</b></span></label>
+            </div>
+        </div>
+
+    </div>
+    
+    <div class="col-4 text-right mt-2">
+        <div class="form-group">
+            <input type="search" class="form-control" placeholder="&#xf002; Search By Country, Operator" />
+        </div>
+    </div>
+
+</div>
+<div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table row-hover-effect">
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>Operator</th>
+                <th>RateCard Rate</th>
+                <th>Primary Gateway Rate</th>
+                <th>Profit/ Loss</th>
+                <th>Fallback Gateway Rate</th>
+                <th>Profit/ Losss</th>
+                <th>Bill on Submission</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">India</a></td>
+                <td>Airtel</td>
+                <td>0.055</td>
+                <td><span class="badge badge-success mr-1">G1- 40%</span>0.055</td>
+                <td class="text-green">0.055+</td>
+                <td>0.060</td>
+                <td class="text-green">+0.005</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">India</a></td>
+                <td>Airtel</td>
+                <td>0.055</td>
+                <td><span class="badge badge-success mr-1">G1- 40%</span>0.055</td>
+                <td>
+                    <div class="row ml-0">
+                        <span class="text-red">0.055+</span>
+                     </div>
+                     <div class="row ml-0">
+                        <span class="text-green">0.055+</span>
+                     </div>
+                </td>
+                <td>0.060</td>
+                <td class="text-green">+0.005</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">India</a></td>
+                <td>Airtel</td>
+                <td>0.055</td>
+                <td>
+                    <div class="row mb-2 ml-0">
+                        <span class="badge badge-success mr-1">G1- 40%</span><span>0.055</span>
+                    </div>
+                    <div class="row mb-2 ml-0">
+                        <span class="badge badge-success mr-1">G1- 40%</span><span>0.055</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="row ml-0 mb-2">
+                        <span class="text-red">0.055+</span>
+                     </div>
+                     <div class="row ml-0 mb-2">
+                        <span class="text-green">0.055+</span>
+                     </div>
+                </td>
+                <td>0.060</td>
+                <td class="text-green">+0.005</td>
+                <td>Yes</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+

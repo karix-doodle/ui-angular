@@ -1,0 +1,238 @@
+<div class="row btm-border headings-div">
+    <div class="col-12">
+        <label class="main-heading">
+            <a routerLink="/settings">SETTINGS /</a>
+        </label>
+        <span> GLOBAL COUNTRY & OPERATOR LISTING </span>
+    </div>
+
+</div>
+<div class="row btm-border second-row-pr">
+    <div class="col-2 pr-0 mt-2">
+        <label class="mr-2"><b>Total Routes</b></label>
+        <span class="border-right">&nbsp;</span>
+        <span class="ml-3 badge badge-dark"><b>435</b></span>
+    </div>
+    <div class="col-6 mt-2">
+        <label class="mr-2"><b>Total Operators</b></label>
+        <span class="border-right">&nbsp;</span>
+        <span class="ml-3 badge badge-dark"><b>435</b></span>
+    </div>
+
+    <div class="col-3">
+        <input type="search" class="form-control" placeholder="&#xf002; Search by Country, Operator" />
+    </div>
+    <div class="col-1">
+        <button class="icon-btn"><i aria-hidden="true" class="fa fa-download"></i></button>
+    </div>
+
+</div>
+<div class="main-container table-responsive ">
+    <table class="table table-borderless erp-list-table row-hover-effect erp-table-scroll">
+        <thead>
+            <tr>
+                <th class="col-hover">Continent</th>
+                <th>Country</th>
+                <th>Operator</th>
+                <th>MCC + MNC</th>
+                <th>SenderID Type</th>
+                <th>Default SenderID</th>
+                <th>SenderID Length</th>
+                <th>Dest_Length_Min</th>
+                <th>Dest_Length_Max</th>
+                <th>Supported Mobile Series</th>
+                <th>&nbsp;</th>
+                <th>Status (Active/ Inactive)</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">Australia</td>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>Australian Telecom</td>
+                <td>345-345</td>
+                <td>Dynamic</td>
+                <td>Bankalerts</td>
+                <td>91</td>
+                <td>10</td>
+                <td>20</td>
+                <td>1800, 1980, 9897<span class="badge badge-dark ml-2">12+</span></td>
+                <td class="send-test-msg-td">
+                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
+                        Test</button>
+                </td>
+                <td>
+                    <div class="form-group text-center">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="switch-btn">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </td>
+                <td><button class="invisible-btn" (click)="open(addMobileNumber)"><img src="assets/icons/edit-icon.svg" alt="edit"/></button></td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">Australia</td>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>Australian Telecom</td>
+                <td>345-345</td>
+                <td>Dynamic</td>
+                <td>Bankalerts</td>
+                <td>91</td>
+                <td>10</td>
+                <td>20</td>
+                <td>1800, 1980, 9897<span class="badge badge-dark  ml-2">12+</span></td>
+                <td class="send-test-msg-td">
+                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
+                        Test</button>
+                </td>
+                <td>
+                    <div class="form-group text-center">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="switch-btn">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </td>
+                <td><button class="invisible-btn" (click)="open(addMobileNumber)"><img src="assets/icons/edit-icon.svg" alt="edit"/></button></td>
+            </tr>
+            <tr>
+                <td class="font-weight-semi-bold col-hover">Australia</td>
+                <td class="font-weight-semi-bold">Australia</td>
+                <td>Australian Telecom</td>
+                <td>345-345</td>
+                <td>Dynamic</td>
+                <td>Bankalerts</td>
+                <td>91</td>
+                <td>10</td>
+                <td>20</td>
+                <td>1800, 1980, 9897<span class="badge badge-dark  ml-2">12+</span></td>
+                <td class="send-test-msg-td">
+                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
+                        Test</button>
+                </td>
+                <td>
+                    <div class="form-group text-center">
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="switch-btn">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </td>
+                <td><button class="invisible-btn" (click)="open(addMobileNumber)"><img src="assets/icons/edit-icon.svg" alt="edit"/></button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- pop over divs -->
+<ng-template #sendTestMsg>
+    <section class="send-test-msg">
+        <form action="">
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" class="close-btn float-right" (click)="close(p)">&times;</button>
+                </div>
+                <div class="form-group col-6">
+                    <input type="text" class="form-control" placeholder="Enter SenderID" />
+                </div>
+                <div class="form-group col-6">
+                    <input type="text" class="form-control" placeholder="Enter Mobile No." />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-6">
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Gateway</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
+                </div>
+                <div class="form-group col-6">
+                    <input type="text" class="form-control" placeholder="Enter your text here" />
+                </div>
+                <div class="col-12 text-center">
+                    <input type="submit" class="btn erp-intl-btn" value="send">
+                </div>
+            </div>
+        </form>
+    </section>
+</ng-template>
+<!-- modal pop-up -->
+<ng-template #addMobileNumber let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+        <div class="modal-body settings-senderid-edit">
+            <form action="">
+                <div class="row">
+                    <div class="col-3 border-right mb-2"><label>Country</label></div>
+                    <div class="col-9"><span><b>INDIA</b></span></div>
+
+                    <div class="col-3 border-right"><label>Operator</label></div>
+                    <div class="col-9"><span><b>Airtel</b></span></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="form-group col-6">
+                        <label class="font-weight-semi-bold">Sender ID Type</label>
+                        <select class="dropdown-select w-100 form-control">
+                            <option value="" default>Select Sender ID Type</option>
+                            <option value="">option1</option>
+                            <option value="">option2</option>
+                            <option value="">option3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label class="font-weight-semi-bold">Default Sender ID</label>
+                        <input type="text" class="form-control" placeholder="Enter Default Sender ID" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-8 pr-0">
+                        <label class="font-weight-semi-bold">Enter Mobile Series (Separated by Comma)</label>
+                        <input type="text" class="form-control" placeholder="Mobile Series Separated By Comma" />
+                    </div>
+                    <div class="upload-btn-wrapper modal-upload-btn col-4 px-0">
+                        <button class="invisible-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Mobile Series File</button>
+                        <input type="file" name="" />
+                    </div>
+                    <div class="form-group col-12">
+                        <input type="text" class="form-control dark-form" placeholder="&#xf002; Search Mobile Series" />
+                    </div>
+                </div>
+                <section class="mobile-series-section row">
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>
+                    <div class="mobile-series-value">
+                        990845 <span>X</span>
+                    </div>  
+                </section>
+                                    
+                <div class="col-12 text-center mt-3">
+                    <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="d('Cross click')">
+                    <input type="submit" class="btn erp-intl-btn save-btn" (click)="c('Save click')"  value="Save">
+                </div>
+            </form>
+        </div> 
+
+</ng-template>

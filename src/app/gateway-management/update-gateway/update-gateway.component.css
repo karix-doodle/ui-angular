@@ -1,0 +1,21 @@
+/*update gateway css*/
+.price-list-map-card {
+    border: 1px dashed #ED2B94;
+    padding: 10px 10px 5px;
+}
+
+.auto-compile-div .checkbox-label {
+    margin-bottom: 25px;
+}
+
+.update-gateway-drag-drop .form-control {
+    border-color: transparent;
+}
+
+.file-upload-btn {
+    margin-left: -35px;
+}
+.time-date-div{
+    position:relative;
+    top:395px;
+}
