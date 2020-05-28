@@ -6,6 +6,7 @@ import { BlacklistRouteModule } from './blacklist-route/blacklist-route.module';
 import { BlAddRouteModule } from './bl-add-route/bl-add-route.module';
 import { BlacklistComponent } from './blacklist.component';
 import { BlacklistMenuComponent } from './blacklist-menu/blacklist-menu.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { BlacklistMenuComponent } from './blacklist-menu/blacklist-menu.componen
     CommonModule,
     BlacklistRoutingModule,
     BlacklistRouteModule,
-    BlAddRouteModule
+    BlAddRouteModule,
+    SharedModule
   ]
 })
 export class BlacklistModule { }
