@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GatewayManagementComponent } from './gateway-management.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('GatewayManagementComponent', () => {
   let component: GatewayManagementComponent;
@@ -8,9 +9,10 @@ describe('GatewayManagementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GatewayManagementComponent ]
+      declarations: [GatewayManagementComponent],
+      imports: [RouterTestingModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

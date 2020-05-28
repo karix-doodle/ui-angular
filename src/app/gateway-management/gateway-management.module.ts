@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
+import { RouterModule, Routes } from '@angular/router';
 
 import { GatewayManagementRoutingModule } from './gateway-management-routing.module';
 import { GatewayManagementComponent } from './gateway-management.component';
@@ -16,15 +17,22 @@ import { GtFileAuditLogComponent } from './gt-file-audit-log/gt-file-audit-log.c
 import { GtFileAuditLogViewComponent } from './gt-file-audit-log-view/gt-file-audit-log-view.component';
 import { GtCountryListViewLogComponent } from './gt-country-list-view-log/gt-country-list-view-log.component';
 import { GtSenderIdWhiteListComponent } from './gt-sender-id-white-list/gt-sender-id-white-list.component';
+import { FormsModule } from '@angular/forms';
+
+const routes: Routes = [
+  { path: 'create-gateway', component: CreateGatewayComponent }
+];
 
 @NgModule({
-  declarations: [GatewayManagementComponent, 
-    CreateGatewayComponent, GtListingComponent, EditGatewayComponent, 
-    GatewayDetailsComponent, GtCountrylistComponent, UpdateGatewayComponent, 
-    GtDetailsViewLogComponent, GtFileAuditLogComponent, GtFileAuditLogViewComponent, 
+  declarations: [GatewayManagementComponent,
+    CreateGatewayComponent, GtListingComponent, EditGatewayComponent,
+    GatewayDetailsComponent, GtCountrylistComponent, UpdateGatewayComponent,
+    GtDetailsViewLogComponent, GtFileAuditLogComponent, GtFileAuditLogViewComponent,
     GtCountryListViewLogComponent, GtSenderIdWhiteListComponent],
   imports: [
+    RouterModule.forRoot(routes),
     CommonModule,
+    FormsModule,
     NgbModule,
     GatewayManagementRoutingModule,
     SharedModule

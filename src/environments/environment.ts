@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  serverUrl: "http://115.114.108.242/api/intlmgmt",
+  loggedinusername: 'testuser',
+  loggedinempid: 1234
 };
 
 /*
