@@ -3,24 +3,20 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'filter'
 })
-
 export class FilterPipe implements PipeTransform {
 
-  transform(items: any, searchText: string, filterId: number): any {
+  transform(items: any[], field: any): any[] {
+
     if (!items) { return []; }
-    if (!searchText) { return items; }
+    if (!field) { return items; }
 
-    searchText = searchText.toLowerCase();
+    const filterKeys = Object.keys(field);
 
-    if (filterId === 1) {
-      return items.filter(value => {
-        return value.gw_id.toLowerCase().includes(searchText)
-          || value.gw_name.toLowerCase().includes(searchText);
+    return items.filter(item => {
+      return filterKeys.some((keyName) => {
+        return new RegExp(field[keyName], 'gi').test(item[keyName]) || field[keyName] === '' || field[keyName] === null;
       });
-    } else {
-      return null;
-    }
-
+    });
   }
 
 }

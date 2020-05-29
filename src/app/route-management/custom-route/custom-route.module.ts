@@ -8,6 +8,7 @@ import { CustomRouteListModule } from './custom-route-list/custom-route-list.mod
 import { AddRoutesModule } from './add-routes/add-routes.module';
 import { CustomRouteComponent } from './custom-route.component';
 import { CrMenuComponent } from './cr-menu/cr-menu.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [CustomRouteComponent, CrMenuComponent],
@@ -17,7 +18,8 @@ import { CrMenuComponent } from './cr-menu/cr-menu.component';
     MatTabsModule,
     CustomRouteRoutingModule,
     CustomRouteListModule,
-    AddRoutesModule
+    AddRoutesModule,
+    SharedModule
   ]
 })
 export class CustomRouteModule { }
