@@ -8,6 +8,7 @@ import { RmLcrComponent } from './rm-lcr/rm-lcr.component';
 import { PoolRouteModule } from './pool-route/pool-route.module';
 import { CustomRouteModule } from './custom-route/custom-route.module';
 import { BlacklistModule } from './blacklist/blacklist.module';
+import { ServicesModule } from './services/services.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { BlacklistModule } from './blacklist/blacklist.module';
     RouteManagementRoutingModule,
     PoolRouteModule,
     CustomRouteModule,
-    BlacklistModule
+    BlacklistModule,
+    ServicesModule
   ]
 
 })

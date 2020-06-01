@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { ToastrModule } from 'ng6-toastr-notifications';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +32,7 @@ import { BillplanManagementModule } from './billplan-management/billplan-managem
     NgbModule,
     FormsModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
     NgxDaterangepickerMd.forRoot({
       separator: ' - ',
       applyLabel: 'Apply',
