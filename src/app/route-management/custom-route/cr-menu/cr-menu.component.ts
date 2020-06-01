@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CustomService } from '../../services/custom.service';
+import { CustomSummaryData, CustomSummary } from '../../models/custom.model';
 
 @Component({
   selector: 'app-cr-menu',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CrMenuComponent implements OnInit {
 
-  constructor() { }
+  customSummaryData: CustomSummaryData;
+
+  constructor(public customService: CustomService) { }
 
   ngOnInit() {
+    this.getSummaryData();
+  }
+
+  getSummaryData() {
+    this.customService.getCustomRouteSummary().subscribe((res: CustomSummary) => {
+      if (res.responsestatus === 'success' && res.responsecode === 200) {
+        this.customSummaryData = res.data;
+      }
+    });
   }
 
 }

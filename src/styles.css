@@ -770,3 +770,8 @@ a:hover{
     margin: 0 15px;
     border-radius:10px;
 }
+
+.sorticon {
+    color: #ed2b94;
+    font-size: 11px;
+}

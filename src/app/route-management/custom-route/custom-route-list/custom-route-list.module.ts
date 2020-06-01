@@ -7,6 +7,8 @@ import { CustomRouteListComponent } from './custom-route-list.component';
 import { CrRmMobileComponent } from './cr-rm-mobile/cr-rm-mobile.component';
 import { CrRmSenderidComponent } from './cr-rm-senderid/cr-rm-senderid.component';
 import { CrRmMobileSenderidComponent } from './cr-rm-mobile-senderid/cr-rm-mobile-senderid.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +16,9 @@ import { CrRmMobileSenderidComponent } from './cr-rm-mobile-senderid/cr-rm-mobil
   imports: [
     CommonModule,
     CustomRouteListRoutingModule,
-    MatTabsModule
+    MatTabsModule,
+    SharedModule,
+    FormsModule
   ]
 })
 export class CustomRouteListModule { }
