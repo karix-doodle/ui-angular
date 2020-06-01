@@ -1,19 +1,23 @@
-export class ApiResponse {
+/**
+ * @module gateway-management
+ * @description gt-listing START
+*/
+
+export class GtListing_ApiResponse {
     responsecode: number;
     responsestatus: string;
-    data: ListData;
+    data: GtListing_ListData;
+    message: string;
 }
-
-export class ListData {
+export class GtListing_ListData {
     total: number;
     direct: number;
     premium: number;
     wholesale: number;
-    tabledata: TableDataList[];
-    data: ListData;
+    tabledata: GtListing_TableDataList[];
+    data: GtListing_ListData;
 }
-
-export class TableDataList {
+export class GtListing_TableDataList {
     id: number;
     gw_id: string;
     gw_name: string;
@@ -24,3 +28,6 @@ export class TableDataList {
     pricedate: string;
     pricetime: string;
 }
+/**
+ * @description gt-listing END
+*/

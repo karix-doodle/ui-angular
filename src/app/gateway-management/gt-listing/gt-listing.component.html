@@ -73,7 +73,9 @@
                 <td>
                     <div class="form-group text-center">
                         <label class="toggle-switch">
-                            <input type="checkbox" disabled class="switch-btn" [checked]="item.status === 1">
+                            <input type="checkbox" [(ngModel)]="item.status"
+                                (click)="handleStatus(item.gw_id, item.gw_name, item.status)" class="switch-btn"
+                                [checked]="item.status === 1">
                             <span class="slider round"></span>
                         </label>
                     </div>

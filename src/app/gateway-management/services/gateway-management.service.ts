@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApiResponse } from '../models/gateway-management.model';
+import { GtListing_ApiResponse } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -24,11 +24,19 @@ export class GatewayManagementService {
   ) { }
 
   /**
-   * @description gets the Gateway management List
+   * @description Gateway management List
   */
-  getGatewayList(): Observable<ApiResponse> {
+  GtListing_list(): Observable<GtListing_ApiResponse> {
     return this.http.post(this.baseUrl + '/list', this.user, this.httpOptions)
-      .pipe(map(m => m as ApiResponse));
+      .pipe(map(m => m as GtListing_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Status update
+  */
+  GtListing_statusupdate(body): Observable<GtListing_ApiResponse> {
+    return this.http.post(this.baseUrl + '/statusupdate', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtListing_ApiResponse));
   }
 
 }
