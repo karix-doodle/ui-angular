@@ -1,6 +1,6 @@
 <div class="row btm-border headings-div">
     <div class="col-8">
-        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span><a routerLink="/gateway-management/gateway-details"> NX - NEXMO /</a> SENDERID’s WHITELISTED</span>
     </div>
     <div class="col-4 text-right">
@@ -11,11 +11,11 @@
     <div class="col-7">
         <div class="row mb-2">
             <div class="col-3 border-right"><label>Gateway ID</label></div>
-            <div class="col-8"><span><b>NX</b></span></div>
+            <div class="col-8"><span><b>{{GtSenderIdWhiteList?.data.gw_id}}</b></span></div>
         </div>
         <div class="row">
             <div class="col-3 border-right"><label>Gateway Name</label></div>
-            <div class="col-8"><span><b>Nexmo</b></span></div>
+            <div class="col-8"><span><b>{{GtSenderIdWhiteList?.data.gw_name}}</b></span></div>
         </div>
     </div>
     <div class="col-2 text-right">
@@ -27,7 +27,8 @@
     </div>
     <div class="col-3">
         <div class="form-group">
-            <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Country, SenderID" />
+            <input type="search" class="form-control" placeholder="&#xf002; Search by Country, SenderID"
+                name="searchvalue" [(ngModel)]="searchvalue" />
         </div>
     </div>
 </div>
@@ -42,22 +43,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td class="font-weight-semi-bold">HDFCBANK</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td><img alt="delete icon" class="img-fluid" src="assets/icons/delete-icon.svg"></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td class="font-weight-semi-bold">HDFCBANK</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td><img alt="delete icon" class="img-fluid" src="assets/icons/delete-icon.svg"></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td class="font-weight-semi-bold">HDFCBANK</td>
-                <td>28/10/2019 | 23:25:00</td>
+            <tr
+                *ngFor="let item of GtSenderIdWhiteList?.data.tabledata | filter: { country: searchvalue, senderid: searchvalue }">
+                <td class="font-weight-semi-bold">{{item.country}}</td>
+                <td class="font-weight-semi-bold">{{item.senderid}}</td>
+                <td>{{item.date}} | {{item.time}}</td>
                 <td><img alt="delete icon" class="img-fluid" src="assets/icons/delete-icon.svg"></td>
             </tr>
         </tbody>
@@ -65,42 +55,45 @@
 </div>
 <!-- modal pop-up -->
 <ng-template #senderIdModal let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
-        <div class="modal-body">
-            <form action="">
-                <div class="row">
-                    <div class="col-4 border-right"><label>Gateway ID</label></div>
-                    <div class="col-8"><span><b>NX</b></span></div>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row">
+                <div class="col-4 border-right"><label>Gateway ID</label></div>
+                <div class="col-8"><span><b>NX</b></span></div>
 
-                    <div class="col-4 border-right"><label>Gateway Name</label></div>
-                    <div class="col-8"><span><b>Nexmo</b></span></div>
+                <div class="col-4 border-right"><label>Gateway Name</label></div>
+                <div class="col-8"><span><b>Nexmo</b></span></div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-6 form-group">
+                    <label>Country</label>
+                    <select class="dropdown-select w-100">
+                        <option value="" default>Select Country</option>
+                        <option value="">option1</option>
+                        <option value="">option2</option>
+                        <option value="">option3</option>
+                    </select>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-6 form-group">
-                        <label>Country</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>Select Country</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-6">
-                        <label>SenderID</label>
-                        <input type="search" class="form-control" id="" placeholder="Enter SenderID" />
-                    </div>
-                    <div class="form-group col-6">
-                        <div class="upload-btn-wrapper">
-                            <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse file to upload</button>
-                            <input type="file" name="" />
-                        </div>
-                    </div>
-                    <div class="col-12 text-center">
-                        <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="d('Cross click')">
-                        <input type="submit" class="btn erp-intl-btn save-btn" (click)="c('Save click')"  value="Save">
+                <div class="form-group col-6">
+                    <label>SenderID</label>
+                    <input type="search" class="form-control" id="" placeholder="Enter SenderID" />
+                </div>
+                <div class="form-group col-6">
+                    <div class="upload-btn-wrapper">
+                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse file to
+                            upload</button>
+                        <input type="file" name="" />
                     </div>
                 </div>
-            </form>
-        </div> 
+                <div class="col-12 text-center">
+                    <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close"
+                        (click)="d('Cross click')">
+                    <input type="submit" class="btn erp-intl-btn save-btn" (click)="c('Save click')" value="Save">
+                </div>
+            </div>
+        </form>
+    </div>
 
 </ng-template>

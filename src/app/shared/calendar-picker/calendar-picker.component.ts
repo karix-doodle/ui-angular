@@ -15,7 +15,6 @@ export class CalendarPickerComponent implements OnInit {
     'Last 10 Days': [moment().subtract(9, 'days'), moment()],
     'Last 15 Days': [moment().subtract(14, 'days'), moment()],
     'Last 30 Days': [moment().subtract(29, 'days'), moment()]
-   
   }
 
   constructor() { }

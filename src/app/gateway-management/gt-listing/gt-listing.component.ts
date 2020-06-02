@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtListing_TableDataList, GtListing_ApiResponse, GtListing_ListData } from '../models/gateway-management.model';
+import { GtListing_ApiResponse, GtStatusupdate_ApiResponse, GtListing_TableDataList, GtListing_Data } from '../models/gateway-management.model';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 
@@ -12,10 +12,9 @@ import Swal from 'sweetalert2';
 
 export class GtListingComponent implements OnInit {
   gatewayDataRes: GtListing_ApiResponse;
-  gatewayData: GtListing_ListData;
+  gatewayData: GtListing_Data;
   selectedType: GtListing_TableDataList[];
-  searchText: any = '';
-  tabledata: GtListing_ListData;
+  tabledata: GtListing_Data;
 
   constructor(
     private gatewayManagementService: GatewayManagementService
@@ -53,7 +52,7 @@ export class GtListingComponent implements OnInit {
       this.gatewayData = JSON.parse(JSON.stringify(this.gatewayDataRes));
     } else {
       this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type === type);
-      this.gatewayData.data.tabledata = this.selectedType;
+      this.gatewayDataRes.data.tabledata = this.selectedType;
     }
   }
 
@@ -61,7 +60,7 @@ export class GtListingComponent implements OnInit {
     let data = {
       gw_id: id,
       gw_name: name,
-      status: status == true ? 1 : 0,
+      status: status == true ? 0 : 1,
     }
     Swal.fire({
       title: 'Are you sure?',
@@ -70,14 +69,12 @@ export class GtListingComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes'
     }).then((result) => {
       if (result.value) {
         this.gatewayManagementService.GtListing_statusupdate(data).subscribe(
-          (res: GtListing_ApiResponse) => {
+          (res: GtStatusupdate_ApiResponse) => {
             if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-              this.gatewayDataRes = res;
-              this.gatewayData = JSON.parse(JSON.stringify(this.gatewayDataRes));
               Swal.fire({
                 icon: 'success',
                 title: res.responsestatus,
@@ -99,7 +96,6 @@ export class GtListingComponent implements OnInit {
           }
         );
       } else {
-        console.log('asdasdasd')
         this.GtListing_list();
       }
     })

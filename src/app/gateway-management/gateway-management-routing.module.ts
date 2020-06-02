@@ -15,61 +15,61 @@ import { GtCountryListViewLogComponent } from './gt-country-list-view-log/gt-cou
 import { GtSenderIdWhiteListComponent } from './gt-sender-id-white-list/gt-sender-id-white-list.component';
 
 
-const GMroutes: Routes =   [ 
+const GMroutes: Routes = [
   {
     path: 'gateway-management',
     component: GtListingComponent
   },
   {
-  path: 'gateway-management',
-  component: GatewayManagementComponent,
-  children: [
-    {
-      path: 'gateway-list',
-      component: GtListingComponent
-    },
-    {
-      path: 'create-gateway',
-      component: CreateGatewayComponent
-    },
-    {
-      path: 'edit-gateway',
-      component: EditGatewayComponent
-    },
-    {
-      path: 'update-gateway',
-      component: UpdateGatewayComponent
-    },
-    {
-      path: 'gateway-details',
-      component: GatewayDetailsComponent
-    },
-    {
-      path: 'country-list',
-      component: GtCountrylistComponent
-    },
-    {
-      path: 'country-list-view',
-      component: GtCountryListViewLogComponent
-    },
-    {
-      path: 'details-view-log',
-      component: GtDetailsViewLogComponent
-    },
-    {
-      path: 'file-audit-log',
-      component: GtFileAuditLogComponent
-    },
-    {
-      path: 'file-audit-log-view',
-      component: GtFileAuditLogViewComponent
-    },
-    {
-      path: 'sender-id-whitelist',
-      component: GtSenderIdWhiteListComponent
-    },
-  ]
-}
+    path: 'gateway-management',
+    component: GatewayManagementComponent,
+    children: [
+      {
+        path: 'gateway-list',
+        component: GtListingComponent
+      },
+      {
+        path: 'create-gateway',
+        component: CreateGatewayComponent
+      },
+      {
+        path: 'edit-gateway',
+        component: EditGatewayComponent
+      },
+      {
+        path: 'update-gateway',
+        component: UpdateGatewayComponent
+      },
+      {
+        path: 'gateway-details/:id',
+        component: GatewayDetailsComponent
+      },
+      {
+        path: 'country-list/:id/:name',
+        component: GtCountrylistComponent
+      },
+      {
+        path: 'country-list-view',
+        component: GtCountryListViewLogComponent
+      },
+      {
+        path: 'details-view-log/:id/:name',
+        component: GtDetailsViewLogComponent
+      },
+      {
+        path: 'file-audit-log',
+        component: GtFileAuditLogComponent
+      },
+      {
+        path: 'file-audit-log-view',
+        component: GtFileAuditLogViewComponent
+      },
+      {
+        path: 'sender-id-whitelist/:id/:name',
+        component: GtSenderIdWhiteListComponent
+      },
+    ]
+  }
 
 ];
 

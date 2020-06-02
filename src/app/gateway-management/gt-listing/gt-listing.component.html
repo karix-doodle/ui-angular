@@ -41,8 +41,8 @@
     </div>
     <div class="col-3 text-right mt-1">
         <div class="form-group">
-            <input type="search" [(ngModel)]="searchText" class="form-control"
-                placeholder="&#xf002; Search by ID, Name" />
+            <input type="search" class="form-control" placeholder="&#xf002; Search by ID, Name" name="searchvalue"
+                [(ngModel)]="searchvalue" />
         </div>
     </div>
     <div class="col-1">
@@ -63,8 +63,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of gatewayData?.data.tabledata | filter : searchText: 1">
-                <td class="font-weight-bold"><a routerLink="/gateway-management/gateway-details/">{{item.gw_id}}</a>
+            <tr *ngFor="let item of gatewayData?.data.tabledata | filter: { gw_id: searchvalue, gw_name: searchvalue }">
+                <td class="font-weight-bold"><a
+                        routerLink="/gateway-management/gateway-details/{{item.gw_id}}">{{item.gw_id}}
+                    </a>
                 </td>
                 <td>{{item.gw_name}}</td>
                 <td>{{item.gw_type}}</td>

@@ -7,14 +7,17 @@
     <div class="col-7 text-right">
         <div class="row">
             <div class="col-8 border-right">
-                <a routerLink="/gateway-management/country-list" class="btn btn-basic mr-2 ">Countries List</a>
+                <a routerLink="/gateway-management/country-list/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
+                    class="btn btn-basic mr-2 ">Countries List</a>
                 <a routerLink="/gateway-management/file-audit-log" class="btn erp-intl-btn">File Audit</a>
             </div>
             <div class="col-2 border-right text-center">
-                <a routerLink="/gateway-management/update-gateway" class="fa-2x icon-btn icons-div"><i class="fa fa-upload" aria-hidden="true"></i></a>
+                <a routerLink="/gateway-management/update-gateway" class="fa-2x icon-btn icons-div"><i
+                        class="fa fa-upload" aria-hidden="true"></i></a>
             </div>
             <div class="col-2 text-center">
-                <a routerLink="/gateway-management/edit-gateway" class="fa-2x icon-btn icons-div"><img src="assets/icons/edit-icon.svg" alt="edit"/></a>
+                <a routerLink="/gateway-management/edit-gateway" class="fa-2x icon-btn icons-div"><img
+                        src="assets/icons/edit-icon.svg" alt="edit" /></a>
             </div>
         </div>
 
@@ -24,26 +27,26 @@
     <div class="col-4">
         <div class="row mb-2">
             <div class="col-5 border-right"><label>Gateway ID</label></div>
-            <div class="col-6"><span><b>NX</b></span></div>
+            <div class="col-6"><span><b>{{GtDetailsData?.data.gw_id}}</b></span></div>
         </div>
         <div class="row mb-2">
             <div class="col-5 pr-0 border-right"><label>Gateway Name</label></div>
-            <div class="col-6"><span><b>Nexmo</b></span></div>
+            <div class="col-6"><span><b>{{GtDetailsData?.data.gw_name}}</b></span></div>
         </div>
         <div class="row">
             <div class="col-5 border-right"><label>Gateway Type</label></div>
-            <div class="col-6"><span><b>Direct </b>(Non-LCR)</span></div>
+            <div class="col-6"><span><b>{{GtDetailsData?.data.gw_type}} </b>(Non-LCR)</span></div>
         </div>
     </div>
     <div class="col-8 p-0 gateway-description">
         <div class="row ">
             <div class="border-right ">
                 <label>Status</label>
-                <span class="badge badge-white mr-3">Active</span>
+                <span class="badge badge-white mr-3">{{GtDetailsData?.data.status == 1 ? 'Active' : 'In-active'}}</span>
             </div>
             <div class="ml-3">
                 <label>Message Type</label>
-                <span class="badge badge-white">Transactional, Promotional, Transcrub</span>
+                <span class="badge badge-white">{{GtDetailsData?.data.msg_type}}</span>
             </div>
         </div>
         <div class="row">
@@ -52,29 +55,29 @@
             </div>
             <div class="border-right ml-3">
                 <label>Billing Type</label>
-                <span class="badge badge-white mr-3">Postpaid</span>
+                <span class="badge badge-white mr-3">{{GtDetailsData?.data.billing_type}}</span>
             </div>
             <div class="ml-3 border-right">
                 <label>Gateway Currency</label>
-                <span class="badge badge-white mr-3">€</span>
+                <span class="badge badge-white mr-3" [innerHTML]="GtDetailsData?.data.currency_symbol"></span>
             </div>
             <div class="ml-3">
                 <label>Gateway Timezone</label>
-                <span class="badge badge-white">UTC</span>
+                <span class="badge badge-white">{{GtDetailsData?.data.timezone}}</span>
             </div>
         </div>
         <div class="row">
             <div class="border-right ">
                 <label>Throughput</label>
-                <span class="badge badge-white mr-3">1000 TPS</span>
+                <span class="badge badge-white mr-3">{{GtDetailsData?.data.tps}}</span>
             </div>
             <div class="ml-3 border-right">
                 <label>CharSet Encoding</label>
-                <span class="badge badge-white mr-3">ASCII, ISO, GSM</span>
+                <span class="badge badge-white mr-3">{{GtDetailsData?.data.charset_enc}}</span>
             </div>
             <div class="ml-3">
                 <label>DLR Type</label>
-                <span class="badge badge-white">Handset</span>
+                <span class="badge badge-white">{{GtDetailsData?.data.dlr_type}}</span>
             </div>
         </div>
     </div>
@@ -89,7 +92,8 @@
                         <label class="col-8">Sender ID Whitelisting Required</label>
                         <div class="col-4">
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" checked>
+                                <input type="checkbox" class="switch-btn" disabled
+                                    [checked]="GtDetailsData?.data.senderid_whitelist_required === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -103,7 +107,8 @@
                     <label class="col-4">Mobile Blacklisted</label>
                     <div class="col-2">
                         <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn" checked>
+                            <input type="checkbox" class="switch-btn" disabled
+                                [checked]="GtDetailsData?.data.mobileblocklist === 1">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -113,49 +118,52 @@
                 <div class="col-3 text-center bg-grey" (click)="open(countryListModal)">
                     <label class="box-heading">Supported Destination</label>
                     <div class="row">
-                        <div class="col-6 box-data"><label>Active<span><b>180</b></span></label></div>
                         <div class="col-6 box-data">
-                            <label>In-active<span><b>180</b></span></label>
+                            <label>Active<span><b>{{GtDetailsData?.data.activedestination}}</b></span></label></div>
+                        <div class="col-6 box-data">
+                            <label>In-active<span><b>{{GtDetailsData?.data.inactivedestination}}</b></span></label>
                         </div>
                         <div class="col-12">
-                            <span class="number-data">210</span>
+                            <span class="number-data">{{GtDetailsData?.data.totaldestination}}</span>
                         </div>
                     </div>
 
                 </div>
                 <div class="col-3 text-center bg-grey">
-                    <a routerLink="/gateway-management/sender-id-whitelist">
+                    <a
+                        routerLink="/gateway-management/sender-id-whitelist/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}">
                         <label class="box-heading">Sender IDs Whitelisted</label>
                         <div class="row">
-                            <div class="col-6 box-data"><label>Numeric<span><b>180</b></span></label>
+                            <div class="col-6 box-data">
+                                <label>Numeric<span><b>{{GtDetailsData?.data.numericsenderid}}</b></span></label>
                             </div>
                             <div class="col-6 box-data">
-                                <label>Alphabetic<span><b>180</b></span></label>
+                                <label>Alphabetic<span><b>{{GtDetailsData?.data.alphabeticsenderid}}</b></span></label>
                             </div>
                             <div class="col-12 text-center">
-                                <span class="number-data">210</span>
+                                <span class="number-data">{{GtDetailsData?.data.senderidcount}}</span>
                             </div>
                         </div>
                     </a>
                 </div>
-               
+
                 <div class="col-3 text-center bg-grey">
                     <a routerLink="/route-management/custom-route/sender-id">
                         <label class="box-heading">Sender ID + Content Blocked</label>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <span class="number-data">210</span>
+                                <span class="number-data">{{GtDetailsData?.data.senderidcontent}}</span>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-3 text-center bg-grey"  (click)="open(esmeAddrModal)">
+                <div class="col-3 text-center bg-grey" (click)="open(esmeAddrModal)">
                     <label class="box-heading">No. of ESMEAddr routed
                         <br>(On Gateway directly)
                     </label>
                     <div class="row">
                         <div class="col-12 text-center">
-                            <span class="number-data">210</span>
+                            <span class="number-data">{{GtDetailsData?.data.noofesmeaddrs}}</span>
                         </div>
                     </div>
                 </div>
@@ -167,7 +175,8 @@
         <div class="row">
             <label class="gateway-section-heading col-6">GATEWAY ACTIVITIES</label>
             <div class="col-6 text-right f-12">
-                <a routerLink="/gateway-management/details-view-log" class="font-weight-bold">
+                <a routerLink="/gateway-management/details-view-log/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
+                    class="font-weight-bold">
                     View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>
                 </a>
             </div>
@@ -178,10 +187,10 @@
                     <label class="col-12">Creation Date & Time</label>
                     <div class="row ml-1 font-weight-bold">
                         <div class="col-7 border-right">
-                            <span>23/10/2019</span>
+                            <span>{{GtDetailsData?.data.cdate}}</span>
                         </div>
                         <div class="col-5">
-                            <span>14:30</span>
+                            <span>{{GtDetailsData?.data.ctime}}</span>
                         </div>
                     </div>
                 </div>
@@ -190,26 +199,27 @@
                     <label class="col-12">Last Modification Date & Time</label>
                     <div class="row font-weight-bold ml-1">
                         <div class="col-7 border-right">
-                            <span>23/10/2019</span>
+                            <span>{{GtDetailsData?.data.mdate}}</span>
                         </div>
                         <div class="col-5">
-                            <span>14:30</span>
+                            <span>{{GtDetailsData?.data.mtime}}</span>
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-2 gateway-activity-detail">
                     <label class="col-12">Last Modified User</label>
-                    <span class="col-12 font-weight-bold"><img src="assets/images/user-image.png" alt="user" class="username-img" /> username</span>
+                    <span class="col-12 font-weight-bold"><img src="assets/images/user-image.png" alt="user"
+                            class="username-img" /> {{GtDetailsData?.data.modifiedby}}</span>
 
                 </div>
                 <div class="form-group col-3">
                     <label class="col-12">Last Price Change Date & Time</label>
                     <div class="row ml-1 font-weight-bold">
                         <div class="col-6 border-right">
-                            <span>23/10/2019</span>
+                            <span>{{GtDetailsData?.data.pdate}}</span>
                         </div>
                         <div class="col-6">
-                            <span>14:30</span>
+                            <span>{{GtDetailsData?.data.ptime}}</span>
                         </div>
                     </div>
                 </div>
@@ -221,9 +231,8 @@
                         <label class="box-heading">No. of Countries Added
                             <br>(In Current Month)</label>
                         <div class="row">
-
                             <div class="col-12">
-                                <span class="number-data">38</span>
+                                <span class="number-data">{{GtDetailsData?.data.addcountrypercurrentmonth}}</span>
                             </div>
                         </div>
                     </div>
@@ -233,9 +242,8 @@
                         <label class="box-heading">No. of Countries Inactivated
                             <br>(In Current Month)</label>
                         <div class="row">
-
                             <div class="col-12">
-                                <span class="number-data">38</span>
+                                <span class="number-data">{{GtDetailsData?.data.inactivecountrypercurrentmonth}}</span>
                             </div>
                         </div>
                     </div>
@@ -245,9 +253,8 @@
                         <label class="box-heading">Price Changed for No. of Countries
                             <br>(In Current Month)</label>
                         <div class="row">
-
                             <div class="col-12">
-                                <span class="number-data">38</span>
+                                <span class="number-data">{{GtDetailsData?.data.noofcountrypricechanged}}</span>
                             </div>
                         </div>
                     </div>
@@ -262,36 +269,14 @@
             <div class="row performance-det mb-3">
                 <div class="col-3 bg-grey text-center">
                     <label class="box-heading">Current Month</label>
-
-                    <span class="number-data">2,38,90,135</span>
-
+                    <span class="number-data">{{GtDetailsData?.data.currentmonthcount}}</span>
                 </div>
                 <div class="col-3 traffic-destination mt-2">
                     <label>Top 5 Traffic Destination</label>
                     <div class="row">
-                        <div class="col-6 mb-1 ">
+                        <div *ngFor="let item of gatewayData?.data.top5traffic" class="col-6 mb-1">
                             <span class="badge badge-light">
-                                India
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Australia
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Dubai
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Germany
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                new Zealand
+                                {{item.name}}
                             </span>
                         </div>
                     </div>
@@ -299,29 +284,9 @@
                 <div class="col-3 traffic-destination mt-2">
                     <label>Top 5 Profitable Destination</label>
                     <div class="row">
-                        <div class="col-6 mb-1">
+                        <div *ngFor="let item of gatewayData?.data.top5profitable" class="col-6 mb-1">
                             <span class="badge badge-light">
-                                India
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Australia
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Dubai
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Germany
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                new Zealand
+                                {{item.name}}
                             </span>
                         </div>
                     </div>
@@ -329,29 +294,9 @@
                 <div class="col-3 traffic-destination mt-2">
                     <label>Least 5 Profitable Destination</label>
                     <div class="row">
-                        <div class="col-6 mb-1">
+                        <div *ngFor="let item of gatewayData?.data.least5profitable" class="col-6 mb-1">
                             <span class="badge badge-light">
-                                India
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Australia
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Dubai
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                Germany
-                            </span>
-                        </div>
-                        <div class="col-6 mb-1">
-                            <span class="badge badge-light">
-                                new Zealand
+                                {{item.name}}
                             </span>
                         </div>
                     </div>
@@ -363,7 +308,8 @@
 </section>
 <!-- modal pop-up -->
 <ng-template #esmeAddrModal let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
@@ -417,7 +363,8 @@
 </ng-template>
 
 <ng-template #countryListModal let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">

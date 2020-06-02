@@ -1,6 +1,6 @@
 <div class="row btm-border headings-div">
     <div class="col-7">
-        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span><a routerLink="/gateway-management/gateway-details"> NX - NEXMO</a> / COUNTRY LIST</span>
     </div>
     <div class="col-5 text-right">
@@ -14,13 +14,13 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col-7 border-right"><label>Total Countries</label></div>
-                        <div class="col-2"><span>210</span></div>
+                        <div class="col-2"><span>{{GtDetailsCountryList?.data.totalcountry}}</span></div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="row">
                         <div class="col-7 border-right"><label>Total Operators</label></div>
-                        <div class="col-2"><span>210</span></div>
+                        <div class="col-2"><span>{{GtDetailsCountryList?.data.totaloperator}}</span></div>
                     </div>
                 </div>
 
@@ -37,7 +37,8 @@
                 </div>
                 <div class="col-7">
                     <div class="form-group">
-                        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Country, Operator" />
+                        <input type="search" class="form-control" placeholder="&#xf002; Search by Country, Operator"
+                            name="searchvalue" [(ngModel)]="searchvalue" />
                     </div>
                 </div>
                 <div class="col-1 text-center">
@@ -65,49 +66,28 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Dynamic</td>
-                <td>Bankalerts</td>
-                <td class="rate-change-td"><span>0.0050</span>
-                    <button type="button" class="rate-change-list-btn" [autoClose]="'outside'"  [ngbPopover]="recentRateChangeList" data-placement="right">
+            <tr
+                *ngFor="let item of GtDetailsCountryList?.data.tabledata | filter: { country: searchvalue, operator: searchvalue }">
+                <td class="font-weight-semi-bold">{{item.country}}</td>
+                <td>{{item.operator}}</td>
+                <td>{{item.mcc}}-{{item.mnc}}</td>
+                <td>{{item.senderid_type}}</td>
+                <td>{{item.default_senderid}}</td>
+                <td class="rate-change-td"><span>{{item.current_rate}}</span>
+                    <button type="button" class="rate-change-list-btn" [autoClose]="'outside'"
+                        [ngbPopover]="recentRateChangeList" data-placement="right">
                         <i class="fa fa-clock-o ml-4"></i>
                     </button>
                 </td>
                 <td class="send-test-msg-td">
-                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
+                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'"
+                        [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
                         Test</button>
                 </td>
                 <td>
                     <div class="form-group text-center">
                         <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Static</td>
-                <td>Bankalerts</td>
-                <td class="rate-change-td"><span>0.0050</span>
-                    <button type="button" class="rate-change-list-btn" [autoClose]="'outside'"  [ngbPopover]="recentRateChangeList" data-placement="right">
-                        <i class="fa fa-clock-o ml-4"></i>
-                    </button>
-                </td>
-                <td class="send-test-msg-td">
-                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #e="ngbPopover">
-                        Test</button>
-                </td>
-                <td>
-                    <div class="form-group text-center">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
+                            <input type="checkbox" default class="switch-btn" [checked]="item.status === 1">
                             <span class="slider round"></span>
                         </label>
                     </div>
@@ -164,7 +144,8 @@
                 <div class="col-12">
                     <label class="font-weight-bold">0.0050</label> - <span>23/10/2019</span>
                 </div>
-                <a routerLink="/gateway-management/country-list-view" class="col-12 font-weight-semi-bold float-right">Show More</a>
+                <a routerLink="/gateway-management/country-list-view"
+                    class="col-12 font-weight-semi-bold float-right">Show More</a>
 
             </div>
         </form>
@@ -173,11 +154,12 @@
 <!-- modal pop-up -->
 
 <ng-template #senderidConfig let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row">
-               
+
                 <div class="col-6">
                     <label>Country</label>
                     <select class="dropdown-select w-100">
@@ -214,7 +196,7 @@
                     </div>
 
                 </div>
- 
+
             </div>
             <div class="col-12 text-center mt-5">
                 <input type="submit" class="btn btn-basic mr-3" value="Cancel" />
