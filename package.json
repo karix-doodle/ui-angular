@@ -24,6 +24,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.2.1",
     "@syncfusion/ej2-angular-calendars": "^18.1.43",
     "bootstrap": "^4.4.1",
+    "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
     "ngx-daterangepicker-material": "^2.1.11",
