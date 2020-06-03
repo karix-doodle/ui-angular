@@ -12,6 +12,7 @@ import { CalendarPickerComponent } from './calendar-picker/calendar-picker.compo
 import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { SortPipe } from './pipes/sort.pipe';
+import { ServicesModule } from './services/services.module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { SortPipe } from './pipes/sort.pipe';
       separator: ' - ',
       applyLabel: 'Apply',
     }),
+    ServicesModule
   ],
   exports: [
     CalendarPickerComponent,

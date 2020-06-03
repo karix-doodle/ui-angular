@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CustomService } from './custom.service';
 import { RouteManagementService } from './RouteManagement/route-management.service';
 import { LcrService } from './LeastCostRouting/lcr.service';
+import { GenericService } from './Generic/generic.service';
 
 
 
@@ -13,6 +14,7 @@ import { LcrService } from './LeastCostRouting/lcr.service';
   ],
   providers: [
     RouteManagementService,
+    GenericService,
     LcrService,
     CustomService
   ]
