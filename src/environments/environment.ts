@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  serverUrl: "http://115.114.108.242/api/intlmgmt",
+  serverUrl: 'http://115.114.108.242/api/intlmgmt',
   loggedinusername: 'testuser',
   loggedinempid: 1234,
   APIStatus: {

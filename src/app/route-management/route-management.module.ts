@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 import { RouteManagementRoutingModule } from './route-management-routing.module';
 import { RouteManagementComponent } from './route-management.component';
@@ -15,6 +17,8 @@ import { ServicesModule } from './services/services.module';
   declarations: [RouteManagementComponent, RmMenuPageComponent, RmLcrComponent],
   imports: [
     CommonModule,
+    FormsModule,
+    SharedModule,
     RouteManagementRoutingModule,
     PoolRouteModule,
     CustomRouteModule,

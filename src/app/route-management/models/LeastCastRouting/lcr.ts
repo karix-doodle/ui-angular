@@ -32,3 +32,24 @@ export class Gateway {
 }
 
 // Route Management Lease Cost Route //
+
+// Route Management Lease Cost Route Update //
+export class LCRStatusUpdate {
+    loggedinusername: string;
+    loggedinempid: number;
+    list: LCRStatusUpdateList[];
+}
+export class LCRStatusUpdateList {
+    mcc: number;
+    gw_id: string;
+    status: number;
+
+    id: number;
+    gw_name: string;
+}
+export class LCRStatusUpdateRes {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+// Route Management Lease Cost Route Update //
