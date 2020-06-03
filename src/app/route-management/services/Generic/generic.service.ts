@@ -4,6 +4,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CountriesListRes, OperatorsListBody, OperatorsListRes, GatewaysListBody, GatewaysListRes } from '../../models/Generic/generic';
+import { User } from '../../../shared/models/commonModels';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class GenericService {
 
   baseUrl: string = environment.serverUrl + '/routemgmt';
   httpOptions = { headers: new HttpHeaders({ Accept: 'application/json', 'Content-Type': 'application/json' }) };
-  user = {
+  user: User = {
     loggedinusername: environment.loggedinusername,
     loggedinempid: environment.loggedinempid
   };

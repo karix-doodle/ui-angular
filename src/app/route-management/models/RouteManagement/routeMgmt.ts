@@ -4,6 +4,7 @@ export class RouteMgmtSummary {
     responsecode: number;
     responsestatus: string;
     data: SummaryData;
+    message?: string;
 }
 
 export class SummaryData {

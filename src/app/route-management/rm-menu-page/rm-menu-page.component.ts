@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteManagementService } from '../services/RouteManagement/route-management.service';
 import { RouteMgmtSummary, SummaryData } from '../models/RouteManagement/routeMgmt';
+import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-rm-menu-page',
@@ -14,11 +16,21 @@ export class RmMenuPageComponent implements OnInit {
   ngOnInit() {
     this.routeManagementService.getRouteMgmtSummary().subscribe(
       (res: RouteMgmtSummary) => {
-        if (res.responsestatus === 'success') {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.summary = res.data;
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          Swal.fire({
+            icon: 'error',
+            title: res.responsestatus,
+            text: res.message,
+          });
         }
       }, error => {
-        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: error.statusText,
+          text: error.message,
+        });
       }
     );
   }
