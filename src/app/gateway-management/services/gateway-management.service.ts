@@ -8,7 +8,8 @@ import {
   GtStatusupdate_ApiResponse,
   GtDetailsCountryList_ApiResponse,
   GtSenderIdWhiteList_ApiResponse,
-  GtDetailsViewLog_ApiResponse
+  GtDetailsViewLog_ApiResponse,
+  GtTimeZone_ApiResponse
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -21,6 +22,8 @@ export class GatewayManagementService {
 
   baseUrl: string = environment.serverUrl + '/gateway';
   httpOptions = { headers: new HttpHeaders({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };
+  httpOptions_file = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' }), responseType: 'blob' as 'json' };
+
   user = {
     loggedinusername: environment.loggedinusername,
     loggedinempid: environment.loggedinempid
@@ -36,6 +39,14 @@ export class GatewayManagementService {
   GtListing_list(): Observable<GtListing_ApiResponse> {
     return this.http.post(this.baseUrl + '/list', this.user, this.httpOptions)
       .pipe(map(m => m as GtListing_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Download
+  */
+  GtListing_download(): Observable<any> {
+    return this.http.get(this.baseUrl + '/download?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid, this.httpOptions_file)
+      .pipe(map(m => m as any));
   }
 
   /**
@@ -63,7 +74,7 @@ export class GatewayManagementService {
   }
 
   /**
-   * @description Gateway management Countrylist
+   * @description Gateway management Sender Id WhiteList
   */
   Gateway_SenderIdWhiteList(body): Observable<GtSenderIdWhiteList_ApiResponse> {
     return this.http.post(this.baseUrl + '/senderid/list', { ...this.user, ...body }, this.httpOptions)
@@ -71,11 +82,19 @@ export class GatewayManagementService {
   }
 
   /**
-   * @description Gateway management Countrylist
+   * @description Gateway management Activity log
   */
   GtDetails_ViewLog(body): Observable<GtDetailsViewLog_ApiResponse> {
     return this.http.post(this.baseUrl + '/viewactivity', { ...this.user, ...body }, this.httpOptions)
       .pipe(map(m => m as GtDetailsViewLog_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management TimeZone List
+  */
+  Gateway_timezone(): Observable<GtTimeZone_ApiResponse> {
+    return this.http.post(this.baseUrl + '/timezone', this.user, this.httpOptions)
+      .pipe(map(m => m as GtTimeZone_ApiResponse));
   }
 
 }

@@ -16,6 +16,7 @@ export class GtListing_Data {
     premium: number;
     wholesale: number;
     tabledata: GtListing_TableDataList[];
+    data: GtListing_Data;
 }
 export class GtListing_TableDataList {
     id: number;
@@ -188,4 +189,24 @@ export class GtDetailsViewLog_TableDataList {
 }
 /**
  ************************* @description Gateway Details View Log END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway TimeZone START
+*/
+export class GtTimeZone_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtDetailsViewLog_Data;
+    message: string;
+}
+export class GtTimeZone_Data {
+    id: number;
+    offset: string;
+    country_name: string;
+    timezone: string;
+}
+/**
+ ************************* @description Gateway TimeZone END
 */
