@@ -1,6 +1,6 @@
 <div class="row btm-border headings-div">
     <div class="col-12">
-        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span> CREATE GATEWAY</span>
     </div>
 </div>
@@ -20,9 +20,9 @@
                     <label>Gateway Currency</label>
                     <select class="dropdown-select w-100">
                         <option value="" default>Select Gateway Currency</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option value="{{item.currency_id}}" *ngFor="let item of gatewayCurrencyData?.data">
+                            {{item.currency_name}} - {{item.currency_symbol}}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -31,9 +31,8 @@
                     <label>Gateway Timezone</label>
                     <select class="dropdown-select w-100">
                         <option value="" default>Select Gateway Timezone</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option *ngFor="let item of gatewayTimeZoneData?.data" value="{{item.id}}">{{item.timezone}}
+                        </option>
                     </select>
                 </div>
                 <div class="col-4 form-group">

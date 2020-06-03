@@ -9,7 +9,8 @@ import {
   GtDetailsCountryList_ApiResponse,
   GtSenderIdWhiteList_ApiResponse,
   GtDetailsViewLog_ApiResponse,
-  GtTimeZone_ApiResponse
+  GtTimeZone_ApiResponse,
+  GtCurrency_ApiResponse
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -95,6 +96,14 @@ export class GatewayManagementService {
   Gateway_timezone(): Observable<GtTimeZone_ApiResponse> {
     return this.http.post(this.baseUrl + '/timezone', this.user, this.httpOptions)
       .pipe(map(m => m as GtTimeZone_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management TimeZone List
+  */
+  Gateway_currency(): Observable<GtCurrency_ApiResponse> {
+    return this.http.post(this.baseUrl + '/currency', this.user, this.httpOptions)
+      .pipe(map(m => m as GtCurrency_ApiResponse));
   }
 
 }
