@@ -82,9 +82,15 @@ export class CrRmMobileSenderidComponent implements OnInit {
         };
         this.mobileSenderidCustomService.deleteCustomMobileSenderid(mobileData).subscribe((data: any) => {
           if (data.responsestatus === 'failure') {
-            this.toastr.errorToastr(data.message, '', { position: 'bottom-right' });
+            Swal.fire({
+              icon: 'error',
+              text: data.message,
+            });
           } else {
-            this.toastr.successToastr(data.message, '', { position: 'bottom-right' });
+            Swal.fire({
+              icon: 'success',
+              text: data.message,
+            });
             this.getAllMobileSenderidData();
           }
         });

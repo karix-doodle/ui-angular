@@ -27,6 +27,7 @@
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "moment": "^2.24.0",
+    "ng6-toastr-notifications": "^1.0.4",
     "ngx-daterangepicker-material": "^2.1.11",
     "rxjs": "~6.4.0",
     "sweetalert2": "^9.14.0",

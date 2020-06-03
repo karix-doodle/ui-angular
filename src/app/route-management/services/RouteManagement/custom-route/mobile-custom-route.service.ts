@@ -3,7 +3,8 @@ import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
-   MobileCustom_ApiResponse, MobileCustomResponse
+  MobileCustom_ApiResponse,
+  MobileCustomResponse,
 } from 'src/app/route-management/models/custom.model';
 import { map } from 'rxjs/operators';
 
@@ -29,7 +30,7 @@ export class MobileCustomRouteService {
   getCustomMobileList(): Observable<MobileCustom_ApiResponse> {
     return this.http
       .post(this.baseUrl + '/list', this.user, this.httpOptions)
-      .pipe(map(data => data as MobileCustom_ApiResponse) );
+      .pipe(map((data) => data as MobileCustom_ApiResponse));
   }
 
   /**
@@ -38,8 +39,9 @@ export class MobileCustomRouteService {
    * @description adds the mobile custom route data
    */
   addCustomMobile(body): Observable<MobileCustomResponse> {
-    return this.http.post(this.baseUrl + '/add', { ...this.user,  ...body }, this.httpOptions )
-    .pipe(map(data => data as MobileCustomResponse));
+    return this.http
+      .post(this.baseUrl + '/add', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map((data) => data as MobileCustomResponse));
   }
 
   /**
@@ -48,11 +50,18 @@ export class MobileCustomRouteService {
    * @description deletes the record|
    */
   deleteCustomMobile(body): Observable<MobileCustomResponse> {
-    return this.http.post(this.baseUrl + '/delete', { ...this.user,  ...body }, this.httpOptions)
-    .pipe(map(data => data as MobileCustomResponse));
+    return this.http
+      .post(
+        this.baseUrl + '/delete',
+        { ...this.user, ...body },
+        this.httpOptions
+      )
+      .pipe(map((data) => data as MobileCustomResponse));
   }
 
   uploadCustomMobileFile(formData) {
+
     return this.http.post(this.baseUrl + '/add', formData, this.httpOptions);
   }
+
 }
