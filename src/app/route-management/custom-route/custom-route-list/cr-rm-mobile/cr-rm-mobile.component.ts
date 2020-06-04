@@ -34,7 +34,7 @@ export class CrRmMobileComponent implements OnInit {
         res.responsecode > environment.APIStatus.success.code
       ) {
         this.mobileCustomApiResponse = res;
-        this.mobileCustomData = res.data;
+        this.mobileCustomData = JSON.parse(JSON.stringify(this.mobileCustomApiResponse.data));
       } else if (
         res.responsestatus === environment.APIStatus.error.text &&
         res.responsecode < environment.APIStatus.error.code

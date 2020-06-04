@@ -31,7 +31,7 @@ export class CrMenuComponent implements OnInit {
           res.responsecode > environment.APIStatus.success.code
         ) {
           this.customSummaryApiResponse = res;
-          this.customSummaryData = res.data;
+          this.customSummaryData = JSON.parse(JSON.stringify(this.customSummaryApiResponse.data));
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code

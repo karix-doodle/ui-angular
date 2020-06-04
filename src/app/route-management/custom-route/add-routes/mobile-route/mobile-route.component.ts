@@ -53,7 +53,7 @@ selectedFile: File;
         res.responsecode > environment.APIStatus.success.code
       ) {
         this.gatewayListApiResponse = res;
-        this.gatewayListData = res.data;
+        this.gatewayListData = JSON.parse(JSON.stringify(this.gatewayListApiResponse.data));
       } else if (
         res.responsestatus === environment.APIStatus.error.text &&
         res.responsecode < environment.APIStatus.error.code

@@ -38,7 +38,7 @@ export class CrRmMobileSenderidComponent implements OnInit {
         res.responsecode > environment.APIStatus.success.code
       ) {
         this.mobileSenderidApiResponse = res;
-        this.mobileSenderidCustomData = res.data;
+        this.mobileSenderidCustomData = JSON.parse(JSON.stringify(this.mobileSenderidApiResponse.data));
       } else if (
         res.responsestatus === environment.APIStatus.error.text &&
         res.responsecode < environment.APIStatus.error.code
