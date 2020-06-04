@@ -24,7 +24,7 @@ export class FilterPipe implements PipeTransform {
       const filterKeys = Object.keys(field);
       return items.filter(item => {
         return filterKeys.some((keyName) => {
-          return new RegExp(field[keyName]).test(item[keyName]) || field[keyName] === '' || field[keyName] === null;
+          return new RegExp(field[keyName]).test(item[keyName].toLowerCase()) || field[keyName] === '' || field[keyName] === null;
         });
       });
     }

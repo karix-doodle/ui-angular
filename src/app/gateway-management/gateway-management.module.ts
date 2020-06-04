@@ -17,6 +17,8 @@ import { GtFileAuditLogComponent } from './gt-file-audit-log/gt-file-audit-log.c
 import { GtFileAuditLogViewComponent } from './gt-file-audit-log-view/gt-file-audit-log-view.component';
 import { GtCountryListViewLogComponent } from './gt-country-list-view-log/gt-country-list-view-log.component';
 import { GtSenderIdWhiteListComponent } from './gt-sender-id-white-list/gt-sender-id-white-list.component';
+import { GtSenderidContentComponent } from './gt-senderid-content/gt-senderid-content.component';
+import { GtESMEAddrRoutedComponent } from './gt-esmeaddr-route/gt-esmeaddr-route.component';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
@@ -28,7 +30,7 @@ const routes: Routes = [
     CreateGatewayComponent, GtListingComponent, EditGatewayComponent,
     GatewayDetailsComponent, GtCountrylistComponent, UpdateGatewayComponent,
     GtDetailsViewLogComponent, GtFileAuditLogComponent, GtFileAuditLogViewComponent,
-    GtCountryListViewLogComponent, GtSenderIdWhiteListComponent],
+    GtCountryListViewLogComponent, GtSenderIdWhiteListComponent, GtSenderidContentComponent, GtESMEAddrRoutedComponent],
   imports: [
     RouterModule.forRoot(routes),
     CommonModule,

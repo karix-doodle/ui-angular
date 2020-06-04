@@ -148,6 +148,11 @@ export class GtSenderIdWhiteList_ApiResponse {
     data: GtSenderIdWhiteList_Data;
     message: string;
 }
+export class GtSenderIdWhiteListDelete_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
 export class GtSenderIdWhiteList_Data {
     gw_id: string;
     gw_name: string;
@@ -186,6 +191,13 @@ export class GtDetailsViewLog_Data {
     tabledata: GtDetailsViewLog_TableDataList[]
 }
 export class GtDetailsViewLog_TableDataList {
+    id: number;
+    gw_id: string;
+    actionby: string;
+    activity: string;
+    comment: string;
+    date: Date;
+    time: Time;
 }
 /**
  ************************* @description Gateway Details View Log END
@@ -228,4 +240,52 @@ export class GtCurrency_Data {
 }
 /**
  ************************* @description Gateway Currency END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Country Status Update START
+*/
+export class GtCountryStatusupdate_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+/**
+ ************************* @description Gateway Country Status Update END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway File audit log START
+*/
+export class GtFileAuditLog_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtFileAuditLog_Data;
+    message: string;
+}
+export class GtFileAuditLog_Data {
+    gw_id: string;
+    gw_name: string;
+    totalcountry: number;
+    totaloperator: number;
+    tabledata: GtFileAuditLog_TableDataList[]
+}
+export class GtFileAuditLog_TableDataList {
+    id: number;
+    gw_id: string;
+    uuid: string;
+    contry: string;
+    operator: string;
+    mcc: number;
+    mnc: number;
+    currentrate: string;
+    fromEffectDate: Date;
+    oldrate: number;
+    changetype: string;
+    toEffectDate: Date
+}
+/**
+ ************************* @description Gateway File audit log END
 */

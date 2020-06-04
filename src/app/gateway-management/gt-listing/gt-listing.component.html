@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="row btm-border second-row-det">
-    <div class="col-7">
+    <div class="col-6">
         <div class="row">
             <div class="col-12">
                 <label class="mr-2"><b>Total</b></label>
@@ -28,9 +28,9 @@
             </div>
         </div>
     </div>
-    <div class="col-1 mt-1 w-100">
+    <div class="col-2 mt-1 w-100">
         <select #type class="dropdown-select w-100 fa" (change)="selectType(type.value)">
-            <option value="All" default></option>
+            <option value="All" default>All</option>
             <option value="Recently Modified">Recently Modified</option>
             <option value="Direct">Direct</option>
             <option value="premium">Premium</option>
@@ -72,8 +72,8 @@
                 </td>
                 <td>{{item.gw_name}}</td>
                 <td>{{item.gw_type}}</td>
-                <td>{{item.lastdate }} | {{item.lasttime}}</td>
-                <td>{{item.pricedate }} | {{item.pricetime}}</td>
+                <td>{{item.lastdate }} {{item.lastdate && item.lasttime ? '|' : '-'}} {{item.lasttime}}</td>
+                <td>{{item.pricedate }} {{item.pricedate && item.pricetime ? '|' : '-'}} {{item.pricetime}}</td>
                 <td>
                     <div class="form-group text-center">
                         <label class="toggle-switch">

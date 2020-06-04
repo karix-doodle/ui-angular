@@ -1,0 +1,54 @@
+<div class="row btm-border headings-div">
+    <div class="col-8">
+        <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span><a routerLink="/gateway-management/gateway-details"> {{GtSenderIdWhiteList?.data.gw_id}} -
+                {{GtSenderIdWhiteList?.data.gw_name}} /</a> No. of ESMEAddr routed
+            (On Gateway directly)</span>
+    </div>
+</div>
+<div class="row btm-border second-row-det">
+    <div class="col-7">
+        <div class="row mb-2">
+            <div class="col-3 border-right"><label>Gateway ID</label></div>
+            <div class="col-8"><span><b>{{GtSenderIdWhiteList?.data.gw_id}}</b></span></div>
+        </div>
+        <div class="row">
+            <div class="col-3 border-right"><label>Gateway Name</label></div>
+            <div class="col-8"><span><b>{{GtSenderIdWhiteList?.data.gw_name}}</b></span></div>
+        </div>
+    </div>
+    <div class="col-2 text-right">
+        <select class="dropdown-select fa">
+            <option value="" default>
+                &#xf1de;
+            </option>
+        </select>
+    </div>
+    <div class="col-3">
+        <div class="form-group">
+            <input type="search" class="form-control" placeholder="&#xf002; Search by Country, SenderID"
+                name="searchvalue" [(ngModel)]="searchvalue" />
+        </div>
+    </div>
+</div>
+<div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table">
+        <thead>
+            <tr>
+                <th>Country</th>
+                <th>SenderID</th>
+                <th>Creation Date and Time<i class="fa fa-caret-down"></i></th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let item of GtSenderIdWhiteList?.data.tabledata | filter: { country: searchvalue, senderid: searchvalue }">
+                <td class="font-weight-semi-bold">{{item.country}}</td>
+                <td class="font-weight-semi-bold">{{item.senderid}}</td>
+                <td>{{item.date}} | {{item.time}}</td>
+                <td><img alt="delete icon" class="img-fluid" src="assets/icons/delete-icon.svg"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

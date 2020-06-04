@@ -8,9 +8,12 @@ import {
   GtStatusupdate_ApiResponse,
   GtDetailsCountryList_ApiResponse,
   GtSenderIdWhiteList_ApiResponse,
+  GtSenderIdWhiteListDelete_ApiResponse,
   GtDetailsViewLog_ApiResponse,
   GtTimeZone_ApiResponse,
-  GtCurrency_ApiResponse
+  GtCurrency_ApiResponse,
+  GtCountryStatusupdate_ApiResponse,
+  GtFileAuditLog_ApiResponse
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -83,6 +86,14 @@ export class GatewayManagementService {
   }
 
   /**
+   * @description Gateway management Sender Id WhiteList
+  */
+  Gateway_SenderIdWhiteListDelete(body): Observable<GtSenderIdWhiteListDelete_ApiResponse> {
+    return this.http.post(this.baseUrl + '/senderid/delete', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtSenderIdWhiteListDelete_ApiResponse));
+  }
+
+  /**
    * @description Gateway management Activity log
   */
   GtDetails_ViewLog(body): Observable<GtDetailsViewLog_ApiResponse> {
@@ -104,6 +115,38 @@ export class GatewayManagementService {
   Gateway_currency(): Observable<GtCurrency_ApiResponse> {
     return this.http.post(this.baseUrl + '/currency', this.user, this.httpOptions)
       .pipe(map(m => m as GtCurrency_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Country Status update
+  */
+  GtCountry_statusupdate(body): Observable<GtCountryStatusupdate_ApiResponse> {
+    return this.http.post(this.baseUrl + '/countrystatus', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtCountryStatusupdate_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Download
+  */
+  GtCountryListing_download(data): Observable<any> {
+    return this.http.get(this.baseUrl + '/download/country?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&gw_name=' + data.gw_name, this.httpOptions_file)
+      .pipe(map(m => m as any));
+  }
+
+  /**
+   * @description Gateway management File audit log
+  */
+  GtFileAuditLog_list(body): Observable<GtFileAuditLog_ApiResponse> {
+    return this.http.post(this.baseUrl + '/auditlog', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtFileAuditLog_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Download
+  */
+  GtFileAuditLog_download(data): Observable<any> {
+    return this.http.get(this.baseUrl + '/download/auditlog/?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&gw_name=' + data.gw_name, this.httpOptions_file)
+      .pipe(map(m => m as any));
   }
 
 }

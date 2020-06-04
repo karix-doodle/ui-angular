@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import * as moment from 'moment';
 
@@ -8,8 +8,12 @@ import * as moment from 'moment';
   styleUrls: ['./calendar-picker.component.css']
 })
 export class CalendarPickerComponent implements OnInit {
+  @Input() params: any;
+  @Output() selectDate = new EventEmitter();
+  public date: any;
 
   selected: any;
+
   alwaysShowCalendars: boolean;
   ranges: any = {
     'Last 10 Days': [moment().subtract(9, 'days'), moment()],
@@ -17,9 +21,18 @@ export class CalendarPickerComponent implements OnInit {
     'Last 30 Days': [moment().subtract(29, 'days'), moment()]
   }
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+    this.selected = {
+      startDate: this.params.fromdate,
+      endDate: this.params.todate
+    }
+  }
+
+  change(e): void {
+    this.selectDate.emit(e)
   }
 
 }

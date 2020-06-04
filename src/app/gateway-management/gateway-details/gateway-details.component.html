@@ -2,14 +2,15 @@
     <div class="col-5">
         <label class="main-heading pl-2">
             <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span> NX - NEXMO</span>
+        <span> {{GtDetailsData?.data.gw_id}} - {{GtDetailsData?.data.gw_name}}</span>
     </div>
     <div class="col-7 text-right">
         <div class="row">
             <div class="col-8 border-right">
                 <a routerLink="/gateway-management/country-list/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
                     class="btn btn-basic mr-2 ">Countries List</a>
-                <a routerLink="/gateway-management/file-audit-log" class="btn erp-intl-btn">File Audit</a>
+                <a routerLink="/gateway-management/file-audit-log/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
+                    class="btn erp-intl-btn">File Audit</a>
             </div>
             <div class="col-2 border-right text-center">
                 <a routerLink="/gateway-management/update-gateway" class="fa-2x icon-btn icons-div"><i
@@ -115,19 +116,21 @@
                 </div>
             </div>
             <div class="row validation-det mb-3">
-                <div class="col-3 text-center bg-grey" (click)="open(countryListModal)">
-                    <label class="box-heading">Supported Destination</label>
-                    <div class="row">
-                        <div class="col-6 box-data">
-                            <label>Active<span><b>{{GtDetailsData?.data.activedestination}}</b></span></label></div>
-                        <div class="col-6 box-data">
-                            <label>In-active<span><b>{{GtDetailsData?.data.inactivedestination}}</b></span></label>
+                <div class="col-3 text-center bg-grey">
+                    <a
+                        routerLink="/gateway-management/country-list/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}">
+                        <label class="box-heading">Supported Destination</label>
+                        <div class="row">
+                            <div class="col-6 box-data">
+                                <label>Active<span><b>{{GtDetailsData?.data.activedestination}}</b></span></label></div>
+                            <div class="col-6 box-data">
+                                <label>In-active<span><b>{{GtDetailsData?.data.inactivedestination}}</b></span></label>
+                            </div>
+                            <div class="col-12">
+                                <span class="number-data">{{GtDetailsData?.data.totaldestination}}</span>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <span class="number-data">{{GtDetailsData?.data.totaldestination}}</span>
-                        </div>
-                    </div>
-
+                    </a>
                 </div>
                 <div class="col-3 text-center bg-grey">
                     <a
@@ -148,7 +151,7 @@
                 </div>
 
                 <div class="col-3 text-center bg-grey">
-                    <a routerLink="/route-management/custom-route/sender-id">
+                    <a routerLink="/gateway-management/senderid-content-block">
                         <label class="box-heading">Sender ID + Content Blocked</label>
                         <div class="row">
                             <div class="col-12 text-center">
@@ -157,15 +160,17 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-3 text-center bg-grey" (click)="open(esmeAddrModal)">
-                    <label class="box-heading">No. of ESMEAddr routed
-                        <br>(On Gateway directly)
-                    </label>
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <span class="number-data">{{GtDetailsData?.data.noofesmeaddrs}}</span>
+                <div class="col-3 text-center bg-grey">
+                    <a routerLink="/gateway-management/esme-addr-routed">
+                        <label class="box-heading">No. of ESMEAddr routed
+                            <br>(On Gateway directly)
+                        </label>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span class="number-data">{{GtDetailsData?.data.noofesmeaddrs}}</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
