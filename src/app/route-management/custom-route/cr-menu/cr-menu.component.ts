@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomService } from '../../services/RouteManagement/custom-route/custom.service';
+import { CustomService } from '../../services/custom-route/custom.service';
 import {
   CustomSummary_Data,
   CustomSummary_ApiResponse,

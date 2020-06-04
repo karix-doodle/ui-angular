@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomService } from 'src/app/route-management/services/RouteManagement/custom-route/custom.service';
-import { MobileSenderidCustomService } from 'src/app/route-management/services/RouteManagement/custom-route/mobile-custom-senderid.service';
+import { CustomService } from 'src/app/route-management/services/custom-route/custom.service';
+import { MobileSenderidCustomService } from 'src/app/route-management/services/custom-route/mobile-custom-senderid.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import Swal from 'sweetalert2';
 import { MobileCustomSenderId_ApiResponse, MobileSenderList_Data, MobileCustomSender_Data } from 'src/app/route-management/models/custom.model';

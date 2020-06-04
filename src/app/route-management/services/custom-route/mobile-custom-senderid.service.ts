@@ -1,25 +1,25 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from "../../../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import {
   MobileCustomSenderId_ApiResponse,
   MobileCustomSenderIdResponse,
-} from "src/app/route-management/models/custom.model";
-import { map } from "rxjs/operators";
-import { Observable } from "rxjs";
+} from 'src/app/route-management/models/custom.model';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class MobileSenderidCustomService {
   formDetails: any;
   constructor(public http: HttpClient) {}
 
-  baseUrl: string = environment.serverUrl + "/routemgmt/custom/mobilesenderid";
+  baseUrl: string = environment.serverUrl + '/routemgmt/custom/mobilesenderid';
   httpOptions = {
     headers: new HttpHeaders({
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     }),
   };
   user = {
@@ -33,7 +33,7 @@ export class MobileSenderidCustomService {
    */
   getCustomMobileSenderidList(): Observable<MobileCustomSenderId_ApiResponse> {
     return this.http
-      .post(this.baseUrl + "/list", this.user)
+      .post(this.baseUrl + '/list', this.user)
       .pipe(map((data) => data as MobileCustomSenderId_ApiResponse));
   }
 
@@ -43,24 +43,26 @@ export class MobileSenderidCustomService {
    * @description adds the mobile and senderid custom route data
    */
   addCustomMobileSenderid(
-    details,
+    body,
     formType
   ): Observable<MobileCustomSenderIdResponse> {
     if (formType) {
       this.formDetails = new FormData();
-      for (const key in details) {
-        this.formDetails.append(key, details[key]);
-      }
+      Object.keys(body).forEach((key) =>
+        this.formDetails.append(key, body[key])
+      );
+
+      // tslint:disable-next-line: forin
       for (const key in this.user) {
         this.formDetails.append(key, this.user[key]);
       }
     } else {
-      this.formDetails = { ...this.user, ...details };
+      this.formDetails = { ...this.user, ...body };
     }
 
     return this.http
-      .post(this.baseUrl + "/add", this.formDetails, this.httpOptions)
-      .pipe(map((data) => data as MobileCustomSenderIdResponse));
+      .post(this.baseUrl + '/add', this.formDetails, this.httpOptions)
+      .pipe(map((data) => (data as unknown as MobileCustomSenderIdResponse)));
   }
 
   /**
@@ -71,10 +73,10 @@ export class MobileSenderidCustomService {
   deleteCustomMobileSenderid(body): Observable<MobileCustomSenderIdResponse> {
     return this.http
       .post(
-        this.baseUrl + "/delete",
+        this.baseUrl + '/delete',
         { ...this.user, ...body },
         this.httpOptions
       )
-      .pipe(map((data) => data as MobileCustomSenderIdResponse));
+      .pipe(map((data) => (data as unknown) as MobileCustomSenderIdResponse));
   }
 }

@@ -4,6 +4,9 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'sort'
 })
 export class SortPipe implements PipeTransform {
+  static forRoot(): any[] | import("@angular/core").Type<any> {
+    throw new Error("Method not implemented.");
+  }
 
   transform(values: number[] | string[] | object[], key?: string, reverse?: boolean) {
     if (!Array.isArray(values) || values.length <= 0) {
