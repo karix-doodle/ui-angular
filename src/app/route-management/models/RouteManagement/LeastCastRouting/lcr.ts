@@ -3,6 +3,7 @@ export class LCRList {
     responsecode: number;
     responsestatus: string;
     data: LCRListData;
+    message?: string;
 }
 
 export class LCRListData {

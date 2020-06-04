@@ -11,19 +11,19 @@
             <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/mobile-route">Mobile Number</a>
             <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-mobile-route"> Mobile + SenderID</a>
         </div>
-       
+
     </div>
 </div>
-  
+
   <div class="main-container p-4">
-  
-    <mat-radio-group class="mat-radio-group" (change)="changeComboo($event)" [(ngModel)]="accountType">
+
+    <mat-radio-group class="mat-radio-group"  [(ngModel)]="accountType">
         <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
             {{labelname}}
         </mat-radio-button>
     </mat-radio-group>
-  
-  
+
+
     <div class="input-container">
         <div *ngIf="accountType=='Global'">
             <div class="create-custom-route-div">
@@ -46,7 +46,7 @@
                         <option value="">option3</option>
                     </select>
                 </div>
-  
+
             </div>
                 <div class="row">
                     <div class=" form-group col-4">
@@ -66,7 +66,7 @@
                           <option value="">option3</option>
                       </select>
                   </div>
-  
+
                 </div>
                 <div class="row">
                     <div class=" form-group col-4">
@@ -87,7 +87,7 @@
                             <option value="">option3</option>
                         </select>
                     </div>
-  
+
                 </div>
             </div>
             <div class="row p-3">
@@ -175,7 +175,7 @@
                         <option value="">option3</option>
                     </select>
                 </div>
-  
+
             </div>
           </div>
           <div class="row px-3 pt-2">

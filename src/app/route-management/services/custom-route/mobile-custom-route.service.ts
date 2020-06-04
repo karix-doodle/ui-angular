@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
@@ -41,7 +41,7 @@ export class MobileCustomRouteService {
   addCustomMobile(body): Observable<MobileCustomResponse> {
     return this.http
       .post(this.baseUrl + '/add', { ...this.user, ...body }, this.httpOptions)
-      .pipe(map((data) => data as MobileCustomResponse));
+      .pipe(map((data) => data as unknown as MobileCustomResponse));
   }
 
   /**
@@ -56,7 +56,7 @@ export class MobileCustomRouteService {
         { ...this.user, ...body },
         this.httpOptions
       )
-      .pipe(map((data) => data as MobileCustomResponse));
+      .pipe(map((data) => data as unknown as MobileCustomResponse));
   }
 
   uploadCustomMobileFile(formData) {

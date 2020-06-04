@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LcrService } from '../services/LeastCostRouting/lcr.service';
 import {
   LCRList, GatewayList, LCRStatusUpdate, LCRStatusUpdateRes,
   LCRStatusUpdateList
-} from '../models/LeastCastRouting/lcr';
+} from '../models/RouteManagement/LeastCastRouting/lcr';
 import { environment } from '../../../environments/environment';
-
+import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LcrService } from '../services/RouteManagement/LeastCostRouting/lcr.service';
 @Component({
   selector: 'app-rm-lcr',
   templateUrl: './rm-lcr.component.html',
@@ -21,6 +22,8 @@ export class RmLcrComponent implements OnInit {
   selectedRoute: GatewayList[];
   searchText: any = '';
   LCRUpdateStatusInputs: LCRStatusUpdate = new LCRStatusUpdate();
+  sortingName: string;
+  isDesc: boolean;
 
   constructor(
     config: NgbModalConfig,
@@ -28,29 +31,37 @@ export class RmLcrComponent implements OnInit {
     private lcrService: LcrService
   ) { }
 
-  open(content) {
-    this.modalService.open(content,
-      {
-        windowClass: 'gt-detail-modal'
-      });
-  }
-
   ngOnInit() {
     this.loadLCRList();
   }
+
   /**
-   *
    * @description gets Least Cost Routing List
    */
   loadLCRList() {
     this.lcrService.getLCRList().subscribe(
       (res: LCRList) => {
-        if (res.responsestatus === 'success') {
+        if (
+          res.responsestatus === environment.APIStatus.success.text
+          && res.responsecode > environment.APIStatus.success.code
+        ) {
           this.originalLCRListRes = res;
           this.LCRListRes = JSON.parse(JSON.stringify(this.originalLCRListRes));
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text
+          && res.responsecode < environment.APIStatus.error.code
+        ) {
+          Swal.fire({
+            icon: 'error',
+            title: res.responsestatus,
+            text: res.message,
+          });
         }
-      }, error => {
-        console.log(error);
+      }, (error: HttpErrorResponse) => {
+        Swal.fire({
+          icon: 'error',
+          text: error.message,
+        });
       }
     );
   }
@@ -61,12 +72,32 @@ export class RmLcrComponent implements OnInit {
   onSave() {
     this.lcrService.updateGatewayStatus(this.LCRUpdateStatusInputs).subscribe(
       (res: LCRStatusUpdateRes) => {
-        if (res.responsestatus === 'success') {
+        this.modalService.dismissAll();
+        if (
+          res.responsestatus === environment.APIStatus.success.text
+          && res.responsecode > environment.APIStatus.success.code
+        ) {
           this.loadLCRList();
-          this.modalService.dismissAll();
+          Swal.fire({
+            icon: 'success',
+            title: res.responsestatus,
+            text: res.message,
+          });
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text
+          && res.responsecode < environment.APIStatus.error.code
+        ) {
+          Swal.fire({
+            icon: 'error',
+            title: res.responsestatus,
+            text: res.message,
+          });
         }
-      }, error => {
-        console.log(error);
+      }, (error: HttpErrorResponse) => {
+        Swal.fire({
+          icon: 'error',
+          text: error.message,
+        });
       }
     );
   }
@@ -141,6 +172,20 @@ export class RmLcrComponent implements OnInit {
     //   this.LCRUpdateStatusInputs.list.push({ mcc, ...element });
     // });
     // console.log(this.LCRUpdateStatusInputs);
+  }
+
+  /**
+   *
+   * @param tableHeaderName consists of table header
+   * @description sorts the table based upon the table Header Name
+   */
+  sort(tableHeaderName: string): void {
+    if (tableHeaderName && this.sortingName !== tableHeaderName) {
+      this.isDesc = false;
+    } else {
+      this.isDesc = !this.isDesc;
+    }
+    this.sortingName = tableHeaderName;
   }
 
 }
