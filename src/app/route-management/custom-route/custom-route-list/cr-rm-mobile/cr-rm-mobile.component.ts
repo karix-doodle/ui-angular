@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomService } from 'src/app/route-management/services/RouteManagement/custom-route/custom.service';
 import {  MobileList_Data, MobileCustom_List, MobileCustom_ApiResponse } from 'src/app/route-management/models/custom.model';
 import Swal from 'sweetalert2';
-import { MobileCustomRouteService } from 'src/app/route-management/services/RouteManagement/custom-route/mobile-custom-route.service';
+import { MobileCustomRouteService } from 'src/app/route-management/services/custom-route/mobile-custom-route.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { environment } from 'src/environments/environment';
 
@@ -35,7 +34,7 @@ export class CrRmMobileComponent implements OnInit {
         res.responsecode > environment.APIStatus.success.code
       ) {
         this.mobileCustomApiResponse = res;
-        this.mobileCustomData = res.data;
+        this.mobileCustomData = JSON.parse(JSON.stringify(this.mobileCustomApiResponse.data));
       } else if (
         res.responsestatus === environment.APIStatus.error.text &&
         res.responsecode < environment.APIStatus.error.code

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtTimeZone_ApiResponse, GtTimeZone_Data } from '../models/gateway-management.model';
+import { GtTimeZone_ApiResponse, GtTimeZone_Data, GtCurrency_ApiResponse, GtCurrency_Data } from '../models/gateway-management.model';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 
@@ -13,12 +13,15 @@ export class CreateGatewayComponent implements OnInit {
 
   gatewayTimeZoneDataRes: GtTimeZone_ApiResponse;
   gatewayTimeZoneData: GtTimeZone_Data;
+  gatewayCurrencyDataRes: GtCurrency_ApiResponse;
+  gatewayCurrencyData: GtCurrency_Data;
 
   constructor(
     private gatewayManagementService: GatewayManagementService,
   ) { }
 
   ngOnInit() {
+    this.Gateway_currency();
     this.Gateway_timezone();
   }
 
@@ -28,6 +31,29 @@ export class CreateGatewayComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.gatewayTimeZoneDataRes = res;
           this.gatewayTimeZoneData = JSON.parse(JSON.stringify(this.gatewayTimeZoneDataRes));
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          Swal.fire({
+            icon: 'error',
+            title: res.responsestatus,
+            text: res.message,
+          })
+        }
+      }, error => {
+        Swal.fire({
+          icon: 'error',
+          title: error.statusText,
+          text: error.message,
+        })
+      }
+    );
+  }
+
+  Gateway_currency() {
+    this.gatewayManagementService.Gateway_currency().subscribe(
+      (res: GtCurrency_ApiResponse) => {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+          this.gatewayCurrencyDataRes = res;
+          this.gatewayCurrencyData = JSON.parse(JSON.stringify(this.gatewayCurrencyDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           Swal.fire({
             icon: 'error',

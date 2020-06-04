@@ -198,7 +198,7 @@ export class GtDetailsViewLog_TableDataList {
 export class GtTimeZone_ApiResponse {
     responsecode: number;
     responsestatus: string;
-    data: GtDetailsViewLog_Data;
+    data: GtTimeZone_Data;
     message: string;
 }
 export class GtTimeZone_Data {
@@ -209,4 +209,23 @@ export class GtTimeZone_Data {
 }
 /**
  ************************* @description Gateway TimeZone END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Currency START
+*/
+export class GtCurrency_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtCurrency_Data;
+    message: string;
+}
+export class GtCurrency_Data {
+    currency_id: number;
+    currency_name: string;
+    currency_symbol: string;
+}
+/**
+ ************************* @description Gateway Currency END
 */
