@@ -13,18 +13,19 @@ const poolRoutes: Routes = [
     component: PoolRouteListComponent
   },
   {
-  path: 'route-management/pool-route',
-  component: PoolRouteComponent,
-  children: [
-    {
-      path: 'create-pool',
-      component: CreatePoolComponent
-    },
-    {
-      path: 'account-wise-view',
-      component: PrActWiseViewComponent
-    },
-]}
+    path: 'route-management/pool-route',
+    component: PoolRouteComponent,
+    children: [
+      {
+        path: 'clone-pool/:id',
+        component: CreatePoolComponent
+      },
+      {
+        path: 'account-wise-view/:id',
+        component: PrActWiseViewComponent
+      }
+    ]
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(poolRoutes)],

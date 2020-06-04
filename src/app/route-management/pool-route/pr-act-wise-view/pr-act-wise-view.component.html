@@ -2,21 +2,23 @@
     <div class="col-8">
         <label class="main-heading">
             <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
-            <span> <a routerLink="/route-management/pool-route"> POOL ROUTE /</a> Route name</span>
+        <span> <a routerLink="/route-management/pool-route"> POOL ROUTE /</a>
+            {{listDataRes?.data.route_name | uppercase}}</span>
     </div>
 </div>
 <div class="row btm-border second-row-pr">
     <div class="col-5 mt-2">
         <label class="mr-2"><b>Total Countries</b></label>
         <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>435</b></span>
+        <span class="ml-3 badge badge-dark"><b>{{listDataRes?.data.countries_count}}</b></span>
     </div>
     <div class="col-3 text-right lcr-value">
-        <span>Fallback - <b>LCR (Direct)</b></span>
+        <span>Fallback - <b>{{listDataRes?.data.fallback_route}} ({{listDataRes?.data.gw_type}})</b></span>
     </div>
 
     <div class="col-4 text-right ">
-        <input type="search" class="form-control" placeholder="&#xf002; Search by Country , Operator" />
+        <input type="search" [(ngModel)]="searchText" class="form-control"
+            placeholder="&#xf002; Search by Country , Operator" />
     </div>
 
 </div>
@@ -24,60 +26,61 @@
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
-                <th>Continent</th>
-                <th>Country</th>
-                <th>Operator</th>
-                <th>MCC + MNC</th>
+                <th (click)="sort('continent')">Continent
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
+                </th>
+                <th (click)="sort('country')">Country
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                </th>
+                <th (click)="sort('operator')">Operator
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
+                </th>
+                <th (click)="sort('mcc')">MCC + MNC
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
+                </th>
                 <th class="font-weight-semi-bold">DISTRIBUTED GATEWAYS</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Asia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
+            <tr *ngFor="let row of listDataRes?.data.routes_list
+            | filter: { continent: searchText,  
+                country: searchText, 
+                operator: searchText,
+                mcc: searchText, 
+                mnc: searchText }
+            | sort: sortingName: isDesc">
+                <td class="font-weight-semi-bold">{{row.continent}}</td>
+                <td class="font-weight-semi-bold">{{row.country}}</td>
+                <td>{{row.operator}}</td>
+                <td>{{row.mcc}}-{{row.mnc}}</td>
                 <td>
                     <div class="row-details">
-                        <label class="mt-1">Nexmo</label><span class="badge badge-white">80%</span>
-                        <label class="mt-1">Message Bird</label><span class="badge badge-white">50%</span>
-                        <label class="mt-1">Mocean</label><span class="badge badge-white">50%</span>
+                        <label class="mt-1" *ngFor="let ratio of row.ratios">{{ratio.gw_id}}
+                            <span class="badge badge-white">{{ratio.ratio_in_percentage}}%</span>
+                        </label>
                     </div>
                 </td>
-              
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Asia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td><div class="row-details">
-                    <label class="mt-1">Nexmo</label><span class="badge badge-white">80%</span>
-                    <label class="mt-1">Message Bird</label><span class="badge badge-white">50%</span>
-                    <label class="mt-1">Mocean</label><span class="badge badge-white">50%</span>
-                    <label class="mt-1">Mocean</label><span class="badge badge-white">50%</span>
-                </div></td>
-               
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Asia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td><div class="row-details">
-                    <label class="mt-1">Nexmo</label><span class="badge badge-white">80%</span>
-                    <label class="mt-1">Message Bird</label><span class="badge badge-white">50%</span>
-                    <label class="mt-1">Mocean</label><span class="badge badge-white">50%</span>
-                </div></td>
-              
+            <tr *ngIf="!listDataRes?.data.routes_list  
+            || (listDataRes?.data.routes_list  | filter: { continent: searchText,  
+                country: searchText, 
+                operator: searchText,
+                mcc: searchText, 
+                mnc: searchText }).length == 0">
+                <td colspan="5" style="text-align: center;">No Records Found</td>
             </tr>
         </tbody>
     </table>
 </div>
-<div class="main-container table-responsive p-4">
+<div class="main-container table-responsive p-4" *ngIf="listDataRes?.data.row_routes_list.length">
     <label class="table-heading">ROW (Defined)</label>
     <div class="row-details ">
-        <label class="mt-1">Nexmo</label><span class="badge badge-white">80%</span>
-        <label class="mt-1">Message Bird</label><span class="badge badge-white">50%</span>
+        <label class="mt-1" *ngFor="let ratio of listDataRes?.data.row_routes_list">{{ratio.gw_id}}
+            <span class="badge badge-white">{{ratio.ratio_in_percentage}}%</span>
+        </label>
     </div>
 </div>

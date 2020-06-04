@@ -42,7 +42,8 @@
             </div>
             <div class="form-group col-8">
                 <input type="search" [(ngModel)]="searchText" class="form-control"
-                    placeholder="&#xf002; Search by Country, Gateway" />
+                    placeholder="&#xf002; Search by Country, Gateway Id, MCC"
+                    title="Search by Country, Gateway Id, MCC" />
             </div>
         </div>
     </div>
@@ -52,8 +53,16 @@
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
-                <th>Country</th>
-                <th>MCC</th>
+                <th (click)="sort('country')">Country
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                </th>
+                <th (click)="sort('mcc')">MCC
+                    <!-- <i  [ngClass]="{'fa fa-caret-up': sortingName==='mcc' && isDesc}"></i>
+                    <i  [ngClass]="{'fa fa-caret-down': sortingName==='mcc' && !isDesc}"></i> -->
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
+                </th>
                 <th>Direct Gateway</th>
                 <th>Premium Gateway</th>
                 <th>Wholesale Gateway</th>
@@ -62,7 +71,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let gateway of LCRListRes?.data.gateways 
-            | filter : searchText : 1" (click)="onRow(gtModal, gateway)">
+            | filter : searchText : 1 | sort: sortingName: isDesc" (click)="onRow(gtModal, gateway)">
                 <td>{{gateway.country}}</td>
                 <td>{{gateway.mcc}}</td>
                 <td>
