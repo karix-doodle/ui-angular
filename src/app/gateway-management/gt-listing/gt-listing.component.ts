@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GatewayManagementService } from '../services/gateway-management.service';
 import { GtListing_ApiResponse, GtStatusupdate_ApiResponse, GtListing_TableDataList, GtListing_Data } from '../models/gateway-management.model';
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { saveAs } from 'file-saver';
@@ -15,6 +16,8 @@ export class GtListingComponent implements OnInit {
   gatewayDataRes: GtListing_ApiResponse;
   gatewayData: GtListing_Data;
   selectedType: GtListing_TableDataList[];
+  sortingName: string;
+  isDesc: boolean;
 
   constructor(
     private gatewayManagementService: GatewayManagementService,
@@ -41,7 +44,7 @@ export class GtListingComponent implements OnInit {
             text: res.message,
           })
         }
-      }, error => {
+      }, (error: HttpErrorResponse) => {
         Swal.fire({
           icon: 'error',
           title: error.statusText,
@@ -57,7 +60,7 @@ export class GtListingComponent implements OnInit {
         let blob = new Blob([res], { type: 'text/csv' });
         let fileName = 'GatewayListdata-' + new Date().toLocaleString()
         saveAs(blob, fileName + ".csv");
-      }, error => {
+      }, (error: HttpErrorResponse) => {
         Swal.fire({
           icon: 'error',
           title: error.statusText,
@@ -107,7 +110,7 @@ export class GtListingComponent implements OnInit {
                 text: res.message,
               })
             }
-          }, error => {
+          }, (error: HttpErrorResponse) => {
             Swal.fire({
               icon: 'error',
               title: error.statusText,
@@ -119,6 +122,20 @@ export class GtListingComponent implements OnInit {
         this.GtListing_list();
       }
     })
-
   }
+
+  /**
+   *
+   * @param tableHeaderName consists of table header
+   * @description sorts the table based upon the table Header Name
+   */
+  sort(tableHeaderName: string): void {
+    if (tableHeaderName && this.sortingName !== tableHeaderName) {
+      this.isDesc = false;
+    } else {
+      this.isDesc = !this.isDesc;
+    }
+    this.sortingName = tableHeaderName;
+  }
+
 }

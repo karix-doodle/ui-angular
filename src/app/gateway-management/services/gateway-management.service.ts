@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   GtListing_ApiResponse,
+  GtCreate_ApiResponse,
   GtDetails_ApiResponse,
   GtStatusupdate_ApiResponse,
   GtDetailsCountryList_ApiResponse,
@@ -13,7 +14,7 @@ import {
   GtTimeZone_ApiResponse,
   GtCurrency_ApiResponse,
   GtCountryStatusupdate_ApiResponse,
-  GtFileAuditLog_ApiResponse
+  GtFileAuditLog_ApiResponse,
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -43,6 +44,14 @@ export class GatewayManagementService {
   GtListing_list(): Observable<GtListing_ApiResponse> {
     return this.http.post(this.baseUrl + '/list', this.user, this.httpOptions)
       .pipe(map(m => m as GtListing_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management create
+  */
+  Gateway_create(body): Observable<GtCreate_ApiResponse> {
+    return this.http.post(this.baseUrl + '/create', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtCreate_ApiResponse));
   }
 
   /**
