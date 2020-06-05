@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PoolRouteService } from '../../services/RouteManagement/poolRoute/pool-route.service';
-import { PoolRouteListRes } from '../../models/RouteManagement/PoolRoute/poolRoute';
+import { PoolRouteListRes, TaggedAccountsList } from '../../models/RouteManagement/PoolRoute/poolRoute';
 import { environment } from '../../../../environments/environment';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -17,6 +17,13 @@ export class PoolRouteListComponent implements OnInit {
   searchText: any;
   sortingName: string;
   isDesc: boolean;
+  headerName: string;
+  isDeselect: boolean;
+  popupSearchText: any;
+  taggedAccountsList: TaggedAccountsList[] = [];
+  createdBy: string;
+  routeName: string;
+
 
   constructor(
     config: NgbModalConfig,
@@ -24,7 +31,16 @@ export class PoolRouteListComponent implements OnInit {
     private poolRouteService: PoolRouteService
   ) { }
 
-  open(content) {
+  open(
+    content,
+    list: TaggedAccountsList[],
+    createdby: string,
+    name: string
+  ) {
+    this.createdBy = createdby;
+    this.routeName = name;
+    const accountsList = list;
+    this.taggedAccountsList = JSON.parse(JSON.stringify(accountsList));
     this.modalService.open(content);
   }
 
@@ -61,17 +77,26 @@ export class PoolRouteListComponent implements OnInit {
   }
 
   /**
-   *
    * @param tableHeaderName consists of table header
+   * @param isNoOfAccountsTaggedPopup consists of boolean flag
    * @description sorts the table based upon the table Header Name
    */
-  sort(tableHeaderName: string): void {
-    if (tableHeaderName && this.sortingName !== tableHeaderName) {
-      this.isDesc = false;
+  sort(tableHeaderName: string, isNoOfAccountsTaggedPopup?: boolean): void {
+    if (isNoOfAccountsTaggedPopup) {
+      if (tableHeaderName && this.headerName !== tableHeaderName) {
+        this.isDeselect = false;
+      } else {
+        this.isDeselect = !this.isDeselect;
+      }
+      this.headerName = tableHeaderName;
     } else {
-      this.isDesc = !this.isDesc;
+      if (tableHeaderName && this.sortingName !== tableHeaderName) {
+        this.isDesc = false;
+      } else {
+        this.isDesc = !this.isDesc;
+      }
+      this.sortingName = tableHeaderName;
     }
-    this.sortingName = tableHeaderName;
   }
 
 }
