@@ -18,7 +18,8 @@
 
     <div class="col-4 text-right ">
         <input type="search" [(ngModel)]="searchText" class="form-control"
-            placeholder="&#xf002; Search by Continent,Country & Operator" />
+            placeholder="&#xf002; Search by Continent, Country, Operator, MCC & MNC"
+            title="Search by Continent, Country, Operator, MCC & MNC" />
     </div>
 
 </div>
@@ -45,14 +46,13 @@
                 <th class="font-weight-semi-bold">DISTRIBUTED GATEWAYS</th>
             </tr>
         </thead>
-        <!-- ,
-        mcc: searchText, 
-        mnc: searchText -->
         <tbody>
             <tr *ngFor="let row of listDataRes?.data.routes_list
             | filter: { continent: searchText,  
                 country: searchText, 
-                operator: searchText
+                operator: searchText,
+                mcc: searchText, 
+                mnc: searchText 
                 }
             | sort: sortingName: isDesc">
                 <td class="font-weight-semi-bold">{{row.continent}}</td>
@@ -70,12 +70,11 @@
             <tr *ngIf="!listDataRes?.data.routes_list  
             || (listDataRes?.data.routes_list  | filter: { continent: searchText,  
                 country: searchText, 
-                operator: searchText }).length == 0">
+                operator: searchText,
+                mcc: searchText, 
+                mnc: searchText }).length == 0">
                 <td colspan="5" style="text-align: center;">No Records Found</td>
             </tr>
-            <!-- ,
-                mcc: searchText, 
-                mnc: searchText -->
         </tbody>
     </table>
 </div>

@@ -75,7 +75,8 @@
                     </a>
                 </td>
                 <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
-                        *ngIf="row.tagged_accounts_count" (click)="checkConfirm(row.route_id, row.route_name, i)" />
+                         (click)="onDelete(row.route_id, row.route_name)" />
+                         <!-- *ngIf="row.tagged_accounts_count" -->
                 </td>
             </tr>
             <tr *ngIf="!poolListRes?.data.routes_list.length  
