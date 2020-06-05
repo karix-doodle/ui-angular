@@ -44,24 +44,10 @@ export class MobileSenderidCustomService {
    */
   addCustomMobileSenderid(
     body,
-    formType
   ): Observable<MobileCustomSenderIdResponse> {
-    if (formType) {
-      this.formDetails = new FormData();
-      Object.keys(body).forEach((key) =>
-        this.formDetails.append(key, body[key])
-      );
-
-      // tslint:disable-next-line: forin
-      for (const key in this.user) {
-        this.formDetails.append(key, this.user[key]);
-      }
-    } else {
-      this.formDetails = { ...this.user, ...body };
-    }
 
     return this.http
-      .post(this.baseUrl + '/add', this.formDetails, this.httpOptions)
+      .post(this.baseUrl + '/add', {...body, ...this.user}, this.httpOptions)
       .pipe(map((data) => (data as unknown as MobileCustomSenderIdResponse)));
   }
 
