@@ -73,10 +73,10 @@ export class MobileCustomSenderId_ApiResponse {
 
 export class MobileCustomSender_Data {
   status: string;
-    total: number;
-    unique_mobile_count: number;
-    unique_senderid_count: number;
-    mobile_senderid_list: MobileSenderList_Data[];
+  total: number;
+  unique_mobile_count: number;
+  unique_senderid_count: number;
+  mobile_senderid_list: MobileSenderList_Data[];
 }
 
 export class MobileSenderList_Data {
@@ -84,14 +84,8 @@ export class MobileSenderList_Data {
   mobile: number;
   senderid: string;
   whitelist_type: string;
-  primary_route: {
-    gw_id: string;
-    gw_name: string;
-  };
-  fallback_route: {
-    gw_id: string;
-    gw_name: string;
-  };
+  primary_route: CustomGateway_Data;
+  fallback_route: CustomGateway_Data;
   cts: Date;
   createdby: string;
   comments: string;
@@ -104,7 +98,39 @@ export class MobileCustomResponse {
 }
 
 export class MobileCustomSenderIdResponse {
-    responsecode: number;
-    responsestatus: string;
-    message: string;
+  responsecode: number;
+  responsestatus: string;
+  message: string;
+  status?: string;
+  response?: string;
+}
+
+export class SenderCustomApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  data: SenderCustomData;
+}
+
+export class SenderCustomData {
+  total: number;
+  unique_country_count: number;
+  unique_operator_count: number;
+  senderid_template_list: SenderCustomList[];
+}
+
+export class SenderCustomList {
+  id: number;
+  senderid: string;
+  template: string;
+  whitelist_type: string;
+  country: string;
+  operator: string;
+  mcc: number;
+  mnc: number;
+  priority: number;
+  primary_route: CustomGateway_Data;
+  fallback_route: CustomGateway_Data;
+  cts: Date;
+  createdby: string;
+  comments: string;
 }

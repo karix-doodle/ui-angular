@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { MatInputModule, MatRadioModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AddRoutesRoutingModule } from './add-routes-routing.module';
 import { AddRoutesComponent } from './add-routes.component';
@@ -19,7 +19,8 @@ import { SenderidMobileRouteComponent } from './senderid-mobile-route/senderid-m
     AddRoutesRoutingModule,
     MatRadioModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     MatInputModule,  MatRadioModule

@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Pipe({
   name: 'filter'
@@ -6,7 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterPipe implements PipeTransform {
 
   transform(items: any[], field: any, filterId?: number): any[] {
-
     if (!items) { return []; }
     if (!field) { return items; }
 
@@ -24,11 +24,26 @@ export class FilterPipe implements PipeTransform {
       const filterKeys = Object.keys(field);
       return items.filter(item => {
         return filterKeys.some((keyName) => {
-          return new RegExp(field[keyName]).test(item[keyName].toLowerCase()) || field[keyName] === '' || field[keyName] === null;
+          const value = field[keyName];
+          let searchText = '';
+          if (value !== undefined) { searchText = value.toLowerCase(); }
+          return new RegExp(searchText).test(item[keyName].toString().toLowerCase()) || searchText === '' || searchText === null;
         });
       });
     }
 
   }
+
+  /**
+   * Check whether the value is a JavaScript number.
+   *
+   * First checks typeof, then self-equality to make sure it is
+   * not NaN, then for equality to Infinity or -Infinity.
+   *
+   * @param value - The value to check
+   * @return boolean Whether that value is a number
+   */
+  private isNumber = (value) => typeof value === 'number' && value === value && value !== Infinity && value !== -Infinity
+
 
 }

@@ -16,8 +16,8 @@
     </div>
 
     <div class="col-3 text-right">
-        <input type="search" [(ngModel)]="searchText" class="form-control"
-            placeholder="&#xf002; Search by Route Name" />
+        <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="&#xf002; Search by Route Name"
+            title="Search By Route Name, No. Of Countries, No. Of Accounts Tagged, Created Date & Time, Created By" />
     </div>
 
 </div>
@@ -33,9 +33,10 @@
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='countries_count' && isDesc}"></i>
                     <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='countries_count' && !isDesc}"></i>
                 </th>
-                <th>No. Of Accounts Tagged
-                    <!-- <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='route_name' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='route_name' && !isDesc}"></i> -->
+                <th (click)="sort('tagged_accounts_count')">No. Of Accounts Tagged
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='tagged_accounts_count' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='tagged_accounts_count' && !isDesc}">
+                    </i>
                 </th>
                 <th (click)="sort('created_date')">Created Date & Time
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='created_date' && isDesc}"></i>
@@ -52,7 +53,8 @@
         <tbody>
             <tr *ngFor="let row of poolListRes?.data.routes_list 
             | filter: { route_name: searchText,  
-                countries_count: searchText, 
+                countries_count: searchText,
+                tagged_accounts_count: searchText, 
                 created_date: searchText,
                 created_time: searchText, 
                 createdby: searchText }
@@ -63,8 +65,8 @@
                 </td>
                 <td>{{row.countries_count}}</td>
                 <td><a
-                        (click)="row.tagged_accounts_list.length > 0 && open(acntsTagged, row.tagged_accounts_list, row.createdby, row.route_name)">
-                        {{row.tagged_accounts_list.length}}</a></td>
+                        (click)="row.tagged_accounts_count > 0 && open(acntsTagged, row.tagged_accounts_list, row.createdby, row.route_name)">
+                        {{row.tagged_accounts_count}}</a></td>
                 <td>{{row.created_date}} | {{row.created_time}}</td>
                 <td>{{row.createdby}}</td>
                 <td>
@@ -73,12 +75,17 @@
                     </a>
                 </td>
                 <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
-                        *ngIf="row.tagged_accounts_list.length"
-                        (click)="checkConfirm(row.route_id, row.route_name, i)" /></td>
+                         (click)="onDelete(row.route_id, row.route_name)" />
+                         <!-- *ngIf="row.tagged_accounts_count" -->
+                </td>
             </tr>
-            <tr *ngIf="!poolListRes?.data.routes_list  
-            || (poolListRes?.data.routes_list  | filter: { route_name: searchText,  countries_count: searchText,  created_date: searchText,
-                created_time: searchText, createdby: searchText }).length == 0">
+            <tr *ngIf="!poolListRes?.data.routes_list.length  
+            || (poolListRes?.data.routes_list  | filter: { route_name: searchText,  
+                countries_count: searchText,
+                tagged_accounts_count: searchText, 
+                created_date: searchText,
+                created_time: searchText, 
+                createdby: searchText }).length === 0">
                 <td colspan="7" style="text-align: center;">No Records Found</td>
             </tr>
         </tbody>
@@ -89,58 +96,68 @@
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body gt-det-modal">
-        <form action="">
+        <div class="row mb-2">
+            <label class="mr-2"><b>ROUTE NAME</b></label>
+            <span class="border-right">&nbsp;</span>
+            <span class="ml-3"><b>{{routeName | uppercase}}</b></span>
+        </div>
 
-            <div class="row mb-2">
-                <label class="mr-2"><b>ROUTE NAME</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3"><b>route name123</b></span>
+        <div class="row mb-2">
+            <div class="col-7 pl-0">
+                <label>No. Of Accounts Tagged</label><span
+                    class="badge badge-dark ml-3">{{taggedAccountsList.length}}</span>
             </div>
-
-            <div class="row mb-2">
-                <div class="col-7 pl-0">
-                    <label>No. Of Accounts Tagged</label><span class="badge badge-dark ml-3">200</span>
-                </div>
-                <div class="col-5 text-right"><label>Created By</label><span class="badge badge-dark ml-3">Nawal</span>
-                </div>
+            <div class="col-5 text-right"><label>Created By</label><span
+                    class="badge badge-dark ml-3">{{createdBy}}</span>
             </div>
-            <div class="row mb-2 mr-0">
-                <input type="search" class="form-control" id="" placeholder="&#xf002; Search By ESME Addr." />
-            </div>
+        </div>
+        <div class="row mb-2 mr-0">
+            <input type="search" class="form-control" [(ngModel)]="popupSearchText"
+                placeholder="&#xf002; Search By ESME Addr., Tagged Date, Tagged By"
+                title="Search By ESME Addr., Tagged Date, Tagged By" />
+        </div>
 
-            <div class="main-container table-responsive">
-                <table class="table table-borderless erp-list-table row-hover-effect">
-                    <thead>
-                        <tr>
-                            <th>ESME ADDR.</th>
-                            <th>Tagged Date</th>
-                            <th>Tagged By</th>
+        <div class="main-container table-responsive">
+            <table class="table table-borderless erp-list-table row-hover-effect">
+                <thead>
+                    <tr>
+                        <th (click)="sort('esmeaddr', true)">ESME ADDR.
+                            <i [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='esmeaddr' && isDeselect}"></i>
+                            <i
+                                [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='esmeaddr' && !isDeselect}"></i>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="font-weight-semi-bold">70000 100000011</td>
-                            <td>21/11/2019</td>
-                            <td>Sanal</td>
+                        </th>
+                        <th (click)="sort('tagged_date', true)">Tagged Date
+                            <i
+                                [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='tagged_date' && isDeselect}"></i>
+                            <i
+                                [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='tagged_date' && !isDeselect}"></i>
 
-                        </tr>
-                        <tr>
-                            <td class="font-weight-semi-bold">70000 100000011</td>
-                            <td>21/11/2019</td>
-                            <td>Sanal</td>
+                        </th>
+                        <th (click)="sort('tagged_by', true)">Tagged By
+                            <i [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='tagged_by' && isDeselect}"></i>
+                            <i
+                                [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='tagged_by' && !isDeselect}"></i>
 
-                        </tr>
-                        <tr>
-                            <td class="font-weight-semi-bold">70000 100000011</td>
-                            <td>21/11/2019</td>
-                            <td>Sanal</td>
-
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let account of taggedAccountsList
+                    | filter: { tagged_by: popupSearchText, esmeaddr: popupSearchText,
+                         tagged_date: popupSearchText } | sort: headerName: isDeselect">
+                        <td class="font-weight-semi-bold">{{account.esmeaddr}}</td>
+                        <td>{{account.tagged_date}}</td>
+                        <td>{{account.tagged_by}}</td>
+                    </tr>
+                    <tr *ngIf="!taggedAccountsList.length  || (taggedAccountsList 
+                    | filter: { tagged_by: popupSearchText, esmeaddr: popupSearchText,
+                             tagged_date: popupSearchText }).length === 0">
+                        <td colspan="3" style="text-align: center;">No Records Found</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </ng-template>

@@ -18,7 +18,8 @@
 
     <div class="col-4 text-right ">
         <input type="search" [(ngModel)]="searchText" class="form-control"
-            placeholder="&#xf002; Search by Country , Operator" />
+            placeholder="&#xf002; Search by Continent, Country, Operator, MCC & MNC"
+            title="Search by Continent, Country, Operator, MCC & MNC" />
     </div>
 
 </div>
@@ -51,7 +52,8 @@
                 country: searchText, 
                 operator: searchText,
                 mcc: searchText, 
-                mnc: searchText }
+                mnc: searchText 
+                }
             | sort: sortingName: isDesc">
                 <td class="font-weight-semi-bold">{{row.continent}}</td>
                 <td class="font-weight-semi-bold">{{row.country}}</td>

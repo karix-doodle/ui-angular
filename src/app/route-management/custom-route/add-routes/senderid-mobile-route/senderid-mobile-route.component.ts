@@ -85,12 +85,13 @@ selectedFile:File;
       });
     });
   }
-
+   /**
+   *
+   * @param senderidMobileform consists of mobile with senderid route data
+   * @description adds the mobile with senderid custom route
+   */
   onSubmit(senderidMobileform) {
-
-    if (this.form) {
-      this.onAddRoute();
-    } else if (senderidMobileform.valid) {
+  if (senderidMobileform.valid) {
       senderidMobileform.value.esmeaddr = senderidMobileform.value.esmeaddr
         ? senderidMobileform.value.esmeaddr
         : 0;
@@ -99,12 +100,16 @@ selectedFile:File;
         : '';
       senderidMobileform.value.req_type = 'single_req';
       senderidMobileform.value.createdby = '1234';
-      // const mobilesenderdata = { ...this.userData, ...senderidMobileform.value };
+      senderidMobileform.value.whitelist_type = this.whitelist_type.toLowerCase();
       this.senderIdFrom = senderidMobileform;
       this.onAddRoute();
     }
   }
-
+ /**
+   *
+   * @param esmeaddr ESME Address
+   * @description checks the esme address
+   */
   checkEsmeAddress(esmeaddr) {
     if (esmeaddr >= 4) {
       console.log(esmeaddr);
@@ -137,10 +142,10 @@ selectedFile:File;
 
   onAddRoute() {
     const Data =  this.senderIdFrom && this.senderIdFrom.value ?  this.senderIdFrom.value : this.form;
-    const formType = this.senderIdFrom && this.senderIdFrom.value ? false : true;
+    // const formType = this.senderIdFrom && this.senderIdFrom.value ? false : true;
     console.log(Data, '123');
     this.mobileSenderIdCustomService
-      .addCustomMobileSenderid(Data,formType)
+      .addCustomMobileSenderid(Data)
       .subscribe((data: any) => {
         if (data.responsestatus === 'failure') {
           Swal.fire({
