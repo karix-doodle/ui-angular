@@ -16,7 +16,8 @@ export const environment = {
       text: 'failure',
       code: 0
     }
-  }
+  },
+  currencyDefault: 14
 };
 
 /*

@@ -35,6 +35,19 @@ export class GtListing_TableDataList {
 
 /**
  * @module gateway-management
+ * @description Gateway create START
+*/
+export class GtCreate_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+/**
+ ************************* @description Gateway listing END
+*/
+
+/**
+ * @module gateway-management
  * @description Gateway Status Update START
 */
 export class GtStatusupdate_ApiResponse {

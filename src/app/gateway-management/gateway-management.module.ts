@@ -19,7 +19,7 @@ import { GtCountryListViewLogComponent } from './gt-country-list-view-log/gt-cou
 import { GtSenderIdWhiteListComponent } from './gt-sender-id-white-list/gt-sender-id-white-list.component';
 import { GtSenderidContentComponent } from './gt-senderid-content/gt-senderid-content.component';
 import { GtESMEAddrRoutedComponent } from './gt-esmeaddr-route/gt-esmeaddr-route.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: 'create-gateway', component: CreateGatewayComponent }
@@ -35,9 +35,14 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NgbModule,
     GatewayManagementRoutingModule,
     SharedModule
+  ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class GatewayManagementModule { }

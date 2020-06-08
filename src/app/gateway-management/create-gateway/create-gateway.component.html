@@ -5,79 +5,121 @@
     </div>
 </div>
 <div class="main-container p-15">
-    <form action="">
+    <form [formGroup]="createGatewayFormGroup" (ngSubmit)="onSubmitCreateGateway(createGatewayFormGroup.value)">
         <section class="main-section">
+            <div class="row">
+                <!-- <pre>Form values: {{createGatewayFormGroup.value | json}}</pre> -->
+            </div>
             <div class="row">
                 <div class="col-4 form-group">
                     <label>Gateway Name</label>
-                    <input type="search" class="form-control" id="" placeholder="Enter Gateway Name" />
+                    <input type="search" class="form-control" id="gw_name" formControlName="gw_name" name="gw_name"
+                        placeholder="Enter Gateway Name" />
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('gw_name').hasError('required') && isCreateValid">
+                        First Name is required
+                    </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('gw_name').hasError('pattern') && createGatewayFormGroup.get('gw_name').dirty">
+                        Please enter valid input
+                    </span>
                 </div>
                 <div class="col-4 form-group">
                     <label>Gateway ID</label>
-                    <input type="search" class="form-control" id="" placeholder="Enter Gateway ID" />
+                    <input type="search" class="form-control" id="gw_id" formControlName="gw_id" name="gw_id"
+                        placeholder="Enter Gateway ID" />
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('gw_id').hasError('required') && isCreateValid">
+                        Gateway ID is required
+                    </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('gw_id').hasError('pattern') && createGatewayFormGroup.get('gw_id').dirty">
+                        Please enter valid input
+                    </span>
                 </div>
                 <div class="col-4 form-group">
                     <label>Gateway Currency</label>
-                    <select class="dropdown-select w-100">
-                        <option value="" default>Select Gateway Currency</option>
+                    <select class="dropdown-select w-100" [(ngModel)]='currency_id' formControlName="currency_id"
+                        name="currency_id">
+                        <option value="">Select Gateway Currency</option>
                         <option value="{{item.currency_id}}" *ngFor="let item of gatewayCurrencyData?.data"
                             [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
                         </option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('currency_id').hasError('required') && isCreateValid">
+                        Gateway Currency is required
+                    </span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-4 form-group">
                     <label>Gateway Timezone</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100" formControlName="timezone" name="timezone">
                         <option value="" default>Select Gateway Timezone</option>
                         <option *ngFor="let item of gatewayTimeZoneData?.data" value="{{item.id}}">{{item.timezone}}
                         </option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('timezone').hasError('required') && isCreateValid">
+                        Gateway Timezone is required
+                    </span>
                 </div>
                 <div class="col-4 form-group">
                     <label>Gateway Type</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100" formControlName="gw_type" name="gw_type">
                         <option value="" default>Select Gateway Type</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option value="Direct">Direct</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Wholesale">Wholesale</option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('gw_type').hasError('required') && isCreateValid">
+                        Gateway Type is required
+                    </span>
                 </div>
 
             </div>
             <div class="row">
                 <div class="col-4 form-group">
                     <label>Billing Type</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100" formControlName="billing_type" name="billing_type">
                         <option value="" default>Select Billing Type</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option value="Prepaid">Prepaid</option>
+                        <option value="Postpaid">Postpaid</option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('billing_type').hasError('required') && isCreateValid">
+                        Billing Type is required
+                    </span>
                 </div>
                 <div class="col-5 form-group row">
                     <label class="col-12">Message Type</label>
-                    <label class="checkbox-label col-4 ml-15" for="transactional">Transactional
-                        <input type="checkbox" checked="checked" id="transactional">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label col-4" for="promotional">Promotional
-                        <input type="checkbox" id="promotional">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label col-3" for="transcrub">Transcrub
-                        <input type="checkbox" id="transcrub">
-                        <span class="checkmark"></span>
-                    </label>
+                    <div class="col-12">
+                        <div class="row ml-0">
+                            <span *ngFor="let types of messageType" class="col-4">
+                                <label class="checkbox-label" for="{{types.item}}">{{types.item}}
+                                    <input type="checkbox" value="{{types.item}}" id="{{types.item}}"
+                                        (change)="getMessageType(types.item, $event.target.checked);">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <span class="text-danger pl-3 f-12"
+                        *ngIf="createGatewayFormGroup.get('msg_type').hasError('required') && isCreateValid">
+                        Message Type is required
+                    </span>
                 </div>
                 <div class="col-3 form-group lcr-exclusion">
-                    <label class="checkbox-label" for="bill-submission"><b>Bill On Submission</b>
-                        <input type="checkbox" id="bill-submission">
+                    <label class="checkbox-label" for="bill-submission">
+                        <b>Bill On Submission</b>
+                        <input type="checkbox" id="bill-submission" formControlName="is_bill_on_submission">
                         <span class="checkmark"></span>
                     </label>
-                    <label class="checkbox-label mt-3" for="lcr-exclude"><b>Exclude from LCR</b>
-                        <input type="checkbox" id="lcr-exclude">
+                    <label class="checkbox-label mt-3" for="lcr-exclude">
+                        <b>Exclude from LCR</b>
+                        <input type="checkbox" id="lcr-exclude" formControlName="exclude_lcr">
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -87,33 +129,43 @@
         <section class="main-section">
             <div class="row">
                 <div class="col-4 form-group">
-                    <label>Throughput per second (TPS)</label>
-                    <input type="search" class="form-control" id="" placeholder="Enter TPS" />
+                    <label for="tps">Throughput per second (TPS)</label>
+                    <input type="search" class="form-control" id="tps" formControlName="tps" placeholder="Enter TPS" />
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('tps').hasError('pattern') && createGatewayFormGroup.get('tps').dirty">
+                        Please enter valid input
+                    </span>
                 </div>
 
                 <div class="col-4 form-group">
                     <label>DLR Type</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100" formControlName="dlr_type" name="dlr_type">
                         <option value="" default>Select DLR Type</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option value="Handset DLR">Handset DLR</option>
+                        <option value="SMSC DLR">SMSC DLR</option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('dlr_type').hasError('required') && isCreateValid">
+                        DLR Type is required
+                    </span>
                 </div>
                 <div class="col-4 form-group row">
                     <label class="col-12">CharSet Encoding Supported</label>
-                    <label class="checkbox-label col-4 ml-15" for="asci">ASCI
-                        <input type="checkbox" checked="checked" id="asci">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label col-4" for="iso">ISO
-                        <input type="checkbox" id="iso">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label col-3" for="gsm">GSM
-                        <input type="checkbox" id="gsm">
-                        <span class="checkmark"></span>
-                    </label>
+                    <div class="col-12">
+                        <div class="row ml-0">
+                            <span *ngFor="let types of charsetType" class="col-4">
+                                <label class="checkbox-label" for="{{types.item}}">{{types.item}}
+                                    <input type="checkbox" value="{{types.item}}" id="{{types.item}}"
+                                        (change)="getCharsetType(types.item, $event.target.checked);">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <span class="text-danger pl-3 f-12"
+                        *ngIf="createGatewayFormGroup.get('charset_enc').hasError('required') && isCreateValid">
+                        CharSet Encoding is required
+                    </span>
                 </div>
             </div>
         </section>
@@ -122,19 +174,24 @@
                 <div class="col-3 text-center form-group">
                     <label class="col-12 px-0 text-left">Sender ID Whitelisting Required</label>
                     <label class="toggle-switch mt-3">
-                        <input type="checkbox" class="switch-btn">
+                        <input type="checkbox" class="switch-btn" formControlName="senderid_whitelist_required">
                         <span class="slider round"></span>
                     </label>
                 </div>
 
                 <div class="col-4 offset-1 form-group">
                     <label>Sender ID Type</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100" formControlName="senderid_type" name="senderid_type">
                         <option value="" default>Select Sender ID Type</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option value="0">Open</option>
+                        <option value="1">List</option>
+                        <option value="2">Static</option>
+                        <option value="3">Numeric</option>
                     </select>
+                    <span class="text-danger pl-3 f-12"
+                        *ngIf="createGatewayFormGroup.get('senderid_type').hasError('required') && isCreateValid">
+                        Sender ID Type is required
+                    </span>
                 </div>
             </div>
         </section>
@@ -142,14 +199,23 @@
             <div class="row">
                 <div class="col-12 form-group">
                     <label>Description</label>
-                    <textarea class="form-group w-100 p-3" rows="3" placeholder="Enter Short Description"></textarea>
+                    <textarea class="form-group w-100 p-3" rows="3" placeholder="Enter Short Description"
+                        formControlName="description"></textarea>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('description').hasError('required') && isCreateValid">
+                        Description is required
+                    </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="createGatewayFormGroup.get('description').hasError('pattern') && createGatewayFormGroup.get('description').dirty">
+                        Please enter valid input
+                    </span>
                 </div>
             </div>
         </section>
         <div class="row">
             <div class="col-12 text-center">
                 <input type="reset" class="btn btn-basic mr-3" value="Cancel">
-                <input type="submit" class="btn erp-intl-btn" value="Create Gateway">
+                <button type="submit" class="btn erp-intl-btn">Create Gateway</button>
             </div>
         </div>
     </form>
