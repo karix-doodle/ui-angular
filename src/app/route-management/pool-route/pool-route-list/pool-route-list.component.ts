@@ -46,8 +46,6 @@ export class PoolRouteListComponent implements OnInit {
 
   ngOnInit() {
     this.loadList();
-    // this.isDesc = true;
-    // this.isDeselect = true;
   }
   /**
    * @description gets the pool route list
@@ -77,10 +75,12 @@ export class PoolRouteListComponent implements OnInit {
       }
     );
   }
-
+  /**
+   * @param routeId consists of route id
+   * @param routeId consists of route name
+   * @description gets the pool route list
+   */
   onDelete(routeId, routeName) {
-    // console.log(index);
-    // console.log(list[index]);
     Swal.fire({
       title: 'Are you sure?',
       text: `You won't be able to revert ${routeName}!`,
@@ -100,7 +100,6 @@ export class PoolRouteListComponent implements OnInit {
                 title: 'Deleted!',
                 text: res.message
               });
-              // this.poolListRes.data.routes_list.splice(index, 1);
               this.poolListRes.data.routes_list = this.poolListRes.data.routes_list
                 .filter((element) => element.route_id !== routeId);
             } else if (

@@ -31,19 +31,6 @@ export class FilterPipe implements PipeTransform {
         });
       });
     }
-
   }
-
-  /**
-   * Check whether the value is a JavaScript number.
-   *
-   * First checks typeof, then self-equality to make sure it is
-   * not NaN, then for equality to Infinity or -Infinity.
-   *
-   * @param value - The value to check
-   * @return boolean Whether that value is a number
-   */
-  private isNumber = (value) => typeof value === 'number' && value === value && value !== Infinity && value !== -Infinity
-
 
 }
