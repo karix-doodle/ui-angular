@@ -69,7 +69,7 @@
                 </td>
                 <td>{{item.date}} | {{item.time}}</td>
                 <td>{{item.processedby}}</td>
-                <td> <span (click)="downloadFileAuditLogFile()">Download</span> | <a
+                <td> <span (click)="downloadFileAuditLogFile(item.uploaded_filename)">Download</span> | <a
                         routerLink="/gateway-management/file-audit-log-view/{{gatewayFileAuditLogData?.data.gw_id}}/{{gatewayFileAuditLogData?.data.gw_name}}/{{item.uuid}}">View</a>
                 </td>
                 <td>{{item.status == '1' ? 'Success' : 'Failed'}}</td>

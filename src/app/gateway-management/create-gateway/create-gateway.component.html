@@ -99,8 +99,8 @@
                         <div class="row ml-0">
                             <span *ngFor="let types of messageType" class="col-4">
                                 <label class="checkbox-label" for="{{types.item}}">{{types.item}}
-                                    <input type="checkbox" value="{{types.item}}" id="{{types.item}}"
-                                        (change)="getMessageType(types.item, $event.target.checked);">
+                                    <input type="checkbox" value="{{types.value}}" id="{{types.item}}"
+                                        (change)="getMessageType(types.value, $event.target.checked);">
                                     <span class="checkmark"></span>
                                 </label>
                             </span>

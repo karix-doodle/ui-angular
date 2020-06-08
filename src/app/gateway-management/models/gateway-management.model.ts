@@ -46,6 +46,59 @@ export class GtCreate_ApiResponse {
  ************************* @description Gateway listing END
 */
 
+
+/**
+ * @module gateway-management
+ * @description Gateway Edit START
+*/
+export class GtEdit_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtEdit_Data;
+    message: string;
+}
+export class GtEdit_Data {
+    gw_id: string;
+    gw_name: string;
+    status: number;
+    is_bill_on_submission: boolean;
+    currency_id: number;
+    timezone: number;
+    gw_type: string;
+    billing_type: string;
+    msg_type: any;
+    exclude_lcr: string;
+    tps: number;
+    dlr_type: string;
+    charset_enc: string;
+    senderid_whitelist_required: string;
+    senderid_type: number;
+    price_update_ts: string;
+    description: string;
+    createdby: number;
+    modifiedby: number;
+    cdate: Date;
+    ctime: Time;
+    mdate: Date;
+    mtime: Time
+}
+/**
+ ************************* @description Gateway Edit END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Update START
+*/
+export class GtUpdate_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+/**
+ ************************* @description Gateway Status Update END
+*/
+
 /**
  * @module gateway-management
  * @description Gateway Status Update START
@@ -76,15 +129,15 @@ export class GtDetails_Data {
     currency_symbol: string;
     currency: string;
     currency_id: number;
-    timezone: string;
+    timezone: number;
     gw_type: string;
     billing_type: string;
-    msg_type: string;
-    exclude_lcr: number;
+    msg_type: any;
+    exclude_lcr: string;
     tps: string;
     dlr_type: string;
     charset_enc: string;
-    senderid_whitelist_required: number;
+    senderid_whitelist_required: string;
     senderid_type: number;
     is_bill_on_submission: boolean;
     description: boolean;
@@ -115,6 +168,66 @@ export class GtDetails_Data {
 }
 /**
  ************************* @description Gateway Details END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Details added country list START
+*/
+export class GtAddedCountryList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtAddedCountryList_Data;
+    message: string;
+}
+export class GtAddedCountryList_Data {
+    gw_id: string;
+    gw_name: string;
+    total: string;
+    data: any
+}
+/**
+ ************************* @description Gateway Details Active country list END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Details inActive country list START
+*/
+export class GtInactiveCountryList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtInactiveCountryList_Data;
+    message: string;
+}
+export class GtInactiveCountryList_Data {
+    gw_id: string;
+    gw_name: string;
+    total: string;
+    data: any
+}
+/**
+ ************************* @description Gateway inDetails Active country list END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Details price change country list START
+*/
+export class GtPriceChangeCountryList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtPriceChangeCountryList_Data;
+    message: string;
+}
+export class GtPriceChangeCountryList_Data {
+    gw_id: string;
+    gw_name: string;
+    total: string;
+    data: any
+}
+/**
+ ************************* @description Gateway inDetails Active country list END
 */
 
 /**
@@ -301,4 +414,39 @@ export class GtFileAuditLog_TableDataList {
 }
 /**
  ************************* @description Gateway File audit log END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway File audit file log START
+*/
+export class GtFileAuditFileLog_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtFileAuditLog_Data;
+    message: string;
+}
+export class GtFileAuditFileLog_Data {
+    gw_id: string;
+    gw_name: string;
+    totalcountry: number;
+    totaloperator: number;
+    tabledata: GtFileAuditFileLog_TableDataList[]
+}
+export class GtFileAuditFileLog_TableDataList {
+    id: number;
+    gw_id: string;
+    uuid: string;
+    contry: string;
+    operator: string;
+    mcc: number;
+    mnc: number;
+    currentrate: string;
+    fromEffectDate: Date;
+    oldrate: number;
+    changetype: string;
+    toEffectDate: Date
+}
+/**
+ ************************* @description Gateway File audit file log END
 */

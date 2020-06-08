@@ -17,7 +17,13 @@ export const environment = {
       code: 0
     }
   },
-  currencyDefault: 14
+  currencyDefault: 14,
+  senderIdType: {
+    0: 'Open',
+    1: 'List',
+    2: 'Static',
+    3: 'Numeric',
+  }
 };
 
 /*

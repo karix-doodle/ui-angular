@@ -20,11 +20,11 @@
         </div>
     </div>
     <div class="col-2 text-right">
-        <select class="dropdown-select fa">
+        <!-- <select class="dropdown-select fa">
             <option value="" default>
                 &#xf1de;
             </option>
-        </select>
+        </select> -->
     </div>
     <div class="col-3">
         <div class="form-group">
@@ -62,13 +62,12 @@
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
-        <form action="">
+        <form action="" [formGroup]="addSenderidFormGroup" (ngSubmit)="onSubmitaddSenderid(addSenderidFormGroup.value)">
             <div class="row">
                 <div class="col-4 border-right"><label>Gateway ID</label></div>
-                <div class="col-8"><span><b>NX</b></span></div>
-
+                <div class="col-8"><span><b>{{GtSenderIdWhiteList?.data.gw_id}}</b></span></div>
                 <div class="col-4 border-right"><label>Gateway Name</label></div>
-                <div class="col-8"><span><b>Nexmo</b></span></div>
+                <div class="col-8"><span><b>{{GtSenderIdWhiteList?.data.gw_name}}</b></span></div>
             </div>
             <div class="row mt-4">
                 <div class="col-6 form-group">
@@ -86,7 +85,8 @@
                 </div>
                 <div class="form-group col-6">
                     <div class="upload-btn-wrapper">
-                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse file to
+                        <button class="upload-btn">
+                            <i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse file to
                             upload</button>
                         <input type="file" name="" />
                     </div>

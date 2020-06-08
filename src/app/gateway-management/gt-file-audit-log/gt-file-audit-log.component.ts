@@ -65,16 +65,16 @@ export class GtFileAuditLogComponent implements OnInit {
     );
   }
 
-  downloadFileAuditLogFile() {
+  downloadFileAuditLogFile(item) {
     let data = {
       gw_id: this.activeRoute.snapshot.params.id,
-      gw_name: this.activeRoute.snapshot.params.name
+      filename: item
     }
     this.gatewayManagementService.GtFileAuditLog_download(data).subscribe(
       (res: any) => {
-        let blob = new Blob([res], { type: 'text/csv' });
+        let blob = new Blob([res], { type: 'text/' + item.split('.')[1] });
         let fileName = 'GatewayFileAuditLog-' + new Date().toLocaleString()
-        saveAs(blob, fileName + ".csv");
+        saveAs(blob, fileName + "." + item.split('.')[1]);
       }, error => {
         Swal.fire({
           icon: 'error',

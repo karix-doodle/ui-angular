@@ -35,7 +35,7 @@ const GMroutes: Routes = [
         component: CreateGatewayComponent
       },
       {
-        path: 'edit-gateway',
+        path: 'edit-gateway/:id',
         component: EditGatewayComponent
       },
       {

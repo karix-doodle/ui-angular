@@ -17,8 +17,8 @@
                         class="fa fa-upload" aria-hidden="true"></i></a>
             </div>
             <div class="col-2 text-center">
-                <a routerLink="/gateway-management/edit-gateway" class="fa-2x icon-btn icons-div"><img
-                        src="assets/icons/edit-icon.svg" alt="edit" /></a>
+                <a routerLink="/gateway-management/edit-gateway/{{GtDetailsData?.data.gw_id}}"
+                    class="fa-2x icon-btn icons-div"><img src="assets/icons/edit-icon.svg" alt="edit" /></a>
             </div>
         </div>
 
@@ -102,7 +102,9 @@
                 </div>
                 <div class="form-group col-3">
                     <label class="col-5 px-0">Sender ID Type</label>
-                    <span class="badge badge-light col-5"><b>Whitelist</b></span>
+                    <span class="badge badge-light col-5">
+                        <b>{{senderIdType[GtDetailsData?.data.senderid_type]}}</b>
+                    </span>
                 </div>
                 <div class="form-group col-5 row pl-0 mx-0">
                     <label class="col-4">Mobile Blacklisted</label>
@@ -231,7 +233,7 @@
 
             </div>
             <div class="row validation-det mb-3">
-                <div class="card bg-grey text-center" (click)="open(countryListModal)">
+                <div class="card bg-grey text-center" (click)="open(addedCountryListModal)">
                     <div class="card-body">
                         <label class="box-heading">No. of Countries Added
                             <br>(In Current Month)</label>
@@ -242,7 +244,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card bg-grey text-center" (click)="open(countryListModal)">
+                <div class="card bg-grey text-center" (click)="open(inactiveCountryListModal)">
                     <div class="card-body">
                         <label class="box-heading">No. of Countries Inactivated
                             <br>(In Current Month)</label>
@@ -253,7 +255,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card bg-grey text-center" (click)="open(countryListModal)">
+                <div class="card bg-grey text-center" (click)="open(priceChangeCountryListModal)">
                     <div class="card-body">
                         <label class="box-heading">Price Changed for No. of Countries
                             <br>(In Current Month)</label>
@@ -367,39 +369,81 @@
     </div>
 </ng-template>
 
-<ng-template #countryListModal let-c="close" let-d="dismiss">
+<ng-template #addedCountryListModal let-c="close" let-d="dismiss">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-4 border-right"><label>Gateway Name</label></div>
-                <div class="col-7 ml-1"><span>Nexmo</span></div>
+                <div class="col-7 ml-1"><span>{{GtAddedCountryListData?.data.gw_name}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-3"><label>Total Countries</label></div>
-                <div class="col-9"><span class="badge badge-dark">17</span></div>
+                <div class="col-9"><span class="badge badge-dark">{{GtAddedCountryListData?.data.total}}</span></div>
             </div>
             <div class="row">
                 <div class="table-responsive senderid-list-table">
                     <table class="table table-borderless erp-list-table">
                         <tbody>
-                            <tr>
-                                <td>India</td>
+                            <tr *ngFor="let item of GtAddedCountryListData?.data.data; index as i">
+                                <td [attr.data-index]="i">{{item}}</td>
                             </tr>
-                            <tr>
-                                <td>Australia</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<ng-template #inactiveCountryListModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-4 border-right"><label>Gateway Name</label></div>
+                <div class="col-7 ml-1"><span>{{GtInactiveCountryListData?.data.gw_name}}</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-3"><label>Total Countries</label></div>
+                <div class="col-9"><span class="badge badge-dark">{{GtInactiveCountryListData?.data.total}}</span></div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr *ngFor="let item of GtInactiveCountryListData?.data.data; index as i">
+                                <td [attr.data-index]="i">{{item}}</td>
                             </tr>
-                            <tr>
-                                <td>United Arab Emirates</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<ng-template #priceChangeCountryListModal let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <form action="">
+            <div class="row font-weight-bold">
+                <div class="col-4 border-right"><label>Gateway Name</label></div>
+                <div class="col-7 ml-1"><span>{{GtPriceChangeCountryListData?.data.gw_name}}</span></div>
+            </div>
+            <div class="row my-2 f-14">
+                <div class="col-3"><label>Total Countries</label></div>
+                <div class="col-9"><span class="badge badge-dark">{{GtPriceChangeCountryListData?.data.total}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="table-responsive senderid-list-table">
+                    <table class="table table-borderless erp-list-table">
+                        <tbody>
+                            <tr *ngFor="let item of GtPriceChangeCountryListData?.data.data; index as i">
+                                <td [attr.data-index]="i">{{item}}</td>
                             </tr>
-                            <tr>
-                                <td>United States of America</td>
-                            </tr>
-                            <tr>
-                                <td>Australia</td>
-                            </tr>
-
                         </tbody>
                     </table>
                 </div>

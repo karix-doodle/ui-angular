@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { GatewayManagementService } from '../services/gateway-management.service';
 import { GtTimeZone_ApiResponse, GtTimeZone_Data, GtCurrency_ApiResponse, GtCurrency_Data, GtCreate_ApiResponse } from '../models/gateway-management.model';
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
-import { error } from 'protractor';
 
 @Component({
   selector: 'app-create-gateway',
@@ -22,11 +23,12 @@ export class CreateGatewayComponent implements OnInit {
   isCreateValid: boolean = false;
   currency_id = environment.currencyDefault;
 
-  messageType = [{ item: "Transaction" }, { item: "Promotion" }, { item: "Transscrub" }]
-  charsetType = [{ item: "ASCII" }, { item: "ISO" }, { item: "GSM" },]
+  messageType = [{ item: "Transaction", value: 0 }, { item: "Promotion", value: 1 }, { item: "Transscrub", value: 3 }]
+  charsetType = [{ item: "ASCII" }, { item: "ISO" }, { item: "GSM" }]
 
   constructor(
     private gatewayManagementService: GatewayManagementService,
+    private router: Router,
     private formBuilder: FormBuilder,
   ) {
     let gw_name = '[0-9a-zA-Z-_.@$\' ]{4,200}';
@@ -54,8 +56,8 @@ export class CreateGatewayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.Gateway_currency();
     this.Gateway_timezone();
+    this.Gateway_currency();
   }
 
   Gateway_timezone() {
@@ -71,7 +73,7 @@ export class CreateGatewayComponent implements OnInit {
             text: res.message,
           })
         }
-      }, error => {
+      }, (error: HttpErrorResponse) => {
         Swal.fire({
           icon: 'error',
           title: error.statusText,
@@ -94,7 +96,7 @@ export class CreateGatewayComponent implements OnInit {
             text: res.message,
           })
         }
-      }, error => {
+      }, (error: HttpErrorResponse) => {
         Swal.fire({
           icon: 'error',
           title: error.statusText,
@@ -142,6 +144,8 @@ export class CreateGatewayComponent implements OnInit {
       data.exclude_lcr = data.exclude_lcr ? "1" : "0";
       data.senderid_whitelist_required = data.senderid_whitelist_required ? "1" : "0";
       data.senderid_type = (Number)(data.senderid_type);
+      data.msg_type = (data.msg_type.toString());
+      data.charset_enc = (data.charset_enc.toString());
       this.gatewayManagementService.Gateway_create(data).subscribe(
         (res: GtCreate_ApiResponse) => {
           if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
@@ -150,7 +154,7 @@ export class CreateGatewayComponent implements OnInit {
               title: res.responsestatus,
               text: res.message,
             })
-            this.createGatewayFormGroup.reset()
+            this.router.navigate(['gateway-management']);
           } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
             Swal.fire({
               icon: 'error',
@@ -158,7 +162,7 @@ export class CreateGatewayComponent implements OnInit {
               text: res.message,
             })
           }
-        }, error => {
+        }, (error: HttpErrorResponse) => {
           Swal.fire({
             icon: 'error',
             title: error.statusText,

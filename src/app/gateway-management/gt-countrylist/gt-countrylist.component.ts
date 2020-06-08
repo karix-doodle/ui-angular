@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
 import { GtDetailsCountryList_ApiResponse, GtDetailsCountryList_Data, GtCountryStatusupdate_ApiResponse } from '../models/gateway-management.model';
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { saveAs } from 'file-saver';
@@ -19,7 +20,6 @@ export class GtCountrylistComponent implements OnInit {
   GtDetailsCountryList: GtDetailsCountryList_Data;
 
   constructor(
-    config: NgbModalConfig,
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
     private gatewayManagementService: GatewayManagementService
@@ -123,7 +123,7 @@ export class GtCountrylistComponent implements OnInit {
                 text: res.message,
               })
             }
-          }, error => {
+          }, (error: HttpErrorResponse) => {
             Swal.fire({
               icon: 'error',
               title: error.statusText,

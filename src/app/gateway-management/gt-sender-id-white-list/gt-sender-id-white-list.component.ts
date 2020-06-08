@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
@@ -16,12 +17,23 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   GtSenderIdWhiteListRes: GtSenderIdWhiteList_ApiResponse;
   GtSenderIdWhiteList: GtSenderIdWhiteList_Data;
 
+  addSenderidFormGroup: FormGroup;
+  isAddSenderidValid: boolean = false;
+
   constructor(
-    config: NgbModalConfig,
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
-    private gatewayManagementService: GatewayManagementService
-  ) { }
+    private gatewayManagementService: GatewayManagementService,
+    private formBuilder: FormBuilder,
+  ) {
+
+    this.addSenderidFormGroup = this.formBuilder.group({
+      country: new FormControl('', [Validators.required]),
+      senderid: new FormControl('', [Validators.required]),
+      file: new FormControl('', [Validators.required]),
+    });
+
+  }
 
   open(content) {
     this.modalService.open(content);
