@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtSenderIdWhiteList_ApiResponse, GtSenderIdWhiteList_Data, GtSenderIdWhiteListDelete_ApiResponse } from '../models/gateway-management.model';
+import { GtSenderIdWhiteList_ApiResponse, GtSenderIdWhiteList_Data, GtSenderIdWhiteListDelete_ApiResponse, GtSenderIdCountryList_ApiResponse, GtSenderIdCountryList_Data, GtAddSenderId_ApiResponse } from '../models/gateway-management.model';
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 
@@ -16,6 +17,9 @@ export class GtSenderIdWhiteListComponent implements OnInit {
 
   GtSenderIdWhiteListRes: GtSenderIdWhiteList_ApiResponse;
   GtSenderIdWhiteList: GtSenderIdWhiteList_Data;
+
+  GtSenderIdCountryListRes: GtSenderIdCountryList_ApiResponse;
+  GtSenderIdCountryList: GtSenderIdCountryList_Data;
 
   addSenderidFormGroup: FormGroup;
   isAddSenderidValid: boolean = false;
@@ -53,6 +57,32 @@ export class GtSenderIdWhiteListComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.GtSenderIdWhiteListRes = res;
           this.GtSenderIdWhiteList = JSON.parse(JSON.stringify(this.GtSenderIdWhiteListRes));
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          Swal.fire({
+            icon: 'error',
+            title: res.responsestatus,
+            text: res.message,
+          })
+        }
+      }, error => {
+        Swal.fire({
+          icon: 'error',
+          title: error.statusText,
+          text: error.message,
+        })
+      }
+    );
+  }
+
+  GtSenderIdCountry_List() {
+    let data = {
+      gw_id: this.activeRoute.snapshot.params.id,
+    }
+    this.gatewayManagementService.GtSenderIdCountry_List(data).subscribe(
+      (res: GtSenderIdCountryList_ApiResponse) => {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+          this.GtSenderIdCountryListRes = res;
+          this.GtSenderIdCountryList = JSON.parse(JSON.stringify(this.GtSenderIdCountryListRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           Swal.fire({
             icon: 'error',
@@ -113,7 +143,45 @@ export class GtSenderIdWhiteListComponent implements OnInit {
         this.Gateway_SenderIdWhiteList()
       }
     })
-
   }
+
+  onSubmitaddSenderid(data) {
+    this.isAddSenderidValid = true;
+    if (this.addSenderidFormGroup.invalid) {
+      return;
+    }
+    else {
+      this.isAddSenderidValid = false;
+      let params = {
+        req_type: "single_req",
+        gw_id: this.activeRoute.snapshot.params.id
+      }
+      let body = { ...data, ...params }
+      this.gatewayManagementService.Gateway_addSenderId(body).subscribe(
+        (res: GtAddSenderId_ApiResponse) => {
+          if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+            Swal.fire({
+              icon: 'success',
+              title: res.responsestatus,
+              text: res.message,
+            })
+          } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+            Swal.fire({
+              icon: 'error',
+              title: res.responsestatus,
+              text: res.message,
+            })
+          }
+        }, (error: HttpErrorResponse) => {
+          Swal.fire({
+            icon: 'error',
+            title: error.statusText,
+            text: error.message,
+          })
+        }
+      );
+    }
+  }
+
 
 }

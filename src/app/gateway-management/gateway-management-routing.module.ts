@@ -51,7 +51,7 @@ const GMroutes: Routes = [
         component: GtCountrylistComponent
       },
       {
-        path: 'country-list-view',
+        path: 'country-list-view/:id/:name/:country/:operator',
         component: GtCountryListViewLogComponent
       },
       {

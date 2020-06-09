@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtDetailsCountryList_ApiResponse, GtDetailsCountryList_Data, GtCountryStatusupdate_ApiResponse } from '../models/gateway-management.model';
+import { GtDetailsCountryList_ApiResponse, GtDetailsCountryList_Data, GtCountryStatusupdate_ApiResponse, GtSenderIdConfigCountryList_ApiResponse, GtSenderIdConfigCountryList_Data } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
@@ -13,11 +13,14 @@ import { saveAs } from 'file-saver';
   templateUrl: './gt-countrylist.component.html',
   styleUrls: ['./gt-countrylist.component.css']
 })
+
 export class GtCountrylistComponent implements OnInit {
   sendTestMsg: any[] = [1, 2, 3];
 
   GtDetailsCountryListRes: GtDetailsCountryList_ApiResponse;
   GtDetailsCountryList: GtDetailsCountryList_Data;
+  GtSenderIdConfigCountryListRes: GtSenderIdConfigCountryList_ApiResponse;
+  GtSenderIdConfigCountryList: GtSenderIdConfigCountryList_Data;
 
   constructor(
     private modalService: NgbModal,
@@ -29,10 +32,6 @@ export class GtCountrylistComponent implements OnInit {
     pop.close()
   }
 
-  // openPopup(pop: any) {
-  //   pop.open()
-  // }
-
   open(content) {
     this.modalService.open(content);
   }
@@ -41,8 +40,8 @@ export class GtCountrylistComponent implements OnInit {
     this.Gateway_CountryList();
   }
 
-  toggleRateChange(popover, rlist: any) {
-    popover.open({ rlist });
+  toggleRateChange(popover, rlist: any, country: string, operator: string) {
+    popover.open({ rlist, country, operator });
   }
 
   Gateway_CountryList() {
@@ -135,7 +134,33 @@ export class GtCountrylistComponent implements OnInit {
         this.Gateway_CountryList();
       }
     })
+  }
 
+  GtSenderIdConfigCountry_list() {
+    let data = {
+      gw_id: this.activeRoute.snapshot.params.id,
+      load: 'country',
+    }
+    this.gatewayManagementService.GtSenderIdConfigCountry_list(data).subscribe(
+      (res: GtSenderIdConfigCountryList_ApiResponse) => {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+          this.GtSenderIdConfigCountryListRes = res;
+          this.GtSenderIdConfigCountryList = JSON.parse(JSON.stringify(this.GtSenderIdConfigCountryListRes));
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          Swal.fire({
+            icon: 'error',
+            title: res.responsestatus,
+            text: res.message,
+          })
+        }
+      }, error => {
+        Swal.fire({
+          icon: 'error',
+          title: error.statusText,
+          text: error.message,
+        })
+      }
+    );
   }
 
 }

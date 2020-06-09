@@ -1,7 +1,8 @@
 <div class="row btm-border headings-div">
     <div class="col-7">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span><a routerLink="/gateway-management/gateway-details"> {{GtDetailsCountryList?.data.gw_id}} -
+        <span><a routerLink="/gateway-management/gateway-details/{{GtDetailsCountryList?.data.gw_id}}">
+                {{GtDetailsCountryList?.data.gw_id}} -
                 {{GtDetailsCountryList?.data.gw_name}}</a> / COUNTRY LIST</span>
     </div>
     <div class="col-5 text-right">
@@ -81,7 +82,8 @@
                 <td class="rate-change-td"><span>{{item.current_rate}}</span>
                     <button *ngIf="item.ratehistory.length" type="button" class="rate-change-list-btn"
                         [autoClose]="'outside'" #r="ngbPopover" triggers="manual" [ngbPopover]="recentRateChangeList"
-                        data-placement="right" (click)="toggleRateChange(r,item.ratehistory)">
+                        data-placement="right"
+                        (click)="toggleRateChange(r,item.ratehistory,item.country,item.operator)">
                         <i class="fa fa-clock-o ml-4"></i>
                     </button>
                 </td>
@@ -130,14 +132,15 @@
         </form>
     </section>
 </ng-template>
-<ng-template #recentRateChangeList let-rlist="rlist">
+<ng-template #recentRateChangeList let-rlist="rlist" let-country="country" let-operator="operator">
     <section id="recent-rate-change-list">
         <form action="">
             <div class="row">
                 <div class="col-12" *ngFor="let item of rlist | slice:0:5; let i=index">
                     <label class="font-weight-bold">{{item.rate}}</label> - <span>{{item.date}}</span>
                 </div>
-                <a *ngIf="rlist.length > 5" routerLink="/gateway-management/country-list-view"
+                <a *ngIf="rlist.length > 5"
+                    routerLink="/gateway-management/country-list-view/{{GtDetailsCountryList?.data.gw_id}}/{{country}}/{{operator}}"
                     class="col-12 font-weight-semi-bold float-right">Show More
                 </a>
             </div>
@@ -178,8 +181,10 @@
                     <label>Sender ID Type</label>
                     <select class="dropdown-select w-100">
                         <option value="" default>Select Sender ID Type</option>
-                        <option value="" default>option1</option>
-                        <option value="">option1</option>
+                        <option value="0">Open</option>
+                        <option value="1">List</option>
+                        <option value="2">Static</option>
+                        <option value="3">Numeric</option>
                     </select>
                 </div>
                 <div class="col-6">
@@ -187,9 +192,7 @@
                     <div class="route-edit-div">
                         <input type="text" class="form-control" placeholder="Enter Default Sender ID" />
                     </div>
-
                 </div>
-
             </div>
             <div class="col-12 text-center mt-5">
                 <input type="submit" class="btn btn-basic mr-3" value="Cancel" />

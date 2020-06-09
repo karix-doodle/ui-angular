@@ -14,7 +14,6 @@ import * as moment from 'moment';
   styleUrls: ['./gt-file-audit-log.component.css']
 })
 export class GtFileAuditLogComponent implements OnInit {
-  dateSelected: object;
   gatewayFileAuditLogDataRes: GtFileAuditLog_ApiResponse;
   gatewayFileAuditLogData: GtFileAuditLog_Data;
   public params: any;

@@ -1,7 +1,9 @@
 <div class="row btm-border headings-div">
     <div class="col-12">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span> <a routerLink="/gateway-management/gateway-details"> {{gatewayFileAuditLogData?.data.gw_id}} -
+        <span>
+            <a routerLink="/gateway-management/gateway-details/{{gatewayFileAuditLogData?.data.gw_id}}">
+                {{gatewayFileAuditLogData?.data.gw_id}} -
                 {{gatewayFileAuditLogData?.data.gw_name}}</a> / FILE AUDIT LOG</span>
     </div>
 </div>

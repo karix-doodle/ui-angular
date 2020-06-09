@@ -9,18 +9,22 @@ import {
   GtDetails_ApiResponse,
   GtAddedCountryList_ApiResponse,
   GtInactiveCountryList_ApiResponse,
+  GtSenderIdConfigCountryList_ApiResponse,
   GtPriceChangeCountryList_ApiResponse,
   GtUpdate_ApiResponse,
   GtStatusupdate_ApiResponse,
   GtDetailsCountryList_ApiResponse,
   GtSenderIdWhiteList_ApiResponse,
+  GtSenderIdCountryList_ApiResponse,
+  GtAddSenderId_ApiResponse,
   GtSenderIdWhiteListDelete_ApiResponse,
   GtDetailsViewLog_ApiResponse,
   GtTimeZone_ApiResponse,
   GtCurrency_ApiResponse,
   GtCountryStatusupdate_ApiResponse,
   GtFileAuditLog_ApiResponse,
-  GtFileAuditFileLog_ApiResponse
+  GtFileAuditFileLog_ApiResponse,
+  GtCountryListViewLog_ApiResponse
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -133,11 +137,35 @@ export class GatewayManagementService {
   }
 
   /**
+   * @description Gateway management Countrylist
+  */
+  GtSenderIdConfigCountry_list(data): Observable<GtSenderIdConfigCountryList_ApiResponse> {
+    return this.http.get(this.baseUrl + '/countryoperatorlist?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&load=' + data.load, this.httpOptions)
+      .pipe(map(m => m as GtSenderIdConfigCountryList_ApiResponse));
+  }
+
+  /**
    * @description Gateway management Sender Id WhiteList
   */
   Gateway_SenderIdWhiteList(body): Observable<GtSenderIdWhiteList_ApiResponse> {
     return this.http.post(this.baseUrl + '/senderid/list', { ...this.user, ...body }, this.httpOptions)
       .pipe(map(m => m as GtSenderIdWhiteList_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Sender Id WhiteList
+  */
+  GtSenderIdCountry_List(data): Observable<GtSenderIdCountryList_ApiResponse> {
+    return this.http.get(this.baseUrl + '/senderid/countrylist?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id, this.httpOptions)
+      .pipe(map(m => m as GtSenderIdCountryList_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Sender Id WhiteList delete
+  */
+  Gateway_addSenderId(body): Observable<GtAddSenderId_ApiResponse> {
+    return this.http.post(this.baseUrl + '/senderid/add', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtAddSenderId_ApiResponse));
   }
 
   /**
@@ -194,6 +222,14 @@ export class GatewayManagementService {
   GtFileAuditLog_list(body): Observable<GtFileAuditLog_ApiResponse> {
     return this.http.post(this.baseUrl + '/auditlog', { ...this.user, ...body }, this.httpOptions)
       .pipe(map(m => m as GtFileAuditLog_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management File audit log
+  */
+  GtCountryListView_Log(body): Observable<GtCountryListViewLog_ApiResponse> {
+    return this.http.post(this.baseUrl + '/ratehistory', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtCountryListViewLog_ApiResponse));
   }
 
   /**

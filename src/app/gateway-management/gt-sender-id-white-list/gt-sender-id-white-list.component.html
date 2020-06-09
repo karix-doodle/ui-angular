@@ -1,7 +1,8 @@
 <div class="row btm-border headings-div">
     <div class="col-8">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span><a routerLink="/gateway-management/gateway-details"> {{GtSenderIdWhiteList?.data.gw_id}} -
+        <span><a routerLink="/gateway-management/gateway-details/{{GtSenderIdWhiteList?.data.gw_id}}">
+                {{GtSenderIdWhiteList?.data.gw_id}} -
                 {{GtSenderIdWhiteList?.data.gw_name}} /</a> SENDERID’s WHITELISTED</span>
     </div>
     <div class="col-4 text-right">
@@ -72,16 +73,25 @@
             <div class="row mt-4">
                 <div class="col-6 form-group">
                     <label>Country</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100" formControlName="country" name="country">
                         <option value="" default>Select Country</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option value="1">option1</option>
+                        <option value="2">option2</option>
+                        <option value="3">option3</option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderidFormGroup.get('country').hasError('required') && isAddSenderidValid">
+                        Country is required
+                    </span>
                 </div>
                 <div class="form-group col-6">
                     <label>SenderID</label>
-                    <input type="search" class="form-control" id="" placeholder="Enter SenderID" />
+                    <input type="search" class="form-control" id="" placeholder="Enter SenderID"
+                        formControlName="senderid" name="senderid" />
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderidFormGroup.get('senderid').hasError('required') && isAddSenderidValid">
+                        SenderID is required
+                    </span>
                 </div>
                 <div class="form-group col-6">
                     <div class="upload-btn-wrapper">
@@ -94,7 +104,7 @@
                 <div class="col-12 text-center">
                     <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close"
                         (click)="d('Cross click')">
-                    <input type="submit" class="btn erp-intl-btn save-btn" (click)="c('Save click')" value="Save">
+                    <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
                 </div>
             </div>
         </form>

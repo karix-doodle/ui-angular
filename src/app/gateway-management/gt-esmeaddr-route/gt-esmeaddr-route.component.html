@@ -1,7 +1,8 @@
 <div class="row btm-border headings-div">
     <div class="col-8">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span><a routerLink="/gateway-management/gateway-details"> {{GtSenderIdWhiteList?.data.gw_id}} -
+        <span><a routerLink="/gateway-management/gateway-details/{{GtSenderIdWhiteList?.data.gw_id}}">
+                {{GtSenderIdWhiteList?.data.gw_id}} -
                 {{GtSenderIdWhiteList?.data.gw_name}} /</a> No. of ESMEAddr routed
             (On Gateway directly)</span>
     </div>

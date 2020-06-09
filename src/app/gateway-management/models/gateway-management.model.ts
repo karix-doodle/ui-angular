@@ -266,17 +266,12 @@ export class GtDetailsCountryList_TableDataList {
 
 /**
  * @module gateway-management
- * @description Gateway Sender WhiteList START
+ * @description Gateway Senderid WhiteList START
 */
 export class GtSenderIdWhiteList_ApiResponse {
     responsecode: number;
     responsestatus: string;
     data: GtSenderIdWhiteList_Data;
-    message: string;
-}
-export class GtSenderIdWhiteListDelete_ApiResponse {
-    responsecode: number;
-    responsestatus: string;
     message: string;
 }
 export class GtSenderIdWhiteList_Data {
@@ -296,7 +291,50 @@ export class GtSenderIdWhiteList_TableDataList {
     time: Time;
 }
 /**
- ************************* @description Gateway Sender WhiteList END
+ ************************* @description Gateway Senderid WhiteList END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Senderid add START
+*/
+export class GtAddSenderId_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+/**
+ ************************* @description Gateway Senderid add END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Senderid delete START
+*/
+export class GtSenderIdWhiteListDelete_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+/**
+ ************************* @description Gateway Senderid delete END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Senderid country List START
+*/
+export class GtSenderIdCountryList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtSenderIdCountryList_Data;
+    message: string;
+}
+export class GtSenderIdCountryList_Data {
+
+}
+/**
+ ************************* @description Gateway Senderid country List END
 */
 
 /**
@@ -383,6 +421,23 @@ export class GtCountryStatusupdate_ApiResponse {
 
 /**
  * @module gateway-management
+ * @description Gateway Sender id config country list START
+*/
+export class GtSenderIdConfigCountryList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+    data: GtSenderIdConfigCountryList_Data;
+}
+export class GtSenderIdConfigCountryList_Data {
+
+}
+/**
+ ************************* @description Gateway Sender id config country list END
+*/
+
+/**
+ * @module gateway-management
  * @description Gateway File audit log START
 */
 export class GtFileAuditLog_ApiResponse {
@@ -449,4 +504,27 @@ export class GtFileAuditFileLog_TableDataList {
 }
 /**
  ************************* @description Gateway File audit file log END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Country list view log START
+*/
+export class GtCountryListViewLog_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtCountryListViewLog_Data;
+    message: string;
+}
+export class GtCountryListViewLog_Data {
+    gw_id: string;
+    gw_name: string;
+    country: string;
+    operator: string;
+    tabledata: GtCountryListViewLog_TableDataList
+}
+export class GtCountryListViewLog_TableDataList {
+}
+/**
+ ************************* @description Gateway Country list view log END
 */
