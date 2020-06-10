@@ -38,6 +38,7 @@ export class GtCountrylistComponent implements OnInit {
 
   ngOnInit() {
     this.Gateway_CountryList();
+    this.GtSenderIdConfigCountry_list()
   }
 
   toggleRateChange(popover, rlist: any, country: string, operator: string) {

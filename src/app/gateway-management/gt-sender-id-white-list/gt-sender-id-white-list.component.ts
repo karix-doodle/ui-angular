@@ -7,6 +7,10 @@ import { GtSenderIdWhiteList_ApiResponse, GtSenderIdWhiteList_Data, GtSenderIdWh
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-gt-sender-id-white-list',
@@ -24,6 +28,8 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   addSenderidFormGroup: FormGroup;
   isAddSenderidValid: boolean = false;
 
+  fileData: FormData = null;
+
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
@@ -32,9 +38,9 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   ) {
 
     this.addSenderidFormGroup = this.formBuilder.group({
-      country: new FormControl('', [Validators.required]),
-      senderid: new FormControl('', [Validators.required]),
-      file: new FormControl('', [Validators.required]),
+      country: [''],
+      senderid: [''],
+      file: [''],
     });
 
   }
@@ -45,6 +51,7 @@ export class GtSenderIdWhiteListComponent implements OnInit {
 
   ngOnInit() {
     this.Gateway_SenderIdWhiteList()
+    this.GtSenderIdCountry_List()
   }
 
   Gateway_SenderIdWhiteList() {
@@ -58,18 +65,10 @@ export class GtSenderIdWhiteListComponent implements OnInit {
           this.GtSenderIdWhiteListRes = res;
           this.GtSenderIdWhiteList = JSON.parse(JSON.stringify(this.GtSenderIdWhiteListRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -84,18 +83,10 @@ export class GtSenderIdWhiteListComponent implements OnInit {
           this.GtSenderIdCountryListRes = res;
           this.GtSenderIdCountryList = JSON.parse(JSON.stringify(this.GtSenderIdCountryListRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -118,25 +109,13 @@ export class GtSenderIdWhiteListComponent implements OnInit {
         this.gatewayManagementService.Gateway_SenderIdWhiteListDelete(data).subscribe(
           (res: GtSenderIdWhiteListDelete_ApiResponse) => {
             if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-              Swal.fire({
-                icon: 'success',
-                title: res.responsestatus,
-                text: res.message,
-              })
+              successAlert(res.message, res.responsestatus)
               this.Gateway_SenderIdWhiteList()
             } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-              Swal.fire({
-                icon: 'error',
-                title: res.responsestatus,
-                text: res.message,
-              })
+              errorAlert(res.message, res.responsestatus)
             }
-          }, error => {
-            Swal.fire({
-              icon: 'error',
-              title: error.statusText,
-              text: error.message,
-            })
+          }, (error: HttpErrorResponse) => {
+            errorAlert(error.message, error.statusText)
           }
         );
       } else {
@@ -145,42 +124,74 @@ export class GtSenderIdWhiteListComponent implements OnInit {
     })
   }
 
-  onSubmitaddSenderid(data) {
-    this.isAddSenderidValid = true;
-    if (this.addSenderidFormGroup.invalid) {
+  isFieldValid(field: string) {
+    return this.addSenderidFormGroup.get(field).value;
+  }
+
+  fileUpload(files) {
+    if (files.length === 0) {
       return;
     }
-    else {
+    const file = files.item(0);
+    const formData: FormData = new FormData();
+    formData.append("req_type", "fileupload");
+    formData.append("gw_id", this.activeRoute.snapshot.params.id);
+    formData.append("file", file, file.name);
+    formData.append("loggedinempid", String(environment.loggedinempid));
+    this.fileData = formData;
+  }
+
+  onSubmitaddSenderid(data) {
+    this.isAddSenderidValid = true;
+    if (this.isFieldValid('country') != "" && this.isFieldValid('senderid') != "") {
       this.isAddSenderidValid = false;
+
       let params = {
         req_type: "single_req",
         gw_id: this.activeRoute.snapshot.params.id
       }
+
+      delete data.file
       let body = { ...data, ...params }
-      this.gatewayManagementService.Gateway_addSenderId(body).subscribe(
-        (res: GtAddSenderId_ApiResponse) => {
-          if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-            Swal.fire({
-              icon: 'success',
-              title: res.responsestatus,
-              text: res.message,
-            })
-          } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-            Swal.fire({
-              icon: 'error',
-              title: res.responsestatus,
-              text: res.message,
-            })
-          }
-        }, (error: HttpErrorResponse) => {
-          Swal.fire({
-            icon: 'error',
-            title: error.statusText,
-            text: error.message,
-          })
-        }
-      );
+
+      this.addSenderIdServiceCall(body, false)
+
+    } else if (this.isFieldValid('file') != "") {
+      this.isAddSenderidValid = false;
+
+      this.addSenderIdServiceCall(this.fileData, true)
+
+    } else {
+      return;
     }
+  }
+
+  addSenderIdServiceCall(data, type) {
+    this.gatewayManagementService.Gateway_addSenderId(data, type).subscribe(
+      (res: GtAddSenderId_ApiResponse) => {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+
+          successAlert(res.message, res.responsestatus)
+
+          this.resetSenderIdForm()
+
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          errorAlert(res.message, res.responsestatus)
+        }
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
+      }
+    );
+  }
+
+  resetSenderIdForm() {
+    this.Gateway_SenderIdWhiteList()
+    this.modalService.dismissAll('senderIdModal');
+    this.addSenderidFormGroup.setValue({
+      country: '',
+      senderid: '',
+      file: ''
+    });
   }
 
 

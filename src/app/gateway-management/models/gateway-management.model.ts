@@ -524,7 +524,31 @@ export class GtCountryListViewLog_Data {
     tabledata: GtCountryListViewLog_TableDataList
 }
 export class GtCountryListViewLog_TableDataList {
+    rate: string;
+    actionby: string;
+    date: Date;
+    time: Time;
 }
 /**
  ************************* @description Gateway Country list view log END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway ESMEAddr routed List START
+*/
+export class GtESMEAddrRouted_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtESMEAddrRouted_Data;
+    message: string;
+}
+export class GtESMEAddrRouted_Data {
+    gw_id: string;
+    gw_name: string;
+    total: string;
+    data: any;
+}
+/**
+ ************************* @description Gateway ESMEAddr routed List END
 */

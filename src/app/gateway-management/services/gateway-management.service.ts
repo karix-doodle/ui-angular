@@ -24,7 +24,8 @@ import {
   GtCountryStatusupdate_ApiResponse,
   GtFileAuditLog_ApiResponse,
   GtFileAuditFileLog_ApiResponse,
-  GtCountryListViewLog_ApiResponse
+  GtCountryListViewLog_ApiResponse,
+  GtESMEAddrRouted_ApiResponse
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -36,8 +37,10 @@ import { environment } from '../../../environments/environment';
 export class GatewayManagementService {
 
   baseUrl: string = environment.serverUrl + '/gateway';
+  baseUrlFile: string = environment.FileUploadUrl + '/gateway';
   httpOptions = { headers: new HttpHeaders({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };
   httpOptions_file = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' }), responseType: 'blob' as 'json' };
+  httpOptions_formdata = { headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data;' }) };
 
   user = {
     loggedinusername: environment.loggedinusername,
@@ -163,8 +166,16 @@ export class GatewayManagementService {
   /**
    * @description Gateway management Sender Id WhiteList delete
   */
-  Gateway_addSenderId(body): Observable<GtAddSenderId_ApiResponse> {
-    return this.http.post(this.baseUrl + '/senderid/add', { ...this.user, ...body }, this.httpOptions)
+  Gateway_addSenderId(body, formType: Boolean): Observable<GtAddSenderId_ApiResponse> {
+    let addSenderData: any;
+    var headers = this.httpOptions
+    if (formType) {
+      addSenderData = body;
+      headers = undefined
+    } else {
+      addSenderData = { ...this.user, ...body };
+    }
+    return this.http.post(this.baseUrl + '/senderid/add', addSenderData, headers)
       .pipe(map(m => m as GtAddSenderId_ApiResponse));
   }
 
@@ -225,7 +236,7 @@ export class GatewayManagementService {
   }
 
   /**
-   * @description Gateway management File audit log
+   * @description Gateway Country List view
   */
   GtCountryListView_Log(body): Observable<GtCountryListViewLog_ApiResponse> {
     return this.http.post(this.baseUrl + '/ratehistory', { ...this.user, ...body }, this.httpOptions)
@@ -233,7 +244,7 @@ export class GatewayManagementService {
   }
 
   /**
-   * @description Gateway management File audit log
+   * @description Gateway File audit log list
   */
   GtFileAuditFileLog_list(body): Observable<GtFileAuditFileLog_ApiResponse> {
     return this.http.post(this.baseUrl + '/auditfilelog', { ...this.user, ...body }, this.httpOptions)
@@ -246,6 +257,14 @@ export class GatewayManagementService {
   GtFileAuditLog_download(data): Observable<any> {
     return this.http.get(this.baseUrl + '/download/auditlog/?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&filename=' + data.filename, this.httpOptions_file)
       .pipe(map(m => m as any));
+  }
+
+  /**
+   * @description Gateway ESMEAddr routed List
+  */
+  GtESMEAddrRouted_list(data): Observable<GtESMEAddrRouted_ApiResponse> {
+    return this.http.get(this.baseUrl + '/esmeaddrrouterlist/?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&gw_name=' + data.gw_name, this.httpOptions)
+      .pipe(map(m => m as GtESMEAddrRouted_ApiResponse));
   }
 
 }

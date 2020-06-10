@@ -39,7 +39,7 @@ const GMroutes: Routes = [
         component: EditGatewayComponent
       },
       {
-        path: 'update-gateway',
+        path: 'update-gateway/:id/:name',
         component: UpdateGatewayComponent
       },
       {
@@ -71,7 +71,7 @@ const GMroutes: Routes = [
         component: GtSenderIdWhiteListComponent
       },
       {
-        path: 'esme-addr-routed',
+        path: 'esme-addr-routed/:id/:name',
         component: GtESMEAddrRoutedComponent
       },
       {

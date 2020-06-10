@@ -45,10 +45,10 @@
         </thead>
         <tbody>
             <tr
-                *ngFor="let item of GtCountryListViewLogData?.data.tabledata | filter: { date: searchvalue, updatedby: searchvalue }">
-                <td class="font-weight-semi-bold">{{item.rates}}</td>
-                <td>{{item.date}} | {{item.hours}}</td>
-                <td class="font-weight-semi-bold">{{item.updatedby}}</td>
+                *ngFor="let item of GtCountryListViewLogData?.data.tabledata | filter: { date: searchvalue, actionby: searchvalue }">
+                <td class="font-weight-semi-bold">{{item.rate}}</td>
+                <td>{{item.date}} | {{item.time}}</td>
+                <td class="font-weight-semi-bold">{{item.actionby}}</td>
             </tr>
             <tr *ngIf="GtCountryListViewLogData?.data.tabledata.length == 0">
                 <td colspan="3" class="text-center py-3 main-heading">No data Found</td>

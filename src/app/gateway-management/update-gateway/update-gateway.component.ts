@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { GatewayManagementService } from '../services/gateway-management.service';
 
 @Component({
   selector: 'app-update-gateway',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateGatewayComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private activeRoute: ActivatedRoute,
+    private gatewayManagementService: GatewayManagementService
+  ) { }
 
   ngOnInit() {
   }

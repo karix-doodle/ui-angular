@@ -65,6 +65,9 @@
     <div class="modal-body">
         <form action="" [formGroup]="addSenderidFormGroup" (ngSubmit)="onSubmitaddSenderid(addSenderidFormGroup.value)">
             <div class="row">
+                <!-- <pre>Form values: {{addSenderidFormGroup.value | json}}</pre> -->
+            </div>
+            <div class="row">
                 <div class="col-4 border-right"><label>Gateway ID</label></div>
                 <div class="col-8"><span><b>{{GtSenderIdWhiteList?.data.gw_id}}</b></span></div>
                 <div class="col-4 border-right"><label>Gateway Name</label></div>
@@ -75,9 +78,7 @@
                     <label>Country</label>
                     <select class="dropdown-select w-100" formControlName="country" name="country">
                         <option value="" default>Select Country</option>
-                        <option value="1">option1</option>
-                        <option value="2">option2</option>
-                        <option value="3">option3</option>
+                        <option *ngFor="let item of GtSenderIdCountryList?.data" value="{{item}}">{{item}}</option>
                     </select>
                     <span class="text-danger pl-1 f-12"
                         *ngIf="addSenderidFormGroup.get('country').hasError('required') && isAddSenderidValid">
@@ -98,7 +99,8 @@
                         <button class="upload-btn">
                             <i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse file to
                             upload</button>
-                        <input type="file" name="" />
+                        <input type="file" name="" formControlName="file" name="file"
+                            (change)="fileUpload($event.target.files)" />
                     </div>
                 </div>
                 <div class="col-12 text-center">
