@@ -1,25 +1,25 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { environment } from "../../../../../environments/environment";
 import {
   MobileCustomSenderId_ApiResponse,
   MobileCustomSenderIdResponse,
-} from 'src/app/route-management/models/custom.model';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+} from "src/app/route-management/models/custom.model";
+import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class MobileSenderidCustomService {
   formDetails: any;
   constructor(public http: HttpClient) {}
 
-  baseUrl: string = environment.serverUrl + '/routemgmt/custom/mobilesenderid';
+  baseUrl: string = environment.serverUrl + "/routemgmt/custom/mobilesenderid";
   httpOptions = {
     headers: new HttpHeaders({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
     }),
   };
   user = {
@@ -33,7 +33,7 @@ export class MobileSenderidCustomService {
    */
   getCustomMobileSenderidList(): Observable<MobileCustomSenderId_ApiResponse> {
     return this.http
-      .post(this.baseUrl + '/list', this.user)
+      .post(this.baseUrl + "/list", this.user)
       .pipe(map((data) => data as MobileCustomSenderId_ApiResponse));
   }
 
@@ -44,11 +44,17 @@ export class MobileSenderidCustomService {
    */
   addCustomMobileSenderid(
     body,
+    formType: Boolean
   ): Observable<MobileCustomSenderIdResponse> {
-
+    let customMobileSenderidData: any;
+    if (formType) {
+      customMobileSenderidData = body;
+    } else {
+      customMobileSenderidData = { ...this.user, ...body };
+    }
     return this.http
-      .post(this.baseUrl + '/add', {...body, ...this.user}, this.httpOptions)
-      .pipe(map((data) => (data as unknown as MobileCustomSenderIdResponse)));
+      .post(this.baseUrl + "add", customMobileSenderidData)
+      .pipe(map((data) => (data as unknown) as MobileCustomSenderIdResponse));
   }
 
   /**
@@ -59,7 +65,7 @@ export class MobileSenderidCustomService {
   deleteCustomMobileSenderid(body): Observable<MobileCustomSenderIdResponse> {
     return this.http
       .post(
-        this.baseUrl + '/delete',
+        this.baseUrl + "/delete",
         { ...this.user, ...body },
         this.httpOptions
       )

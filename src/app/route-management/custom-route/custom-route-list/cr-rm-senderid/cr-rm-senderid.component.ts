@@ -1,13 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { SenderCustomApiResponse, SenderCustomData } from 'src/app/route-management/models/custom.model';
-import { SenderCustomService } from '../../../services/custom-route/sender-custom.service';
-import { environment } from '../../../../../environments/environment';
-import Swal from 'sweetalert2';
+import { Component, OnInit } from "@angular/core";
+import {
+  SenderCustomApiResponse,
+  SenderCustomData,
+} from "src/app/route-management/models/custom.model";
+import { SenderCustomService } from "../../../services/RouteManagement/custom-route/sender-custom.service";
+import { environment } from "../../../../../environments/environment";
+import {
+  errorAlert,
+  successAlert,
+  deleteAlert,
+} from "src/app/shared/sweet-alert/sweet-alert";
 
 @Component({
-  selector: 'app-cr-rm-senderid',
-  templateUrl: './cr-rm-senderid.component.html',
-  styleUrls: ['./cr-rm-senderid.component.css']
+  selector: "app-cr-rm-senderid",
+  templateUrl: "./cr-rm-senderid.component.html",
+  styleUrls: ["./cr-rm-senderid.component.css"],
 })
 export class CrRmSenderidComponent implements OnInit {
   senderidCustomData: SenderCustomData;
@@ -18,7 +25,7 @@ export class CrRmSenderidComponent implements OnInit {
   sortingName: any;
   isDesc: boolean;
 
-  constructor(public senderService: SenderCustomService) { }
+  constructor(public senderService: SenderCustomService) {}
 
   ngOnInit() {
     this.getAllSenderidData();
@@ -28,31 +35,25 @@ export class CrRmSenderidComponent implements OnInit {
    * @description gets all the mobile custom route data
    */
   getAllSenderidData() {
-    this.senderService.getCustomSenderidList().subscribe((res: SenderCustomApiResponse) => {
-      if (
-        res.responsestatus === environment.APIStatus.success.text &&
-        res.responsecode > environment.APIStatus.success.code
-      ) {
-        this.senderidApiResponse = res;
-        this.senderidCustomData = res.data;
-      } else if (
-        res.responsestatus === environment.APIStatus.error.text &&
-        res.responsecode < environment.APIStatus.error.code
-      ) {
-        Swal.fire({
-          icon: 'error',
-          title: res.responsestatus,
-          text: res.responsestatus,
-        });
-      }
-    },
+    this.senderService.getCustomSenderidList().subscribe(
+      (res: SenderCustomApiResponse) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.senderidApiResponse = res;
+          this.senderidCustomData = res.data;
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.responsestatus);
+        }
+      },
       (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        });
-      });
+        errorAlert(error.message, error.statusText);
+      }
+    );
   }
 
   /**
@@ -61,45 +62,38 @@ export class CrRmSenderidComponent implements OnInit {
    * @description deletes the selected sender custom route data in table
    */
   deleteSenderCustom(senderData) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You wont\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
+    deleteAlert().then((result) => {
       if (result.value) {
         const senderidData = {
           senderid: senderData.senderid,
-          id: senderData.id, username: '1234'
+          id: senderData.id,
+          username: "1234",
         };
-        this.senderService.deleteCustomSenderid(senderidData).subscribe((data: any) => {
-          if (data.responsestatus === 'failure') {
-            Swal.fire({
-              icon: 'error',
-              text: data.message,
-            });
-          } else {
-            Swal.fire({
-              icon: 'success',
-              text: data.message,
-            });
-            this.getAllSenderidData();
-          }
-        });
+        this.senderService
+          .deleteCustomSenderTemplate(senderidData)
+          .subscribe((data: any) => {
+            if (data.responsestatus === "failure") {
+              errorAlert(data.message);
+            } else {
+              successAlert(data.message);
+              this.getAllSenderidData();
+            }
+          });
       }
     });
   }
 
-  sort(name: string): void {
-    if (name && this.sortingName !== name) {
+  /**
+   *
+   * @param tableHeaderName consists of table header
+   * @description sorts the table based upon the table Header Name
+   */
+  sort(tableHeaderName: string): void {
+    if (tableHeaderName && this.sortingName !== tableHeaderName) {
       this.isDesc = false;
     } else {
       this.isDesc = !this.isDesc;
     }
-    this.sortingName = name;
+    this.sortingName = tableHeaderName;
   }
-
 }

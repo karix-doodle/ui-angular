@@ -1,175 +1,216 @@
-import { Component, OnInit } from '@angular/core';
-import { MobileCustomRouteService } from 'src/app/route-management/services/custom-route/mobile-custom-route.service';
-import { ToastrManager } from 'ng6-toastr-notifications';
-import { Router, ActivatedRoute } from '@angular/router';
-import { CustomService } from 'src/app/route-management/services/custom-route/custom.service';
-import { NgForm } from '@angular/forms';
-import { CustomGateway_ApiResponse, CustomGateway_Data, MobileCustomResponse } from 'src/app/route-management/models/custom.model';
-import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
+import { Component, OnInit } from "@angular/core";
+import { MobileCustomRouteService } from "src/app/route-management/services/RouteManagement/custom-route/mobile-custom-route.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { CustomService } from "src/app/route-management/services/RouteManagement/custom-route/custom.service";
+import { FormGroup, Validators, FormBuilder } from "@angular/forms";
+import {
+  CustomGateway_ApiResponse,
+  CustomGateway_Data,
+  MobileCustomResponse,
+} from "src/app/route-management/models/custom.model";
+import { environment } from "src/environments/environment";
+import {
+  errorAlert,
+  successAlert,
+} from "../../../../shared/sweet-alert/sweet-alert";
 
 @Component({
-  selector: 'app-mobile-route',
-  templateUrl: './mobile-route.component.html',
-  styleUrls: ['./mobile-route.component.css'],
+  selector: "app-mobile-route",
+  templateUrl: "./mobile-route.component.html",
+  styleUrls: ["./mobile-route.component.css"],
 })
 export class MobileRouteComponent implements OnInit {
-  whitelist_type: string;
-  accounts: string[] = ['Global', 'Account'];
-
-  mobileRouteForm: NgForm;
-  fallback_gw_id: any;
-  primary_gw_id: any;
-  mobile: any;
-  esmeaddr: any;
-  comments: any;
-formData: FormData = new FormData();
-  cMobileUpload: any;
-selectedFile: File;
-  fileData: FormData;
+  accounts: string[] = ["Global", "Account"];
+  mobileRouteForm: FormGroup;
+  submitted = false;
+  cMobileUpload: any = "";
+  fileData: FormData = null;
   gatewayListApiResponse: CustomGateway_ApiResponse;
   gatewayListData: CustomGateway_Data;
   constructor(
     public router: Router,
     public customService: CustomService,
-    public toastr: ToastrManager,
     public mobileCustomService: MobileCustomRouteService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    public formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
-    this.whitelist_type = this.accounts[0];
     this.getGatewayList();
+    this.initForm();
+  }
+/**
+   * @description form initialization
+   */
+  private initForm() {
+    this.mobileRouteForm = this.formBuilder.group({
+      whitelist_type: ["Global", [Validators.required]],
+      mobile: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("[0-9]{10}"),
+        ],
+      ],
+      primary_gw_id: [null, [Validators.required]],
+      fallback_gw_id: [null, [Validators.required]],
+      comments: [""],
+      esmeaddr: [""],
+      createdby: [""],
+    });
+  }
+
+
+  /**
+   * @description validations added acording to the whitelist_type
+   */
+
+  onChange() {
+    if (this.control.whitelist_type.value === "Account") {
+      this.control.esmeaddr.setValidators([
+        Validators.required,
+        Validators.pattern("[0-9]{3,14}"),
+      ]);
+      this.submitted = false;
+    } else {
+      this.control.esmeaddr.setValidators(null);
+      this.submitted = false;
+    }
+    this.fromReset();
+  }
+
+  get control() {
+    return this.mobileRouteForm.controls;
   }
 
   /**
    * @description gets the gateway list
    */
   getGatewayList() {
-    this.customService.getCustomRouteGateways().subscribe((res: CustomGateway_ApiResponse) => {
-      console.log(res);
-      if (
-        res.responsestatus === environment.APIStatus.success.text &&
-        res.responsecode > environment.APIStatus.success.code
-      ) {
-        this.gatewayListApiResponse = res;
-        this.gatewayListData = JSON.parse(JSON.stringify(this.gatewayListApiResponse.data));
-      } else if (
-        res.responsestatus === environment.APIStatus.error.text &&
-        res.responsecode < environment.APIStatus.error.code
-      ) {
-        Swal.fire({
-          icon: 'error',
-          title: res.responsestatus,
-          text: res.responsestatus,
-        });
+    this.customService.getCustomRouteGateways().subscribe(
+      (res: CustomGateway_ApiResponse) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.gatewayListApiResponse = res;
+          this.gatewayListData = JSON.parse(
+            JSON.stringify(this.gatewayListApiResponse.data)
+          );
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.responsestatus, res.responsecode);
+        }
+      },
+      (error) => {
+        errorAlert(error.message, error.statusText);
       }
-    },
-    (error) => {
-      Swal.fire({
-        icon: 'error',
-        title: error.statusText,
-        text: error.message,
-      });
-    });
+    );
   }
 
   /**
    * @description navigates back to list page
    */
   cancel() {
-    this.router.navigate(['../mobile'], { relativeTo: this.route });
+    // this.router.navigate(["../mobile"], { relativeTo: this.route });
+    this.router.navigateByUrl("/route-management/custom-route/mobile");
   }
+
+
+
 
   /**
    *
-   * @param esmeaddr ESME Address
-   * @description checks the esme address
-   */
-  checkEsmeAddress(esmeaddr) {
-    if (esmeaddr.length >= 4) {
-      console.log(esmeaddr);
-    }
-  }
-
-  /**
-   *
-   * @param mobilerouteformdata consists of mobile route data
    * @description adds the mobile custom route
    */
-  addMobileRoute(mobilerouteformdata) {
-    if (mobilerouteformdata.valid) {
-      mobilerouteformdata.value.esmeaddr = mobilerouteformdata.value.esmeaddr ? mobilerouteformdata.value.esmeaddr : 0;
-      mobilerouteformdata.value.req_type = 'single_req';
-      mobilerouteformdata.value.createdby = '1234';
-      mobilerouteformdata.value.whitelist_type = this.whitelist_type.toLowerCase();
-      this.mobileCustomService.addCustomMobile(mobilerouteformdata.value).subscribe((data: MobileCustomResponse) => {
-        if (data.responsestatus === 'failure') {
-          Swal.fire({
-            icon: 'error',
-            text: data.message,
-          });
-        } else {
-          Swal.fire({
-            icon: 'success',
-            text: data.message,
-          });
-          this.cancel();
-        }
-      });
+  addMobileRoute() {
+    if (this.fileData) {
+      this.submitted = false;
+      this.onAddRoute(this.fileData);
+    } else if (!this.mobileRouteForm.valid) {
+      this.submitted = true;
+    } else {
+      this.mobileRouteForm.value.esmeaddr = this.mobileRouteForm.value.esmeaddr
+        ? this.mobileRouteForm.value.esmeaddr
+        : 0;
+      this.mobileRouteForm.value.req_type = "single_req";
+      this.mobileRouteForm.value.createdby = "1234";
+      this.mobileRouteForm.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
+      this.onAddRoute({ ...this.mobileRouteForm.value });
     }
   }
 
+  /**
+   *
+   * @param fileInput selected file to upload
+   * @description checks and appends the form data to the selected file
+   */
   fileUpload(fileInput) {
-    if (fileInput.target.files.length === 0) { return; }
+    this.fromReset();
+    if (fileInput.target.files.length === 0) {
+      return;
+    }
     const file = fileInput.target.files[0];
-    console.log(this.formData, file);
+    const form = new FormData();
     this.cMobileUpload = file.name;
-    this.formData.append('file', file, file.name);
-    this.formData.append('req_type', 'fileupload');
-    this.formData.append('whitelist_type', this.whitelist_type.toLowerCase());
-    this.formData.append('createdby', '1234');
-    this.mobileCustomService.addCustomMobile(this.formData).subscribe(data => {
-      console.log(data);
+    form.append("file", file, file.name);
+    form.append("req_type", "fileupload");
+    form.append(
+      "whitelist_type",
+      this.mobileRouteForm.value.whitelist_type.toLowerCase()
+    );
+    form.append("createdby", "1234");
+    this.fileData = form;
+  }
+  /**
+   *
+   * @param body contains the addroute data
+   * @description checks wheather the formtype is form or fomdata
+   */
+  onAddRoute(body) {
+    const formType = this.fileData ? true : false;
+    this.mobileCustomService.addCustomMobile(body, formType).subscribe(
+      (data: MobileCustomResponse) => {
+        if (data.responsestatus === "failure") {
+          errorAlert(data.message, data.responsestatus);
+          this.fromReset();
+        } else {
+          successAlert(data.message);
+          this.cancel();
+        }
+      },
+      (error) => {
+        errorAlert(error.name, error.statusText);
+        this.fromReset();
+      }
+    );
+  }
+  /**
+   * @description resets the form to the default values
+   */
+  fromReset() {
+    this.mobileRouteForm.markAsUntouched();
+    this.mobileRouteForm.markAsPristine();
+    this.fileData = null;
+    this.cMobileUpload = null;
+    this.submitted = false;
+    this.emtyForm();
+  }
+
+   /**
+   * @description resets the form to the default values
+   */
+
+  emtyForm() {
+    this.mobileRouteForm.patchValue({
+      mobile: "",
+      primary_gw_id: null,
+      fallback_gw_id: null,
+      comments: "",
+      esmeaddr: "",
+      createdby: "",
     });
   }
-
-onAddRoute() {
-    this.mobileCustomService
-      .addCustomMobile(this.mobileRouteForm.value)
-      .subscribe((data: any) => {
-        if (data.responsestatus === 'failure') {
-          Swal.fire({
-            icon: 'error',
-            text: data.message,
-          });
-        } else {
-          Swal.fire({
-            icon: 'success',
-            text: data.message,
-          });
-          this.cancel();
-        }
-      });
-    if (this.cMobileUpload) {
-      console.log(this.formData, '123');
-      this.mobileCustomService
-        .addCustomMobile(this.formData)
-        .subscribe((data: any) => {
-          if (data.responsestatus === 'failure') {
-            Swal.fire({
-              icon: 'error',
-              text: data.message,
-            });
-          } else {
-            Swal.fire({
-              icon: 'success',
-              text: data.message,
-            });
-          }
-        });
-    }
-  }
 }
-
-

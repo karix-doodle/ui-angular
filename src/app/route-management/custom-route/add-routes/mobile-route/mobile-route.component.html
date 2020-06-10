@@ -1,201 +1,374 @@
 <div class="row btm-border">
   <div class="col-8 pt-10">
-      <label class="main-heading">
-      <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
-      <span><a routerLink="/route-management/custom-route/mobile"> CUSTOM ROUTE - MOBILE /</a> CREATE NEW</span>
+    <label class="main-heading">
+      <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label
+    >
+    <span
+      ><a routerLink="/route-management/custom-route/mobile">
+        CUSTOM ROUTE - MOBILE /</a
+      >
+      CREATE NEW</span
+    >
   </div>
   <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
-      <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
-          Mobile Number</button>
-      <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-          <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-route">SenderID + Template</a>
-          <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-mobile-route">Mobile + SenderID</a>
-      </div>
-
+    <button
+      class="btn dropdown-basic dropdown-toggle"
+      id="erp-dropdown"
+      ngbDropdownToggle
+    >
+      Mobile Number
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
+      <a
+        class="dropdown-item"
+        routerLink="/route-management/custom-route/add-route/senderid-route"
+        >SenderID + Template</a
+      >
+      <a
+        class="dropdown-item"
+        routerLink="/route-management/custom-route/add-route/senderid-mobile-route"
+        >Mobile + SenderID</a
+      >
+    </div>
   </div>
 </div>
 <div class="main-container p-4">
-<form #mobileCustomForm="ngForm" (ngSubmit)="addMobileRoute(mobileCustomForm)">
-    <mat-radio-group class="mat-radio-group" name="whitelist_type" [(ngModel)]="whitelist_type"
-        (change)="cMobileUpload=null;">
-        <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
-            {{labelname}}
-        </mat-radio-button>
+  <form [formGroup]="mobileRouteForm" (ngSubmit)="addMobileRoute()">
+    <mat-radio-group
+      class="mat-radio-group"
+      formControlName="whitelist_type"
+      (change)="cMobileUpload = null; fileData = null; onChange()"
+    >
+      <mat-radio-button
+        class="mat-radio-button"
+        *ngFor="let labelname of accounts"
+        [value]="labelname"
+      >
+        {{ labelname }}
+      </mat-radio-button>
     </mat-radio-group>
 
     <div class="input-container">
-        <!-- Global -->
-        <div *ngIf="whitelist_type=='Global'">
-            <div class="create-custom-route-div">
-                <div class="row">
-                    <div class=" form-group col-4">
-                        <label>Mobile Number</label>
-                        <input type="text" name="mobile" [(ngModel)]="mobile" class="form-control"
-                            placeholder="Enter Mobile Number" required pattern="[0-9]{10}" #mobile1="ngModel" />
-                        <div
-                            *ngIf="mobile1.errors && (mobile1.dirty || mobile1.touched || mobileCustomForm.submitted)">
-                            <small *ngIf="mobile1.errors.required" class="text-danger">
-                                Mobile Number is required</small>
-                            <small *ngIf="mobile1.errors.pattern" class="text-danger">Invalid Mobile Number.</small>
-                        </div>
-                    </div>
+      <!-- Global -->
+      <div *ngIf="control['whitelist_type'].value == 'Global'">
+        <div class="create-custom-route-div">
+          <div class="row">
+            <div class="form-group col-4">
+              <label>Mobile Number</label>
+              <input
+                type="text"
+                formControlName="mobile"
+                class="form-control"
+                placeholder="Enter Mobile Number"
+              />
 
-                    <div class=" form-group col-4">
-                        <label>Primary Gateway</label>
-                        <select class="dropdown-select w-100" name="primary_gw_id" [(ngModel)]="primary_gw_id"
-                            required #pgateway="ngModel">
-                            <option value="undefined" disabled default>Select Primary Gateway</option>
-                            <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id"
-                                [disabled]="fallback_gw_id && gateway.gw_id === fallback_gw_id">
-                                <span class="mr-1" style="font-weight: bolder;">{{gateway.gw_id}}&nbsp;-</span>
-                                {{gateway.gw_name}}
-                            </option>
-                        </select>
-                        <div
-                            *ngIf="pgateway.errors && (pgateway.dirty || pgateway.touched || mobileCustomForm.submitted)">
-                            <small *ngIf="pgateway.errors.required" class="text-danger">
-                                Primary Gateway is required</small>
-                        </div>
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Fallback Gateway</label>
-                        <select class="dropdown-select w-100" name="fallback_gw_id" [(ngModel)]="fallback_gw_id"
-                            required #fgateway="ngModel">
-                            <option value="undefined" disabled default>Select Fallback Gateway</option>
-                            <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id"
-                                [disabled]="primary_gw_id && gateway.gw_id === primary_gw_id">
-                                <span class="mr-1" style="font-weight: bolder;">{{gateway.gw_id}}&nbsp;-</span>
-                                {{gateway.gw_name}}
-                            </option>
-                        </select>
-                        <div
-                            *ngIf="fgateway.errors && (fgateway.dirty || fgateway.touched || mobileCustomForm.submitted)">
-                            <small *ngIf="fgateway.errors.required" class="text-danger">Fallback Gateway is
-                                required</small>
-                        </div>
-                    </div>
+              <div
+                *ngIf="
+                  control.mobile.errors &&
+                  (submitted || control.mobile.touched || control.mobile.dirty)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="control.mobile.errors.required">
+                  Mobile Number is required
                 </div>
-            </div>
-            <div class="row p-3">
-                <label class="w-100">Add File List</label>
-                <div class="form-group">
-                    <div class="upload-btn-wrapper">
-                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>
-                            Browse Excel file to upload
-                            <input type="file" accept=".xlsx,.xls" (change)="fileUpload($event)"/>
-                        </button>
-                        <span class="m-2" *ngIf="cMobileUpload">
-                            {{cMobileUpload}}<i class="fa fa-times m-1" (click)="cMobileUpload=null;"
-                                style="cursor: pointer;" title="Remove File"></i>
-                        </span>
-                    </div>
+                <div *ngIf="control.mobile.errors.pattern">
+                  Invalid Mobile Number.
                 </div>
+              </div>
             </div>
-            <div class="row">
-                <label class="col-12">Comments</label>
-                <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4" name="comments"
-                    [(ngModel)]="comments"></textarea>
+
+            <div class="form-group col-4">
+              <label>Primary Gateway</label>
+              <select
+                class="dropdown-select w-100"
+                formControlName="primary_gw_id"
+              >
+                <option value="null" disabled>Select Primary Gateway</option>
+                <option
+                  *ngFor="let gateway of gatewayListData"
+                  [value]="gateway.gw_id"
+                  [disabled]="
+                    control.fallback_gw_id &&
+                    gateway.gw_id === control.fallback_gw_id
+                  "
+                >
+                  <span class="mr-1" style="font-weight: bolder;"
+                    >{{ gateway.gw_id }}&nbsp;-</span
+                  >
+                  {{ gateway.gw_name }}
+                </option>
+              </select>
+
+              <div
+                *ngIf="
+                  control.primary_gw_id.errors &&
+                  (submitted ||
+                    control.primary_gw_id.touched ||
+                    control.primary_gw_id.dirty)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="control.primary_gw_id.errors.required">
+                  Primary Gateway is required
+                </div>
+              </div>
             </div>
-            <div class="col-12 text-center mt-4">
-                <input type="reset" class="btn btn-basic mr-3" value="Cancel" (click)="cancel()">
-                <input type="submit" class="btn erp-intl-btn save-btn" value="Add Route">
+            <div class="form-group col-4">
+              <label>Fallback Gateway</label>
+              <select
+                class="dropdown-select w-100"
+                formControlName="fallback_gw_id"
+              >
+                <option value="null" disabled>Select Fallback Gateway</option>
+                <option
+                  *ngFor="let gateway of gatewayListData"
+                  [value]="gateway.gw_id"
+                  [disabled]="
+                    control.primary_gw_id.value &&
+                    gateway.gw_id === control.primary_gw_id.value
+                  "
+                >
+                  <span class="mr-1" style="font-weight: bolder;"
+                    >{{ gateway.gw_id }}&nbsp;-</span
+                  >
+                  {{ gateway.gw_name }}
+                </option>
+              </select>
+
+              <div
+                *ngIf="
+                  control.fallback_gw_id.errors &&
+                  (submitted ||
+                    control.fallback_gw_id.touched ||
+                    control.fallback_gw_id.dirty)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="control.fallback_gw_id.errors.required">
+                  Fallback Gateway is required
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-
-        <!-- Account -->
-        <div *ngIf="whitelist_type=='Account'">
-            <div class="create-custom-route-div">
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label>Mobile Number</label>
-                        <input type="text" name="mobile" [(ngModel)]="mobile" class="form-control"
-                            placeholder="Enter Mobile Number" required pattern="[0-9]{10}" #mobile1="ngModel" />
-                        <div *ngIf="mobile1.errors && (mobile1.dirty || mobile1.touched
-                        || mobileCustomForm.submitted)">
-                            <small *ngIf="mobile1.errors.required" class="text-danger">
-                                Mobile Number is required</small>
-                            <small *ngIf="mobile1.errors.pattern" class="text-danger">
-                                Invalid Mobile Number.</small>
-                        </div>
-                    </div>
-                    <div class=" form-group col-4">
-                        <label>ESME Address</label>
-                        <input type="text" class="form-control" placeholder="Enter ESME Addr." required
-                            #esmeaddrr="ngModel" name="esmeaddr" [(ngModel)]="esmeaddr"
-                            (input)="checkEsmeAddress(esmeaddr)" pattern="[0-9]{3,14}" />
-                        <div *ngIf="esmeaddrr.errors && (esmeaddrr.dirty || esmeaddrr.touched
-                        || mobileCustomForm.submitted)">
-                            <small *ngIf="esmeaddrr.errors.required" class="text-danger">
-                                ESME Address is required</small>
-                            <small *ngIf="esmeaddrr.errors.pattern" class="text-danger">
-                                Invalid ESME Address.</small>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class=" form-group col-4">
-                        <label>Primary Gateway</label>
-                        <select class="dropdown-select w-100" name="primary_gw_id" [(ngModel)]="primary_gw_id"
-                            required #pgateway="ngModel">
-                            <option value="undefined" disabled default>Select Primary Gateway</option>
-                            <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id"
-                                [disabled]="fallback_gw_id && gateway.gw_id === fallback_gw_id">
-                                <span class="mr-1" style="font-weight: bolder;">{{gateway.gw_id}}&nbsp;-</span>
-                                {{gateway.gw_name}}
-                            </option>
-                        </select>
-                        <div
-                            *ngIf="pgateway.errors && (pgateway.dirty || pgateway.touched || mobileCustomForm.submitted)">
-                            <small *ngIf="pgateway.errors.required" class="text-danger">
-                                Primary Gateway is required</small>
-                        </div>
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Fallback Gateway</label>
-                        <select class="dropdown-select w-100" name="fallback_gw_id" [(ngModel)]="fallback_gw_id"
-                            required #fgateway="ngModel">
-                            <option value="undefined" disabled default>Select Fallback Gateway</option>
-                            <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id"
-                                [disabled]="primary_gw_id && gateway.gw_id === primary_gw_id">
-                                <span class="mr-1" style="font-weight: bolder;">{{gateway.gw_id}}&nbsp;-</span>
-                                {{gateway.gw_name}}
-                            </option>
-                        </select>
-                        <div
-                            *ngIf="fgateway.errors && (fgateway.dirty || fgateway.touched || mobileCustomForm.submitted)">
-                            <small *ngIf="fgateway.errors.required" class="text-danger">Fallback Gateway is
-                                required</small>
-                        </div>
-
-                    </div>
-                </div>
+        <div class="row p-3">
+          <label class="w-100">Add File List</label>
+          <div class="form-group">
+            <div class="upload-btn-wrapper">
+              <button type="button" class="upload-btn">
+                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                Browse Excel file to upload
+                <input
+                  type="file"
+                  accept=".xlsx,.xls"
+                  (change)="fileUpload($event)"
+                />
+              </button>
+              <span class="m-2" *ngIf="cMobileUpload">
+                {{ cMobileUpload
+                }}<i
+                  class="fa fa-times m-1"
+                  (click)="cMobileUpload = null; fileData = null"
+                  style="cursor: pointer;"
+                  title="Remove File"
+                ></i>
+              </span>
             </div>
-            <div class="row px-3 pt-2">
-                <label class="w-100">Add File List</label>
-                <div class="form-group">
-                    <div class="upload-btn-wrapper">
-                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>
-                            Browse Excel file to upload
-                            <input type="file" accept=".xlsx,.xls" (change)="fileUpload($event)"/>
-                        </button>
-                        <span class="m-2" *ngIf="cMobileUpload">
-                            {{cMobileUpload}}<i class="fa fa-times m-1" (click)="cMobileUpload=null;"
-                                style="cursor: pointer;" title="Remove File"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <label class="col-12">Comments</label>
-                <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4" name="comments"
-                    [(ngModel)]="comments"></textarea>
-            </div>
-            <div class="col-12 text-center mt-4">
-                <input type="reset" class="btn btn-basic mr-3" value="Cancel" (click)="cancel()">
-                <input type="submit" class="btn erp-intl-btn save-btn" value="Add Route">
-            </div>
+          </div>
         </div>
+        <div class="row">
+          <label class="col-12">Comments</label>
+          <textarea
+            class="w-100 ml-15"
+            placeholder="Enter Comment"
+            rows="4"
+            formControlName="comments"
+          ></textarea>
+        </div>
+        <div class="col-12 text-center mt-4">
+          <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
+            Cancel
+          </button>
+          <button type="submit" class="btn erp-intl-btn save-btn">
+            Add Route
+          </button>
+        </div>
+      </div>
+
+      <!-- Account -->
+      <div *ngIf="control['whitelist_type'].value === 'Account'">
+        <div class="create-custom-route-div">
+          <div class="row">
+            <div class="form-group col-4">
+              <label>Mobile Number</label>
+              <input
+                type="text"
+                formControlName="mobile"
+                class="form-control"
+                placeholder="Enter Mobile Number"
+              />
+
+              <div
+                *ngIf="
+                  control.mobile.errors &&
+                  (submitted || control.mobile.touched || control.mobile.dirty)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="control.mobile.errors.required">
+                  Mobile Number is required
+                </div>
+                <div *ngIf="control.mobile.errors.pattern">
+                  Invalid Mobile Number.
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-4">
+              <label>ESME Address</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter ESME Addr."
+                formControlName="esmeaddr"
+              />
+
+              <div
+                *ngIf="
+                  control.esmeaddr.errors &&
+                  (submitted ||
+                    control.esmeaddr.touched ||
+                    control.esmeaddr.dirty)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="control.esmeaddr.errors.required">
+                  ESME Address is required
+                </div>
+                <div *ngIf="control.esmeaddr.errors.pattern">
+                  Invalid ESME Address.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-4">
+              <label>Primary Gateway</label>
+              <select
+                class="dropdown-select w-100"
+                formControlName="primary_gw_id"
+              >
+                <option value="null" disabled>Select Primary Gateway</option>
+                <option
+                  *ngFor="let gateway of gatewayListData"
+                  [value]="gateway.gw_id"
+                  [disabled]="
+                    control.fallback_gw_id &&
+                    gateway.gw_id === control.fallback_gw_id.value
+                  "
+                >
+                  <span class="mr-1" style="font-weight: bolder;"
+                    >{{ gateway.gw_id }}&nbsp;-</span
+                  >
+                  {{ gateway.gw_name }}
+                </option>
+              </select>
+
+              <div
+                *ngIf="
+                  control.primary_gw_id.errors &&
+                  (submitted ||
+                    control.primary_gw_id.touched ||
+                    control.primary_gw_id.dirty)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="control.primary_gw_id.errors.required">
+                  Primary Gateway is required
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-4">
+              <label>Fallback Gateway</label>
+              <select
+                class="dropdown-select w-100"
+                formControlName="fallback_gw_id"
+              >
+                <option value="null" disabled>Select Fallback Gateway</option>
+                <option
+                  *ngFor="let gateway of gatewayListData"
+                  [value]="gateway.gw_id"
+                  [disabled]="
+                    control.primary_gw_id.value &&
+                    gateway.gw_id === control.primary_gw_id.value
+                  "
+                >
+                  <span class="mr-1" style="font-weight: bolder;"
+                    >{{ gateway.gw_id }}&nbsp;-</span
+                  >
+                  {{ gateway.gw_name }}
+                </option>
+              </select>
+
+              <div
+                *ngIf="
+                  control.fallback_gw_id.errors &&
+                  (submitted ||
+                    control.fallback_gw_id.touched ||
+                    control.fallback_gw_id.dirty)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="control.fallback_gw_id.errors.required">
+                  Fallback Gateway is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row px-3 pt-2">
+          <label class="w-100">Add File List</label>
+          <div class="form-group">
+            <div class="upload-btn-wrapper">
+              <button type="button" class="upload-btn">
+                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                Browse Excel file to upload
+                <input
+                  type="file"
+                  accept=".xlsx,.xls"
+                  (change)="fileUpload($event)"
+                />
+              </button>
+              <span class="m-2" *ngIf="cMobileUpload">
+                {{ cMobileUpload
+                }}<i
+                  class="fa fa-times m-1"
+                  (click)="cMobileUpload = null; fileData = null"
+                  style="cursor: pointer;"
+                  title="Remove File"
+                ></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-12">Comments</label>
+          <textarea
+            class="w-100 ml-15"
+            placeholder="Enter Comment"
+            rows="4"
+            formControlName="comments"
+          ></textarea>
+        </div>
+        <div class="col-12 text-center mt-4">
+          <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
+            Cancel
+          </button>
+          <button type="submit" class="btn erp-intl-btn save-btn">
+            Add Route
+          </button>
+        </div>
+      </div>
     </div>
-</form>
+  </form>
 </div>

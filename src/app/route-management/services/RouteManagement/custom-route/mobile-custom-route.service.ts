@@ -1,23 +1,23 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { environment } from "../../../../../environments/environment";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
 import {
   MobileCustom_ApiResponse,
   MobileCustomResponse,
-} from 'src/app/route-management/models/custom.model';
-import { map } from 'rxjs/operators';
+} from "src/app/route-management/models/custom.model";
+import { map } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class MobileCustomRouteService {
   constructor(public http: HttpClient) {}
-  baseUrl: string = environment.serverUrl + '/routemgmt/custom/mobile';
+  baseUrl: string = environment.serverUrl + "/routemgmt/custom/mobile";
   httpOptions = {
     headers: new HttpHeaders({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
     }),
   };
   user = {
@@ -29,7 +29,7 @@ export class MobileCustomRouteService {
    */
   getCustomMobileList(): Observable<MobileCustom_ApiResponse> {
     return this.http
-      .post(this.baseUrl + '/list', this.user, this.httpOptions)
+      .post(this.baseUrl + "/list", this.user, this.httpOptions)
       .pipe(map((data) => data as MobileCustom_ApiResponse));
   }
 
@@ -38,10 +38,17 @@ export class MobileCustomRouteService {
    * @param body consists of mobile custom route data
    * @description adds the mobile custom route data
    */
-  addCustomMobile(body): Observable<MobileCustomResponse> {
+  addCustomMobile(body, formType: Boolean): Observable<MobileCustomResponse> {
+    let customMobileData: any;
+    if (formType) {
+      customMobileData = body;
+    } else {
+      customMobileData = { ...this.user, ...body };
+    }
+
     return this.http
-      .post(this.baseUrl + '/add', { ...this.user, ...body }, this.httpOptions)
-      .pipe(map((data) => data as unknown as MobileCustomResponse));
+      .post(this.baseUrl + "/add", customMobileData)
+      .pipe(map((data) => data as MobileCustomResponse));
   }
 
   /**
@@ -52,16 +59,10 @@ export class MobileCustomRouteService {
   deleteCustomMobile(body): Observable<MobileCustomResponse> {
     return this.http
       .post(
-        this.baseUrl + '/delete',
+        this.baseUrl + "/delete",
         { ...this.user, ...body },
         this.httpOptions
       )
-      .pipe(map((data) => data as unknown as MobileCustomResponse));
+      .pipe(map((data) => (data as unknown) as MobileCustomResponse));
   }
-
-  uploadCustomMobileFile(formData) {
-
-    return this.http.post(this.baseUrl + '/add', formData, this.httpOptions);
-  }
-
 }

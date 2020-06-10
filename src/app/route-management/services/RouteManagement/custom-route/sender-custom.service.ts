@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SenderCustomApiResponse, MobileCustomSenderIdResponse } from '../../models/custom.model';
+import { SenderCustomApiResponse, MobileCustomSenderIdResponse } from '../../../models/custom.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,9 +38,16 @@ export class SenderCustomService {
    * @param body consists of sender custom route data
    * @description adds the senderid custom route data
    */
-  addCustomSenderid(body): Observable<MobileCustomSenderIdResponse> {
+  addCustomSenderTemplate(body, formType: boolean): Observable<MobileCustomSenderIdResponse> {
+    let values: any;
+    if(formType){
+      values = body
+
+    }else {
+      values ={...this.user, ...body}
+    }
     return this.http
-      .post(this.baseUrl + '/add', body)
+      .post(this.baseUrl + '/add', values)
       .pipe(map((data) => data as MobileCustomSenderIdResponse));
   }
 
@@ -49,7 +56,7 @@ export class SenderCustomService {
    * @param body consists of custom senderid data to delete
    * @description deletes the record
    */
-  deleteCustomSenderid(body): Observable<MobileCustomSenderIdResponse> {
+  deleteCustomSenderTemplate(body): Observable<MobileCustomSenderIdResponse> {
     return this.http
       .post(this.baseUrl + '/delete', { ...this.user, ...body }, this.httpOptions)
       .pipe(map((data) => data as MobileCustomSenderIdResponse));
