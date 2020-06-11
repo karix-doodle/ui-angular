@@ -5,7 +5,10 @@ import { GatewayManagementService } from '../services/gateway-management.service
 import { GtESMEAddrRouted_ApiResponse, GtESMEAddrRouted_Data } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import Swal from 'sweetalert2';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-gt-esmeaddr-route',
@@ -43,18 +46,10 @@ export class GtESMEAddrRoutedComponent implements OnInit {
           this.GtESMEAddrRoutedDataRes = res;
           this.GtESMEAddrRoutedData = JSON.parse(JSON.stringify(this.GtESMEAddrRoutedDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }

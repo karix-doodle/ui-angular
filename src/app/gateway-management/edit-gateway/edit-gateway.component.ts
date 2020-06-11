@@ -5,7 +5,11 @@ import { GatewayManagementService } from '../services/gateway-management.service
 import { GtEdit_ApiResponse, GtEdit_Data, GtTimeZone_ApiResponse, GtTimeZone_Data, GtCurrency_ApiResponse, GtCurrency_Data, GtUpdate_ApiResponse } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import Swal from 'sweetalert2';
+import { toCamelCase } from '../../shared/helper/helperFunctions';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-edit-gateway',
@@ -46,7 +50,7 @@ export class EditGatewayComponent implements OnInit {
     let gw_name = '[0-9a-zA-Z-_.@$\' ]{4,200}';
     let gw_id = '[0-9a-zA-Z]{2,10}';
     let tps = '[0-9]{1,100000}';
-    let description = '^.{1,1000}$';
+    let description = '^[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{1,1000}$';
     this.updateGatewayFormGroup = this.formBuilder.group({
       gw_name: new FormControl('', [Validators.required, Validators.pattern(gw_name)]),
       gw_id: new FormControl('', [Validators.required, Validators.pattern(gw_id)]),
@@ -79,18 +83,10 @@ export class EditGatewayComponent implements OnInit {
           this.gatewayTimeZoneDataRes = res;
           this.gatewayTimeZoneData = JSON.parse(JSON.stringify(this.gatewayTimeZoneDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -102,18 +98,10 @@ export class EditGatewayComponent implements OnInit {
           this.gatewayCurrencyDataRes = res;
           this.gatewayCurrencyData = JSON.parse(JSON.stringify(this.gatewayCurrencyDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -179,7 +167,7 @@ export class EditGatewayComponent implements OnInit {
             currency_id: this.gatewayEditDataRes.data.currency_id,
             timezone: this.gatewayEditDataRes.data.timezone,
             gw_type: this.gatewayEditDataRes.data.gw_type,
-            billing_type: this.gatewayEditDataRes.data.billing_type,
+            billing_type: this.gatewayEditDataRes.data.billing_type.toLowerCase(),
             is_bill_on_submission: this.gatewayEditDataRes.data.is_bill_on_submission,
             exclude_lcr: this.gatewayEditDataRes.data.exclude_lcr,
             tps: this.gatewayEditDataRes.data.tps,
@@ -191,18 +179,10 @@ export class EditGatewayComponent implements OnInit {
           this.setMessageType(this.gatewayEditDataRes.data.msg_type.split(','))
           this.setCharsetType(this.gatewayEditDataRes.data.charset_enc.split(','))
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -216,6 +196,7 @@ export class EditGatewayComponent implements OnInit {
       this.isUpdateValid = false;
       data.currency_id = (Number)(data.currency_id)
       data.timezone = (Number)(data.timezone)
+      data.billing_type = toCamelCase(data.billing_type);
       data.is_bill_on_submission = data.is_bill_on_submission ? 1 : 0;
       data.exclude_lcr = data.exclude_lcr ? "1" : "0";
       data.senderid_whitelist_required = data.senderid_whitelist_required ? "1" : "0";
@@ -225,25 +206,13 @@ export class EditGatewayComponent implements OnInit {
       this.gatewayManagementService.Gateway_update(data).subscribe(
         (res: GtUpdate_ApiResponse) => {
           if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-            Swal.fire({
-              icon: 'success',
-              title: res.responsestatus,
-              text: res.message,
-            })
+            successAlert(res.message, res.responsestatus)
             this.router.navigate(['gateway-management']);
           } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-            Swal.fire({
-              icon: 'error',
-              title: res.responsestatus,
-              text: res.message,
-            })
+            errorAlert(res.message, res.responsestatus)
           }
         }, (error: HttpErrorResponse) => {
-          Swal.fire({
-            icon: 'error',
-            title: error.statusText,
-            text: error.message,
-          })
+          errorAlert(error.message, error.statusText)
         }
       );
     }

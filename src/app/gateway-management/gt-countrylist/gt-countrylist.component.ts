@@ -7,6 +7,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { saveAs } from 'file-saver';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-gt-countrylist',
@@ -56,18 +60,10 @@ export class GtCountrylistComponent implements OnInit {
           this.GtDetailsCountryListRes = res;
           this.GtDetailsCountryList = JSON.parse(JSON.stringify(this.GtDetailsCountryListRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -82,12 +78,8 @@ export class GtCountrylistComponent implements OnInit {
         let blob = new Blob([res], { type: 'text/csv' });
         let fileName = 'GatewayCountryListdata-' + new Date().toLocaleString()
         saveAs(blob, fileName + ".csv");
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -111,24 +103,12 @@ export class GtCountrylistComponent implements OnInit {
         this.gatewayManagementService.GtCountry_statusupdate(data).subscribe(
           (res: GtCountryStatusupdate_ApiResponse) => {
             if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-              Swal.fire({
-                icon: 'success',
-                title: res.responsestatus,
-                text: res.message,
-              })
+              // successAlert(res.message, res.responsestatus)
             } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-              Swal.fire({
-                icon: 'error',
-                title: res.responsestatus,
-                text: res.message,
-              })
+              errorAlert(res.message, res.responsestatus)
             }
           }, (error: HttpErrorResponse) => {
-            Swal.fire({
-              icon: 'error',
-              title: error.statusText,
-              text: error.message,
-            })
+            errorAlert(error.message, error.statusText)
           }
         );
       } else {
@@ -148,18 +128,10 @@ export class GtCountrylistComponent implements OnInit {
           this.GtSenderIdConfigCountryListRes = res;
           this.GtSenderIdConfigCountryList = JSON.parse(JSON.stringify(this.GtSenderIdConfigCountryListRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }

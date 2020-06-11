@@ -5,7 +5,10 @@ import { GatewayManagementService } from '../services/gateway-management.service
 import { GtDetails_ApiResponse, GtDetails_Data, GtAddedCountryList_ApiResponse, GtAddedCountryList_Data, GtInactiveCountryList_ApiResponse, GtInactiveCountryList_Data, GtPriceChangeCountryList_ApiResponse, GtPriceChangeCountryList_Data } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import Swal from 'sweetalert2';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-gateway-details',
@@ -52,18 +55,10 @@ export class GatewayDetailsComponent implements OnInit {
           this.GtInactiveCountry_list();
           this.GtPriceChangeCountry_list();
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -79,18 +74,10 @@ export class GatewayDetailsComponent implements OnInit {
           this.GtAddedCountryListDataRes = res;
           this.GtAddedCountryListData = JSON.parse(JSON.stringify(this.GtAddedCountryListDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -106,18 +93,10 @@ export class GatewayDetailsComponent implements OnInit {
           this.GtInactiveCountryListDataRes = res;
           this.GtInactiveCountryListData = JSON.parse(JSON.stringify(this.GtInactiveCountryListDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -133,18 +112,10 @@ export class GatewayDetailsComponent implements OnInit {
           this.GtPriceChangeCountryListDataRes = res;
           this.GtPriceChangeCountryListData = JSON.parse(JSON.stringify(this.GtPriceChangeCountryListDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }

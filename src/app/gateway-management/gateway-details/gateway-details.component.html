@@ -36,7 +36,9 @@
         </div>
         <div class="row">
             <div class="col-5 border-right"><label>Gateway Type</label></div>
-            <div class="col-6"><span><b>{{GtDetailsData?.data.gw_type}} </b>(Non-LCR)</span></div>
+            <div class="col-6"><b>{{GtDetailsData?.data.gw_type}}</b>
+                <span *ngIf="GtDetailsData?.data.exclude_lcr == 1"></span> (Non-LCR)
+            </div>
         </div>
     </div>
     <div class="col-8 p-0 gateway-description">
@@ -51,7 +53,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="border-right">
+            <div class="border-right" *ngIf="GtDetailsData?.data.is_bill_on_submission == 1">
                 <span class="badge badge-white mr-3">Bill on Submission</span>
             </div>
             <div class="border-right ml-3">
@@ -95,7 +97,7 @@
                             <label class="toggle-switch">
                                 <input type="checkbox" class="switch-btn" disabled
                                     [checked]="GtDetailsData?.data.senderid_whitelist_required === 1">
-                                <span class="slider round"></span>
+                                <span class="slider round cursor-default"></span>
                             </label>
                         </div>
                     </div>
@@ -112,7 +114,7 @@
                         <label class="toggle-switch">
                             <input type="checkbox" class="switch-btn" disabled
                                 [checked]="GtDetailsData?.data.mobileblocklist === 1">
-                            <span class="slider round"></span>
+                            <span class="slider round cursor-default"></span>
                         </label>
                     </div>
                 </div>
@@ -156,7 +158,7 @@
                     <a routerLink="/gateway-management/senderid-content-block">
                         <label class="box-heading">Sender ID + Content Blocked</label>
                         <div class="row">
-                            <div class="col-12 text-center">
+                            <div class="col-12 text-center pt-4">
                                 <span class="number-data">{{GtDetailsData?.data.senderidcontent}}</span>
                             </div>
                         </div>
@@ -212,12 +214,16 @@
                         <div class="col-5">
                             <span>{{GtDetailsData?.data.mtime}}</span>
                         </div>
+                        <span *ngIf="!(GtDetailsData?.data.mdate && GtDetailsData?.data.mtime)"
+                            class="text-center col-8">-</span>
                     </div>
                 </div>
                 <div class="form-group col-2 gateway-activity-detail">
                     <label class="col-12">Last Modified User</label>
-                    <span class="col-12 font-weight-bold"><img src="assets/images/user-image.png" alt="user"
-                            class="username-img" /> {{GtDetailsData?.data.modifiedby}}</span>
+                    <span class="col-12 font-weight-bold">
+                        <img src="assets/images/user-image.png" alt="user" class="username-img mr-3" />
+                        {{GtDetailsData?.data.modifiedby ? GtDetailsData?.data.modifiedby : '-'}}</span>
+
 
                 </div>
                 <div class="form-group col-3">
@@ -229,6 +235,8 @@
                         <div class="col-6">
                             <span>{{GtDetailsData?.data.ptime}}</span>
                         </div>
+                        <span *ngIf="!(GtDetailsData?.data.pdate && GtDetailsData?.data.ptime)"
+                            class="text-center col-8">-</span>
                     </div>
                 </div>
 
