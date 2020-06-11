@@ -5,9 +5,9 @@ import {
   LCRStatusUpdateList
 } from '../models/RouteManagement/LeastCastRouting/lcr';
 import { environment } from '../../../environments/environment';
-import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LcrService } from '../services/RouteManagement/LeastCostRouting/lcr.service';
+import { errorAlert, successAlert } from '../../shared/sweet-alert/sweet-alert';
 @Component({
   selector: 'app-rm-lcr',
   templateUrl: './rm-lcr.component.html',
@@ -51,17 +51,10 @@ export class RmLcrComponent implements OnInit {
           res.responsestatus === environment.APIStatus.error.text
           && res.responsecode < environment.APIStatus.error.code
         ) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          });
+          errorAlert(res.message, res.responsestatus);
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          text: error.message,
-        });
+        errorAlert(error.message, error.statusText);
       }
     );
   }
@@ -78,26 +71,15 @@ export class RmLcrComponent implements OnInit {
           && res.responsecode > environment.APIStatus.success.code
         ) {
           this.loadLCRList();
-          Swal.fire({
-            icon: 'success',
-            title: res.responsestatus,
-            text: res.message,
-          });
+          successAlert(res.message, res.responsestatus);
         } else if (
           res.responsestatus === environment.APIStatus.error.text
           && res.responsecode < environment.APIStatus.error.code
         ) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          });
+          errorAlert(res.message, res.responsestatus);
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          text: error.message,
-        });
+        errorAlert(error.message, error.statusText);
       }
     );
   }
