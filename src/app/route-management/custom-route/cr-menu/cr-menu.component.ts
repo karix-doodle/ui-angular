@@ -5,7 +5,8 @@ import {
   CustomSummary_ApiResponse,
 } from "../../models/custom.model";
 import { environment } from "src/environments/environment";
-import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
+import { errorAlert } from "src/app/shared/sweet-alert/sweet-alert";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-cr-menu",
@@ -38,10 +39,10 @@ export class CrMenuComponent implements OnInit {
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code
         ) {
-          errorAlert(res.responsestatus)
+          errorAlert(res.responsestatus);
         }
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
       }
     );

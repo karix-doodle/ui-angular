@@ -1,58 +1,59 @@
 <div class="row btm-border headings-div">
-    <div class="col-12">
-        <label  class="main-heading"><a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
-        <span> BLACKLIST</span>
-    </div>
+  <div class="col-12">
+      <label class="main-heading"> <a routerLink="/route-management"></a>ROUTE MANAGEMENT /</label>
+      <span> BLACKLIST</span>
+  </div>
 </div>
 <section class="rm-dashboard">
-    <div class="row">
-        <div class="col-4">
-            <a routerLink="/route-management/blacklist/mobile">
-                <div class="card rm-card">
-                    <div class="card-header">MOBILE NUMBER</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <label class="col-9">TOTAL MOBILE NO.</label>
-                            <span class="col-2 rm-badge">250</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-     
-        <div class="col-4">
-            <a routerLink="/route-management/blacklist/sender-id">
-                <div class="card rm-card">
-                    <div class="card-header">SENDERID + CONTENT</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <label class="col-9">TOTAL SENDERID</label>
-                            <span class="col-2 rm-badge">20</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">TOTAL TEMPLATE</label>
-                            <span class="col-2 rm-badge">250</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-4">
-            <a routerLink="/route-management/blacklist/mobile-sender-id">
-                <div class="card rm-card">
-                    <div class="card-header">MOBILE + SENDERID</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <label class="col-9">TOTAL MOBILE NO.</label>
-                            <span class="col-2 rm-badge">250</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">TOTAL SENDERID</label>
-                            <span class="col-2 rm-badge">250</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
+  <div class="row">
+      <div class="col-4">
+          <a routerLink="/route-management/blacklist/mobile">
+              <div class="card rm-card">
+                  <div class="card-header">MOBILE NUMBER</div>
+                  <div class="card-body">
+                      <div class="row mb-2">
+                          <label class="col-9">TOTAL MOBILE NO.</label>
+                          <span class="col-2 rm-badge">{{blacklistSummary?.unique_blacklist_mobile_count}}</span>
+                      </div>
+                  </div>
+              </div>
+          </a>
+      </div>
+
+      <div class="col-4">
+          <a routerLink="/route-management/blacklist/sender-id">
+              <div class="card rm-card">
+                  <div class="card-header">SENDERID + CONTENT</div>
+                  <div class="card-body">
+                      <div class="row mb-2">
+                          <label class="col-9">TOTAL SENDERID</label>
+                          <span class="col-2 rm-badge">{{blacklistSummary?.unique_blacklist_senderid_count}}</span>
+                      </div>
+                      <div class="row mb-2">
+                          <label class="col-9">TOTAL TEMPLATE</label>
+                          <span class="col-2 rm-badge">{{blacklistSummary?.unique_blacklist_template_count}}</span>
+                      </div>
+                  </div>
+              </div>
+          </a>
+      </div>
+      <div class="col-4">
+          <a routerLink="/route-management/blacklist/mobile-sender-id">
+              <div class="card rm-card">
+                  <div class="card-header">MOBILE + SENDERID</div>
+                  <div class="card-body">
+                      <div class="row mb-2">
+                          <label class="col-9">TOTAL MOBILE NO.</label>
+                          <span class="col-2 rm-badge">{{blacklistSummary?.unique_blacklist_mobilesenderid_mobile_count}}</span>
+                      </div>
+                      <div class="row mb-2">
+                          <label class="col-9">TOTAL SENDERID</label>
+                          <span class="col-2 rm-badge">{{blacklistSummary?.unique_blacklist_mobilesenderid_senderid_count}}</span>
+                      </div>
+                  </div>
+              </div>
+          </a>
+      </div>
+  </div>
 </section>
+

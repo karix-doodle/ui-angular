@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Pipe({
-  name: 'filter'
+  name: 'filter',
+  pure: false
 })
 export class FilterPipe implements PipeTransform {
 

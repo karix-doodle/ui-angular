@@ -8,12 +8,14 @@ import {
   CustomGateway_ApiResponse,
   CustomGateway_Data,
   MobileCustomSenderIdResponse,
+  MobileCustomResponse,
 } from "src/app/route-management/models/custom.model";
 import { environment } from "src/environments/environment";
 import {
   errorAlert,
   successAlert,
 } from "../../../../shared/sweet-alert/sweet-alert";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-senderid-mobile-route",
@@ -71,25 +73,26 @@ export class SenderidMobileRouteComponent implements OnInit {
     });
   }
 
-
   /**
    * @description validations added acording to the whitelist_type
    */
 
-
   onChange() {
-    if (this.control.whitelist_type.value === "Account") {
-      this.control.esmeaddr.setValidators([
-        Validators.required,
-        Validators.pattern("[0-9]{3,14}"),
-      ]);
-      this.submitted = false;
-    } else {
-      this.control.esmeaddr.setValidators(null);
-      this.control.esmeaddr.setErrors(null);
-      this.submitted = false;
+    switch (this.control.whitelist_type.value) {
+      case "Account": {
+        this.control.esmeaddr.setValidators([
+          Validators.required,
+          Validators.pattern("[0-9]{3,14}"),
+        ]);
+        this.fromReset();
+        break;
+      }
+      case "Global": {
+        this.control.esmeaddr.setValidators(null);
+        this.fromReset();
+        break;
+      }
     }
-    this.fromReset();
   }
 
   get control() {
@@ -128,7 +131,7 @@ export class SenderidMobileRouteComponent implements OnInit {
           errorAlert(res.responsestatus, res.responsecode);
         }
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
       }
     );
@@ -141,24 +144,28 @@ export class SenderidMobileRouteComponent implements OnInit {
     if (this.selectedFile) {
       this.submitted = false;
       this.onAddRoute(this.selectedFile);
-    } else if (!this.senderIdFrom.valid) {
-      this.submitted = true;
-    } else {
-      this.senderIdFrom.value.esmeaddr = this.senderIdFrom.value.esmeaddr
-        ? this.senderIdFrom.value.esmeaddr
-        : 0;
-      this.senderIdFrom.value.comments = this.senderIdFrom.value.comments
-        ? this.senderIdFrom.value.comments
-        : "";
-      this.senderIdFrom.value.req_type = "single_req";
-      this.senderIdFrom.value.createdby = "1234";
-      this.senderIdFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
-      this.onAddRoute({ ...this.senderIdFrom.value });
+      return;
+    }
+    switch (this.senderIdFrom.valid) {
+      case false: {
+        this.submitted = true;
+        break;
+      }
+      case true: {
+        this.senderIdFrom.value.esmeaddr = this.senderIdFrom.value.esmeaddr
+          ? this.senderIdFrom.value.esmeaddr
+          : 0;
+        this.senderIdFrom.value.comments = this.senderIdFrom.value.comments
+          ? this.senderIdFrom.value.comments
+          : "";
+        this.senderIdFrom.value.req_type = "single_req";
+        this.senderIdFrom.value.createdby = "1234";
+        this.senderIdFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+        this.onAddRoute({ ...this.senderIdFrom.value });
+        break;
+      }
     }
   }
-
-
-
 
   /**
    *
@@ -192,7 +199,7 @@ export class SenderidMobileRouteComponent implements OnInit {
     this.mobileSenderIdCustomService
       .addCustomMobileSenderid(body, formType)
       .subscribe(
-        (data: MobileCustomSenderIdResponse) => {
+        (data: MobileCustomResponse) => {
           if (data.responsestatus === "failure") {
             this.fromReset();
             errorAlert(data.message, data.responsestatus);
@@ -201,7 +208,7 @@ export class SenderidMobileRouteComponent implements OnInit {
             this.cancel();
           }
         },
-        (error) => {
+        (error: HttpErrorResponse) => {
           errorAlert(error.message, error.statusText);
           this.fromReset();
         }
@@ -220,7 +227,7 @@ export class SenderidMobileRouteComponent implements OnInit {
     this.emptyForm();
   }
 
-   /**
+  /**
    * @description resets the form to the default values
    */
   emptyForm() {

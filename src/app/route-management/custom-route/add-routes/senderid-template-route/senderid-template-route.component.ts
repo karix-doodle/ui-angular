@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import {
   CustomGateway_ApiResponse,
   CustomGateway_Data,
+  MobileCustomResponse,
 } from "src/app/route-management/models/custom.model";
 import { Router, ActivatedRoute } from "@angular/router";
 import { CustomService } from "src/app/route-management/services/RouteManagement/custom-route/custom.service";
@@ -18,6 +19,7 @@ import {
   OperatorsListRes,
 } from "src/app/route-management/models/RouteManagement/Generic/generic";
 import { SenderCustomService } from "src/app/route-management/services/RouteManagement/custom-route/sender-custom.service";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-senderid-template-route",
@@ -77,20 +79,21 @@ export class SenderidTemplateRouteComponent implements OnInit {
   }
 
   onChange() {
-    if (this.control.whitelist_type.value === "Account") {
-      this.control.esmeaddr.setValidators([
-        Validators.required,
-        Validators.pattern("[0-9]{3,14}"),
-      ]);
-      this.submitted = false;
-    } else {
-      this.control.esmeaddr.setValidators(null);
-      this.control.esmeaddr.setErrors(null);
-      this.submitted = false;
+    switch (this.control.whitelist_type.value) {
+      case "Account": {
+        this.control.esmeaddr.setValidators([
+          Validators.required,
+          Validators.pattern("[0-9]{3,14}"),
+        ]);
+        this.fromReset();
+        break;
+      }
+      case "Global": {
+        this.control.esmeaddr.setValidators(null);
+        this.fromReset();
+        break;
+      }
     }
-    this.selectedFile = null;
-    this.cmobilesenderUpload = null;
-    this.fromReset();
   }
 
   get control() {
@@ -110,8 +113,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
    */
   getGatewayList() {
     this.customService.getCustomRouteGateways().subscribe(
-      (res: any) => {
-        console.log(res);
+      (res: CustomGateway_ApiResponse) => {
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
@@ -127,12 +129,12 @@ export class SenderidTemplateRouteComponent implements OnInit {
           errorAlert(res.responsestatus, res.responsecode);
         }
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
       }
     );
   }
- /**
+  /**
    * @description gets the country list
    */
   getCountriesList() {
@@ -140,7 +142,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
       .getCountriesList()
       .subscribe((data: CountriesListRes) => {
         this.countriesData = data.data;
-        console.log(data.data);
       });
   }
 
@@ -167,37 +168,44 @@ export class SenderidTemplateRouteComponent implements OnInit {
     if (this.selectedFile) {
       this.submitted = false;
       this.onAddRoute(this.selectedFile);
-    } else if (!this.senderContentFrom.valid) {
-      this.submitted = true;
-    } else {
-      this.senderContentFrom.value.template = this.senderContentFrom.value
-        .template
-        ? this.senderContentFrom.value.template
-        : ".*";
-      this.senderContentFrom.value.esmeaddr = this.senderContentFrom.value
-        .esmeaddr
-        ? this.senderContentFrom.value.esmeaddr
-        : 0;
-      this.senderContentFrom.value.comments = this.senderContentFrom.value
-        .comments
-        ? this.senderContentFrom.value.comments
-        : "";
-      this.senderContentFrom.value.mcc = this.countriesData.find(
-        (c) => c.country === this.senderContentFrom.value.country
-      ).mcc;
-      this.senderContentFrom.value.mnc = this.operatorList.find(
-        (op) => op.operator === this.senderContentFrom.value.operator
-      ).mnc;
-      this.senderContentFrom.value.createdby = "1234";
-      this.senderContentFrom.value.req_type = "single_req";
-      this.senderContentFrom.value.default_senderid = true;
-      this.senderContentFrom.value.priority = +this.senderContentFrom.value
-        .priority;
-      this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
-      this.onAddRoute({ ...this.senderContentFrom.value });
+      return;
+    }
+
+    switch (this.senderContentFrom.valid) {
+      case false: {
+        this.submitted = true;
+        break;
+      }
+      case true: {
+        this.senderContentFrom.value.template = this.senderContentFrom.value
+          .template
+          ? this.senderContentFrom.value.template
+          : ".*";
+        this.senderContentFrom.value.esmeaddr = this.senderContentFrom.value
+          .esmeaddr
+          ? this.senderContentFrom.value.esmeaddr
+          : 0;
+        this.senderContentFrom.value.comments = this.senderContentFrom.value
+          .comments
+          ? this.senderContentFrom.value.comments
+          : "";
+        this.senderContentFrom.value.mcc = this.countriesData.find(
+          (c) => c.country === this.senderContentFrom.value.country
+        ).mcc;
+        this.senderContentFrom.value.mnc = this.operatorList.find(
+          (op) => op.operator === this.senderContentFrom.value.operator
+        ).mnc;
+        this.senderContentFrom.value.createdby = "1234";
+        this.senderContentFrom.value.req_type = "single_req";
+        this.senderContentFrom.value.default_senderid = true;
+        this.senderContentFrom.value.priority = +this.senderContentFrom.value
+          .priority;
+        this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+        this.onAddRoute({ ...this.senderContentFrom.value });
+        break;
+      }
     }
   }
-
 
   /**
    *
@@ -232,24 +240,18 @@ export class SenderidTemplateRouteComponent implements OnInit {
     this.mobileSenderTemplateService
       .addCustomSenderTemplate(body, formType)
       .subscribe(
-        (data: any) => {
+        (data: MobileCustomResponse) => {
           if (data.responsestatus === "failure") {
             errorAlert(data.message, data.responsestatus);
-            this.selectedFile = null;
-            this.cmobilesenderUpload = null;
             this.fromReset();
-            this.submitted = false;
           } else {
             successAlert(data.message);
             this.cancel();
           }
         },
-        (error) => {
+        (error: HttpErrorResponse) => {
           errorAlert(error.message, error.statusText);
-          this.selectedFile = null;
-          this.cmobilesenderUpload = null;
           this.fromReset();
-          this.submitted = false;
         }
       );
   }
@@ -260,6 +262,9 @@ export class SenderidTemplateRouteComponent implements OnInit {
   fromReset() {
     this.senderContentFrom.markAsUntouched();
     this.senderContentFrom.markAsPristine();
+    this.submitted = false;
+    this.selectedFile = null;
+    this.cmobilesenderUpload = null;
     this.emptyForm();
   }
 
@@ -271,7 +276,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
       default_senderid: true,
       template: "",
       senderid: [""],
-      // senderid: ["", Validators.required],
       primary_gw_id: null,
       fallback_gw_id: null,
       comments: "",
@@ -280,4 +284,3 @@ export class SenderidTemplateRouteComponent implements OnInit {
     });
   }
 }
-

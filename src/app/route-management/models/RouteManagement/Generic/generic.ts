@@ -3,6 +3,7 @@ export class CountriesListRes {
     responsecode: number;
     responsestatus: string;
     data: CountriesListData[];
+    message?: string;
 }
 
 export class CountriesListData {
@@ -22,6 +23,7 @@ export class OperatorsListRes {
     responsecode: number;
     responsestatus: string;
     data: OperatorsListData[];
+    message?: string;
 }
 
 export class OperatorsListData {
@@ -41,6 +43,7 @@ export class GatewaysListRes {
     responsecode: number;
     responsestatus: string;
     data: GatewaysListData[];
+    message?: string;
 }
 
 export class GatewaysListData {

@@ -3,6 +3,8 @@ import { RouteManagementService } from '../services/RouteManagement/route-manage
 import { RouteMgmtSummary, SummaryData } from '../models/RouteManagement/routeMgmt';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
+import { errorAlert } from '../../shared/sweet-alert/sweet-alert';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-rm-menu-page',
@@ -16,21 +18,19 @@ export class RmMenuPageComponent implements OnInit {
   ngOnInit() {
     this.routeManagementService.getRouteMgmtSummary().subscribe(
       (res: RouteMgmtSummary) => {
-        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+        if (
+          res.responsestatus === environment.APIStatus.success.text
+          && res.responsecode > environment.APIStatus.success.code
+        ) {
           this.summary = res.data;
-        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          });
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text
+          && res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.message, res.responsestatus);
         }
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        });
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
       }
     );
   }

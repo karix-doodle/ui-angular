@@ -3,6 +3,7 @@ import {
   MobileList_Data,
   MobileCustom_List,
   MobileCustom_ApiResponse,
+  MobileCustomResponse,
 } from "src/app/route-management/models/custom.model";
 import { MobileCustomRouteService } from "src/app/route-management/services/RouteManagement/custom-route/mobile-custom-route.service";
 import { ToastrManager } from "ng6-toastr-notifications";
@@ -12,6 +13,7 @@ import {
   errorAlert,
   successAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-cr-rm-mobile",
@@ -55,7 +57,7 @@ export class CrRmMobileComponent implements OnInit {
           errorAlert(res.responsestatus);
         }
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
       }
     );
@@ -74,16 +76,19 @@ export class CrRmMobileComponent implements OnInit {
           mobile: mobilerouteData.mobile,
           username: "1234",
         };
-        this.mobileCustomRoute
-          .deleteCustomMobile(mobileData)
-          .subscribe((data: any) => {
+        this.mobileCustomRoute.deleteCustomMobile(mobileData).subscribe(
+          (data: MobileCustomResponse) => {
             if (data.responsestatus === "failure") {
               errorAlert(data.message);
             } else {
               successAlert(data.message);
               this.getMobileCustomRoute();
             }
-          });
+          },
+          (error: HttpErrorResponse) => {
+            errorAlert(error.message, error.statusText);
+          }
+        );
       }
     });
   }

@@ -2,8 +2,8 @@
     border:none;
     background-color:#3E4B5B;
     border-radius:0px 5px 5px 0px;;
-    padding:7px;
-    width:30%;
+    padding: 5px;
+    width  : 52%;
     color:#fff;
 }
 .gt-ratio-div ::placeholder{
@@ -47,3 +47,55 @@
 .modal-body .table-responsive tr{
     cursor:default; 
 }
+
+/* For gateway close button  */
+.gatewayRow {
+    position: relative;
+}
+
+.gatewayRow:hover>span {
+    opacity: 1;
+}
+
+.closeGateway {
+    position: absolute;
+    top     : 4px;
+    right   : 30px;
+    color   : #e94444;
+    opacity : 0;
+    cursor  : pointer;
+}
+
+/* For gateway close button */
+
+
+/* For form validation */
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+    border: 1px solid #dd4b39;
+}
+
+/* .errorBorderClass {
+    height       : 38px;
+    border-radius: 4px;
+    border       : 1px solid #dd4b39;
+} */
+
+.submitError {
+    /* border-color      : #dd4b39; */
+    border               : 1px solid #dd4b39;
+    /* border-color      : 1px solid #dd4b39 !important; */
+    /* color             : #dd4b39; */
+}
+
+.submitErrorRatioBox {
+    border-bottom: 1px solid red;
+    border-top   : 1px solid red;
+    border-right : 1px solid red;
+    box-shadow   : 5px 3px #f5d7d7;
+}
+
+/* ::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+} */

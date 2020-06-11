@@ -1,108 +1,118 @@
 <div class="row btm-border headings-div">
     <div class="col-12">
         <label class="main-heading">
-        <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
+            <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
         <span> <a routerLink="/route-management/pool-route"> POOL ROUTE /</a> </span><span> CREATE ROUTE </span>
     </div>
 </div>
-<div class="row btm-border second-row-det">
-    <div class="col-6">
-        <div class="w-50">
-            <input type="search" class="form-control" id="" placeholder="Enter Route name here" />
+<form [formGroup]="formOfCreateClone">
+    <div class="row btm-border second-row-det">
+        <div class="col-6">
+            <div class="w-50">
+                <input type="text" formControlName="route_name" class="form-control" placeholder="Enter Route name here"
+                    [ngClass]="{submitError:submitted && formOfCreateClone.get('route_name').hasError('required')}" />
+                <!-- [readonly]="previewList.length" -->
+            </div>
+        </div>
+        <div class="col-3 text-right">
+            <select #cd formControlName="gw_type" class="dropdown-select w-100"
+                (change)="loadGatewaysList('onChange', cd.value)"
+                [ngClass]="{submitError:submitted && formOfCreateClone.get('gw_type').hasError('required')}">
+                <!-- [attr.disabled]="this.RouteMgmtService.previewList.length ? '' : null" -->
+                <option value="" disabled>Select Route Type</option>
+                <option value="direct" default>Direct</option>
+                <option value="premium">Premium</option>
+                <option value="wholesale">Wholesale</option>
+            </select>
+        </div>
+        <div class="col-3 text-right lcr-value" *ngIf="formOfCreateClone.get('gw_type').value !== ''">
+            <span>Fallback - <b>LCR ({{formOfCreateClone.get('gw_type').value}})</b></span>
         </div>
     </div>
-    <div class="col-3 text-right">
-        <select class="dropdown-select w-100">
-            <option value="" default>Select Route Type</option>
-            <option value="">option1</option>
-            <option value="">option2</option>
-            <option value="">option3</option>
-        </select>
+    <!-- {{formOfCreateClone.value| json}} -->
+    <div class="main-container p-4">
+        <app-route-stepper-form [isClone]="isClone" [parentForm]="formOfCreateClone" (isSubmitted)="submitState()"
+            (routesList)="previewListData($event)" [gatewaysList]="gatewaysList" [clonedData]="clonedRouteData">
+        </app-route-stepper-form>
     </div>
-    <div class="col-3 text-right">
-        <select class="dropdown-select w-100">
-            <option value="" default>Fallback - LCR (Direct)</option>
-            <option value="">option1</option>
-            <option value="">option2</option>
-            <option value="">option3</option>
-        </select>
-    </div>
-</div>
-<div class="main-container p-4">
-    <app-route-stepper-form></app-route-stepper-form>
-</div>
-<div class="row btm-border second-row-det">
+</form>
+<div class="row btm-border second-row-det" *ngIf="poolRouteService.previewList.length">
     <div class="col-7">
         <div class="row mt-1">
             <div class="col-5">
                 <label class="mr-2"><b>Total Continents</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{continentsCount}}</b></span>
             </div>
             <div class="col-7">
                 <label class="mr-2"><b>Total Countries</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
             </div>
         </div>
     </div>
 
     <div class="col-5 text-right">
 
-        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Continent, Country, Operator, Gateway" />
-
+        <input type="search" class="form-control" [(ngModel)]="searchText"
+            placeholder="&#xf002; Search by Continent, Country, Operator" />
     </div>
 
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive" *ngIf="poolRouteService.previewList.length">
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
-                <th>Continent</th>
-                <th>Country</th>
-                <th>Operator</th>
-                <th>MCC + MNC</th>
+                <th (click)="sort('continent')">Continent
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
+                </th>
+                <th (click)="sort('country')">Country
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                </th>
+                <th (click)="sort('operator')">Operator
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
+                </th>
+                <th (click)="sort('mcc')">MCC + MNC
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
+                </th>
                 <th>Distributed Gateway and Ratio</th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Asia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
+            <tr #tableRow *ngFor="let route of poolRouteService?.previewList
+            | filter: { continent: searchText,  
+                country: searchText,
+                operator: searchText, 
+                mcc: searchText,
+                mnc: searchText }
+            | sort: sortingName: isDesc; index as i">
+                <td class="font-weight-semi-bold">{{route.continent}}</td>
+                <td class="font-weight-semi-bold">{{route.country}}</td>
+                <td>{{route.operator}}</td>
+                <td>{{route.mcc}}-{{route.mnc}}</td>
                 <td>
-                    <span class="badge badge-success mx-1">G1- 20%</span>
-                    <span class="badge badge-success">G1- 20%</span>
+                    <span class="badge badge-success mx-1"
+                        *ngFor="let Gate of route.ratios">{{Gate.gw_id}}-{{Gate.ratio_in_percentage}}%</span>
                 </td>
                 <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
+                    <img src="assets/icons/edit-icon.svg" alt="edit" (click)="onEditPreview(route)" />
                 </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
+                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
+                        (click)="onDeleteRoute(route)" /></td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Asia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td><span class="badge badge-success">G1- 40%</span></td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
-                </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Asia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td><span class="badge badge-success">G1- 40%</span></td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
-                </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
+            <tr *ngIf="!poolRouteService?.previewList.length  
+            || (poolRouteService?.previewList  | filter: { continent: searchText,  
+                country: searchText,
+                operator: searchText, 
+                mcc: searchText,
+                mnc: searchText }).length === 0">
+                <td colspan="6" style="text-align: center;">No Records Found</td>
             </tr>
         </tbody>
     </table>

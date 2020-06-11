@@ -17,6 +17,10 @@ const poolRoutes: Routes = [
     component: PoolRouteComponent,
     children: [
       {
+        path: 'create-pool',
+        component: CreatePoolComponent
+      },
+      {
         path: 'clone-pool/:id',
         component: CreatePoolComponent
       },
