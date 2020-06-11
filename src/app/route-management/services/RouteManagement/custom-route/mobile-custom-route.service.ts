@@ -40,10 +40,15 @@ export class MobileCustomRouteService {
    */
   addCustomMobile(body, formType: Boolean): Observable<MobileCustomResponse> {
     let customMobileData: any;
-    if (formType) {
-      customMobileData = body;
-    } else {
-      customMobileData = { ...this.user, ...body };
+    switch (formType) {
+      case true: {
+        customMobileData = body;
+        break;
+      }
+      case false: {
+        customMobileData = { ...this.user, ...body };
+        break;
+      }
     }
 
     return this.http

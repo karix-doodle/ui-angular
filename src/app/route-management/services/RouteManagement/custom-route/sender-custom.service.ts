@@ -39,15 +39,20 @@ export class SenderCustomService {
    * @description adds the senderid custom route data
    */
   addCustomSenderTemplate(body, formType: boolean): Observable<MobileCustomSenderIdResponse> {
-    let values: any;
-    if(formType){
-      values = body
+    let customSenderIdTemplateData: any;
 
-    }else {
-      values ={...this.user, ...body}
+    switch (formType) {
+      case true: {
+        customSenderIdTemplateData = body;
+        break;
+      }
+      case false: {
+        customSenderIdTemplateData = { ...this.user, ...body };
+        break;
+      }
     }
     return this.http
-      .post(this.baseUrl + '/add', values)
+      .post(this.baseUrl + '/add', customSenderIdTemplateData)
       .pipe(map((data) => data as MobileCustomSenderIdResponse));
   }
 

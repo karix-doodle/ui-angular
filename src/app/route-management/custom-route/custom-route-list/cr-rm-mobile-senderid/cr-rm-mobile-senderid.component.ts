@@ -6,6 +6,7 @@ import {
   MobileCustomSenderId_ApiResponse,
   MobileSenderList_Data,
   MobileCustomSender_Data,
+  MobileCustomResponse,
 } from "src/app/route-management/models/custom.model";
 import { environment } from "src/environments/environment";
 import {
@@ -13,6 +14,7 @@ import {
   deleteAlert,
   successAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-cr-rm-mobile-senderid",
@@ -28,9 +30,7 @@ export class CrRmMobileSenderidComponent implements OnInit {
 
   mobileSenderidCustomData: MobileCustomSender_Data;
   mobileSenderidApiResponse: MobileCustomSenderId_ApiResponse;
-
   searchvalue: any;
-
   sortingName: any;
   isDesc: boolean;
 
@@ -59,7 +59,7 @@ export class CrRmMobileSenderidComponent implements OnInit {
           errorAlert(res.responsestatus);
         }
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
       }
     );
@@ -81,18 +81,23 @@ export class CrRmMobileSenderidComponent implements OnInit {
         };
         this.mobileSenderidCustomService
           .deleteCustomMobileSenderid(mobileData)
-          .subscribe((data: any) => {
-            if (data.responsestatus === "failure") {
-              errorAlert(data.message);
-            } else {
-              successAlert(data.message);
-              this.getAllMobileSenderidData();
+          .subscribe(
+            (data: MobileCustomResponse) => {
+              if (data.responsestatus === "failure") {
+                errorAlert(data.message);
+              } else {
+                successAlert(data.message);
+                this.getAllMobileSenderidData();
+              }
+            },
+            (error: HttpErrorResponse) => {
+              errorAlert(error.message, error.statusText);
             }
-          });
+          );
       }
     });
   }
- /**
+  /**
    *
    * @param tableHeaderName consists of table header
    * @description sorts the table based upon the table Header Name

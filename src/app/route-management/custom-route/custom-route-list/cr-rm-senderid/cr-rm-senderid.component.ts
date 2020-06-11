@@ -10,6 +10,7 @@ import {
   successAlert,
   deleteAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-cr-rm-senderid",
@@ -50,7 +51,7 @@ export class CrRmSenderidComponent implements OnInit {
           errorAlert(res.responsestatus);
         }
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
       }
     );
@@ -69,16 +70,19 @@ export class CrRmSenderidComponent implements OnInit {
           id: senderData.id,
           username: "1234",
         };
-        this.senderService
-          .deleteCustomSenderTemplate(senderidData)
-          .subscribe((data: any) => {
+        this.senderService.deleteCustomSenderTemplate(senderidData).subscribe(
+          (data: any) => {
             if (data.responsestatus === "failure") {
               errorAlert(data.message);
             } else {
               successAlert(data.message);
               this.getAllSenderidData();
             }
-          });
+          },
+          (error: HttpErrorResponse) => {
+            errorAlert(error.message, error.statusText);
+          }
+        );
       }
     });
   }

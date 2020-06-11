@@ -13,6 +13,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../../../shared/sweet-alert/sweet-alert";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-mobile-route",
@@ -39,19 +40,13 @@ export class MobileRouteComponent implements OnInit {
     this.getGatewayList();
     this.initForm();
   }
-/**
+  /**
    * @description form initialization
    */
   private initForm() {
     this.mobileRouteForm = this.formBuilder.group({
       whitelist_type: ["Global", [Validators.required]],
-      mobile: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("[0-9]{10}"),
-        ],
-      ],
+      mobile: ["", [Validators.required, Validators.pattern("[0-9]{10}")]],
       primary_gw_id: [null, [Validators.required]],
       fallback_gw_id: [null, [Validators.required]],
       comments: [""],
@@ -60,23 +55,26 @@ export class MobileRouteComponent implements OnInit {
     });
   }
 
-
   /**
    * @description validations added acording to the whitelist_type
    */
 
   onChange() {
-    if (this.control.whitelist_type.value === "Account") {
-      this.control.esmeaddr.setValidators([
-        Validators.required,
-        Validators.pattern("[0-9]{3,14}"),
-      ]);
-      this.submitted = false;
-    } else {
-      this.control.esmeaddr.setValidators(null);
-      this.submitted = false;
+    switch (this.control.whitelist_type.value) {
+      case "Account": {
+        this.control.esmeaddr.setValidators([
+          Validators.required,
+          Validators.pattern("[0-9]{3,14}"),
+        ]);
+        this.fromReset();
+        break;
+      }
+      case "Global": {
+        this.control.esmeaddr.setValidators(null);
+        this.fromReset();
+        break;
+      }
     }
-    this.fromReset();
   }
 
   get control() {
@@ -104,7 +102,7 @@ export class MobileRouteComponent implements OnInit {
           errorAlert(res.responsestatus, res.responsecode);
         }
       },
-      (error) => {
+      (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
       }
     );
@@ -118,9 +116,6 @@ export class MobileRouteComponent implements OnInit {
     this.router.navigateByUrl("/route-management/custom-route/mobile");
   }
 
-
-
-
   /**
    *
    * @description adds the mobile custom route
@@ -129,16 +124,24 @@ export class MobileRouteComponent implements OnInit {
     if (this.fileData) {
       this.submitted = false;
       this.onAddRoute(this.fileData);
-    } else if (!this.mobileRouteForm.valid) {
-      this.submitted = true;
-    } else {
-      this.mobileRouteForm.value.esmeaddr = this.mobileRouteForm.value.esmeaddr
-        ? this.mobileRouteForm.value.esmeaddr
-        : 0;
-      this.mobileRouteForm.value.req_type = "single_req";
-      this.mobileRouteForm.value.createdby = "1234";
-      this.mobileRouteForm.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
-      this.onAddRoute({ ...this.mobileRouteForm.value });
+      return;
+    }
+    switch (this.mobileRouteForm.valid) {
+      case false: {
+        this.submitted = true;
+        break;
+      }
+      case true: {
+        this.mobileRouteForm.value.esmeaddr = this.mobileRouteForm.value
+          .esmeaddr
+          ? this.mobileRouteForm.value.esmeaddr
+          : 0;
+        this.mobileRouteForm.value.req_type = "single_req";
+        this.mobileRouteForm.value.createdby = "1234";
+        this.mobileRouteForm.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
+        this.onAddRoute({ ...this.mobileRouteForm.value });
+        break;
+      }
     }
   }
 
@@ -181,8 +184,8 @@ export class MobileRouteComponent implements OnInit {
           this.cancel();
         }
       },
-      (error) => {
-        errorAlert(error.name, error.statusText);
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
         this.fromReset();
       }
     );
@@ -199,7 +202,7 @@ export class MobileRouteComponent implements OnInit {
     this.emtyForm();
   }
 
-   /**
+  /**
    * @description resets the form to the default values
    */
 

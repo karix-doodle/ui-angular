@@ -1,19 +1,28 @@
 import Swal from "sweetalert2";
 
   export function errorAlert(message: string, title?){
-    if(message.includes(" 404 Not Found")){
-      Swal.fire({
-        icon: "error",
-        title: 'Something Went Wrong!!',
-        text: 'Please try after sometime.',
-      });
-      return;
-    }
-    Swal.fire({
-      icon: "error",
-      title: title,
-      text: message,
-    });
+
+    switch(message.includes(" 404 Not Found")) {
+      case true: {
+        Swal.fire({
+          icon: "error",
+          title: 'Something Went Wrong!!',
+          text: 'Please try after sometime.',
+        });
+         break;
+      }
+
+      default: {
+        Swal.fire({
+          icon: "error",
+          title: title,
+          text: message,
+        });
+         break;
+      }
+   }
+
+
   }
 
   export function successAlert(message: string, title?){
