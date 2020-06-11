@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 
   export function errorAlert(message: string, title?){
 
-    switch(message.includes(" 404 Not Found")) {
+    switch(message.includes(" 404 Not Found" ) || message.includes(" 0 Unknown Error")) {
       case true: {
         Swal.fire({
           icon: "error",
