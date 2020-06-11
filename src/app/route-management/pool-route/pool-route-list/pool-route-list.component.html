@@ -74,9 +74,8 @@
                         <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon" />
                     </a>
                 </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
-                         (click)="onDelete(row.route_id, row.route_name)" />
-                         <!-- *ngIf="row.tagged_accounts_count" -->
+                <td> <img *ngIf="row.tagged_accounts_count" src="assets/icons/delete-icon.svg" class="img-fluid"
+                        alt="delete icon" (click)="onDelete(row.route_id, row.route_name)" />
                 </td>
             </tr>
             <tr *ngIf="!poolListRes?.data.routes_list.length  
