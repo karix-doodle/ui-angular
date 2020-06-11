@@ -103,10 +103,10 @@ export class RmLcrComponent implements OnInit {
    *               body for updateGatewayStatus api.
    */
   onRow(content, gateways: GatewayList) {
-    this.modalService.open(content, { windowClass: 'gt-detail-modal' });
     this.originalGateways = gateways;
     // Take copy
     this.Gateways = JSON.parse(JSON.stringify(gateways));
+    this.modalService.open(content, { windowClass: 'gt-detail-modal' });
     this.LCRUpdateStatusInputs.loggedinempid = environment.loggedinempid;
     this.LCRUpdateStatusInputs.loggedinusername = environment.loggedinusername;
     this.LCRUpdateStatusInputs.list = [];
