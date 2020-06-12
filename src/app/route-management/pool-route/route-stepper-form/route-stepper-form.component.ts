@@ -236,13 +236,14 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    onSubmitAction() {
       if (this.secondFormGroup.valid) {
          this.secondStepSubmitted = false;
+         const loggedInEmpId = this.secondFormGroup.value.loggedinempid.toString();
          this.createAPoolRouteBody.route_name = this.parentForm.value.route_name;
          this.createAPoolRouteBody.gw_type = this.parentForm.value.gw_type;
          this.createAPoolRouteBody.fallback_gw_type = this.parentForm.value.fallback_gw_type;
          this.createAPoolRouteBody.routes_list = this.poolRouteService.previewList;
          this.createAPoolRouteBody.row_route = this.secondFormGroup.value.row_route;
          this.createAPoolRouteBody.row_routes_list = this.secondFormGroup.value.row_routes_list;
-         this.createAPoolRouteBody.loggedinempid = this.secondFormGroup.value.loggedinempid;
+         this.createAPoolRouteBody.loggedinempid = loggedInEmpId;
          this.createAPoolRouteBody.comments = this.secondFormGroup.value.comments;
          // console.log(this.createAPoolRouteBody);
          this.poolRouteService.createAPoolRoute(this.createAPoolRouteBody).subscribe(
@@ -383,7 +384,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          this.gatewayRatio.controls.forEach(ratio => ratio.patchValue(
             {
                gw_id: '',
-               ratio_in_percentage: '10'
+               ratio_in_percentage: 10
             }
          ));
          this.submitted = false;
