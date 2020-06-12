@@ -5,7 +5,10 @@ import { GatewayManagementService } from '../services/gateway-management.service
 import { GtTimeZone_ApiResponse, GtTimeZone_Data, GtCurrency_ApiResponse, GtCurrency_Data, GtCreate_ApiResponse } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import Swal from 'sweetalert2';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-create-gateway',
@@ -34,7 +37,7 @@ export class CreateGatewayComponent implements OnInit {
     let gw_name = '[0-9a-zA-Z-_.@$\' ]{4,200}';
     let gw_id = '[0-9a-zA-Z]{2,10}';
     let tps = '[0-9]{1,100000}';
-    let description = '^.{1,1000}$';
+    let description = '^[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{1,1000}$';
     this.createGatewayFormGroup = this.formBuilder.group({
       gw_name: new FormControl('', [Validators.required, Validators.pattern(gw_name)]),
       gw_id: new FormControl('', [Validators.required, Validators.pattern(gw_id)]),
@@ -67,18 +70,10 @@ export class CreateGatewayComponent implements OnInit {
           this.gatewayTimeZoneDataRes = res;
           this.gatewayTimeZoneData = JSON.parse(JSON.stringify(this.gatewayTimeZoneDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -90,18 +85,10 @@ export class CreateGatewayComponent implements OnInit {
           this.gatewayCurrencyDataRes = res;
           this.gatewayCurrencyData = JSON.parse(JSON.stringify(this.gatewayCurrencyDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -149,25 +136,13 @@ export class CreateGatewayComponent implements OnInit {
       this.gatewayManagementService.Gateway_create(data).subscribe(
         (res: GtCreate_ApiResponse) => {
           if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-            Swal.fire({
-              icon: 'success',
-              title: res.responsestatus,
-              text: res.message,
-            })
+            successAlert(res.message, res.responsestatus)
             this.router.navigate(['gateway-management']);
           } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-            Swal.fire({
-              icon: 'error',
-              title: res.responsestatus,
-              text: res.message,
-            })
+            errorAlert(res.message, res.responsestatus)
           }
         }, (error: HttpErrorResponse) => {
-          Swal.fire({
-            icon: 'error',
-            title: error.statusText,
-            text: error.message,
-          })
+          errorAlert(error.message, error.statusText)
         }
       );
     }

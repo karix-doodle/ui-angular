@@ -5,6 +5,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { saveAs } from 'file-saver';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-gt-listing',
@@ -38,18 +42,10 @@ export class GtListingComponent implements OnInit {
           this.gatewayDataRes = res;
           this.gatewayData = JSON.parse(JSON.stringify(this.gatewayDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
@@ -61,18 +57,27 @@ export class GtListingComponent implements OnInit {
         let fileName = 'GatewayListdata-' + new Date().toLocaleString()
         saveAs(blob, fileName + ".csv");
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+        errorAlert(error.message, error.statusText)
       }
     );
   }
 
   selectType(type) {
     if (type === 'All') {
-      this.gatewayData = JSON.parse(JSON.stringify(this.gatewayDataRes));
+      this.GtListing_list();
+    } else if (type == 'Only InActive' || type == 'Only Active') {
+      let statusVal = type == 'Only InActive' ? 0 : 1;
+      this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.status == statusVal);
+      this.gatewayData.data.tabledata = this.selectedType;
+    } else if (type == 'Recently Modified') {
+      this.selectedType = this.gatewayDataRes.data.tabledata.sort((val1, val2) => {
+        let formatdate1 = val1.lastdate.split('/')[2] + '-' + val1.lastdate.split('/')[1] + '-' + val1.lastdate.split('/')[0]
+        let formatdate2 = val2.lastdate.split('/')[2] + '-' + val2.lastdate.split('/')[1] + '-' + val2.lastdate.split('/')[0]
+        let val1Format = formatdate1 + ' ' + val1.lasttime + '.0'
+        let val2Format = formatdate2 + ' ' + val2.lasttime + '.0'
+        return <any>new Date(val1Format) - <any>new Date(val2Format);
+      });
+      this.gatewayData.data.tabledata = this.selectedType;
     } else {
       this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type === type);
       this.gatewayData.data.tabledata = this.selectedType;
@@ -85,9 +90,9 @@ export class GtListingComponent implements OnInit {
       gw_name: name,
       status: status == true ? 0 : 1,
     }
+    let statusText = data.status == 1 ? 'Activate' : 'Inactivate';
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: 'Are you sure want to ' + statusText + ' the gateway "' + data.gw_id + '"?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -98,24 +103,13 @@ export class GtListingComponent implements OnInit {
         this.gatewayManagementService.GtListing_statusupdate(data).subscribe(
           (res: GtStatusupdate_ApiResponse) => {
             if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-              Swal.fire({
-                icon: 'success',
-                title: res.responsestatus,
-                text: res.message,
-              })
+              // successAlert(res.message, res.responsestatus)
+              this.GtListing_list();
             } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-              Swal.fire({
-                icon: 'error',
-                title: res.responsestatus,
-                text: res.message,
-              })
+              errorAlert(res.message, res.responsestatus)
             }
           }, (error: HttpErrorResponse) => {
-            Swal.fire({
-              icon: 'error',
-              title: error.statusText,
-              text: error.message,
-            })
+            errorAlert(error.message, error.statusText)
           }
         );
       } else {

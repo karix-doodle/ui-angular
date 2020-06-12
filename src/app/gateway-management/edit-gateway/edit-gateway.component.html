@@ -85,15 +85,15 @@
                     <label>Billing Type</label>
                     <select class="dropdown-select w-100" formControlName="billing_type" name="billing_type">
                         <option value="" default>Select Billing Type</option>
-                        <option value="Prepaid">Prepaid</option>
-                        <option value="Postpaid">Postpaid</option>
+                        <option value="prepaid">Prepaid</option>
+                        <option value="postpaid">Postpaid</option>
                     </select>
                     <span class="text-danger pl-1 f-12"
                         *ngIf="updateGatewayFormGroup.get('billing_type').hasError('required') && isUpdateValid">
                         Billing Type is required
                     </span>
                 </div>
-                <div class="col-5 form-group row">
+                <div class="col-5 form-group row error-absolute">
                     <label class="col-12">Message Type</label>
                     <div class="col-12">
                         <div class="row ml-0">
@@ -151,7 +151,7 @@
                         DLR Type is required
                     </span>
                 </div>
-                <div class="col-4 form-group row">
+                <div class="col-4 form-group row error-absolute">
                     <label class="col-12">CharSet Encoding Supported</label>
                     <div class="col-12">
                         <div class="row ml-0">
@@ -165,10 +165,11 @@
                             </span>
                         </div>
                     </div>
-                    <span class="text-danger pl-3 f-12"
-                        *ngIf="updateGatewayFormGroup.get('charset_enc').hasError('required') && isUpdateValid">
-                        CharSet Encoding is required
-                    </span>
+                    <div class="text-danger pl-3 f-12">
+                        <span *ngIf="updateGatewayFormGroup.get('charset_enc').hasError('required') && isUpdateValid">
+                            CharSet Encoding is required
+                        </span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -191,7 +192,7 @@
                         <option value="2">Static</option>
                         <option value="3">Numeric</option>
                     </select>
-                    <span class="text-danger pl-3 f-12"
+                    <span class="text-danger f-12"
                         *ngIf="updateGatewayFormGroup.get('senderid_type').hasError('required') && isUpdateValid">
                         Sender ID Type is required
                     </span>

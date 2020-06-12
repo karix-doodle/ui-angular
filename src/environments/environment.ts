@@ -8,6 +8,7 @@ export const environment = {
   FileUploadUrl: 'http://10.20.51.182:8484/api/intlmgmt',
   loggedinusername: 'testuser',
   loggedinempid: 1234,
+  UTC: "+05:30",
   APIStatus: {
     success: {
       text: 'success',

@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GatewayManagementService } from '../services/gateway-management.service';
 import { GtFileAuditFileLog_ApiResponse, GtFileAuditFileLog_Data } from '../models/gateway-management.model';
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import Swal from 'sweetalert2';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 @Component({
   selector: 'app-gt-file-audit-log-view',
@@ -37,18 +41,10 @@ export class GtFileAuditLogViewComponent implements OnInit {
           this.gatewayFileAuditFileLogDataRes.data.gw_name = this.activeRoute.snapshot.params.name
           this.gatewayFileAuditFileLogData = JSON.parse(JSON.stringify(this.gatewayFileAuditFileLogDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }

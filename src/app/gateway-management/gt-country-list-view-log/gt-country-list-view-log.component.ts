@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GatewayManagementService } from '../services/gateway-management.service';
 import { GtCountryListViewLog_ApiResponse, GtCountryListViewLog_Data } from '../models/gateway-management.model';
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import Swal from 'sweetalert2';
+import {
+  errorAlert,
+  successAlert,
+} from "../../shared/sweet-alert/sweet-alert";
 
 import * as moment from 'moment';
 
@@ -23,8 +27,8 @@ export class GtCountryListViewLogComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private gatewayManagementService: GatewayManagementService,
   ) {
-    let startDate = moment().subtract(9, 'days');
-    let todate = moment();
+    let startDate = moment().subtract(9, 'days').utcOffset(environment.UTC);
+    let todate = moment().utcOffset(environment.UTC);
     let dayDiffer = todate.diff(startDate, 'days') + 1;
     this.params = {
       fromdate: startDate,
@@ -65,18 +69,10 @@ export class GtCountryListViewLogComponent implements OnInit {
           this.GtCountryListViewLogDataRes.data.gw_name = this.activeRoute.snapshot.params.name
           this.GtCountryListViewLogData = JSON.parse(JSON.stringify(this.GtCountryListViewLogDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          })
+          errorAlert(res.message, res.responsestatus)
         }
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: error.statusText,
-          text: error.message,
-        })
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }

@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="col-2 mt-1 w-100">
-        <select #type class="dropdown-select w-100 fa" (change)="selectType(type.value)">
+        <select #type class="dropdown-select w-100 fa cursor-pointer" (change)="selectType(type.value)">
             <option value="All" default>All</option>
             <option value="Recently Modified">Recently Modified</option>
             <option value="Direct">Direct</option>
@@ -47,7 +47,7 @@
     </div>
     <div class="col-1">
         <span class="icon-btn" (click)="downloadGatewayFile()">
-            <i aria-hidden="true" class="fa fa-download"></i>
+            <i aria-hidden="true" class="fa fa-download cursor-pointer"></i>
         </span>
     </div>
 
@@ -58,15 +58,15 @@
             <tr>
                 <th>Gateway ID</th>
                 <th>Name</th>
-                <th (click)="sort('gw_type')">Type
+                <th class="cursor-pointer" (click)="sort('gw_type')">Type
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='gw_type' && isDesc}"></i>
                     <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='gw_type' && !isDesc}"></i>
                 </th>
-                <th (click)="sort('lastdate')">Last Modified Date & Time
+                <th class="cursor-pointer" (click)="sort('lastdate')">Last Modified Date & Time
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='lastdate' && isDesc}"></i>
                     <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='lastdate' && !isDesc}"></i>
                 </th>
-                <th (click)="sort('pricedate')">Price Updated On
+                <th class="cursor-pointer" (click)="sort('pricedate')">Price Updated On
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='pricedate' && isDesc}"></i>
                     <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='pricedate' && !isDesc}"></i>
                 </th>
