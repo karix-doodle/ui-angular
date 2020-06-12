@@ -430,10 +430,29 @@ export class GtSenderIdConfigCountryList_ApiResponse {
     data: GtSenderIdConfigCountryList_Data;
 }
 export class GtSenderIdConfigCountryList_Data {
-
+    country: string;
+    mcc: number;
 }
 /**
  ************************* @description Gateway Sender id config country list END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Sender id config operator list START
+*/
+export class GtSenderIdConfigOperatorList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+    data: GtSenderIdConfigCountryList_Data;
+}
+export class GtSenderIdConfigOperatorList_Data {
+    country: string;
+    mcc: number;
+}
+/**
+ ************************* @description Gateway Sender id config operator list END
 */
 
 /**
@@ -486,6 +505,7 @@ export class GtFileAuditFileLog_Data {
     gw_name: string;
     totalcountry: number;
     totaloperator: number;
+    data: GtFileAuditFileLog_Data;
     tabledata: GtFileAuditFileLog_TableDataList[]
 }
 export class GtFileAuditFileLog_TableDataList {
@@ -504,6 +524,42 @@ export class GtFileAuditFileLog_TableDataList {
 }
 /**
  ************************* @description Gateway File audit file log END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway File audit file country START
+*/
+export class GtFileAuditFileCountry_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtFileAuditFileCountry_Data;
+    message: string;
+}
+export class GtFileAuditFileCountry_Data {
+    country: string;
+    mcc: string;
+}
+/**
+ ************************* @description Gateway File audit file country END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway File audit file operator START
+*/
+export class GtFileAuditFileOperator_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtFileAuditFileOperator_Data;
+    message: string;
+}
+export class GtFileAuditFileOperator_Data {
+    country: string;
+    mcc: string;
+}
+/**
+ ************************* @description Gateway File audit file operator END
 */
 
 /**
@@ -548,6 +604,35 @@ export class GtESMEAddrRouted_Data {
     gw_name: string;
     total: string;
     data: any;
+}
+/**
+ ************************* @description Gateway ESMEAddr routed List END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway ESMEAddr routed List START
+*/
+export class GtSenderidContentList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtSenderidContentList_Data;
+    message: string;
+}
+export class GtSenderidContentList_Data {
+    total: number;
+    unique_senderid_count: number;
+    unique_template_count: number;
+    senderid_template_list: GtSenderidContentList_TableDataList;
+}
+export class GtSenderidContentList_TableDataList {
+    id: number;
+    senderid: string;
+    template: string;
+    blacklist_type: string;
+    cts: string;
+    createdby: string;
+    comments: null;
 }
 /**
  ************************* @description Gateway ESMEAddr routed List END

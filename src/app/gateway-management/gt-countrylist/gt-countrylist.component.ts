@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtDetailsCountryList_ApiResponse, GtDetailsCountryList_Data, GtCountryStatusupdate_ApiResponse, GtSenderIdConfigCountryList_ApiResponse, GtSenderIdConfigCountryList_Data } from '../models/gateway-management.model';
+import { GtDetailsCountryList_ApiResponse, GtDetailsCountryList_Data, GtCountryStatusupdate_ApiResponse, GtSenderIdConfigCountryList_ApiResponse, GtSenderIdConfigCountryList_Data, GtSenderIdConfigOperatorList_ApiResponse, GtSenderIdConfigOperatorList_Data } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
@@ -25,6 +25,11 @@ export class GtCountrylistComponent implements OnInit {
   GtDetailsCountryList: GtDetailsCountryList_Data;
   GtSenderIdConfigCountryListRes: GtSenderIdConfigCountryList_ApiResponse;
   GtSenderIdConfigCountryList: GtSenderIdConfigCountryList_Data;
+  GtSenderIdConfigOperatorListRes: GtSenderIdConfigOperatorList_ApiResponse;
+  GtSenderIdConfigOperatorList: GtSenderIdConfigOperatorList_Data;
+
+  sortingName: string;
+  isDesc: boolean;
 
   constructor(
     private modalService: NgbModal,
@@ -90,9 +95,9 @@ export class GtCountrylistComponent implements OnInit {
       id: id,
       status: status == true ? 0 : 1,
     }
+    let statusText = status != true ? 'Activate' : 'Inactivate';
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: 'Are you sure want to ' + statusText + ' the country?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -134,6 +139,46 @@ export class GtCountrylistComponent implements OnInit {
         errorAlert(error.message, error.statusText)
       }
     );
+  }
+
+  countrySelect(event) {
+    if (event != "") {
+      this.GtSenderIdConfigOperator_list(event)
+    }
+  }
+
+  GtSenderIdConfigOperator_list(mccValue) {
+    let data = {
+      gw_id: this.activeRoute.snapshot.params.id,
+      load: 'operator',
+      mcc: mccValue
+    }
+    this.gatewayManagementService.GtSenderIdConfigOperator_list(data).subscribe(
+      (res: GtSenderIdConfigOperatorList_ApiResponse) => {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+          this.GtSenderIdConfigOperatorListRes = res;
+          this.GtSenderIdConfigOperatorList = JSON.parse(JSON.stringify(this.GtSenderIdConfigOperatorListRes));
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          errorAlert(res.message, res.responsestatus)
+        }
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
+      }
+    );
+  }
+
+  /**
+   *
+   * @param tableHeaderName consists of table header
+   * @description sorts the table based upon the table Header Name
+   */
+  sort(tableHeaderName: string): void {
+    if (tableHeaderName && this.sortingName !== tableHeaderName) {
+      this.isDesc = false;
+    } else {
+      this.isDesc = !this.isDesc;
+    }
+    this.sortingName = tableHeaderName;
   }
 
 }

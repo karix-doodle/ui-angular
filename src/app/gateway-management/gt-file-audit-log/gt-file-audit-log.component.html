@@ -53,7 +53,7 @@
 
 </div>
 <div class="main-container table-responsive audit-log-list">
-    <table class="table table-borderless erp-list-table audit-log-list-table">
+    <table class="table table-borderless erp-list-table audit-log-list-table mb-0">
         <thead>
             <tr>
                 <th class="col-hover">File Name</th>
@@ -78,6 +78,9 @@
                     </a>
                 </td>
                 <td>{{item.status == '1' ? 'Success' : 'Failed'}}</td>
+            </tr>
+            <tr *ngIf="gatewayFileAuditLogData?.data.tabledata.length == 0">
+                <td colspan="5" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
     </table>

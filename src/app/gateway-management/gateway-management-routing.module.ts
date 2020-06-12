@@ -75,7 +75,7 @@ const GMroutes: Routes = [
         component: GtESMEAddrRoutedComponent
       },
       {
-        path: 'senderid-content-block',
+        path: 'senderid-content-block/:id/:name',
         component: GtSenderidContentComponent
       },
     ]

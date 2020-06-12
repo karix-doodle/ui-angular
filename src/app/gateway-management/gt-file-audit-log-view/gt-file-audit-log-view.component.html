@@ -25,23 +25,22 @@
         </div>
     </div>
     <div class="col-3">
-        <select class="dropdown-select w-100">
-            <option value="">
-                All Country
-            </option>
+        <select #countryType class="dropdown-select w-100"
+            (change)="selectCountryOperator(countryType.value, operatorType.value)">
+            <option *ngFor="let item of GtFileAuditFileCountryData?.data" value="{{item.mcc}}">{{item.country}}</option>
         </select>
     </div>
     <div class="col-3 text-right">
-        <select class="dropdown-select w-100">
-            <option value="">
-                All Operators
+        <select #operatorType class="dropdown-select w-100"
+            (change)="selectCountryOperator(countryType.value, operatorType.value)">
+            <option *ngFor="let item of GtFileAuditFileOperatorData?.data" value="{{item.mnc}}">{{item.operator}}
             </option>
         </select>
     </div>
 
 </div>
 <div class="main-container table-responsive audit-log-list">
-    <table class="table table-borderless erp-list-table audit-log-list-table">
+    <table class="table table-borderless erp-list-table audit-log-list-table mb-0">
         <thead>
             <tr>
                 <th class="col-hover">Country</th>
@@ -54,36 +53,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345</td>
-                <td>355</td>
-                <td>0.0050</td>
-                <td>0.0050</td>
-                <td>Increase</td>
+            <tr *ngFor="let item of gatewayFileAuditFileLogData?.data.tabledata">
+                <td class="font-weight-semi-bold col-hover">{{item.contry}}</td>
+                <td>{{item.operator}}</td>
+                <td>{{item.mcc}}</td>
+                <td>{{item.mnc}}</td>
+                <td>{{item.oldrate ? item.oldrate : '-'}}</td>
+                <td>{{item.currentrate ? item.currentrate : '-'}}</td>
+                <td>{{item.changetype ? item.changetype : '-'}}</td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">India</td>
-                <td>BSNL</td>
-                <td>345</td>
-                <td>355</td>
-                <td>0.0050</td>
-                <td>0.0050</td>
-                <td>Decrease</td>
+            <tr *ngIf="gatewayFileAuditFileLogData?.data.tabledata.length == 0">
+                <td colspan="7" class="text-center py-3 main-heading">No data Found</td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">Dubai</td>
-                <td>Etisalat</td>
-                <td>345</td>
-                <td>355</td>
-                <td>0.0050</td>
-                <td>0.0050</td>
-                <td>Increase</td>
-            </tr>
-
         </tbody>
-
-
     </table>
 </div>
