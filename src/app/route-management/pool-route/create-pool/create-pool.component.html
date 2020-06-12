@@ -15,8 +15,7 @@
             </div>
         </div>
         <div class="col-3 text-right">
-            <select #cd formControlName="gw_type" class="dropdown-select w-100"
-                (change)="loadGatewaysList('onChange', cd.value)"
+            <select formControlName="gw_type" class="dropdown-select w-100" (change)="loadGatewaysList('onChange')"
                 [ngClass]="{submitError:submitted && formOfCreateClone.get('gw_type').hasError('required')}">
                 <!-- [attr.disabled]="this.RouteMgmtService.previewList.length ? '' : null" -->
                 <option value="" disabled>Select Route Type</option>

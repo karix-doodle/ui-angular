@@ -23,6 +23,9 @@ export class PoolRouteService {
 
   public previewList: NewRoutesList[] = []; // common preview list data
 
+  /**
+   * @description child component detects the current changes of parent component required events.
+   */
   private parentToChildDetectionSubject: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   currentSubjectData = this.parentToChildDetectionSubject.asObservable();
 
