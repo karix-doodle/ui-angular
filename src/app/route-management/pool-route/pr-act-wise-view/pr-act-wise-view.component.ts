@@ -4,7 +4,7 @@ import { PoolRouteService } from '../../services/RouteManagement/poolRoute/pool-
 import { SelectedPoolRouteRes, SelectedPoolRoute } from '../../models/RouteManagement/PoolRoute/poolRoute';
 import { environment } from '../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
-import Swal from 'sweetalert2';
+import { errorAlert } from '../../../shared/sweet-alert/sweet-alert';
 
 @Component({
   selector: 'app-pr-act-wise-view',
@@ -32,7 +32,9 @@ export class PrActWiseViewComponent implements OnInit {
         (params: Params) => {
           // tslint:disable-next-line: variable-name
           const route_id = +params.id;
-          this.getRouteDetails(route_id);
+          if (route_id) {
+            this.getRouteDetails(route_id);
+          }
         }
       );
   }
@@ -45,23 +47,15 @@ export class PrActWiseViewComponent implements OnInit {
       (res: SelectedPoolRouteRes) => {
         if (res.responsestatus === environment.APIStatus.success.text
           && res.responsecode > environment.APIStatus.success.code) {
-          // console.log(res);
           this.listDataRes = res;
         } else if (
           res.responsestatus === environment.APIStatus.error.text
           && res.responsecode < environment.APIStatus.error.code
         ) {
-          Swal.fire({
-            icon: 'error',
-            title: res.responsestatus,
-            text: res.message,
-          });
+          errorAlert(res.message, res.responsestatus);
         }
       }, (error: HttpErrorResponse) => {
-        Swal.fire({
-          icon: 'error',
-          text: error.message,
-        });
+        errorAlert(error.message, error.statusText);
       }
     );
   }

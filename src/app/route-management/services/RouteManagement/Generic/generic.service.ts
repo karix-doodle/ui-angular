@@ -31,17 +31,19 @@ export class GenericService {
       .pipe(map(m => m as CountriesListRes));
   }
 
-   /**
-    * @description gets the route management operators list
-    */
+  /**
+   * @param input consists of country code.
+   * @description gets the route management operators list.
+   */
   getOperatorsList(input: OperatorsListBody): Observable<OperatorsListRes> {
     return this.http.post(this.baseUrl + '/listoperators', input, this.httpOptions)
       .pipe(map(m => m as OperatorsListRes));
   }
 
-   /**
-    * @description gets the route management gateways list
-    */
+  /**
+   * @param input consists of route type and user credentials.
+   * @description gets the route management gateways list.
+   */
   getGatewaysList(input: GatewaysListBody): Observable<GatewaysListRes> {
     return this.http.post(this.baseUrl + '/listgateways', input, this.httpOptions)
       .pipe(map(m => m as GatewaysListRes));

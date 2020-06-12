@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 import * as moment from 'moment';
 
@@ -16,9 +17,9 @@ export class CalendarPickerComponent implements OnInit {
 
   alwaysShowCalendars: boolean;
   ranges: any = {
-    'Last 10 Days': [moment().subtract(9, 'days'), moment()],
-    'Last 15 Days': [moment().subtract(14, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()]
+    'Last 10 Days': [moment().subtract(9, 'days').utcOffset(environment.UTC), moment()],
+    'Last 15 Days': [moment().subtract(14, 'days').utcOffset(environment.UTC), moment()],
+    'Last 30 Days': [moment().subtract(29, 'days').utcOffset(environment.UTC), moment()]
   }
 
   constructor() {

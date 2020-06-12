@@ -5,7 +5,8 @@
     </div>
 </div>
 <div class="main-container p-15">
-    <form [formGroup]="createGatewayFormGroup" (ngSubmit)="onSubmitCreateGateway(createGatewayFormGroup.value)">
+    <form class="my-form" [formGroup]="createGatewayFormGroup"
+        (ngSubmit)="onSubmitCreateGateway(createGatewayFormGroup.value)">
         <section class="main-section">
             <div class="row">
                 <!-- <pre>Form values: {{createGatewayFormGroup.value | json}}</pre> -->
@@ -93,7 +94,7 @@
                         Billing Type is required
                     </span>
                 </div>
-                <div class="col-5 form-group row">
+                <div class="col-5 form-group row error-absolute">
                     <label class="col-12">Message Type</label>
                     <div class="col-12">
                         <div class="row ml-0">
@@ -149,7 +150,7 @@
                         DLR Type is required
                     </span>
                 </div>
-                <div class="col-4 form-group row">
+                <div class="col-4 form-group row error-absolute">
                     <label class="col-12">CharSet Encoding Supported</label>
                     <div class="col-12">
                         <div class="row ml-0">
@@ -188,7 +189,7 @@
                         <option value="2">Static</option>
                         <option value="3">Numeric</option>
                     </select>
-                    <span class="text-danger pl-3 f-12"
+                    <span class="text-danger f-12"
                         *ngIf="createGatewayFormGroup.get('senderid_type').hasError('required') && isCreateValid">
                         Sender ID Type is required
                     </span>

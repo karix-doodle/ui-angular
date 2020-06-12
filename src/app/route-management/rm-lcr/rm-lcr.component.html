@@ -118,10 +118,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="card lcr-popup-card">
+                <div class="card lcr-popup-card" *ngIf="Gateways?.direct.length">
                     <div class="card-header">Direct</div>
                     <div class="card-body">
-                        <div *ngFor="let direct of Gateways.direct; index as i" class="row"
+                        <div *ngFor="let direct of Gateways?.direct; index as i" class="row"
                             [ngClass]="{'mt-2':i === 0 || i === -1}">
                             <label class="col-9">{{direct.gw_id}} - {{direct.gw_name}}</label>
                             <div class="form-group col-3">
@@ -134,10 +134,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card lcr-popup-card">
+                <div class="card lcr-popup-card" *ngIf="Gateways?.premium.length">
                     <div class="card-header">Premium</div>
                     <div class="card-body">
-                        <div *ngFor="let premium of Gateway?.premium; index as i" class="row"
+                        <div *ngFor="let premium of Gateways?.premium; index as i" class="row"
                             [ngClass]="{'mt-2':i === 0 || i === -1}">
                             <label class="col-9">{{premium.gw_id}} - {{premium.gw_name}}</label>
                             <div class="form-group col-3">
@@ -150,10 +150,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card lcr-popup-card">
-                    <div class="card-header">Wholesale</div>
+                <div class="card lcr-popup-card" *ngIf="Gateways?.wholesale.length">
+                    <div class="card-header">Premium</div>
                     <div class="card-body">
-                        <div *ngFor="let wholesale of Gateway?.wholesale; index as i" class="row"
+                        <div *ngFor="let wholesale of Gateways?.wholesale; index as i" class="row"
                             [ngClass]="{'mt-2':i === 0 || i === -1}">
                             <label class="col-9">{{wholesale.gw_id}} - {{wholesale.gw_name}}</label>
                             <div class="form-group col-3">
@@ -166,10 +166,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card lcr-popup-card">
+                <div class="card lcr-popup-card" *ngIf="Gateways?.nonlcr.length">
                     <div class="card-header">Non-LCR</div>
                     <div class="card-body">
-                        <div *ngFor="let nonlcr of Gateway?.nonlcr; index as i" class="row"
+                        <div *ngFor="let nonlcr of Gateways?.nonlcr; index as i" class="row"
                             [ngClass]="{'mt-2':i === 0 || i === -1}">
                             <label class="col-9">{{nonlcr.gw_id}} - {{nonlcr.gw_name}}</label>
                             <div class="form-group col-3">

@@ -107,6 +107,7 @@ export class CloneAPoolRouteRes {
     responsecode: number;
     responsestatus: string;
     data: CloneAPoolRouteData;
+    message?: string;
 }
 
 export class CloneAPoolRouteData {
