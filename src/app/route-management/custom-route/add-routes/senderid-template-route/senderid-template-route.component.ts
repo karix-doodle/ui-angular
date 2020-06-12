@@ -12,7 +12,6 @@ import {
 import { Router, ActivatedRoute } from "@angular/router";
 import { CustomService } from "src/app/route-management/services/RouteManagement/custom-route/custom.service";
 import { ToastrManager } from "ng6-toastr-notifications";
-import { MobileSenderidCustomService } from "src/app/route-management/services/RouteManagement/custom-route/mobile-custom-senderid.service";
 import { environment } from "src/environments/environment";
 import {
   CountriesListRes,
@@ -77,6 +76,9 @@ export class SenderidTemplateRouteComponent implements OnInit {
       mnc: 0,
     });
   }
+  /**
+   * @description validations added acording to the whitelist_type
+   */
 
   onChange() {
     switch (this.control.whitelist_type.value) {
@@ -85,6 +87,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
           Validators.required,
           Validators.pattern("[0-9]{3,14}"),
         ]);
+
         this.fromReset();
         break;
       }
@@ -162,7 +165,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
   }
   /**
    *
-   * @description adds the mobile with senderid custom route
+   * @description adds the mobile with senderTemplate custom route
    */
   onSubmit() {
     if (this.selectedFile) {
@@ -171,39 +174,34 @@ export class SenderidTemplateRouteComponent implements OnInit {
       return;
     }
 
-    switch (this.senderContentFrom.valid) {
-      case false: {
-        this.submitted = true;
-        break;
-      }
-      case true: {
-        this.senderContentFrom.value.template = this.senderContentFrom.value
-          .template
-          ? this.senderContentFrom.value.template
-          : ".*";
-        this.senderContentFrom.value.esmeaddr = this.senderContentFrom.value
-          .esmeaddr
-          ? this.senderContentFrom.value.esmeaddr
-          : 0;
-        this.senderContentFrom.value.comments = this.senderContentFrom.value
-          .comments
-          ? this.senderContentFrom.value.comments
-          : "";
-        this.senderContentFrom.value.mcc = this.countriesData.find(
-          (c) => c.country === this.senderContentFrom.value.country
-        ).mcc;
-        this.senderContentFrom.value.mnc = this.operatorList.find(
-          (op) => op.operator === this.senderContentFrom.value.operator
-        ).mnc;
-        this.senderContentFrom.value.createdby = "1234";
-        this.senderContentFrom.value.req_type = "single_req";
-        this.senderContentFrom.value.default_senderid = true;
-        this.senderContentFrom.value.priority = +this.senderContentFrom.value
-          .priority;
-        this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
-        this.onAddRoute({ ...this.senderContentFrom.value });
-        break;
-      }
+    if (!this.senderContentFrom.valid) {
+      this.submitted = true;
+    } else {
+      this.senderContentFrom.value.template = this.senderContentFrom.value
+        .template
+        ? this.senderContentFrom.value.template
+        : ".*";
+      this.senderContentFrom.value.esmeaddr = this.senderContentFrom.value
+        .esmeaddr
+        ? this.senderContentFrom.value.esmeaddr
+        : 0;
+      this.senderContentFrom.value.comments = this.senderContentFrom.value
+        .comments
+        ? this.senderContentFrom.value.comments
+        : "";
+      this.senderContentFrom.value.mcc = this.countriesData.find(
+        (c) => c.country === this.senderContentFrom.value.country
+      ).mcc;
+      this.senderContentFrom.value.mnc = this.operatorList.find(
+        (op) => op.operator === this.senderContentFrom.value.operator
+      ).mnc;
+      this.senderContentFrom.value.createdby = "1234";
+      this.senderContentFrom.value.req_type = "single_req";
+      this.senderContentFrom.value.default_senderid = true;
+      this.senderContentFrom.value.priority = +this.senderContentFrom.value
+        .priority;
+      this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+      this.onAddRoute({ ...this.senderContentFrom.value });
     }
   }
 
@@ -267,6 +265,10 @@ export class SenderidTemplateRouteComponent implements OnInit {
     this.cmobilesenderUpload = null;
     this.emptyForm();
   }
+
+  /**
+   * @description resets the form to the default values
+   */
 
   emptyForm() {
     this.senderContentFrom.patchValue({

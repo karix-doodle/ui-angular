@@ -1,22 +1,25 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { MobileBlackList_AddResponse, MobileSenderidBlackList_DeleteResponse, MobileSenderidBlackList_ApiResponse } from '../../../models/BlackList/blacklist.model';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { environment } from "src/environments/environment";
+import { Observable } from "rxjs";
+import { map, tap } from "rxjs/operators";
+import {
+  MobileBlackList_AddResponse,
+  MobileSenderidBlackList_DeleteResponse,
+  MobileSenderidBlackList_ApiResponse,
+} from "../../../models/BlackList/blacklist.model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class BlackListAddSenderidService {
+  constructor(public http: HttpClient) {}
 
-  constructor(public http: HttpClient) { }
-
-  baseUrl = environment.serverUrl + '/routemgmt/blacklist/mobile/senderid';
+  baseUrl = environment.serverUrl + "/routemgmt/blacklist/mobile/senderid";
   httpOptions = {
     headers: new HttpHeaders({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
     }),
   };
   user = {
@@ -29,10 +32,10 @@ export class BlackListAddSenderidService {
    * @description gets all the mobile senderid blacklist route datas
    */
   getBlMobileSenderData(): Observable<MobileSenderidBlackList_ApiResponse> {
-    return this.http.post(this.baseUrl + '/list', this.user)
-    .pipe(
-      tap(data => console.log(data)),
-      map((data) => data as MobileSenderidBlackList_ApiResponse));
+    return this.http.post(this.baseUrl + "/list", this.user).pipe(
+      tap((data) => console.log(data)),
+      map((data) => data as MobileSenderidBlackList_ApiResponse)
+    );
   }
 
   /**
@@ -41,15 +44,15 @@ export class BlackListAddSenderidService {
    * @description adds the mobile sender blacklist route data
    */
   addBlMobileSender(body, formType): Observable<MobileBlackList_AddResponse> {
-    let values: any;
-    if(formType){
-      values = body
-
-    }else {
-      values ={...this.user, ...body}
+    let blacklistMobileSenderData: any;
+    if (formType) {
+      blacklistMobileSenderData = body;
+    } else {
+      blacklistMobileSenderData = { ...this.user, ...body };
     }
-    return this.http.post(this.baseUrl + '/add', values)
-    .pipe(map((data)=> data as MobileBlackList_AddResponse))
+    return this.http
+      .post(this.baseUrl + "/add", blacklistMobileSenderData)
+      .pipe(map((data) => data as MobileBlackList_AddResponse));
   }
 
   /**
@@ -57,10 +60,11 @@ export class BlackListAddSenderidService {
    * @param blMobileSenderData consists of mobile sender blocklist data to delete
    * @description deletes the record
    */
-  deleteBlMobileSender(body): Observable<MobileSenderidBlackList_DeleteResponse> {
-    return this.http.post(this.baseUrl + '/delete', {...this.user,...body})
-    .pipe(map(data => data as MobileSenderidBlackList_DeleteResponse))
+  deleteBlMobileSender(
+    body
+  ): Observable<MobileSenderidBlackList_DeleteResponse> {
+    return this.http
+      .post(this.baseUrl + "/delete", { ...this.user, ...body })
+      .pipe(map((data) => data as MobileSenderidBlackList_DeleteResponse));
   }
-
-
 }

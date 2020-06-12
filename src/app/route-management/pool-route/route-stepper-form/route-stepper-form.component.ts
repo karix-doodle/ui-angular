@@ -71,8 +71,10 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
 
    ngOnInit() {
       this.routeEditMode = false;
+      /**
+       * @description parentToChildDetectionBehaviorSubject subscriptions.
+       */
       this.sub = this.poolRouteService.currentSubjectData.subscribe((data) => {
-         // console.log(`subjectData ${data}`);
          if (data === 1) {
             this.routeEditMode = true;
             this.selectCountry();
@@ -83,7 +85,6 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
                this.stepper.previous();
             }
          } else if (data === 2) {
-            // alert('in');
             this.createSecondForm();
             if (this.stepper.selectedIndex === 1) {
                this.stepper.previous();
@@ -101,6 +102,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       this.createSecondForm();
       this.loadCountriesList();
    }
+   /**
+    * @description to page scroll top.
+    */
    private onScrollTop() {
       const scrollToTop = window.setInterval(() => {
          const posTop = window.pageYOffset;
@@ -111,6 +115,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       }, 16);
    }
+   /**
+    * @description create and define a 2nd step form.
+    */
    private createSecondForm() {
       this.secondFormGroup = this.formBuilder.group({
          secondCtrl: [''],
@@ -120,12 +127,18 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          comments: ['', [Validators.required]]
       });
    }
+   /**
+    * @description create and define row_routes_list form array.
+    */
    createItem(): FormGroup {
       return this.formBuilder.group({
          gw_id: ['', [Validators.required]],
          ratio_in_percentage: [10, [Validators.required]]
       });
    }
+   /**
+    * @description gets the countries list.
+    */
    loadCountriesList() {
       this.genericService.getCountriesList().subscribe(
          (res: CountriesListRes) => {
@@ -151,10 +164,17 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       );
    }
+   /**
+    * @description gets the country_code from selected country.
+    */
    selectCountry() {
       this.selectedCountry = this.countriesList.filter((element) => element.country === this.parentForm.value.countryName);
       this.loadOperatorsList(this.selectedCountry[0].country_code);
    }
+   /**
+    * @param countryCode consists of country Code.
+    * @description gets the operators list.
+    */
    loadOperatorsList(countryCode: number) {
       this.genericService.getOperatorsList({ country_code: countryCode }).subscribe(
          (res: OperatorsListRes) => {
@@ -185,11 +205,17 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       );
    }
+   /**
+    * @description gets the selected operator object.
+    */
    selectOperator() {
       this.selectedOperator = this.operatorsList.filter((element) => element.mnc === this.parentForm.value.operatorMNC);
    }
 
    // 2nd step
+   /**
+    * @description to add new gateway dropdown with ratio count check.
+    */
    addRowGateway(): void {
       this.row_routes_list = this.rowRoutesListFormArray;
       if (this.row_routes_list.length <= 9) {
@@ -199,12 +225,20 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       }
    }
+   /**
+    * @param index consists of formarray index.
+    * @description to remove selected gateway dropdown.
+    */
    onCloseRowGateway(index) {
       this.row_routes_list = this.rowRoutesListFormArray;
       if (this.row_routes_list.length !== 1) {
          this.row_routes_list.removeAt(index);
       }
    }
+   /**
+    * @description gets the row_routes_list ratio count.
+    * @returns ratio count.
+    */
    private ratioCount(): number {
       this.row_routes_list = this.rowRoutesListFormArray;
       let total = 0;
@@ -213,12 +247,21 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       });
       return total;
    }
+   /**
+    * @description gets the 2nd form row_routes_list formarray data.
+    */
    get rowRoutesListFormArray(): FormArray {
       return this.secondFormGroup.get('row_routes_list') as FormArray;
    }
+   /**
+    * @description gets the 2nd form ratio % Count.
+    */
    get getRowRatioCount() {
       return this.ratioCount();
    }
+   /**
+    * @description to check whether row route is custom or else and initiates the onSubmitAction() method.
+    */
    onSecondStepSubmit() {
       this.secondStepSubmitted = true;
       if (this.secondFormGroup.value.row_route !== 'custom') {
@@ -227,24 +270,26 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          this.rowRoutesListFormArray.clear();
          this.onSubmitAction();
       } else {
-         // console.log(this.getRowRatioCount);
          if (this.getRowRatioCount === 100) {
             this.onSubmitAction();
          }
       }
    }
+   /**
+    * @description to submit the create a pool route service with require and validated data.
+    */
    onSubmitAction() {
       if (this.secondFormGroup.valid) {
          this.secondStepSubmitted = false;
+         const loggedInEmpId = this.secondFormGroup.value.loggedinempid.toString();
          this.createAPoolRouteBody.route_name = this.parentForm.value.route_name;
          this.createAPoolRouteBody.gw_type = this.parentForm.value.gw_type;
          this.createAPoolRouteBody.fallback_gw_type = this.parentForm.value.fallback_gw_type;
          this.createAPoolRouteBody.routes_list = this.poolRouteService.previewList;
          this.createAPoolRouteBody.row_route = this.secondFormGroup.value.row_route;
          this.createAPoolRouteBody.row_routes_list = this.secondFormGroup.value.row_routes_list;
-         this.createAPoolRouteBody.loggedinempid = this.secondFormGroup.value.loggedinempid;
+         this.createAPoolRouteBody.loggedinempid = loggedInEmpId;
          this.createAPoolRouteBody.comments = this.secondFormGroup.value.comments;
-         // console.log(this.createAPoolRouteBody);
          this.poolRouteService.createAPoolRoute(this.createAPoolRouteBody).subscribe(
             (res: PoolRouteRes) => {
                if (
@@ -265,6 +310,10 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          );
       }
    }
+   /**
+    * @param data consists of cloned route data
+    * @description to prepopulate 2nd form.
+    */
    private setClonedDataIn2ndForm(data: CloneAPoolRouteData) {
       this.secondFormGroup.patchValue({
          secondCtrl: '',
@@ -292,6 +341,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    }
    // 2nd step
    // 1st step
+   /**
+    * @description to reset the 1st form.
+    */
    firstFormCancel() {
       this.parentForm.patchValue({
          // route_name: '',
@@ -312,14 +364,23 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       ));
    }
+   /**
+    * @description gets the 1st form gatewayRatio Formarray data.
+    */
    get parentFormArray(): FormArray {
       return this.parentForm.get('gatewayRatio') as FormArray;
    }
-
+   /**
+    * @description gets the gatewayRatio ratio count.
+    * @returns ratio count.
+    */
    get getRatioCount(): number {
       return this.calculateRatioTotal();
    }
-
+   /**
+    * @description gets the gatewayRatio ratio count.
+    * @returns ratio count.
+    */
    private calculateRatioTotal(): number {
       this.gatewayRatio = this.parentFormArray;
       let total = 0;
@@ -328,7 +389,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       });
       return total;
    }
-
+   /**
+    * @description to add new gateway dropdown with ratio count check.
+    */
    addGateway(): void {
       this.gatewayRatio = this.parentFormArray;
       if (this.gatewayRatio.length <= 9) {
@@ -337,12 +400,14 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       }
    }
-
+   /**
+    * @param index consists of formarray index.
+    * @description to remove selected gateway dropdown.
+    */
    onCloseGateway(index) {
       this.gatewayRatio = this.parentFormArray;
       if (this.gatewayRatio.length !== 1) {
          this.gatewayRatio.removeAt(index);
-         // this.gatewayRatio.updateValueAndValidity();
       }
    }
 
@@ -383,7 +448,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          this.gatewayRatio.controls.forEach(ratio => ratio.patchValue(
             {
                gw_id: '',
-               ratio_in_percentage: '10'
+               ratio_in_percentage: 10
             }
          ));
          this.submitted = false;

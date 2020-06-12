@@ -53,6 +53,9 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     this.submitted = false;
     // clone a pool route
     this.poolRouteService.changeSubjectData(null); // for initial subject data reset
+    /**
+     * @description gets route id form route params.
+     */
     this.route.params
       .subscribe(
         (params: Params) => {
@@ -69,6 +72,9 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     this.gatewaysListBody.loggedinempid = environment.loggedinempid;
     this.gatewaysListBody.loggedinusername = environment.loggedinusername;
   }
+  /**
+   * @description create and define a parent(1st step) form.
+   */
   private createForm() {
     this.formOfCreateClone = this.formBuilder.group({
       route_name: ['', Validators.required],
@@ -84,20 +90,28 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       .valueChanges
       .pipe(startWith(null), pairwise())
       .subscribe(([prev, next]: [any, any]) => {
-        // console.log('PREV2', prev);
-        // console.log('NEXT2', next);
         this.previousGatewayType = prev;
       });
   }
+  /**
+   * @description create and define gatewayRatio form array.
+   */
   createItem(): FormGroup {
     return this.formBuilder.group({
       gw_id: ['', [Validators.required]],
       ratio_in_percentage: [10, [Validators.required]]
     });
   }
+  /**
+   * @description gets the parent form array data.
+   */
   get parentFormArray(): FormArray {
     return this.formOfCreateClone.get('gatewayRatio') as FormArray;
   }
+  /**
+   * @param routeId consists of route id.
+   * @description gets the clone route data.
+   */
   setParamData(routeId) {
     this.poolRouteService.cloneAPoolRoute({ route_id: routeId, loggedinempid: environment.loggedinempid })
       .subscribe(
@@ -129,6 +143,10 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
         }
       );
   }
+  /**
+   * @param data consists of route id.
+   * @description to prepopulate the 1st step form data.
+   */
   private prePopulateForm(data: NewRoutesList) {
     this.formOfCreateClone.patchValue({
       countryName: data.country,
@@ -145,7 +163,11 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       );
     });
   }
-  loadGatewaysList(from, dropDownValue?: string) {
+  /**
+   * @param from consists of origin method identification string.
+   * @description to check and initiate load Gateways list method.
+   */
+  loadGatewaysList(from) {
     if (from === 'cloneRouteParams') {
       this.loadList();
     } else if (from === 'onChange') {
@@ -170,6 +192,9 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       }
     }
   }
+  /**
+   * @description gets the gateways list date.
+   */
   loadList() {
     this.formOfCreateClone.patchValue({
       fallback_gw_type: `lcr-${this.formOfCreateClone.value.gw_type}`
@@ -193,6 +218,9 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       }
     );
   }
+  /**
+   * @description to reset the 1st form array.
+   */
   resetFirstFormArray() {
     this.formOfCreateClone.get('gatewayRatio').markAsUntouched();
     const formArray = this.parentFormArray;
@@ -203,17 +231,27 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       }
     ));
   }
+  /**
+   * @description to set the parent form is submitted.
+   */
   submitState() {
     this.submitted = true;
   }
+  /**
+   * @param eventData consists of add new button click method identification string
+   * @description to set the parent form is submitted.
+   */
   previewListData(eventData?: string) {
-    // console.log(eventData);
     this.continentsCount = this.count('continent');
     this.countryCount = this.count('country');
     if (eventData === 'fromAddNew') {
       this.onScrollDown();
     }
   }
+  /**
+   * @param params consists of preview list element value.
+   * @description gets the unique elements count.
+   */
   private count(params) {
     const uniqueId = new Set();
     this.poolRouteService.previewList.forEach(element => {
@@ -221,6 +259,10 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     });
     return uniqueId.size;
   }
+  /**
+   * @param route consists of selected route detail object.
+   * @description to pass the preview list edit event from parent to child component.
+   */
   onEditPreview(route: NewRoutesList) {
     this.prePopulateForm(route);
     this.poolRouteService.changeSubjectData(1);
@@ -229,6 +271,10 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     this.previewListData();
 
   }
+  /**
+   * @param route consists of selected route detail object.
+   * @description to pass the preview delete edit event from parent to child component.
+   */
   onDeleteRoute(route: NewRoutesList) {
     confirmAlert().then((result) => {
       if (result.isConfirmed) {
@@ -239,12 +285,17 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       }
     });
   }
+  /**
+   * @description page scroll down.
+   */
   onScrollDown(): void {
     setTimeout(() => {
       this.tableRow.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }, 500);
   }
-
+  /**
+   * @description to clear all observable subscriptions.
+   */
   ngOnDestroy() {
     this.sub.unsubscribe();
   }

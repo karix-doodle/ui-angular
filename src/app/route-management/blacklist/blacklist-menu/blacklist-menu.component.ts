@@ -17,6 +17,10 @@ blacklistSummary: BlackListSummary_Data;
   ngOnInit() {
     this.getBlackListSummary()
   }
+  /**
+   *
+   * @description gets the over all summary for the blacklist
+   */
 
 
   getBlackListSummary(){

@@ -46,24 +46,17 @@ export class MobileSenderidCustomService {
     body,
     formType: Boolean
   ): Observable<MobileCustomSenderIdResponse> {
-
     let customMobileSenderidData: any;
-    switch (formType) {
-      case true: {
-        customMobileSenderidData = body;
-        break;
-      }
-      case false: {
-        customMobileSenderidData = { ...this.user, ...body };
-        break;
-      }
+    if (formType) {
+      customMobileSenderidData = body;
+    } else {
+      customMobileSenderidData = { ...this.user, ...body };
     }
 
     return this.http
       .post(this.baseUrl + "/add", customMobileSenderidData)
       .pipe(map((data) => (data as unknown) as MobileCustomSenderIdResponse));
   }
-
 
   /**
    *

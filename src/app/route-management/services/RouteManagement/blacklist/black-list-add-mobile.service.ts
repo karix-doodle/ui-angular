@@ -1,33 +1,32 @@
-import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
+import { HttpHeaders, HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 import {
   BlackListSummary_ApiResponse,
   MobileBlackList_ApiResponse,
   MobileBlackList_AddResponse,
   MobileBlackList_DeleteResponse,
   BlackListGateway_ApiResponse,
-} from '../../../models/BlackList/blacklist.model';
-import { map } from 'rxjs/operators';
+} from "../../../models/BlackList/blacklist.model";
+import { map } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class BlackListAddMobileService {
   constructor(public http: HttpClient) {}
-  baseUrl: string = environment.serverUrl + '/routemgmt/blacklist/';
+  baseUrl: string = environment.serverUrl + "/routemgmt/blacklist/";
   httpOptions = {
     headers: new HttpHeaders({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
     }),
   };
   user = {
     loggedinusername: environment.loggedinusername,
     loggedinempid: environment.loggedinempid,
   };
-
 
   /**
    *
@@ -36,7 +35,7 @@ export class BlackListAddMobileService {
    */
   getBlackListMobile(): Observable<MobileBlackList_ApiResponse> {
     return this.http
-      .post(this.baseUrl + 'mobile/list', this.user)
+      .post(this.baseUrl + "mobile/list", this.user)
       .pipe(map((data) => data as MobileBlackList_ApiResponse));
   }
 
@@ -45,16 +44,18 @@ export class BlackListAddMobileService {
    * @param blMobiledata consists of blacklist mobile route data
    * @description adds the mobile blacklist route data
    */
-  addBlackListMobile(body, formType: boolean): Observable<MobileBlackList_AddResponse> {
-    let values: any;
-    if(formType){
-      values = body
-
-    }else {
-      values ={...this.user, ...body}
+  addBlackListMobile(
+    body,
+    formType: boolean
+  ): Observable<MobileBlackList_AddResponse> {
+    let blacklistMobileData: any;
+    if (formType) {
+      blacklistMobileData = body;
+    } else {
+      blacklistMobileData = { ...this.user, ...body };
     }
     return this.http
-      .post(this.baseUrl + 'mobile/add', values )
+      .post(this.baseUrl + "mobile/add", blacklistMobileData)
       .pipe(map((data) => (data as unknown) as MobileBlackList_AddResponse));
   }
 
@@ -67,9 +68,7 @@ export class BlackListAddMobileService {
     blMobiledata
   ): Observable<MobileBlackList_DeleteResponse> {
     return this.http
-      .post(this.baseUrl + 'mobile/delete', {...blMobiledata, ...this.user})
+      .post(this.baseUrl + "mobile/delete", { ...blMobiledata, ...this.user })
       .pipe(map((data) => (data as unknown) as MobileBlackList_DeleteResponse));
   }
-
-
 }

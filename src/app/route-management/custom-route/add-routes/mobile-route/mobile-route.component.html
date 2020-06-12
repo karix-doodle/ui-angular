@@ -89,7 +89,7 @@
                   *ngFor="let gateway of gatewayListData"
                   [value]="gateway.gw_id"
                   [disabled]="
-                    control.fallback_gw_id &&
+                    control.fallback_gw_id.value &&
                     gateway.gw_id === control.fallback_gw_id
                   "
                 >

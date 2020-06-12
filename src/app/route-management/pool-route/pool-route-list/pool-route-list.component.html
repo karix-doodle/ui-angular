@@ -64,7 +64,7 @@
                         [routerLink]="['/route-management/pool-route/account-wise-view', row.route_id]">{{row.route_name}}</a>
                 </td>
                 <td>{{row.countries_count}}</td>
-                <td><a
+                <td><a [ngClass]="{'cursor-pointer': row.tagged_accounts_count > 0}"
                         (click)="row.tagged_accounts_count > 0 && open(acntsTagged, row.tagged_accounts_list, row.createdby, row.route_name)">
                         {{row.tagged_accounts_count}}</a></td>
                 <td>{{row.created_date}} | {{row.created_time}}</td>
@@ -74,8 +74,9 @@
                         <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon" />
                     </a>
                 </td>
-                <td> <img *ngIf="row.tagged_accounts_count" src="assets/icons/delete-icon.svg" class="img-fluid"
-                        alt="delete icon" (click)="onDelete(row.route_id, row.route_name)" />
+                <td> <img *ngIf="row.tagged_accounts_count" src="assets/icons/delete-icon.svg"
+                        class="img-fluid cursor-pointer" alt="delete icon"
+                        (click)="onDelete(row.route_id, row.route_name)" />
                 </td>
             </tr>
             <tr *ngIf="!poolListRes?.data.routes_list.length  

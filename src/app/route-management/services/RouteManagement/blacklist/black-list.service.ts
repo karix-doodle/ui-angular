@@ -1,23 +1,23 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { environment } from "src/environments/environment";
+import { Observable } from "rxjs";
 import {
   BlackListSummary_ApiResponse,
   BlackListGateway_ApiResponse,
-} from '../../../models/BlackList/blacklist.model';
-import { map } from 'rxjs/operators';
+} from "../../../models/BlackList/blacklist.model";
+import { map } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class BlackListService {
   constructor(public http: HttpClient) {}
-  baseUrl: string = environment.serverUrl + '/routemgmt';
+  baseUrl: string = environment.serverUrl + "/routemgmt";
   httpOptions = {
     headers: new HttpHeaders({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
     }),
   };
   user = {
@@ -29,7 +29,7 @@ export class BlackListService {
    */
   getBlackListSummary(): Observable<BlackListSummary_ApiResponse> {
     return this.http
-      .post(this.baseUrl + '/blacklist/summary', this.user, this.httpOptions)
+      .post(this.baseUrl + "/blacklist/summary", this.user, this.httpOptions)
       .pipe(map((data) => data as BlackListSummary_ApiResponse));
   }
 
@@ -38,7 +38,11 @@ export class BlackListService {
    */
   getBlackListGatewayList(): Observable<BlackListGateway_ApiResponse> {
     return this.http
-      .post(this.baseUrl + '/listgateways', { ...this.user, ...{ gw_type: 'direct' } }, this.httpOptions)
+      .post(
+        this.baseUrl + "/listgateways",
+        { ...this.user, ...{ gw_type: "direct" } },
+        this.httpOptions
+      )
       .pipe(map((data) => data as BlackListGateway_ApiResponse));
   }
 }
