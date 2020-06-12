@@ -23,6 +23,11 @@ export class CrMenuComponent implements OnInit {
     this.getSummaryData();
   }
 
+  /**
+   *
+   * @description gets the overall summary for the custom route
+   */
+
   getSummaryData() {
     this.customService.getCustomRouteSummary().subscribe(
       (res: CustomSummary_ApiResponse) => {

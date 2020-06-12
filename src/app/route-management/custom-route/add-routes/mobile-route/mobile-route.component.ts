@@ -126,23 +126,18 @@ export class MobileRouteComponent implements OnInit {
       this.onAddRoute(this.fileData);
       return;
     }
-    switch (this.mobileRouteForm.valid) {
-      case false: {
-        this.submitted = true;
-        break;
-      }
-      case true: {
-        this.mobileRouteForm.value.esmeaddr = this.mobileRouteForm.value
-          .esmeaddr
-          ? this.mobileRouteForm.value.esmeaddr
-          : 0;
-        this.mobileRouteForm.value.req_type = "single_req";
-        this.mobileRouteForm.value.createdby = "1234";
-        this.mobileRouteForm.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
-        this.onAddRoute({ ...this.mobileRouteForm.value });
-        break;
-      }
+    if (!this.mobileRouteForm.valid) {
+      this.submitted = true;
+    } else {
+      this.mobileRouteForm.value.esmeaddr = this.mobileRouteForm.value.esmeaddr
+        ? this.mobileRouteForm.value.esmeaddr
+        : 0;
+      this.mobileRouteForm.value.req_type = "single_req";
+      this.mobileRouteForm.value.createdby = "1234";
+      this.mobileRouteForm.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
+      this.onAddRoute({ ...this.mobileRouteForm.value });
     }
+
   }
 
   /**

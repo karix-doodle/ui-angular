@@ -146,25 +146,22 @@ export class SenderidMobileRouteComponent implements OnInit {
       this.onAddRoute(this.selectedFile);
       return;
     }
-    switch (this.senderIdFrom.valid) {
-      case false: {
-        this.submitted = true;
-        break;
-      }
-      case true: {
-        this.senderIdFrom.value.esmeaddr = this.senderIdFrom.value.esmeaddr
-          ? this.senderIdFrom.value.esmeaddr
-          : 0;
-        this.senderIdFrom.value.comments = this.senderIdFrom.value.comments
-          ? this.senderIdFrom.value.comments
-          : "";
-        this.senderIdFrom.value.req_type = "single_req";
-        this.senderIdFrom.value.createdby = "1234";
-        this.senderIdFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
-        this.onAddRoute({ ...this.senderIdFrom.value });
-        break;
-      }
+
+    if(!this.senderIdFrom.valid){
+      this.submitted = true
+    } else {
+      this.senderIdFrom.value.esmeaddr = this.senderIdFrom.value.esmeaddr
+      ? this.senderIdFrom.value.esmeaddr
+      : 0;
+    this.senderIdFrom.value.comments = this.senderIdFrom.value.comments
+      ? this.senderIdFrom.value.comments
+      : "";
+    this.senderIdFrom.value.req_type = "single_req";
+    this.senderIdFrom.value.createdby = "1234";
+    this.senderIdFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+    this.onAddRoute({ ...this.senderIdFrom.value });
     }
+
   }
 
   /**

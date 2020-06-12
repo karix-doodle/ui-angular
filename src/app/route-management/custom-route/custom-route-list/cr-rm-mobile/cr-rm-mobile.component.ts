@@ -93,6 +93,8 @@ export class CrRmMobileComponent implements OnInit {
     });
   }
 
+
+
   /**
    *
    * @param tableHeaderName consists of table header
