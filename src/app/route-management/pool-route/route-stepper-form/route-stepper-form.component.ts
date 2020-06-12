@@ -236,7 +236,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       }
    }
    /**
-    * @description to remove selected gateway dropdown.
+    * @description gets the row_routes_list ratio count.
     * @returns ratio count.
     */
    private ratioCount(): number {
@@ -247,12 +247,21 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       });
       return total;
    }
+   /**
+    * @description gets the 2nd form row_routes_list formarray data.
+    */
    get rowRoutesListFormArray(): FormArray {
       return this.secondFormGroup.get('row_routes_list') as FormArray;
    }
+   /**
+    * @description gets the 2nd form ratio % Count.
+    */
    get getRowRatioCount() {
       return this.ratioCount();
    }
+   /**
+    * @description to check whether row route is custom or else and initiates the onSubmitAction() method.
+    */
    onSecondStepSubmit() {
       this.secondStepSubmitted = true;
       if (this.secondFormGroup.value.row_route !== 'custom') {
@@ -261,12 +270,14 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          this.rowRoutesListFormArray.clear();
          this.onSubmitAction();
       } else {
-         // console.log(this.getRowRatioCount);
          if (this.getRowRatioCount === 100) {
             this.onSubmitAction();
          }
       }
    }
+   /**
+    * @description to submit the create a pool route service with require and validated data.
+    */
    onSubmitAction() {
       if (this.secondFormGroup.valid) {
          this.secondStepSubmitted = false;
@@ -279,7 +290,6 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          this.createAPoolRouteBody.row_routes_list = this.secondFormGroup.value.row_routes_list;
          this.createAPoolRouteBody.loggedinempid = loggedInEmpId;
          this.createAPoolRouteBody.comments = this.secondFormGroup.value.comments;
-         // console.log(this.createAPoolRouteBody);
          this.poolRouteService.createAPoolRoute(this.createAPoolRouteBody).subscribe(
             (res: PoolRouteRes) => {
                if (
@@ -300,6 +310,10 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          );
       }
    }
+   /**
+    * @param data consists of cloned route data
+    * @description to prepopulate 2nd form.
+    */
    private setClonedDataIn2ndForm(data: CloneAPoolRouteData) {
       this.secondFormGroup.patchValue({
          secondCtrl: '',
@@ -327,6 +341,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    }
    // 2nd step
    // 1st step
+   /**
+    * @description to reset the 1st form.
+    */
    firstFormCancel() {
       this.parentForm.patchValue({
          // route_name: '',
@@ -347,14 +364,23 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       ));
    }
+   /**
+    * @description gets the 1st form gatewayRatio Formarray data.
+    */
    get parentFormArray(): FormArray {
       return this.parentForm.get('gatewayRatio') as FormArray;
    }
-
+   /**
+    * @description gets the gatewayRatio ratio count.
+    * @returns ratio count.
+    */
    get getRatioCount(): number {
       return this.calculateRatioTotal();
    }
-
+   /**
+    * @description gets the gatewayRatio ratio count.
+    * @returns ratio count.
+    */
    private calculateRatioTotal(): number {
       this.gatewayRatio = this.parentFormArray;
       let total = 0;
@@ -363,7 +389,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       });
       return total;
    }
-
+   /**
+    * @description to add new gateway dropdown with ratio count check.
+    */
    addGateway(): void {
       this.gatewayRatio = this.parentFormArray;
       if (this.gatewayRatio.length <= 9) {
@@ -372,12 +400,14 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          }
       }
    }
-
+   /**
+    * @param index consists of formarray index.
+    * @description to remove selected gateway dropdown.
+    */
    onCloseGateway(index) {
       this.gatewayRatio = this.parentFormArray;
       if (this.gatewayRatio.length !== 1) {
          this.gatewayRatio.removeAt(index);
-         // this.gatewayRatio.updateValueAndValidity();
       }
    }
 
