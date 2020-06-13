@@ -14,7 +14,7 @@ const CMroutes: Routes = [
       component: CmViewComponent
     },
     {
-      path: 'customer-management/customer-management-edit',
+      path: 'customer-management/customer-management-edit/:esmeaddr',
       component: CmEditComponent
     },
     {
