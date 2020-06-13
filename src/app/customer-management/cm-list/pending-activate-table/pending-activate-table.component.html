@@ -12,31 +12,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
-                <td>usrname</td>
-                <td>xxx xxx xxx</td>
+            <tr *ngFor="let user of usersData?.data.pendingesmelists">
+                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">{{user.esmeaddr}}</a></td>
+                <td>{{user.username}}</td>
+                <td>{{user.orgname}}</td>
                 <td>Direct</td>
-                <td>Nawal</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td><a routerLink="/customer-management/customer-management-edit"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
-                <td>usrname</td>
-                <td>xxx xxx xxx</td>
-                <td>Direct</td>
-                <td>Nawal</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td><a routerLink="/customer-management/customer-management-edit"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
-                <td>usrname</td>
-                <td>xxx xxx xxx</td>
-                <td>Direct</td>
-                <td>Nawal</td>
-                <td>28/10/2019 | 23:25:00</td>
+                <td>{{user.salespersonname}}</td>
+                <td>{{user.submissiondateandtime}}</td>
                 <td><a routerLink="/customer-management/customer-management-edit"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
             </tr>
         </tbody>
