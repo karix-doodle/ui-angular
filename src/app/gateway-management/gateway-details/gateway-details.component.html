@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-5 border-right"><label>Gateway Type</label></div>
             <div class="col-6"><b>{{GtDetailsData?.data.gw_type}}</b>
-                <span *ngIf="GtDetailsData?.data.exclude_lcr == 1"></span> (Non-LCR)
+                <span *ngIf="GtDetailsData?.data.exclude_lcr == 1"> (Non-LCR)</span>
             </div>
         </div>
     </div>
@@ -155,7 +155,8 @@
                 </div>
 
                 <div class="col-3 text-center bg-grey">
-                    <a routerLink="/gateway-management/senderid-content-block">
+                    <a
+                        routerLink="/gateway-management/senderid-content-block/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}">
                         <label class="box-heading">Sender ID + Content Blocked</label>
                         <div class="row">
                             <div class="col-12 text-center pt-4">

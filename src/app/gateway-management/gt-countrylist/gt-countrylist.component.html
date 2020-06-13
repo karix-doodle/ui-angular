@@ -6,7 +6,7 @@
                 {{GtDetailsCountryList?.data.gw_name}}</a> / COUNTRY LIST</span>
     </div>
     <div class="col-5 text-right">
-        <button class="btn erp-intl-btn" (click)="open(senderidConfig)">SenderId Configuration</button>
+        <button class="btn erp-intl-btn cursor-pointer" (click)="open(senderidConfig)">SenderId Configuration</button>
     </div>
 </div>
 <div class="btm-border mt-2 mb_10">
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-1 text-center">
                     <span (click)="downloadCountryListFile()" href="#" class="icon-btn">
-                        <i class="fa fa-download" aria-hidden="true"></i>
+                        <i class="fa fa-download cursor-pointer" aria-hidden="true"></i>
                     </span>
                 </div>
             </div>
@@ -58,11 +58,19 @@
 
 </div>
 <div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table">
+    <table class="table table-borderless erp-list-table mb-0">
         <thead>
             <tr>
-                <th>Country <i class="fa fa-caret-down"></i></th>
-                <th>Operator <i class="fa fa-caret-down"></i></th>
+                <th class="cursor-pointer" (click)="sort('country')">Country
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('operator')">Operator
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
+                </th>
                 <th>MCC + MNC</th>
                 <th>SenderID Type</th>
                 <th>Default SenderID</th>
@@ -73,7 +81,7 @@
         </thead>
         <tbody>
             <tr
-                *ngFor="let item of GtDetailsCountryList?.data.tabledata | filter: { country: searchvalue, operator: searchvalue }">
+                *ngFor="let item of GtDetailsCountryList?.data.tabledata | filter: { country: searchvalue, operator: searchvalue } | sort: sortingName: isDesc">
                 <td class="font-weight-semi-bold">{{item.country}}</td>
                 <td>{{item.operator}}</td>
                 <td>{{item.mcc}}-{{item.mnc}}</td>
@@ -101,6 +109,9 @@
                         </label>
                     </div>
                 </td>
+            </tr>
+            <tr *ngIf="GtDetailsCountryList?.data.tabledata.length == 0">
+                <td colspan="8" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
     </table>
@@ -140,7 +151,7 @@
                     <label class="font-weight-bold">{{item.rate}}</label> - <span>{{item.date}}</span>
                 </div>
                 <a *ngIf="rlist.length > 5"
-                    routerLink="/gateway-management/country-list-view/{{GtDetailsCountryList?.data.gw_id}}/{{country}}/{{operator}}"
+                    routerLink="/gateway-management/country-list-view/{{GtDetailsCountryList?.data.gw_id}}/{{GtDetailsCountryList?.data.gw_name}}/{{country}}/{{operator}}"
                     class="col-12 font-weight-semi-bold float-right">Show More
                 </a>
             </div>
@@ -158,11 +169,11 @@
 
                 <div class="col-6">
                     <label>Country</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100" (change)="countrySelect($event.target.value)">
                         <option value="" default>Select Country</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option *ngFor="let item of GtSenderIdConfigCountryList?.data" value="{{item.mcc}}">
+                            {{item.country}}
+                        </option>
                     </select>
 
                 </div>
@@ -170,9 +181,8 @@
                     <label>Operator</label>
                     <select class="dropdown-select w-100">
                         <option value="" default>Select Operator</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option *ngFor="let item of GtSenderIdConfigOperatorList?.data" value="{{item.mnc}}">
+                            {{item.operator}}</option>
                     </select>
                 </div>
             </div>

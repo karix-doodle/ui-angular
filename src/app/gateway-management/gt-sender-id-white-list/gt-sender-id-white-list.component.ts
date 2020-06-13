@@ -11,6 +11,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
 
 @Component({
   selector: 'app-gt-sender-id-white-list',
@@ -38,9 +39,9 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   ) {
 
     this.addSenderidFormGroup = this.formBuilder.group({
-      country: [''],
-      senderid: [''],
-      file: [''],
+      country: ['', [Validators.required]],
+      senderid: ['', [Validators.required]],
+      file: ['', [Validators.required]],
     });
 
   }
@@ -132,8 +133,15 @@ export class GtSenderIdWhiteListComponent implements OnInit {
     if (files.length === 0) {
       return;
     }
+
+    removeValidators(this.addSenderidFormGroup, 'country')
+    removeValidators(this.addSenderidFormGroup, 'senderid')
+
     const file = files.item(0);
     const formData: FormData = new FormData();
+    this.addSenderidFormGroup.patchValue({
+      file: file.name
+    })
     formData.append("req_type", "fileupload");
     formData.append("gw_id", this.activeRoute.snapshot.params.id);
     formData.append("file", file, file.name);
@@ -141,9 +149,31 @@ export class GtSenderIdWhiteListComponent implements OnInit {
     this.fileData = formData;
   }
 
+  removeSenderIdFile() {
+    this.addSenderidFormGroup.patchValue({
+      file: ""
+    })
+    this.fileData = null
+  }
+
   onSubmitaddSenderid(data) {
     this.isAddSenderidValid = true;
-    if (this.isFieldValid('country') != "" && this.isFieldValid('senderid') != "") {
+    if (this.isFieldValid('country') != "" && this.isFieldValid('senderid') == "" ||
+      this.isFieldValid('country') == "" && this.isFieldValid('senderid') != "") {
+      removeValidators(this.addSenderidFormGroup, 'file')
+    } else {
+      addValidators(this.addSenderidFormGroup, 'country')
+      addValidators(this.addSenderidFormGroup, 'senderid')
+      addValidators(this.addSenderidFormGroup, 'file')
+    }
+
+    if (this.isFieldValid('file') != "") {
+
+      this.isAddSenderidValid = false;
+      this.addSenderIdServiceCall(this.fileData, true)
+
+    } else if (this.isFieldValid('country') != "" && this.isFieldValid('senderid') != "") {
+
       this.isAddSenderidValid = false;
 
       let params = {
@@ -156,11 +186,6 @@ export class GtSenderIdWhiteListComponent implements OnInit {
 
       this.addSenderIdServiceCall(body, false)
 
-    } else if (this.isFieldValid('file') != "") {
-      this.isAddSenderidValid = false;
-
-      this.addSenderIdServiceCall(this.fileData, true)
-
     } else {
       return;
     }
@@ -172,7 +197,6 @@ export class GtSenderIdWhiteListComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
 
           successAlert(res.message, res.responsestatus)
-
           this.resetSenderIdForm()
 
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
@@ -185,6 +209,9 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   }
 
   resetSenderIdForm() {
+    removeValidators(this.addSenderidFormGroup, 'country')
+    removeValidators(this.addSenderidFormGroup, 'senderid')
+    removeValidators(this.addSenderidFormGroup, 'file')
     this.Gateway_SenderIdWhiteList()
     this.modalService.dismissAll('senderIdModal');
     this.addSenderidFormGroup.setValue({
