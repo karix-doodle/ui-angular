@@ -11,6 +11,8 @@ import {
   GtInactiveCountryList_ApiResponse,
   GtSenderIdConfigCountryList_ApiResponse,
   GtSenderIdConfigOperatorList_ApiResponse,
+  GtExistingSenderId_ApiResponse,
+  GtAddSenderIdConfiguration_ApiResponse,
   GtPriceChangeCountryList_ApiResponse,
   GtUpdate_ApiResponse,
   GtStatusupdate_ApiResponse,
@@ -29,7 +31,11 @@ import {
   GtFileAuditFileOperator_ApiResponse,
   GtCountryListViewLog_ApiResponse,
   GtESMEAddrRouted_ApiResponse,
-  GtSenderidContentList_ApiResponse
+  GtSenderidContentList_ApiResponse,
+  GtDefaultTemplate_ApiResponse,
+  GtUploadPriceFile_ApiResponse,
+  getHeaderFromFile_ApiResponse,
+  GtprocessPriceFile_ApiResponse
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -157,6 +163,22 @@ export class GatewayManagementService {
   GtSenderIdConfigOperator_list(data): Observable<GtSenderIdConfigOperatorList_ApiResponse> {
     return this.http.get(this.baseUrl + '/countryoperatorlist?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&load=' + data.load + '&mcc=' + data.mcc, this.httpOptions)
       .pipe(map(m => m as GtSenderIdConfigOperatorList_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management existing sender id
+  */
+  GtExistingSenderId(data): Observable<GtExistingSenderId_ApiResponse> {
+    return this.http.get(this.baseUrl + '/senderid/existingsenderid?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&mcc=' + data.mcc + '&mnc=' + data.mnc, this.httpOptions)
+      .pipe(map(m => m as GtExistingSenderId_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management add Sender Id configuration
+  */
+  GtAddSenderIdConfiguration(body): Observable<GtAddSenderIdConfiguration_ApiResponse> {
+    return this.http.post(this.baseUrl + '/addsenderidconfiguration', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtAddSenderIdConfiguration_ApiResponse));
   }
 
   /**
@@ -301,6 +323,38 @@ export class GatewayManagementService {
   GtSenderidContent_list(data): Observable<GtSenderidContentList_ApiResponse> {
     return this.http.get(this.baseUrl + '/sendeidcontentlist/?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id, this.httpOptions)
       .pipe(map(m => m as GtSenderidContentList_ApiResponse));
+  }
+
+  /**
+   * @description Gateway get DefaultTemplate
+  */
+  GtDefaultTemplate(body): Observable<GtDefaultTemplate_ApiResponse> {
+    return this.http.post(this.baseUrl + '/defaulttemplate', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtDefaultTemplate_ApiResponse));
+  }
+
+  /**
+   * @description Gateway UploadPriceFile
+  */
+  GtUploadPriceFile(body): Observable<GtUploadPriceFile_ApiResponse> {
+    return this.http.post(this.baseUrl + '/uploadgatewaypricefile', body)
+      .pipe(map(m => m as GtUploadPriceFile_ApiResponse));
+  }
+
+  /**
+   * @description Gateway get headers from file
+  */
+  getHeaderFromFile(body): Observable<getHeaderFromFile_ApiResponse> {
+    return this.http.post(this.baseUrl + '/getheadersfromfile', body)
+      .pipe(map(m => m as getHeaderFromFile_ApiResponse));
+  }
+
+  /**
+   * @description Gateway Process gateway price file
+  */
+  GtprocessPriceFile(body): Observable<GtprocessPriceFile_ApiResponse> {
+    return this.http.post(this.baseUrl + '/processgatewaypricefile', { ...body, ...this.user })
+      .pipe(map(m => m as GtprocessPriceFile_ApiResponse));
   }
 
 }
