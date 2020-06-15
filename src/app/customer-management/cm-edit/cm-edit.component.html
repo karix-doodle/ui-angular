@@ -2,7 +2,7 @@
     <div class="col-12">
         <label class="main-heading">
             <a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
-        <span> 70000 100000011</span>
+        <span> {{esmeaddr}}</span>
     </div>
 </div>
 <div class="row btm-border second-row-det">
@@ -11,22 +11,22 @@
             <div class="col-12">
                 <label class="mr-2"><b>ESME Addr.</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark esme-addr"><b>70000 100000011</b></span>
+                <span class="ml-3 badge badge-dark esme-addr"><b>{{usersData?.esmeaddr}}</b></span>
             </div>
         </div>
         <div class="row gateway-count">
             <div class="col-3">
-                <label>Company Name <span class="badge badge-dark ml-2"><b>name</b></span>
+                <label>Company Name <span class="badge badge-dark ml-2"><b>{{usersData?.company_name}}</b></span>
                 </label>
             </div>
             <div class="col-3">
-                <label>Billing Type <span class="badge badge-dark ml-2"><b>Postpaid</b></span></label>
+                <label>Billing Type <span class="badge badge-dark ml-2"><b>{{usersData?.billing_type}}</b></span></label>
             </div>
             <div class="col-3">
-                <label>Intl. Route Type <span class="badge badge-dark ml-2"><b>Direct</b></span></label>
+                <label>Intl. Route Type <span class="badge badge-dark ml-2"><b>{{usersData?.intl_routetype}}</b></span></label>
             </div>
             <div class="col-3">
-                <label>Billing Currency <span class="badge badge-dark ml-2"><b>Euro (€)</b></span></label>
+                <label>Billing Currency <span class="badge badge-dark ml-2"><b>{{usersData?.billing_currency}}</b></span></label>
             </div>
         </div>
     </div>
