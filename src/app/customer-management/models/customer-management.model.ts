@@ -2,7 +2,6 @@
  * @module customer-management
  * @description Custmor listing START
 */
-import { Time } from '@angular/common';
 
 export class PendingUsers_ApiResponse {
     responsecode: number;
@@ -23,4 +22,25 @@ export class PendingEsmeList {
 export class PendingUsers {
     totalpendingesmes: number;
     pendingesmelists: PendingEsmeList[];
+}
+
+export class APIResponse{
+    responsecode: number;
+    responsestatus: string;
+    data: PendingUsers;
+    message: string;
+}
+
+export class ExistingUserData{
+    totalexistingesmes: number;
+    existing_esme_lists: ExistingUsers[];
+}
+
+export class ExistingUsers{
+    esmeaddr: number;
+    username: string;
+    orgname: string;
+    billingtype: string;
+    salespersonname: string;
+    intlaccttype: string;
 }
