@@ -49,7 +49,7 @@
     </div>
 
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive-sm">
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
@@ -118,6 +118,7 @@
                 </div>
             </div>
             <div class="row">
+                <!-- *ngIf="Gateways?.direct.length" -->
                 <div class="card lcr-popup-card" *ngIf="Gateways?.direct.length">
                     <div class="card-header">Direct</div>
                     <div class="card-body">
@@ -134,6 +135,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- *ngIf="Gateways?.premium.length" -->
                 <div class="card lcr-popup-card" *ngIf="Gateways?.premium.length">
                     <div class="card-header">Premium</div>
                     <div class="card-body">
@@ -150,8 +152,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- *ngIf="Gateways?.wholesale.length" -->
                 <div class="card lcr-popup-card" *ngIf="Gateways?.wholesale.length">
-                    <div class="card-header">Premium</div>
+                    <div class="card-header">Wholesale</div>
                     <div class="card-body">
                         <div *ngFor="let wholesale of Gateways?.wholesale; index as i" class="row"
                             [ngClass]="{'mt-2':i === 0 || i === -1}">
@@ -166,7 +169,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card lcr-popup-card" *ngIf="Gateways?.nonlcr.length">
+                <!-- <div class="card lcr-popup-card" *ngIf="Gateways?.nonlcr.length">
                     <div class="card-header">Non-LCR</div>
                     <div class="card-body">
                         <div *ngFor="let nonlcr of Gateways?.nonlcr; index as i" class="row"
@@ -181,7 +184,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="row">
                 <div class="col-12 text-center mt-3">

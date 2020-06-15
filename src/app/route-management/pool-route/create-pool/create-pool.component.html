@@ -9,26 +9,34 @@
     <div class="row btm-border second-row-det">
         <div class="col-6">
             <div class="w-50">
-                <input type="text" formControlName="route_name" class="form-control" placeholder="Enter Route name here"
-                    [ngClass]="{submitError:submitted && formOfCreateClone.get('route_name').hasError('required')}" />
-                <!-- [readonly]="previewList.length" -->
+                <input type="text" [minlength]="routeNameMin" [maxlength]="routeNameMax" formControlName="route_name"
+                    class="form-control" placeholder="Enter Route name here" />
+                <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('route_name').hasError('required')}" 
+                    [readonly]="previewList.length" -->
+                <span class="text-danger pl-1 f-12" *ngIf="!formOfCreateClone.get('route_name').valid && submitted">
+                    Route Name is required
+                </span>
             </div>
         </div>
+        <!-- {{formOfCreateClone.get('route_name').value | json}} -->
         <div class="col-3 text-right">
-            <select formControlName="gw_type" class="dropdown-select w-100" (change)="loadGatewaysList('onChange')"
-                [ngClass]="{submitError:submitted && formOfCreateClone.get('gw_type').hasError('required')}">
-                <!-- [attr.disabled]="this.RouteMgmtService.previewList.length ? '' : null" -->
+            <select formControlName="gw_type" class="dropdown-select w-100" (change)="loadGatewaysList('onChange')">
+                <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('gw_type').hasError('required')}" [attr.disabled]="this.RouteMgmtService.previewList.length ? '' : null" -->
                 <option value="" disabled>Select Route Type</option>
                 <option value="direct" default>Direct</option>
                 <option value="premium">Premium</option>
                 <option value="wholesale">Wholesale</option>
             </select>
+            <span class="text-danger pl-1 f-12"
+                *ngIf="formOfCreateClone.get('gw_type').hasError('required') && submitted">
+                Gateway Type is required
+            </span>
         </div>
         <div class="col-3 text-right lcr-value" *ngIf="formOfCreateClone.get('gw_type').value !== ''">
             <span>Fallback - <b>LCR ({{formOfCreateClone.get('gw_type').value}})</b></span>
         </div>
     </div>
-    <!-- {{formOfCreateClone.value| json}} -->
+    {{formOfCreateClone.value| json}}
     <div class="main-container p-4">
         <app-route-stepper-form [isClone]="isClone" [parentForm]="formOfCreateClone" (isSubmitted)="submitState()"
             (routesList)="previewListData($event)" [gatewaysList]="gatewaysList" [clonedData]="clonedRouteData">

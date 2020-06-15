@@ -25,6 +25,16 @@ export const environment = {
     1: 'List',
     2: 'Static',
     3: 'Numeric',
+  },
+  createClonePoolRouteFieldLength: {
+    routeNameInputBox: {
+      min: 3,
+      max: 100
+    },
+    commentsTextArea: {
+      min: 3,
+      max: 1000
+    }
   }
 };
 

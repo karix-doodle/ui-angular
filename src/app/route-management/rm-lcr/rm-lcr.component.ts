@@ -63,25 +63,27 @@ export class RmLcrComponent implements OnInit {
    * @description to update the status of activated and deactivated gateway.
    */
   onSave() {
-    this.lcrService.updateGatewayStatus(this.LCRUpdateStatusInputs).subscribe(
-      (res: LCRStatusUpdateRes) => {
-        this.modalService.dismissAll();
-        if (
-          res.responsestatus === environment.APIStatus.success.text
-          && res.responsecode > environment.APIStatus.success.code
-        ) {
-          this.loadLCRList();
-          successAlert(res.message, res.responsestatus);
-        } else if (
-          res.responsestatus === environment.APIStatus.error.text
-          && res.responsecode < environment.APIStatus.error.code
-        ) {
-          errorAlert(res.message, res.responsestatus);
+    if (this.LCRUpdateStatusInputs.list.length) {
+      this.lcrService.updateGatewayStatus(this.LCRUpdateStatusInputs).subscribe(
+        (res: LCRStatusUpdateRes) => {
+          this.modalService.dismissAll();
+          if (
+            res.responsestatus === environment.APIStatus.success.text
+            && res.responsecode > environment.APIStatus.success.code
+          ) {
+            this.loadLCRList();
+            successAlert(res.message, res.responsestatus);
+          } else if (
+            res.responsestatus === environment.APIStatus.error.text
+            && res.responsecode < environment.APIStatus.error.code
+          ) {
+            errorAlert(res.message, res.responsestatus);
+          }
+        }, (error: HttpErrorResponse) => {
+          errorAlert(error.message, error.statusText);
         }
-      }, (error: HttpErrorResponse) => {
-        errorAlert(error.message, error.statusText);
-      }
-    );
+      );
+    }
   }
   /**
    * @param country selected country name
@@ -107,6 +109,7 @@ export class RmLcrComponent implements OnInit {
     // Take copy
     this.Gateways = JSON.parse(JSON.stringify(gateways));
     this.modalService.open(content, { windowClass: 'gt-detail-modal' });
+    // this.modalService.open(content, { centered: true });
     this.LCRUpdateStatusInputs.loggedinempid = environment.loggedinempid;
     this.LCRUpdateStatusInputs.loggedinusername = environment.loggedinusername;
     this.LCRUpdateStatusInputs.list = [];
@@ -141,6 +144,7 @@ export class RmLcrComponent implements OnInit {
     // Reset
     this.LCRUpdateStatusInputs.list = [];
     this.Gateways = JSON.parse(JSON.stringify(this.originalGateways));
+    this.modalService.dismissAll();
     // this.Gateways.direct.map((element) => {
     //   element.status = 0;
     //   this.LCRUpdateStatusInputs.list.push({ mcc, ...element });

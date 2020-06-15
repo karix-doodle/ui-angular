@@ -40,6 +40,8 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   sub: Subscription;
   sortingName: string;
   isDesc: boolean;
+  routeNameMin: number;
+  routeNameMax: number;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -47,9 +49,12 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     private poolRouteService: PoolRouteService
   ) {
     this.createForm();
+    this.routeNameMin = environment.createClonePoolRouteFieldLength.routeNameInputBox.min;
+    this.routeNameMax = environment.createClonePoolRouteFieldLength.routeNameInputBox.max;
   }
 
   ngOnInit() {
+
     this.submitted = false;
     // clone a pool route
     this.poolRouteService.changeSubjectData(null); // for initial subject data reset
@@ -242,22 +247,11 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
    * @description to set the parent form is submitted.
    */
   previewListData(eventData?: string) {
-    this.continentsCount = this.count('continent');
-    this.countryCount = this.count('country');
+    this.continentsCount = this.poolRouteService.count('continent');
+    this.countryCount = this.poolRouteService.count('country');
     if (eventData === 'fromAddNew') {
       this.onScrollDown();
     }
-  }
-  /**
-   * @param params consists of preview list element value.
-   * @description gets the unique elements count.
-   */
-  private count(params) {
-    const uniqueId = new Set();
-    this.poolRouteService.previewList.forEach(element => {
-      uniqueId.add(element[params]);
-    });
-    return uniqueId.size;
   }
   /**
    * @param route consists of selected route detail object.
