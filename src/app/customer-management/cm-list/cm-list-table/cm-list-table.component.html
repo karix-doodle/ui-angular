@@ -1,4 +1,16 @@
 <div class="main-container table-responsive">
+    <div class="row btm-border second-row-pr">
+        <div class="col-7 mt-2">
+            <label class="mr-2"><b>Total ESME Addr.</b></label>
+            <span class="border-right">&nbsp;</span>
+            <span class="ml-3 badge badge-dark"><b>{{existingUserData.totalexistingesmes}}</b></span>
+        </div>
+      
+        <div class="col-5 text-right">
+            <input type="search" class="form-control" placeholder="&#xf002; Search by ESME Addr., BillPlan, RateCard" [(ngModel)]="searchText"   />
+        </div>
+      
+      </div>
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
@@ -20,12 +32,12 @@
                 <td>{{existinguser.orgname}}</td>
                 <td></td>
                 <td>{{existinguser.salespersonname}}</td>
-                <td>Country + Operator</td>
-                <td>ratecard name212</td>
+                <!--<td>Country + Operator</td>
+                <td>ratecard name212</td>-->
                 <td><span class="font-weight-bold">{{existinguser.routingtype | uppercase}}</span> - {{existinguser.intlaccttype}}</td>
                 <td><a routerLink="/customer-management/customer-management-edit"><img src="assets/icons/edit-icon.svg" alt="edit"/></a></td>
             </tr>
-           <tr>
+          <!-- <tr>
                 <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
                 <td>usrname</td>
                 <td>xxx xxx xxx</td>
@@ -35,7 +47,7 @@
                 <td>ratecard name212</td>
                 <td><span class="font-weight-bold">LCR</span> - Direct</td>
                 <td><a routerLink="/customer-management/customer-management-edit"><img src="assets/icons/edit-icon.svg" alt="edit"/></a></td>
-            </tr>
+            </tr>-->
             
         </tbody>
     </table>
