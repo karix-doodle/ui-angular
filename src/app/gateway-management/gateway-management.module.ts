@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule, Routes } from '@angular/router';
+import { DndModule } from "ngx-drag-drop";
 
 import { GatewayManagementRoutingModule } from './gateway-management-routing.module';
 import { GatewayManagementComponent } from './gateway-management.component';
@@ -38,7 +39,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     GatewayManagementRoutingModule,
-    SharedModule
+    SharedModule,
+    DndModule
   ],
   exports: [
     FormsModule,

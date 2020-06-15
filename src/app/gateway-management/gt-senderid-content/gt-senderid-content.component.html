@@ -10,74 +10,76 @@
             <div class="col-12">
                 <label class="mr-2"><b>Total</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{GtSenderidContentListData?.data.total}}</b></span>
             </div>
         </div>
         <div class="row gateway-count">
             <div class="col-3">
-                <label>Country <span class="badge badge-dark"><b>290</b></span>
+                <label>SenderID <span
+                        class="badge badge-dark"><b>{{GtSenderidContentListData?.data.unique_senderid_count}}</b></span>
                 </label>
             </div>
             <div class="col-3 gateway-detail">
-                <label>Operator <span class="badge badge-dark"><b>290</b></span></label>
+                <label>Template <span
+                        class="badge badge-dark"><b>{{GtSenderidContentListData?.data.unique_template_count}}</b></span></label>
             </div>
 
         </div>
     </div>
     <div class="col-3 text-right mt-1">
         <div class="form-group">
-            <input type="search" class="form-control" placeholder="&#xf002; Search by Country, SenderID" />
+            <input type="search" class="form-control" placeholder="&#xf002; Search by SenderID / Template"
+                name="searchvalue" [(ngModel)]="searchvalue" />
         </div>
     </div>
 </div>
 <div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
+    <table class="table table-borderless erp-list-table row-hover-effect mb-0">
         <thead>
             <tr>
-                <th>SenderID</th>
-                <th>Whitelist Type</th>
-                <th>Country</th>
-                <th>Operator</th>
-                <th>MCC + MNC</th>
-                <th>Primary Route</th>
-                <th>Fallback Route</th>
-                <th>Priority</th>
-                <th>Creation Date & Time</th>
+                <th class="cursor-pointer" (click)="sort('senderid')">
+                    SenderID
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='senderid' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='senderid' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('blacklist_type')">
+                    Blacklisting Type
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='blacklist_type' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='blacklist_type' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('template')">
+                    Content / Template
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='template' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='template' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('cts')">
+                    Blacklisted Date & Time
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='cts' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='cts' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('createdby')">
+                    Blacklisted By
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='createdby' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='createdby' && !isDesc}"></i>
+                </th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">HDFC345</td>
-                <td>70000 100000011</td>
-                <td>Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Nexmo</td>
-                <td>Tanla</td>
-                <td>null</td>
-                <td>28/10/2019 | 23:25:00</td>
+            <tr
+                *ngFor="let item of GtSenderidContentListData?.data.senderid_template_list | filter: { senderid: searchvalue, template: searchvalue } | sort: sortingName: isDesc">
+                <td class="font-weight-semi-bold">{{item.senderid}}</td>
+                <td>{{item.blacklist_type}}</td>
+                <td>{{item.template}}</td>
+                <td>{{item.cts}}</td>
+                <td>{{item.createdby}}</td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold">HDFC345</td>
-                <td>Global</td>
-                <td>Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Nexmo</td>
-                <td>Tanla</td>
-                <td>null</td>
-                <td>28/10/2019 | 23:25:00</td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">HDFC345</td>
-                <td>Global</td>
-                <td>Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Nexmo</td>
-                <td>Tanla</td>
-                <td>null</td>
-                <td>28/10/2019 | 23:25:00</td>
+            <tr *ngIf="GtSenderidContentListData?.data.senderid_template_list.length == 0">
+                <td colspan="5" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
     </table>

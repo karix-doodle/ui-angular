@@ -430,10 +430,65 @@ export class GtSenderIdConfigCountryList_ApiResponse {
     data: GtSenderIdConfigCountryList_Data;
 }
 export class GtSenderIdConfigCountryList_Data {
-
+    country: string;
+    mcc: number;
 }
 /**
  ************************* @description Gateway Sender id config country list END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Sender id config operator list START
+*/
+export class GtSenderIdConfigOperatorList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+    data: GtSenderIdConfigCountryList_Data;
+}
+export class GtSenderIdConfigOperatorList_Data {
+    country: string;
+    mcc: number;
+}
+/**
+ ************************* @description Gateway Sender id config operator list END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Existing Sender id check START
+*/
+export class GtExistingSenderId_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+    data: GtExistingSenderId_Data;
+}
+export class GtExistingSenderId_Data {
+    data: GtExistingSenderId_Data;
+    hasdata: boolean;
+    senderids: GtExistingSenderId_DataList
+}
+export class GtExistingSenderId_DataList {
+    senderid_type: string;
+    default_senderid: string
+}
+/**
+ ************************* @description Gateway Existing Sender id check END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway add Sender id configuration START
+*/
+export class GtAddSenderIdConfiguration_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+/**
+ ************************* @description Gateway add Sender id configuration END
 */
 
 /**
@@ -486,6 +541,7 @@ export class GtFileAuditFileLog_Data {
     gw_name: string;
     totalcountry: number;
     totaloperator: number;
+    data: GtFileAuditFileLog_Data;
     tabledata: GtFileAuditFileLog_TableDataList[]
 }
 export class GtFileAuditFileLog_TableDataList {
@@ -504,6 +560,42 @@ export class GtFileAuditFileLog_TableDataList {
 }
 /**
  ************************* @description Gateway File audit file log END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway File audit file country START
+*/
+export class GtFileAuditFileCountry_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtFileAuditFileCountry_Data;
+    message: string;
+}
+export class GtFileAuditFileCountry_Data {
+    country: string;
+    mcc: string;
+}
+/**
+ ************************* @description Gateway File audit file country END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway File audit file operator START
+*/
+export class GtFileAuditFileOperator_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtFileAuditFileOperator_Data;
+    message: string;
+}
+export class GtFileAuditFileOperator_Data {
+    country: string;
+    mcc: string;
+}
+/**
+ ************************* @description Gateway File audit file operator END
 */
 
 /**
@@ -551,4 +643,114 @@ export class GtESMEAddrRouted_Data {
 }
 /**
  ************************* @description Gateway ESMEAddr routed List END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway ESMEAddr routed List START
+*/
+export class GtSenderidContentList_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GtSenderidContentList_Data;
+    message: string;
+}
+export class GtSenderidContentList_Data {
+    total: number;
+    unique_senderid_count: number;
+    unique_template_count: number;
+    senderid_template_list: GtSenderidContentList_TableDataList;
+}
+export class GtSenderidContentList_TableDataList {
+    id: number;
+    senderid: string;
+    template: string;
+    blacklist_type: string;
+    cts: string;
+    createdby: string;
+    comments: null;
+}
+/**
+ ************************* @description Gateway ESMEAddr routed List END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway Default template START
+*/
+export class GtDefaultTemplate_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    switch_enabled: boolean;
+    switch_on: boolean;
+    data: GtDefaultTemplate_Data;
+    message: string;
+}
+export class GtDefaultTemplate_Data {
+    id: number;
+    gw_id: string;
+    country_column: string;
+    operator_column: string;
+    mcc_column: string;
+    mnc_column: string;
+    mcc_mnc_column: string;
+    newprice_column: string;
+    oldprice_column: string;
+    effectivefrom_column: string;
+    effective_ts_format: string;
+    changetype_column: string;
+    notify_email: string;
+    is_autocompile: number;
+    from_email: string;
+    from_subject: string;
+    read_body: string;
+    read_attachment: number;
+    comment: string;
+    createdby: string;
+    modifiedby: string;
+    mts: string;
+    cts: string
+}
+/**
+ ************************* @description Gateway Default template END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway upload price file START
+*/
+export class GtUploadPriceFile_ApiResponse {
+    status: string;
+    uuid: number;
+    response: string
+}
+/**
+ ************************* @description Gateway upload price file END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway get headers from file START
+*/
+export class getHeaderFromFile_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    filename: string;
+    data: any;
+    message: string;
+}
+/**
+ ************************* @description Gateway get headers from file END
+*/
+
+/**
+ * @module gateway-management
+ * @description Gateway process price file
+*/
+export class GtprocessPriceFile_ApiResponse {
+    status: string;
+    response: string;
+}
+/**
+ ************************* @description Gateway process price file END
 */

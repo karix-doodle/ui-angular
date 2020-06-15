@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   serverUrl: 'http://115.114.108.242/api/intlmgmt',
+  //serverUrl: 'http://10.20.59.222:8383/api/intlmgmt',
   FileUploadUrl: 'http://10.20.51.182:8484/api/intlmgmt',
   loggedinusername: 'testuser',
   loggedinempid: 1234,

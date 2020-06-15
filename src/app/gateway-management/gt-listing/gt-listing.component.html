@@ -53,20 +53,23 @@
 
 </div>
 <div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
+    <table class="table table-borderless erp-list-table row-hover-effect mb-0">
         <thead>
             <tr>
                 <th>Gateway ID</th>
                 <th>Name</th>
                 <th class="cursor-pointer" (click)="sort('gw_type')">Type
+                    <i class="fa fa-caret-down"></i>
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='gw_type' && isDesc}"></i>
                     <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='gw_type' && !isDesc}"></i>
                 </th>
                 <th class="cursor-pointer" (click)="sort('lastdate')">Last Modified Date & Time
+                    <i class="fa fa-caret-down"></i>
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='lastdate' && isDesc}"></i>
                     <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='lastdate' && !isDesc}"></i>
                 </th>
                 <th class="cursor-pointer" (click)="sort('pricedate')">Price Updated On
+                    <i class="fa fa-caret-down"></i>
                     <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='pricedate' && isDesc}"></i>
                     <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='pricedate' && !isDesc}"></i>
                 </th>
@@ -94,6 +97,9 @@
                         </label>
                     </div>
                 </td>
+            </tr>
+            <tr *ngIf="gatewayData?.data.tabledata.length == 0">
+                <td colspan="6" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
     </table>

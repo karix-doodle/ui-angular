@@ -10,6 +10,9 @@ import {
   GtAddedCountryList_ApiResponse,
   GtInactiveCountryList_ApiResponse,
   GtSenderIdConfigCountryList_ApiResponse,
+  GtSenderIdConfigOperatorList_ApiResponse,
+  GtExistingSenderId_ApiResponse,
+  GtAddSenderIdConfiguration_ApiResponse,
   GtPriceChangeCountryList_ApiResponse,
   GtUpdate_ApiResponse,
   GtStatusupdate_ApiResponse,
@@ -24,8 +27,15 @@ import {
   GtCountryStatusupdate_ApiResponse,
   GtFileAuditLog_ApiResponse,
   GtFileAuditFileLog_ApiResponse,
+  GtFileAuditFileCountry_ApiResponse,
+  GtFileAuditFileOperator_ApiResponse,
   GtCountryListViewLog_ApiResponse,
-  GtESMEAddrRouted_ApiResponse
+  GtESMEAddrRouted_ApiResponse,
+  GtSenderidContentList_ApiResponse,
+  GtDefaultTemplate_ApiResponse,
+  GtUploadPriceFile_ApiResponse,
+  getHeaderFromFile_ApiResponse,
+  GtprocessPriceFile_ApiResponse
 } from '../models/gateway-management.model';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -148,6 +158,30 @@ export class GatewayManagementService {
   }
 
   /**
+   * @description Gateway management Operatorlist
+  */
+  GtSenderIdConfigOperator_list(data): Observable<GtSenderIdConfigOperatorList_ApiResponse> {
+    return this.http.get(this.baseUrl + '/countryoperatorlist?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&load=' + data.load + '&mcc=' + data.mcc, this.httpOptions)
+      .pipe(map(m => m as GtSenderIdConfigOperatorList_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management existing sender id
+  */
+  GtExistingSenderId(data): Observable<GtExistingSenderId_ApiResponse> {
+    return this.http.get(this.baseUrl + '/senderid/existingsenderid?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&mcc=' + data.mcc + '&mnc=' + data.mnc, this.httpOptions)
+      .pipe(map(m => m as GtExistingSenderId_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management add Sender Id configuration
+  */
+  GtAddSenderIdConfiguration(body): Observable<GtAddSenderIdConfiguration_ApiResponse> {
+    return this.http.post(this.baseUrl + '/addsenderidconfiguration', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtAddSenderIdConfiguration_ApiResponse));
+  }
+
+  /**
    * @description Gateway management Sender Id WhiteList
   */
   Gateway_SenderIdWhiteList(body): Observable<GtSenderIdWhiteList_ApiResponse> {
@@ -254,6 +288,22 @@ export class GatewayManagementService {
   /**
    * @description Gateway management Download
   */
+  GtFileAuditFileCountry_list(data): Observable<GtFileAuditFileCountry_ApiResponse> {
+    return this.http.get(this.baseUrl + '/audit/country?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&uuid=' + data.uuid, this.httpOptions)
+      .pipe(map(m => m as GtFileAuditFileCountry_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Download
+  */
+  GtFileAuditFileOperator_list(data): Observable<GtFileAuditFileOperator_ApiResponse> {
+    return this.http.get(this.baseUrl + '/audit/operator?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&uuid=' + data.uuid, this.httpOptions)
+      .pipe(map(m => m as GtFileAuditFileOperator_ApiResponse));
+  }
+
+  /**
+   * @description Gateway management Download
+  */
   GtFileAuditLog_download(data): Observable<any> {
     return this.http.get(this.baseUrl + '/download/auditlog/?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&filename=' + data.filename, this.httpOptions_file)
       .pipe(map(m => m as any));
@@ -265,6 +315,46 @@ export class GatewayManagementService {
   GtESMEAddrRouted_list(data): Observable<GtESMEAddrRouted_ApiResponse> {
     return this.http.get(this.baseUrl + '/esmeaddrrouterlist/?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id + '&gw_name=' + data.gw_name, this.httpOptions)
       .pipe(map(m => m as GtESMEAddrRouted_ApiResponse));
+  }
+
+  /**
+   * @description Gateway senderid content block
+  */
+  GtSenderidContent_list(data): Observable<GtSenderidContentList_ApiResponse> {
+    return this.http.get(this.baseUrl + '/sendeidcontentlist/?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid + '&gw_id=' + data.gw_id, this.httpOptions)
+      .pipe(map(m => m as GtSenderidContentList_ApiResponse));
+  }
+
+  /**
+   * @description Gateway get DefaultTemplate
+  */
+  GtDefaultTemplate(body): Observable<GtDefaultTemplate_ApiResponse> {
+    return this.http.post(this.baseUrl + '/defaulttemplate', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GtDefaultTemplate_ApiResponse));
+  }
+
+  /**
+   * @description Gateway UploadPriceFile
+  */
+  GtUploadPriceFile(body): Observable<GtUploadPriceFile_ApiResponse> {
+    return this.http.post(this.baseUrl + '/uploadgatewaypricefile', body)
+      .pipe(map(m => m as GtUploadPriceFile_ApiResponse));
+  }
+
+  /**
+   * @description Gateway get headers from file
+  */
+  getHeaderFromFile(body): Observable<getHeaderFromFile_ApiResponse> {
+    return this.http.post(this.baseUrl + '/getheadersfromfile', body)
+      .pipe(map(m => m as getHeaderFromFile_ApiResponse));
+  }
+
+  /**
+   * @description Gateway Process gateway price file
+  */
+  GtprocessPriceFile(body): Observable<GtprocessPriceFile_ApiResponse> {
+    return this.http.post(this.baseUrl + '/processgatewaypricefile', { ...body, ...this.user })
+      .pipe(map(m => m as GtprocessPriceFile_ApiResponse));
   }
 
 }

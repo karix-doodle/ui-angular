@@ -29,7 +29,6 @@ export class GtDetailsViewLogComponent implements OnInit {
     let startDate = moment().subtract(9, 'days').utcOffset(environment.UTC);
     let todate = moment().utcOffset(environment.UTC);
     let dayDiffer = todate.diff(startDate, 'days') + 1;
-    console.log(dayDiffer, 'dayDiffer')
     this.params = {
       fromdate: startDate,
       todate: todate,

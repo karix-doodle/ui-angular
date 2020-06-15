@@ -35,7 +35,7 @@
     </div>
 </div>
 <div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table">
+    <table class="table table-borderless erp-list-table mb-0">
         <thead>
             <tr>
                 <th>Country</th>
@@ -54,6 +54,9 @@
                     <img (click)="handleDelete(item.gw_id, item.id)" alt="delete icon" class="img-fluid"
                         src="assets/icons/delete-icon.svg">
                 </td>
+            </tr>
+            <tr *ngIf="GtSenderIdWhiteList?.data.tabledata.length == 0">
+                <td colspan="4" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
     </table>
@@ -94,18 +97,29 @@
                         SenderID is required
                     </span>
                 </div>
+                <div class="form-group col-12">
+                    (OR)
+                </div>
                 <div class="form-group col-6">
                     <div class="upload-btn-wrapper">
                         <button class="upload-btn">
                             <i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse file to
                             upload</button>
-                        <input type="file" name="" formControlName="file" name="file"
-                            (change)="fileUpload($event.target.files)" />
+                        <input type="file" name="file" (change)="fileUpload($event.target.files)" />
                     </div>
+                    <span *ngIf="addSenderidFormGroup.get('file').value">
+                        {{addSenderidFormGroup.get('file').value}}
+                        <img (click)="removeSenderIdFile()" alt="delete icon" class="img-fluid cursor-pointer"
+                            src="assets/icons/delete-icon.svg">
+                    </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderidFormGroup.get('file').hasError('required') && isAddSenderidValid">
+                        File is required
+                    </span>
                 </div>
                 <div class="col-12 text-center">
                     <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close"
-                        (click)="d('Cross click')">
+                        (click)="resetSenderIdForm();">
                     <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
                 </div>
             </div>

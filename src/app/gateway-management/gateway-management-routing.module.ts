@@ -39,7 +39,7 @@ const GMroutes: Routes = [
         component: EditGatewayComponent
       },
       {
-        path: 'update-gateway/:id/:name',
+        path: 'update-gateway/:id/:name/:currencyId',
         component: UpdateGatewayComponent
       },
       {
@@ -75,7 +75,7 @@ const GMroutes: Routes = [
         component: GtESMEAddrRoutedComponent
       },
       {
-        path: 'senderid-content-block',
+        path: 'senderid-content-block/:id/:name',
         component: GtSenderidContentComponent
       },
     ]
