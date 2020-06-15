@@ -16,10 +16,10 @@
                 <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">{{user.esmeaddr}}</a></td>
                 <td>{{user.username}}</td>
                 <td>{{user.orgname}}</td>
-                <td>Direct</td>
+                <td>{{user.intl_routetype}}</td>
                 <td>{{user.salespersonname}}</td>
                 <td>{{user.submissiondateandtime}}</td>
-                <td><a routerLink="/customer-management/customer-management-edit"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                <td><a routerLink="/customer-management/customer-management-edit/{{user.esmeaddr}}"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
             </tr>
         </tbody>
     </table>
