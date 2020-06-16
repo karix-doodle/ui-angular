@@ -21,6 +21,7 @@ export class CmEditComponent implements OnInit {
   apiResponse : UserActivation_ApiResponse;
   usersData: UserRoutingConfig;
   esmeaddr: string;
+  process_row: any = 0;
 
   constructor(config: NgbModalConfig, private modalService: NgbModal,private customerManagementService: CustomerManagementService,private activeRoute: ActivatedRoute) 
   {}
@@ -60,6 +61,7 @@ export class CmEditComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.apiResponse = res;
           this.usersData = JSON.parse(JSON.stringify(this.apiResponse.data));
+          this.process_row = this.usersData.process_row;
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
@@ -68,6 +70,15 @@ export class CmEditComponent implements OnInit {
       }
     );
   };
+
+
+  handleStatus() {
+    
+    
+  };
+
+
+
 }
 
 

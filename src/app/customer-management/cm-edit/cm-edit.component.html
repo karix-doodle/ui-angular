@@ -137,7 +137,9 @@
             <label>Process ROW</label>
             <div class="col-12">
                 <label class="toggle-switch">
-                    <input type="checkbox" class="switch-btn" checked>
+                    <input type="checkbox" [(ngModel)]="process_row"
+                            (click)="handleStatus()" class="switch-btn"
+                            [checked]="process_row === 1">
                     <span class="slider round"></span>
                 </label>
             </div>

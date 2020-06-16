@@ -16,15 +16,17 @@
                     <label>Upload Gateway Price List File</label>
                     <div class="form-group row">
                         <div class="upload-btn-wrapper col-7">
-                            <button class="upload-btn cursor-pointer" type="button">
+                            <button class="upload-btn cursor-pointer position-relative" type="button">
                                 <i class="fa fa-upload mr-1" aria-hidden="true"></i>Drag and drop
                                 / Browse the file from Computer
-                                <input type="file" name="" (change)="fileUpload($event.target.files)" />
+                                <input type="file" name="" class="w-100 h-100 cursor-pointer"
+                                    (change)="fileUpload($event.target.files)" />
                             </button>
                         </div>
                         <button (click)="submitPriceFile()" type="button"
                             class="col-2 btn erp-intl-btn file-upload-btn">Upload</button>
                     </div>
+                    <span *ngIf="selectedFileName != ''">{{selectedFileName}}</span>
                 </div>
                 <div class="col-3 text-center">
                     <label>Use default Template Rule to update price from File</label>
@@ -63,16 +65,24 @@
                                     {{item.content}}</label>
                                 <div class="w-100 font-weight-bold pb-1" *ngIf="priceListFormGroup.get(item.column).value != '' && 
                                 priceListFormGroup.get(item.column).value != null">
-                                    Dropped = "{{priceListFormGroup.get(item.column).value}}"
+                                    {{item.text}} = "{{priceListFormGroup.get(item.column).value}}"
                                     <img (click)="removeDroppedPriceList(item.column)" alt="delete icon"
                                         class="img-fluid cursor-pointer" src="assets/icons/delete-icon.svg">
                                 </div>
                             </div>
+                            <span class="text-danger pl-0 f-12"
+                                *ngIf="priceListFormGroup.get(item.column).hasError('required') && isGtPriceUpdateValid">
+                                This area is required
+                            </span>
                         </div>
                     </div>
-                    <div class="col-3 pl-0 text-center time-date-div">
+                    <div class="col-3 pl-0 time-date-div">
                         <input type="text" class="px-3 py-2 w-100" name="effective_ts_format"
-                            formControlName="effective_ts_format" />
+                            placeholder="Effective ts format" formControlName="effective_ts_format" />
+                        <span class="text-danger pl-0 f-12"
+                            *ngIf="priceListFormGroup.get('effective_ts_format').hasError('required') && isGtPriceUpdateValid">
+                            Effective ts format is required
+                        </span>
                     </div>
                 </div>
             </section>

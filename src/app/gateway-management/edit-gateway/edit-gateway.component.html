@@ -39,8 +39,7 @@
                 </div>
                 <div class="col-4 form-group">
                     <label>Gateway Currency</label>
-                    <select class="dropdown-select w-100" [(ngModel)]='currency_id' formControlName="currency_id"
-                        name="currency_id">
+                    <select class="dropdown-select w-100" formControlName="currency_id" name="currency_id">
                         <option value="">Select Gateway Currency</option>
                         <option value="{{item.currency_id}}" *ngFor="let item of gatewayCurrencyData?.data"
                             [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">

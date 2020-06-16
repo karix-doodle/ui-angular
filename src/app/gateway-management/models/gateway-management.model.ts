@@ -11,12 +11,12 @@ export class GtListing_ApiResponse {
     message: string;
 }
 export class GtListing_Data {
+    data: GtListing_Data;
     total: number;
     direct: number;
     premium: number;
     wholesale: number;
     tabledata: GtListing_TableDataList[];
-    data: GtListing_Data;
 }
 export class GtListing_TableDataList {
     id: number;
@@ -123,6 +123,7 @@ export class GtDetails_ApiResponse {
     message: string;
 }
 export class GtDetails_Data {
+    data: GtDetails_Data;
     gw_id: string;
     gw_name: string;
     status: number;
@@ -241,6 +242,7 @@ export class GtDetailsCountryList_ApiResponse {
     message: string;
 }
 export class GtDetailsCountryList_Data {
+    data: GtDetailsCountryList_Data;
     gw_id: string;
     gw_name: string;
     totalcountry: number;
@@ -348,6 +350,7 @@ export class GtDetailsViewLog_ApiResponse {
     message: string;
 }
 export class GtDetailsViewLog_Data {
+    data: GtDetailsViewLog_Data;
     gw_id: string;
     gw_name: string;
     totalcountry: number;
@@ -378,6 +381,7 @@ export class GtTimeZone_ApiResponse {
     message: string;
 }
 export class GtTimeZone_Data {
+    data: GtTimeZone_Data;
     id: number;
     offset: string;
     country_name: string;
@@ -398,6 +402,7 @@ export class GtCurrency_ApiResponse {
     message: string;
 }
 export class GtCurrency_Data {
+    data: GtCurrency_Data;
     currency_id: number;
     currency_name: string;
     currency_symbol: string;
@@ -430,6 +435,7 @@ export class GtSenderIdConfigCountryList_ApiResponse {
     data: GtSenderIdConfigCountryList_Data;
 }
 export class GtSenderIdConfigCountryList_Data {
+    data: GtSenderIdConfigCountryList_Data;
     country: string;
     mcc: number;
 }
@@ -448,6 +454,7 @@ export class GtSenderIdConfigOperatorList_ApiResponse {
     data: GtSenderIdConfigCountryList_Data;
 }
 export class GtSenderIdConfigOperatorList_Data {
+    data: GtSenderIdConfigCountryList_Data;
     country: string;
     mcc: number;
 }
@@ -502,10 +509,12 @@ export class GtFileAuditLog_ApiResponse {
     message: string;
 }
 export class GtFileAuditLog_Data {
+    data: GtFileAuditLog_Data;
     gw_id: string;
     gw_name: string;
-    totalcountry: number;
-    totaloperator: number;
+    total: number;
+    success: number;
+    failure: number;
     tabledata: GtFileAuditLog_TableDataList[]
 }
 export class GtFileAuditLog_TableDataList {
@@ -533,7 +542,7 @@ export class GtFileAuditLog_TableDataList {
 export class GtFileAuditFileLog_ApiResponse {
     responsecode: number;
     responsestatus: string;
-    data: GtFileAuditLog_Data;
+    data: GtFileAuditFileLog_Data;
     message: string;
 }
 export class GtFileAuditFileLog_Data {
@@ -573,6 +582,7 @@ export class GtFileAuditFileCountry_ApiResponse {
     message: string;
 }
 export class GtFileAuditFileCountry_Data {
+    data: GtFileAuditFileCountry_Data;
     country: string;
     mcc: string;
 }
@@ -591,6 +601,7 @@ export class GtFileAuditFileOperator_ApiResponse {
     message: string;
 }
 export class GtFileAuditFileOperator_Data {
+    data: GtFileAuditFileOperator_Data;
     country: string;
     mcc: string;
 }
@@ -609,6 +620,7 @@ export class GtCountryListViewLog_ApiResponse {
     message: string;
 }
 export class GtCountryListViewLog_Data {
+    data: GtCountryListViewLog_Data;
     gw_id: string;
     gw_name: string;
     country: string;
@@ -687,6 +699,8 @@ export class GtDefaultTemplate_ApiResponse {
     message: string;
 }
 export class GtDefaultTemplate_Data {
+    switch_enabled: boolean;
+    switch_on: boolean;
     id: number;
     gw_id: string;
     country_column: string;

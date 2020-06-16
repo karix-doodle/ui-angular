@@ -336,10 +336,10 @@ export class GatewayManagementService {
   /**
    * @description Gateway UploadPriceFile
   */
-  GtUploadPriceFile(body): Observable<GtUploadPriceFile_ApiResponse> {
-    return this.http.post(this.baseUrl + '/uploadgatewaypricefile', body)
-      .pipe(map(m => m as GtUploadPriceFile_ApiResponse));
-  }
+  // GtUploadPriceFile(body): Observable<GtUploadPriceFile_ApiResponse> {
+  //   return this.http.post(this.baseUrl + '/uploadgatewaypricefile', body)
+  //     .pipe(map(m => m as GtUploadPriceFile_ApiResponse));
+  // }
 
   /**
    * @description Gateway get headers from file
