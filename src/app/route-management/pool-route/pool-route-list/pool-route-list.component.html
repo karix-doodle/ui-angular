@@ -74,7 +74,7 @@
                         <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon" />
                     </a>
                 </td>
-                <td> <img *ngIf="row.tagged_accounts_count" src="assets/icons/delete-icon.svg"
+                <td> <img *ngIf="row.tagged_accounts_count === 0" src="assets/icons/delete-icon.svg"
                         class="img-fluid cursor-pointer" alt="delete icon"
                         (click)="onDelete(row.route_id, row.route_name)" />
                 </td>

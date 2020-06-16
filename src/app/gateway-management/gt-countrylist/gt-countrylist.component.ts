@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtDetailsCountryList_ApiResponse, GtDetailsCountryList_Data, GtCountryStatusupdate_ApiResponse, GtSenderIdConfigCountryList_ApiResponse, GtSenderIdConfigCountryList_Data, GtSenderIdConfigOperatorList_ApiResponse, GtSenderIdConfigOperatorList_Data } from '../models/gateway-management.model';
+import { GtDetailsCountryList_ApiResponse, GtDetailsCountryList_Data, GtCountryStatusupdate_ApiResponse, GtSenderIdConfigCountryList_ApiResponse, GtSenderIdConfigCountryList_Data, GtSenderIdConfigOperatorList_ApiResponse, GtSenderIdConfigOperatorList_Data, GtExistingSenderId_ApiResponse, GtExistingSenderId_Data, GtAddSenderIdConfiguration_ApiResponse } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
@@ -11,6 +12,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
 
 @Component({
   selector: 'app-gt-countrylist',
@@ -25,8 +27,17 @@ export class GtCountrylistComponent implements OnInit {
   GtDetailsCountryList: GtDetailsCountryList_Data;
   GtSenderIdConfigCountryListRes: GtSenderIdConfigCountryList_ApiResponse;
   GtSenderIdConfigCountryList: GtSenderIdConfigCountryList_Data;
+
   GtSenderIdConfigOperatorListRes: GtSenderIdConfigOperatorList_ApiResponse;
   GtSenderIdConfigOperatorList: GtSenderIdConfigOperatorList_Data;
+
+  GtAddSenderIdConfigurationRes: GtAddSenderIdConfiguration_ApiResponse;
+
+  GtExistingSenderIdRes: GtExistingSenderId_ApiResponse;
+  GtExistingSenderIdData: GtExistingSenderId_Data;
+
+  addSenderIdConfigFormGroup: FormGroup;
+  isAddsenderIdConfigValid: boolean = false;
 
   sortingName: string;
   isDesc: boolean;
@@ -34,8 +45,22 @@ export class GtCountrylistComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private gatewayManagementService: GatewayManagementService
-  ) { }
+  ) {
+
+    let default_senderid = '^.{6,8}$';
+    this.addSenderIdConfigFormGroup = this.formBuilder.group({
+      gw_id: [this.activeRoute.snapshot.params.id],
+      country: new FormControl('', [Validators.required]),
+      mcc: new FormControl('', [Validators.required]),
+      operator: new FormControl('', [Validators.required]),
+      mnc: new FormControl('', [Validators.required]),
+      senderid_type: new FormControl('', [Validators.required]),
+      default_senderid: new FormControl('', [Validators.required, Validators.pattern(default_senderid)]),
+    });
+
+  }
 
   close(pop: any) {
     pop.close()
@@ -141,10 +166,76 @@ export class GtCountrylistComponent implements OnInit {
     );
   }
 
-  countrySelect(event) {
-    if (event != "") {
-      this.GtSenderIdConfigOperator_list(event)
+  countryOperatorSelect(countryId, operatorID, checkOperator) {
+    let countryValue = countryId ? countryId.split('-')[1] : '';
+    let operatorValue = operatorID ? operatorID.split('-')[1] : '';
+    countryId = countryId ? countryId.split('-')[0] : '';
+    operatorID = operatorID ? operatorID.split('-')[0] : '';
+
+    this.addSenderIdConfigFormGroup.patchValue({
+      senderid_type: '',
+      default_senderid: ''
+    })
+    if (checkOperator) {
+      this.addSenderIdConfigFormGroup.patchValue({
+        operator: '',
+        mnc: '',
+      })
+      if (countryId != "") {
+        this.addSenderIdConfigFormGroup.patchValue({
+          mcc: countryId,
+          country: countryValue,
+        })
+        this.GtSenderIdConfigOperator_list(countryId)
+      } else {
+        this.addSenderIdConfigFormGroup.patchValue({
+          mcc: '',
+          country: '',
+        })
+        let res: GtSenderIdConfigOperatorList_ApiResponse = null
+        this.GtSenderIdConfigOperatorListRes = res;
+        this.GtSenderIdConfigOperatorList = JSON.parse(JSON.stringify(this.GtSenderIdConfigOperatorListRes));
+      }
+    } else {
+      if (operatorID != "") {
+        let data = {
+          gw_id: this.activeRoute.snapshot.params.id,
+          mcc: countryId,
+          mnc: operatorID,
+        }
+        this.addSenderIdConfigFormGroup.patchValue({
+          mnc: operatorID,
+          operator: operatorValue
+        })
+        this.GtExistingSenderId(data);
+      } else {
+        this.addSenderIdConfigFormGroup.patchValue({
+          mnc: '',
+          operator: ''
+        })
+      }
     }
+  }
+
+  GtExistingSenderId(data) {
+    this.gatewayManagementService.GtExistingSenderId(data).subscribe(
+      (res: GtExistingSenderId_ApiResponse) => {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+          this.GtExistingSenderIdRes = res;
+          this.GtExistingSenderIdData = JSON.parse(JSON.stringify(this.GtExistingSenderIdRes));
+          if (this.GtExistingSenderIdData.data.hasdata) {
+            this.addSenderIdConfigFormGroup.patchValue({
+              senderid_type: this.GtExistingSenderIdData.data.senderids.senderid_type,
+              default_senderid: this.GtExistingSenderIdData.data.senderids.default_senderid
+            })
+          }
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          errorAlert(res.message, res.responsestatus)
+        }
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
+      }
+    );
   }
 
   GtSenderIdConfigOperator_list(mccValue) {
@@ -179,6 +270,40 @@ export class GtCountrylistComponent implements OnInit {
       this.isDesc = !this.isDesc;
     }
     this.sortingName = tableHeaderName;
+  }
+
+  onSubmitSenderIdConfig(data) {
+    this.isAddsenderIdConfigValid = true;
+    if (this.addSenderIdConfigFormGroup.invalid) {
+      return;
+    }
+    else {
+      this.isAddsenderIdConfigValid = false;
+      this.gatewayManagementService.GtAddSenderIdConfiguration(data).subscribe(
+        (res: GtAddSenderIdConfiguration_ApiResponse) => {
+          if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+            successAlert(res.message, res.responsestatus)
+            this.resetSenderIdForm()
+            this.Gateway_CountryList();
+          } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+            errorAlert(res.message, res.responsestatus)
+          }
+        }, (error: HttpErrorResponse) => {
+          errorAlert(error.message, error.statusText)
+        }
+      );
+    }
+  }
+
+  resetSenderIdForm() {
+    this.modalService.dismissAll('senderidConfig');
+    this.addSenderIdConfigFormGroup.patchValue({
+      country: '',
+      mcc: '',
+      operator: '',
+      senderid_type: '',
+      default_senderid: '',
+    });
   }
 
 }

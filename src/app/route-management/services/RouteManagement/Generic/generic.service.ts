@@ -45,7 +45,17 @@ export class GenericService {
    * @description gets the route management gateways list.
    */
   getGatewaysList(input: GatewaysListBody): Observable<GatewaysListRes> {
-    return this.http.post(this.baseUrl + '/listgateways', input, this.httpOptions)
-      .pipe(map(m => m as GatewaysListRes));
+    return this.http.post<GatewaysListRes>(this.baseUrl + '/listgateways', input, this.httpOptions)
+      .pipe(
+        map(rawData => {
+          if (rawData.responsestatus === environment.APIStatus.success.text &&
+            rawData.responsecode > environment.APIStatus.success.code) {
+            const modifiedData = rawData.data.map(rawProduct => {
+              return { ...rawProduct, isSelected: true };
+            });
+            rawData.data = modifiedData;
+          }
+          return rawData;
+        }));
   }
 }
