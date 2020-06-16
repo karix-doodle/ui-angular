@@ -13,7 +13,8 @@ import { PendingActivateTableComponent } from './pending-activate-table/pending-
     CommonModule,
     FormsModule,
     SharedModule,
-    CmListRoutingModule
+    CmListRoutingModule,
+    FormsModule
   ]
 })
 export class CmListModule { }
