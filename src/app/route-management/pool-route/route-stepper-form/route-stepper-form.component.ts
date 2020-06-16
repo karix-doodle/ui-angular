@@ -46,6 +46,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    routeEditMode: boolean;
    selectedCountry: CountriesListData[];
    selectedOperator: OperatorsListData[];
+   defineRowGatewaysList: GatewaysListData[];
    @Input() parentForm: FormGroup;
    @Input() gatewaysList: GatewaysListData[];
    @Input() clonedData: CloneAPoolRouteData;
@@ -71,6 +72,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    ) {
       this.commentsTextAreaMin = environment.createClonePoolRouteFieldLength.commentsTextArea.min;
       this.commentsTextAreaMax = environment.createClonePoolRouteFieldLength.commentsTextArea.max;
+      this.createSecondForm();
    }
 
    openPreviewModel(content) {
@@ -89,7 +91,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
        * @description parentToChildDetectionBehaviorSubject subscriptions.
        */
       this.sub = this.poolRouteService.currentSubjectData.subscribe((data) => {
-         if (data === 1) {
+         if (data === 1) {  // preview list edit
             this.routeEditMode = true;
             this.selectCountry();
             if (this.poolRouteService.previewList.length > 1) {
@@ -98,22 +100,71 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
             if (this.stepper.selectedIndex === 1) {
                this.stepper.previous();
             }
-         } else if (data === 2) {
+            this.gatewaysList.forEach(isPrePopulatedGateway => {
+               isPrePopulatedGateway.isSelected = false;
+            });
+            this.gatewaysList.forEach(isPrePopulatedGateway => {
+               this.parentFormArray.value.forEach(obj => {
+                  if (obj.gw_id === isPrePopulatedGateway.gw_id) {
+                     isPrePopulatedGateway.isSelected = true;
+                  }
+               });
+            });
+         } else if (data === 2) { // gateway type drop down reset confirm
             this.createSecondForm();
             if (this.stepper.selectedIndex === 1) {
                this.stepper.previous();
             }
-         } else if (data === 3) {
+            this.gatewaysList.forEach(isPrePopulatedGateway => {
+               isPrePopulatedGateway.isSelected = false;
+            });
+            this.defineRowGatewaysList.forEach(gtElement => {
+               gtElement.isSelected = false;
+            });
+         } else if (data === 3) { // preview list delete
             if (!this.poolRouteService.previewList.length) {
                if (this.stepper.selectedIndex === 1) {
                   this.stepper.previous();
                }
+               this.defineRowGatewaysList.forEach(gtElement => {
+                  gtElement.isSelected = false;
+               });
+               // console.log('second form gateway list when delete', this.defineRowGatewaysList);
+            } else if (this.poolRouteService.previewList.length) {
+               // console.log(this.poolRouteService.previewList);
+               this.defineRowGatewaysList.forEach(gtElement => {
+                  gtElement.isSelected = false;
+               });
+               this.defineRowGatewaysList.forEach(gtElement => {
+                  this.poolRouteService.previewList.forEach(selectedRoute => {
+                     selectedRoute.ratios.forEach(element => {
+                        if (element.gw_id === gtElement.gw_id) {
+                           gtElement.isSelected = true;
+                        }
+                     });
+                  });
+               });
+               // console.log('second form gateway list when delete', this.defineRowGatewaysList);
             }
+         } else if (data === 4) { // gateway type dropdown selected based on clone response or manual
+            setTimeout(() => {
+               if (this.isClone) {
+                  this.gatewaysList.forEach(gateway => {
+                     this.clonedData.routes_list[0].ratios.forEach(element => {
+                        if (element.gw_id === gateway.gw_id) {
+                           gateway.isSelected = true;
+                        }
+                     });
+                  });
+               }
+               this.defineRowGatewaysList = JSON.parse(JSON.stringify(this.gatewaysList));
+               console.log(this.isClone);
+            }, 100);
          }
       });
       this.submitted = false;
       this.secondStepSubmitted = false;
-      this.createSecondForm();
+
       this.loadCountriesList();
 
       this.sub = this.parentForm.get('gatewayRatio')
@@ -121,16 +172,48 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          .pipe(debounceTime(100), startWith(null), pairwise())
          .subscribe(([prev, next]: [any, any]) => {
             // console.log(this.formArrayIndex);
+            // console.log(prev);
+            // console.log(next);
             if (this.formArrayIndex !== undefined) {
                // console.log(prev[this.formArrayIndex]);
                // console.log(next[this.formArrayIndex]);
                if (prev[this.formArrayIndex].gw_id !== next[this.formArrayIndex].gw_id) {
                   this.gatewaysList.forEach(element => {
                      if (element.gw_id === next[this.formArrayIndex].gw_id) {
-                        element.isSelected = false;
+                        element.isSelected = true;
                      }
                      if (element.gw_id === prev[this.formArrayIndex].gw_id) {
+                        element.isSelected = false;
+                     }
+                  });
+               }
+            }
+         });
+
+      this.sub = this.secondFormGroup.get('row_routes_list')
+         .valueChanges
+         .pipe(debounceTime(100), startWith(null), pairwise())
+         .subscribe(([prev, next]: [any, any]) => {
+            // console.log(this.formArrayIndex);
+            // console.log(prev);
+            // console.log(next);
+            if (this.formArrayIndex !== undefined) {
+               // console.log(prev[this.formArrayIndex]);
+               // const previous = prev !== null ?
+               // console.log(next[this.formArrayIndex]);
+               if (prev === null) {
+                  this.defineRowGatewaysList.forEach(element => {
+                     if (element.gw_id === next[this.formArrayIndex].gw_id) {
                         element.isSelected = true;
+                     }
+                  });
+               } else if (prev[this.formArrayIndex].gw_id !== next[this.formArrayIndex].gw_id) {
+                  this.defineRowGatewaysList.forEach(element => {
+                     if (element.gw_id === next[this.formArrayIndex].gw_id) {
+                        element.isSelected = true;
+                     }
+                     if (element.gw_id === prev[this.formArrayIndex].gw_id) {
+                        element.isSelected = false;
                      }
                   });
                }
@@ -183,6 +266,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
             ) {
                this.countriesList = res.data;
                // console.log(this.isClone);
+               // console.log(this.gatewaysList);
                setTimeout(() => {
                   if (this.isClone) {
                      this.selectCountry();
@@ -204,7 +288,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
     */
    selectCountry() {
       this.selectedCountry = this.countriesList.filter((element) => element.country === this.parentForm.value.countryName);
-      this.loadOperatorsList(this.selectedCountry[0].country_code);
+      setTimeout(() => {
+         this.loadOperatorsList(this.selectedCountry[0].country_code);
+      }, 10);
       // console.log(this.selectedCountry);
       // console.log(this.selectedCountry[0].country_code);
    }
@@ -451,9 +537,15 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          console.log(this.gatewayRatio.value[index]);
          this.gatewaysList.forEach(element => {
             if (element.gw_id === this.gatewayRatio.value[index].gw_id) {
-               element.isSelected = true;
+               element.isSelected = false;
             }
          });
+         this.defineRowGatewaysList.forEach(gtElement => {
+            if (this.gatewayRatio.value[index].gw_id === gtElement.gw_id) {
+               gtElement.isSelected = false;
+            }
+         });
+         console.log(this.gatewaysList);
          this.gatewayRatio.removeAt(index);
          this.formArrayIndex = undefined;
       }
@@ -464,22 +556,51 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       this.submitted = true;
       if (this.parentForm.valid && this.calculateRatioTotal() === 100) {
          if (from === 'fromOnSubmit') {
+            this.formArrayIndex = undefined;
             stepper.next();
             // console.log(this.clonedData);
             if (this.clonedData !== undefined) {
-               this.setClonedDataIn2ndForm(this.clonedData);
+               //  this.setClonedDataIn2ndForm(this.clonedData);
             }
          } else {
             // console.log('in');
             // this.onScrollBottom();
          }
+         this.createSecondForm();
          this.newRoute.continent = this.selectedCountry[0].continent;
          this.newRoute.country = this.selectedCountry[0].country;
          this.newRoute.mcc = this.selectedCountry[0].mcc;
          this.newRoute.mnc = this.selectedOperator[0].mnc;
          this.newRoute.operator = this.selectedOperator[0].operator;
          this.newRoute.ratios = this.parentForm.value.gatewayRatio;
+         console.log(this.parentForm.value.gatewayRatio);
+         // Reset 2nd form gateway.
+         // this.parentFormArray.value.forEach(obj => {
+         //    if (obj.gw_id === isPrePopulatedGateway.gw_id) {
+         //       isPrePopulatedGateway.isSelected = true;
+         //    }
+         // });
+         this.defineRowGatewaysList.forEach(gtElement => {
+            this.parentFormArray.value.forEach(selectedGateway => {
+               if (selectedGateway.gw_id === gtElement.gw_id) {
+                  gtElement.isSelected = true;
+               }
+            });
+         });
+         // console.log('second form gateway list', this.defineRowGatewaysList);
+         // Reset 2nd form gateway.
+         // Reset first form gateway.
+         this.gatewaysList.forEach(gtElement => {
+            gtElement.isSelected = false;
+         });
+         // console.log('1st form gateway list', this.gatewaysList);
+         // Reset first form gateway.
          const obj = JSON.parse(JSON.stringify(this.newRoute));
+         // const checkRoleExistence = () => this.poolRouteService.previewList.some((preview) => preview === obj);
+         // if (checkRoleExistence()) {
+         //    console.log('in');
+         // }
+         
          this.poolRouteService.previewList.push(obj);
          // this.newRoutesList.push(obj);
          this.routesList.emit(from);
@@ -509,6 +630,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          && this.poolRouteService.previewList.length) {
          this.firstFormCancel();
          stepper.selected.completed = true;
+         this.formArrayIndex = undefined;
          stepper.next();
          if (this.clonedData !== undefined) {
             this.setClonedDataIn2ndForm(this.clonedData);
