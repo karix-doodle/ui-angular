@@ -7,21 +7,29 @@
                     <div class="col-3 form-group">
                         <label>Country</label>
                         <select (change)="selectCountry()" class="dropdown-select w-100" formControlName="countryName"
-                            [ngClass]="{submitError:submitted && parentForm.get('countryName').hasError('required')}"
                             ngDefaultControl>
+                            <!-- [ngClass]="{submitError:submitted && parentForm.get('countryName').hasError('required')}" -->
                             <option value="" disabled>Select Country</option>
                             <option *ngFor="let countryObj of countriesList" [ngValue]="countryObj.country">
                                 {{ countryObj.country }}</option>
                         </select>
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="parentForm.get('countryName').hasError('required') && submitted">
+                            Country Name is required
+                        </span>
                     </div>
                     <div class="col-3 form-group">
                         <label>Operator</label>
-                        <select (change)="selectOperator()" class="dropdown-select w-100" formControlName="operatorMNC"
-                            [ngClass]="{submitError:submitted && parentForm.get('operatorMNC').hasError('required')}">
+                        <select (change)="selectOperator()" class="dropdown-select w-100" formControlName="operatorMNC">
+                            <!-- [ngClass]="{submitError:submitted && parentForm.get('operatorMNC').hasError('required')}" -->
                             <option value="" disabled>Select Operator</option>
                             <option *ngFor="let operatorObj of operatorsList" [ngValue]="operatorObj.mnc">
                                 {{ operatorObj.operator }}</option>
                         </select>
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="parentForm.get('countryName').hasError('required') && submitted">
+                            Operator Name is required
+                        </span>
                     </div>
                 </div>
                 <div class="row gt-ratio-div">
@@ -36,13 +44,18 @@
                                     </div>
                                     <div class="row ml-0 gatewayRow">
                                         <div class="col-7 p-0">
+                                            <!-- [ngClass]="{submitError:submitted && item.get('gw_id').hasError('required')}" -->
                                             <select class="dropdown-select w-100" formControlName="gw_id"
-                                                [ngClass]="{submitError:submitted && item.get('gw_id').hasError('required')}"
                                                 (change)="onChangeSelect(i, 'firstForm')">
                                                 <option value="" disabled>Select Gateway</option>
-                                                <option *ngFor="let obj of gatewaysList" [ngValue]="obj.gw_id">
+                                                <option *ngFor="let obj of gatewaysList" [ngValue]="obj.gw_id"
+                                                    [disabled]="obj.isSelected === false">
                                                     {{ obj.gw_id }}</option>
                                             </select>
+                                            <span class="text-danger pl-1 f-12"
+                                                *ngIf="item.get('gw_id').hasError('required') && submitted">
+                                                Gateway is required
+                                            </span>
                                         </div>
                                         <div class="col-5 p-0">
                                             <input type="number" formControlName="ratio_in_percentage" step="10"
@@ -124,13 +137,18 @@
                                     </div>
                                     <div class="row ml-0 gatewayRow">
                                         <div class="col-7 p-0">
+                                            <!-- [ngClass]="{submitError:secondStepSubmitted && item.get('gw_id').hasError('required')}" -->
                                             <select class="dropdown-select w-100" formControlName="gw_id"
-                                                [ngClass]="{submitError:secondStepSubmitted && item.get('gw_id').hasError('required')}"
                                                 (change)="onChangeSelect(i, 'secondForm')">
                                                 <option value="" disabled>Select Gateway</option>
-                                                <option *ngFor="let obj of gatewaysList" [ngValue]="obj.gw_id">
+                                                <option *ngFor="let obj of gatewaysList" [ngValue]="obj.gw_id"
+                                                    [disabled]="obj.isSelected === false">
                                                     {{ obj.gw_id }}</option>
                                             </select>
+                                            <span class="text-danger pl-1 f-12"
+                                                *ngIf="item.get('gw_id').hasError('required') && secondStepSubmitted">
+                                                Gateway is required
+                                            </span>
                                         </div>
                                         <div class="col-5 p-0">
 
@@ -154,23 +172,29 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <Label class="font-weight-bold mb-3">Comments</Label>
-                        <textarea rows="4" class="w-100" placeholder="Enter Comment here" formControlName="comments"
-                            [ngClass]="{submitError:secondStepSubmitted && secondFormGroup.get('comments').hasError('required')}"></textarea>
+                        <textarea rows="4" [minlength]="commentsTextAreaMin" [maxlength]="commentsTextAreaMax"
+                            class="w-100" placeholder="Enter Comment here" formControlName="comments"></textarea>
+                        <!-- [ngClass]="{submitError:secondStepSubmitted && secondFormGroup.get('comments').hasError('required')}" -->
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="!secondFormGroup.get('comments').valid && secondStepSubmitted">
+                            Comments are required
+                        </span>
                     </div>
                 </div>
 
 
                 <div class="row mt-4 create-route-section">
                     <div class="col-3">
-                        <button class="btn btn-dark" (click)="open(previewModal)">Preview</button>
+                        <button type="button" class="btn btn-dark"
+                            (click)="openPreviewModel(previewModal)">Preview</button>
                     </div>
                     <div class="col-6 text-center">
-                        <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
-                        <button class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
+                        <button type="button" class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
+                        <button type="submit" class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
                     </div>
                 </div>
             </div>
-            <!-- {{secondFormGroup.value | json}} -->
+            {{secondFormGroup.value | json}}
         </form>
     </mat-step>
 
@@ -187,24 +211,26 @@
                 <div class="col-4 p-0">
                     <label class="mr-2"><b>ROUTE NAME</b></label>
                     <span class="border-right">&nbsp;</span>
-                    <span class="ml-3"><b>Australia</b></span>
+                    <span class="ml-3"><b>{{parentForm.get('route_name').value}}</b></span>
                 </div>
                 <div class="col-4 p-0">
                     <label class="mr-2"><b>Total Continents Added</b></label>
                     <span class="border-right">&nbsp;</span>
-                    <span class="ml-3"><b>2</b></span>
+                    <span class="ml-3"><b>{{continentsCount}}</b></span>
                 </div>
                 <div class="col-4 p-0">
                     <label class="mr-2"><b>Total Countries Added</b></label>
                     <span class="border-right">&nbsp;</span>
-                    <span class="ml-3"><b>12</b></span>
+                    <span class="ml-3"><b>{{countryCount}}</b></span>
                 </div>
             </div>
-            <div class="row my-3">
+            <div class="row my-3" *ngIf="secondFormGroup.get('row_route').value === 'custom'">
                 <label class="table-heading w-100">ROW (Defined)</label>
                 <div class="col-5 row-details">
-                    <label class="mt-1">Nexmo</label><span class="badge badge-white">80%</span>
-                    <label class="mt-1">Message Bird</label><span class="badge badge-white">50%</span>
+                    <label class="mt-1" *ngFor="let item of this.secondFormGroup.get('row_routes_list').value">
+                        {{item.gw_id}}
+                        <span class="badge badge-white">{{item.ratio_in_percentage}}%</span>
+                    </label>
                 </div>
             </div>
 
@@ -220,31 +246,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="font-weight-semi-bold">Asia</td>
-                            <td class="font-weight-semi-bold">Australia</td>
-                            <td>Australian Telecom</td>
-                            <td>345-345</td>
+                        <tr *ngFor="let route of poolRouteService?.previewList">
+                            <td class="font-weight-semi-bold">{{route.continent}}</td>
+                            <td class="font-weight-semi-bold">{{route.country}}</td>
+                            <td>{{route.operator}}</td>
+                            <td>{{route.mcc}}-{{route.mnc}}</td>
                             <td>
-                                <span class="badge badge-success">G1- 20%</span>
+                                <span class="badge badge-success mx-1"
+                                    *ngFor="let Gate of route.ratios">{{Gate.gw_id}}-{{Gate.ratio_in_percentage}}%</span>
                             </td>
-
-                        </tr>
-                        <tr>
-                            <td class="font-weight-semi-bold">Asia</td>
-                            <td class="font-weight-semi-bold">Australia</td>
-                            <td>Australian Telecom</td>
-                            <td>345-345</td>
-                            <td><span class="badge badge-success">G1- 40%</span></td>
-
-                        </tr>
-                        <tr>
-                            <td class="font-weight-semi-bold">Asia</td>
-                            <td class="font-weight-semi-bold">Australia</td>
-                            <td>Australian Telecom</td>
-                            <td>345-345</td>
-                            <td><span class="badge badge-success">G1- 40%</span></td>
-
                         </tr>
                     </tbody>
                 </table>

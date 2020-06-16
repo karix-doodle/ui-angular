@@ -17,6 +17,8 @@ import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { errorAlert, successAlert } from '../../../shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
+import { element } from 'protractor';
+import { startWith, pairwise, debounceTime } from 'rxjs/operators';
 
 @Component({
    selector: 'app-route-stepper-form',
@@ -53,6 +55,11 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    // @ViewChild('stepper') stepper: MatStepper;
    sub: Subscription;
    // currentYOffSet: number;
+   // selectedMNC: number;
+   commentsTextAreaMin: number;
+   commentsTextAreaMax: number;
+   continentsCount: number;
+   countryCount: number;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -61,12 +68,19 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       private poolRouteService: PoolRouteService,
       private router: Router,
       private el: ElementRef
-   ) { }
+   ) {
+      this.commentsTextAreaMin = environment.createClonePoolRouteFieldLength.commentsTextArea.min;
+      this.commentsTextAreaMax = environment.createClonePoolRouteFieldLength.commentsTextArea.max;
+   }
 
-   open(content) {
-      this.modalService.open(content,
-         { windowClass: 'gt-preview-modal' }
-      );
+   openPreviewModel(content) {
+      this.continentsCount = this.poolRouteService.count('continent');
+      this.countryCount = this.poolRouteService.count('country');
+      if (this.poolRouteService.previewList.length) {
+         this.modalService.open(content,
+            { windowClass: 'gt-preview-modal' }
+         );
+      }
    }
 
    ngOnInit() {
@@ -101,6 +115,27 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       this.secondStepSubmitted = false;
       this.createSecondForm();
       this.loadCountriesList();
+
+      this.sub = this.parentForm.get('gatewayRatio')
+         .valueChanges
+         .pipe(debounceTime(100), startWith(null), pairwise())
+         .subscribe(([prev, next]: [any, any]) => {
+            // console.log(this.formArrayIndex);
+            if (this.formArrayIndex !== undefined) {
+               // console.log(prev[this.formArrayIndex]);
+               // console.log(next[this.formArrayIndex]);
+               if (prev[this.formArrayIndex].gw_id !== next[this.formArrayIndex].gw_id) {
+                  this.gatewaysList.forEach(element => {
+                     if (element.gw_id === next[this.formArrayIndex].gw_id) {
+                        element.isSelected = false;
+                     }
+                     if (element.gw_id === prev[this.formArrayIndex].gw_id) {
+                        element.isSelected = true;
+                     }
+                  });
+               }
+            }
+         });
    }
    /**
     * @description to page scroll top.
@@ -170,6 +205,8 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    selectCountry() {
       this.selectedCountry = this.countriesList.filter((element) => element.country === this.parentForm.value.countryName);
       this.loadOperatorsList(this.selectedCountry[0].country_code);
+      // console.log(this.selectedCountry);
+      // console.log(this.selectedCountry[0].country_code);
    }
    /**
     * @param countryCode consists of country Code.
@@ -184,15 +221,16 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
             ) {
                this.operatorsList = res.data;
                if (this.isClone) {
-                  this.selectOperator();
                   this.isClone = false;
-               } else if (this.routeEditMode) {
                   this.selectOperator();
+               } else if (this.routeEditMode) {
                   this.routeEditMode = false;
+                  this.selectOperator();
                } else {
                   this.parentForm.patchValue({
                      operatorMNC: this.operatorsList[0].mnc
                   });
+                  this.selectOperator();
                }
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
@@ -209,7 +247,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
     * @description gets the selected operator object.
     */
    selectOperator() {
-      this.selectedOperator = this.operatorsList.filter((element) => element.mnc === this.parentForm.value.operatorMNC);
+      this.selectedOperator = this.operatorsList.filter((element: OperatorsListData) => element.mnc === this.parentForm.value.operatorMNC);
    }
 
    // 2nd step
@@ -224,12 +262,14 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
             this.row_routes_list.push(this.createItem());
          }
       }
+      // this.formArrayIndex = this.formArrayIndex + 1;
    }
    /**
     * @param index consists of formarray index.
     * @description to remove selected gateway dropdown.
     */
    onCloseRowGateway(index) {
+      this.formArrayIndex = index;
       this.row_routes_list = this.rowRoutesListFormArray;
       if (this.row_routes_list.length !== 1) {
          this.row_routes_list.removeAt(index);
@@ -397,6 +437,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       if (this.gatewayRatio.length <= 9) {
          if (this.calculateRatioTotal() < 100) {
             this.gatewayRatio.push(this.createItem());
+            this.formArrayIndex = undefined;
          }
       }
    }
@@ -407,7 +448,14 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    onCloseGateway(index) {
       this.gatewayRatio = this.parentFormArray;
       if (this.gatewayRatio.length !== 1) {
+         console.log(this.gatewayRatio.value[index]);
+         this.gatewaysList.forEach(element => {
+            if (element.gw_id === this.gatewayRatio.value[index].gw_id) {
+               element.isSelected = true;
+            }
+         });
          this.gatewayRatio.removeAt(index);
+         this.formArrayIndex = undefined;
       }
    }
 
@@ -500,6 +548,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    }
 
    onChangeSelect(i, form) {
+      this.formArrayIndex = i;
       if (form === 'firstForm') {
          if (this.calculateRatioTotal() > 100) {
             this.parentFormArray.value[i].ratio_in_percentage = this.parentFormArray.value[i].ratio_in_percentage - 10;

@@ -74,4 +74,17 @@ export class PoolRouteService {
     return this.http.post(this.baseUrl + 'clonepoolroute', input, this.httpOptions)
       .pipe(map(m => m as CloneAPoolRouteRes));
   }
+
+
+  /**
+   * @param params consists of preview list element value.
+   * @description gets the unique elements count.
+   */
+  count(params) {
+    const uniqueId = new Set();
+    this.previewList.forEach(element => {
+      uniqueId.add(element[params]);
+    });
+    return uniqueId.size;
+  }
 }

@@ -164,48 +164,77 @@
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
-        <form action="">
+        <form class="my-form" [formGroup]="addSenderIdConfigFormGroup"
+            (ngSubmit)="onSubmitSenderIdConfig(addSenderIdConfigFormGroup.value)">
             <div class="row">
-
+                <!-- <pre>Form values: {{addSenderIdConfigFormGroup.value | json}}</pre> -->
+            </div>
+            <div class="row">
                 <div class="col-6">
                     <label>Country</label>
-                    <select class="dropdown-select w-100" (change)="countrySelect($event.target.value)">
+                    <select class="dropdown-select w-100 cursor-pointer" #countrySelect
+                        (change)="countryOperatorSelect(countrySelect.value, operatorSelect.value, true)">
                         <option value="" default>Select Country</option>
-                        <option *ngFor="let item of GtSenderIdConfigCountryList?.data" value="{{item.mcc}}">
+                        <option *ngFor="let item of GtSenderIdConfigCountryList?.data"
+                            value="{{item.mcc}}-{{item.country}}">
                             {{item.country}}
                         </option>
                     </select>
-
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderIdConfigFormGroup.get('mcc').hasError('required') && isAddsenderIdConfigValid">
+                        Country is required
+                    </span>
                 </div>
                 <div class="col-6">
                     <label>Operator</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100 cursor-pointer" #operatorSelect
+                        (change)="countryOperatorSelect(countrySelect.value, operatorSelect.value, false)">
                         <option value="" default>Select Operator</option>
-                        <option *ngFor="let item of GtSenderIdConfigOperatorList?.data" value="{{item.mnc}}">
-                            {{item.operator}}</option>
+                        <option *ngFor="let item of GtSenderIdConfigOperatorList?.data"
+                            value="{{item.mnc}}-{{item.operator}}">
+                            {{item.operator}}
+                        </option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderIdConfigFormGroup.get('mnc').hasError('required') && isAddsenderIdConfigValid">
+                        Operator is required
+                    </span>
                 </div>
             </div>
             <div class="row my-3">
                 <div class="col-6">
                     <label>Sender ID Type</label>
-                    <select class="dropdown-select w-100">
+                    <select [attr.disabled]="GtExistingSenderIdData?.data.hasdata == true ? true : null"
+                        class="dropdown-select w-100" formControlName="senderid_type" name="senderid_type">
                         <option value="" default>Select Sender ID Type</option>
-                        <option value="0">Open</option>
-                        <option value="1">List</option>
-                        <option value="2">Static</option>
-                        <option value="3">Numeric</option>
+                        <option value="Open">Open</option>
+                        <option value="List">List</option>
+                        <option value="Static">Static</option>
+                        <option value="Numeric">Numeric</option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderIdConfigFormGroup.get('senderid_type').hasError('required') && isAddsenderIdConfigValid">
+                        Sender ID Type is required
+                    </span>
                 </div>
                 <div class="col-6">
                     <label>Default Sender ID</label>
                     <div class="route-edit-div">
-                        <input type="text" class="form-control" placeholder="Enter Default Sender ID" />
+                        <input type="text" class="form-control" formControlName="default_senderid"
+                            name="default_senderid" placeholder="Enter Default Sender ID" />
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="addSenderIdConfigFormGroup.get('default_senderid').hasError('required') && isAddsenderIdConfigValid">
+                            Default Sender ID is required
+                        </span>
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="addSenderIdConfigFormGroup.get('default_senderid').hasError('pattern') && addSenderIdConfigFormGroup.get('default_senderid').dirty">
+                            Please enter valid Sender Id
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="col-12 text-center mt-5">
-                <input type="submit" class="btn btn-basic mr-3" value="Cancel" />
+                <button class="btn btn-basic mr-3" (click)="resetSenderIdForm();" value="Cancel">Cancel</button>
                 <input type="submit" class="btn erp-intl-btn" value="Save" />
             </div>
         </form>

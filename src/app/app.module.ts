@@ -17,7 +17,6 @@ import { SettingsModule } from './settings/settings.module';
 import { RouteManagementModule } from './route-management/route-management.module';
 import { CustomerManagementModule } from './customer-management/customer-management.module';
 import { BillplanManagementModule } from './billplan-management/billplan-management.module';
-import { ToastrModule } from 'ng6-toastr-notifications';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +40,6 @@ import { ToastrModule } from 'ng6-toastr-notifications';
     CustomerManagementModule,
     BillplanManagementModule,
     SettingsModule,
-    ToastrModule.forRoot()
   ],
   exports: [],
   providers: [],

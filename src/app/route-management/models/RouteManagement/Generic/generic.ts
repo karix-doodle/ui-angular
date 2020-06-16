@@ -49,6 +49,7 @@ export class GatewaysListRes {
 export class GatewaysListData {
     gw_id: string;
     gw_name: string;
+    isSelected?: boolean;
 }
 
 // Get Gatways List - Models //
