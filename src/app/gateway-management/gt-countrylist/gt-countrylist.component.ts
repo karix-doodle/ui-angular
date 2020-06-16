@@ -39,6 +39,7 @@ export class GtCountrylistComponent implements OnInit {
   addSenderIdConfigFormGroup: FormGroup;
   isAddsenderIdConfigValid: boolean = false;
 
+  searchvalue: string = ''
   sortingName: string;
   isDesc: boolean;
 

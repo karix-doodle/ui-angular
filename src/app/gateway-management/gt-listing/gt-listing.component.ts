@@ -23,6 +23,8 @@ export class GtListingComponent implements OnInit {
   sortingName: string;
   isDesc: boolean;
 
+  searchvalue: string = ''
+
   constructor(
     private gatewayManagementService: GatewayManagementService,
   ) { }

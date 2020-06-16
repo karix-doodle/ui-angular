@@ -291,7 +291,7 @@
                 <div class="col-3 traffic-destination mt-2">
                     <label>Top 5 Traffic Destination</label>
                     <div class="row">
-                        <div *ngFor="let item of gatewayData?.data.top5traffic" class="col-6 mb-1">
+                        <div *ngFor="let item of GtDetailsData?.data.top5traffic" class="col-6 mb-1">
                             <span class="badge badge-light">
                                 {{item.name}}
                             </span>
@@ -301,7 +301,7 @@
                 <div class="col-3 traffic-destination mt-2">
                     <label>Top 5 Profitable Destination</label>
                     <div class="row">
-                        <div *ngFor="let item of gatewayData?.data.top5profitable" class="col-6 mb-1">
+                        <div *ngFor="let item of GtDetailsData?.data.top5profitable" class="col-6 mb-1">
                             <span class="badge badge-light">
                                 {{item.name}}
                             </span>
@@ -311,7 +311,7 @@
                 <div class="col-3 traffic-destination mt-2">
                     <label>Least 5 Profitable Destination</label>
                     <div class="row">
-                        <div *ngFor="let item of gatewayData?.data.least5profitable" class="col-6 mb-1">
+                        <div *ngFor="let item of GtDetailsData?.data.least5profitable" class="col-6 mb-1">
                             <span class="badge badge-light">
                                 {{item.name}}
                             </span>

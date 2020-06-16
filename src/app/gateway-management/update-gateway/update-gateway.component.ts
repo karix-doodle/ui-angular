@@ -35,6 +35,7 @@ export class UpdateGatewayComponent implements OnInit {
   disableWrapper: boolean = false
   isfrom_email: boolean = false
   isfrom_subject: boolean = false
+  selectedFileName: string = ''
 
   gt_id: string
   gt_name: string
@@ -45,38 +46,47 @@ export class UpdateGatewayComponent implements OnInit {
     {
       content: "Drop Country Name here",
       column: "country_column",
+      text: "Country Name"
     },
     {
       content: "Drop Operator / Network Name Here",
       column: "operator_column",
+      text: "Operator / Network"
     },
     {
       content: "Drop MCC Here",
       column: "mcc_column",
+      text: "MCC"
     },
     {
       content: "Drop MNC Here",
       column: "mnc_column",
+      text: "MNC"
     },
     {
       content: "Drop MCC + MNC Here (Optional)",
       column: "mcc_mnc_column",
+      text: "MCC + MNC"
     },
     {
       content: "Drop Price / New Price Here",
       column: "newprice_column",
+      text: "Price / New Price"
     },
     {
-      content: "Old Price Here",
+      content: "Drop Old Price Here",
       column: "oldprice_column",
+      text: "Old Price"
     },
     {
       content: "Drop Effective From Here",
       column: "effectivefrom_column",
+      text: "Effective From"
     },
     {
       content: "Drop Change Type Here",
       column: "changetype_column",
+      text: "Change Type"
     },
   ];
 
@@ -242,6 +252,7 @@ export class UpdateGatewayComponent implements OnInit {
       return;
     }
     const file = files.item(0);
+    this.selectedFileName = file.name
     const formData: FormData = new FormData();
     const getHeaderFormData: FormData = new FormData();
     this.priceListFormGroup.patchValue({
@@ -265,23 +276,24 @@ export class UpdateGatewayComponent implements OnInit {
 
   submitPriceFile() {
     if (this.isFieldValid('filename') != "") {
-      this.GtUploadPriceFile(this.priceFileData)
+      // this.GtUploadPriceFile(this.priceFileData)
+      this.getHeaderFromFile(this.getFileHeaderData)
     }
   }
 
-  GtUploadPriceFile(data) {
-    this.gatewayManagementService.GtUploadPriceFile(data).subscribe(
-      (res: GtUploadPriceFile_ApiResponse) => {
-        if (res.status === 'SUCCESS') {
-          this.getHeaderFromFile(this.getFileHeaderData)
-        } else if (res.status === 'FAILURE') {
-          errorAlert(res.response, '')
-        }
-      }, (error: HttpErrorResponse) => {
-        errorAlert(error.message, error.statusText)
-      }
-    );
-  }
+  // GtUploadPriceFile(data) {
+  //   this.gatewayManagementService.GtUploadPriceFile(data).subscribe(
+  //     (res: GtUploadPriceFile_ApiResponse) => {
+  //       if (res.status === 'SUCCESS') {
+  //         this.getHeaderFromFile(this.getFileHeaderData)
+  //       } else if (res.status === 'FAILURE') {
+  //         errorAlert(res.response, '')
+  //       }
+  //     }, (error: HttpErrorResponse) => {
+  //       errorAlert(error.message, error.statusText)
+  //     }
+  //   );
+  // }
 
   getHeaderFromFile(data) {
     this.gatewayManagementService.getHeaderFromFile(data).subscribe(
