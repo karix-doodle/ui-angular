@@ -212,6 +212,7 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
           res.responsecode > environment.APIStatus.success.code
         ) {
           this.gatewaysList = res.data;
+          this.poolRouteService.changeSubjectData(4);
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code
@@ -272,6 +273,13 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   onDeleteRoute(route: NewRoutesList) {
     confirmAlert().then((result) => {
       if (result.isConfirmed) {
+        // this.gatewaysList.forEach(element => {
+        //   route.ratios.forEach(ratios => {
+        //     if (ratios.gw_id === element.gw_id) {
+        //       element.isSelected = false;
+        //     }
+        //   });
+        // });
         this.poolRouteService.previewList = this.poolRouteService.previewList.filter((element) => element !== route);
         this.previewListData();
         this.poolRouteService.changeSubjectData(3);
