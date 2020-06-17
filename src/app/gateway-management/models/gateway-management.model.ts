@@ -764,6 +764,14 @@ export class getHeaderFromFile_ApiResponse {
 export class GtprocessPriceFile_ApiResponse {
     status: string;
     response: string;
+    valid: number;
+    invalid: number;
+    invalid_rows: GtprocessPriceFile_Data;
+}
+export class GtprocessPriceFile_Data {
+    index: number;
+    row: any
+    reason: string
 }
 /**
  ************************* @description Gateway process price file END

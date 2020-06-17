@@ -27,6 +27,10 @@
                             class="col-2 btn erp-intl-btn file-upload-btn">Upload</button>
                     </div>
                     <span *ngIf="selectedFileName != ''">{{selectedFileName}}</span>
+                    <div class="text-danger pl-0 f-12"
+                        *ngIf="priceListFormGroup.get('filename').hasError('required') && isGtPriceUpdateValid">
+                        Uploading the Price File is required
+                    </div>
                 </div>
                 <div class="col-3 text-center">
                     <label>Use default Template Rule to update price from File</label>
@@ -70,9 +74,10 @@
                                         class="img-fluid cursor-pointer" src="assets/icons/delete-icon.svg">
                                 </div>
                             </div>
+                            {{item.column.errors| json}}
                             <span class="text-danger pl-0 f-12"
                                 *ngIf="priceListFormGroup.get(item.column).hasError('required') && isGtPriceUpdateValid">
-                                This area is required
+                                Mapping is required
                             </span>
                         </div>
                     </div>
@@ -95,40 +100,70 @@
                                 name="is_autocompile" [checked]="priceListFormGroup.get('is_autocompile').value == 1">
                             <span class="slider round"></span>
                         </label>
-                        <input type="text" class="col-12 bg-grey form-control mt-4" formControlName="notify_email"
-                            name="notify_email" placeholder="Enter Notification Mail Id" />
+                        <div class="d-block position-relative col-12"
+                            [ngClass]="{'disable-wrapper' : priceListFormGroup.get('is_autocompile').value == false }">
+                            <input type="text" class="col-12 bg-grey form-control mt-4" formControlName="notify_email"
+                                name="notify_email" placeholder="Enter Notification Mail Id" />
+                            <div class="text-danger pl-0 f-12"
+                                *ngIf="priceListFormGroup.get('notify_email').hasError('required') && isGtPriceUpdateValid">
+                                Notify email is required
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-2 px-0 auto-compile-div">
-                        <label class="checkbox-label ml-15 mt-1" for="from-email">From E-Mail ID
-                            <input type="checkbox" id="from-email"
-                                (click)="emailsubjectCheck($event.target.checked,'isfrom_email', 'from_email')"
-                                [checked]="isfrom_email">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="checkbox-label ml-15" for="from-subject">From Subject
-                            <input type="checkbox" id="from-subject"
-                                (click)="emailsubjectCheck($event.target.checked,'isfrom_subject', 'from_subject')"
-                                [checked]="isfrom_subject">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="checkbox-label ml-15" for="from-body">From Body
-                            <input type="checkbox" id="from-body" formControlName="read_body" name="read_body"
-                                [checked]="priceListFormGroup.get('read_body').value == 1">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="checkbox-label ml-15" for="from-attachment">From Attachment
-                            <input type="checkbox" id="from-attachment" formControlName="read_attachment"
-                                name="read_attachment" [checked]="priceListFormGroup.get('read_attachment').value == 1">
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" class="col-12 bg-grey form-control mb-2"
-                            [attr.readonly]="isfrom_email == false  ? true : null" formControlName="from_email"
-                            name="from_email" placeholder="Enter Mail ID" />
-                        <input type="text" class="col-12 bg-grey form-control"
-                            [attr.readonly]="isfrom_subject == false  ? true : null" formControlName="from_subject"
-                            name="from_subject" placeholder="Enter Subject Line" />
+                    <div class="col-6"
+                        [ngClass]="{'disable-wrapper' : priceListFormGroup.get('is_autocompile').value == false }">
+                        <div class="row">
+                            <div class="col-4 px-0 auto-compile-div">
+                                <label class="checkbox-label ml-15 mt-1" for="from-email">From E-Mail ID
+                                    <input type="checkbox" id="from-email"
+                                        (click)="emailsubjectCheck($event.target.checked,'isfrom_email', 'from_email')"
+                                        [checked]="isfrom_email">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('from_email').hasError('required') && isGtPriceUpdateValid">
+                                    E-mail ID is required
+                                </div>
+                                <label class="checkbox-label ml-15" for="from-subject">From Subject
+                                    <input type="checkbox" id="from-subject"
+                                        (click)="emailsubjectCheck($event.target.checked,'isfrom_subject', 'from_subject')"
+                                        [checked]="isfrom_subject">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('from_subject').hasError('required') && isGtPriceUpdateValid">
+                                    Subject is required
+                                </div>
+                                <label class="checkbox-label ml-15" for="from-body">From Body
+                                    <input type="checkbox" id="from-body" formControlName="read_body" disabled
+                                        name="read_body" [checked]="priceListFormGroup.get('read_body').value == 1">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('read_body').hasError('required') && isGtPriceUpdateValid">
+                                    Read body is required
+                                </div>
+                                <label class="checkbox-label ml-15" for="from-attachment">From Attachment
+                                    <input type="checkbox" id="from-attachment"
+                                        (click)="checkboxToggle($event.target.checked, 'read_attachment')"
+                                        [checked]="priceListFormGroup.get('read_attachment').value == 1">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('read_attachment').hasError('required') && isGtPriceUpdateValid">
+                                    Read attachment is required
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="col-12 bg-grey form-control mb-2"
+                                    [attr.readonly]="isfrom_email == false  ? true : null" formControlName="from_email"
+                                    name="from_email" placeholder="Enter Mail ID" />
+                                <input type="text" class="col-12 bg-grey form-control"
+                                    [attr.readonly]="isfrom_subject == false  ? true : null"
+                                    formControlName="from_subject" name="from_subject"
+                                    placeholder="Enter Subject Line" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -147,8 +182,7 @@
             </section>
             <div class="row">
                 <div class="col-12 text-center">
-                    <!-- <a routerLink="/gateway-management" class="btn btn-basic mr-3">Cancel</a> -->
-                    <input type="reset" class="btn btn-basic mr-3" value="Cancel" data-dismiss="modal">
+                    <a routerLink="/gateway-management/gateway-details/{{gt_id}}" class="btn btn-basic mr-3">Cancel</a>
                     <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
                 </div>
             </div>
@@ -156,3 +190,72 @@
     </form>
 
 </div>
+
+<ng-template #priceListSubmitSuccess let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <div class="row" style="justify-content: center;">
+            <img style="width: 40px;" src="/assets/images/circle-green-tick-png" alt="" />
+        </div>
+        <div class="row font-weight-bold text-center">
+            <div class="col-12 border-right pt-3">
+                <h4>{{GtprocessPriceFileDataRes?.status}}</h4>
+            </div>
+            <div class="col-12 pt-2">
+                <p>{{GtprocessPriceFileDataRes?.response}}</p>
+            </div>
+        </div>
+        <div class="row my-4 f-14">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-3"><label>Valid:</label></div>
+                    <div class="col-9">
+                        <span class="badge badge-dark">{{GtprocessPriceFileDataRes?.valid}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-3"><label>InValid:</label></div>
+                    <div class="col-9">
+                        <span class="badge badge-dark">{{GtprocessPriceFileDataRes?.invalid}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h6 class="px-3">UnProcessed Records</h6>
+            <div class="table-responsive senderid-list-table">
+                <table class="table table-borderless erp-list-table">
+                    <thead>
+                        <tr>
+                            <td>S.No</td>
+                            <td>Row</td>
+                            <td>Reason</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of GtprocessPriceFileDataRes?.invalid_rows; index as i">
+                            <td>{{i + 1}}</td>
+                            <td>{{item.index}}</td>
+                            <td>
+                                <span placement="right" ngbTooltip="{{item.row | json}}">
+                                    {{item.reason}}
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <td>1</td>
+                            <td>
+                                <span placement="top" ngbTooltip="{{draggableListRight | json}}">
+                                    test
+                                </span>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-template>
