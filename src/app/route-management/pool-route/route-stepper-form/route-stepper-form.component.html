@@ -112,7 +112,7 @@
                                 <input type="radio" id="row-lcr" value="lcr" formControlName="row_route">
                                 <label for="row-lcr" class="radio-inline">ROW on LCR</label>
                             </div>
-                            <div class="form-group col-4 p-0">
+                            <div class="form-group col-4 p-0" *ngIf="customRowGateway.length">
                                 <input type="radio" id="define-row" value="custom" formControlName="row_route"
                                     (change)="rowRoutesListFormArray.value.length === 0 && addRowGateway() ">
                                 <label for="define-row" class="radio-inline">Define ROW</label>
@@ -194,7 +194,7 @@
                     </div>
                 </div>
             </div>
-            {{secondFormGroup.value | json}}
+            <!-- {{secondFormGroup.value | json}} -->
         </form>
     </mat-step>
 
