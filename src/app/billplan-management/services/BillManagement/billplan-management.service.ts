@@ -32,23 +32,18 @@ export class BillManagementService {
 
 
   BillPlanListdownload(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/download?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid.toString()}`, this.httpOptions_file)
+    return this.http.get(`${this.baseUrl}/download?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions_file)
       .pipe(map(m => m as any));
   }
 
   BillPlancurrency(): Observable<BillPlanCurrency_ApiResponse> {
-    return this.http.get(`${this.baseUrl}/currency?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid.toString()}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/currency?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
       .pipe(map(m => m as BillPlanCurrency_ApiResponse));
   }
 
   getBillPlanMgmtSummary(): Observable<BlillPlanSumary_ApiResponse> {
-    let params = new HttpParams();
-    params = params.append("loggedinusername", environment.loggedinusername);
-    params = params.append(
-      "loggedinempid",
-      environment.loggedinempid.toString()
-    );
-    return this.http.get(`${this.baseUrl}/summary`, { params: params })
+
+    return this.http.get(`${this.baseUrl}/summary?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
     .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
   }
 
