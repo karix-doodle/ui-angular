@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { MobileSenderidCustomService } from "src/app/route-management/services/RouteManagement/custom-route/mobile-custom-senderid.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { ToastrManager } from "ng6-toastr-notifications";
 import { CustomService } from "src/app/route-management/services/RouteManagement/custom-route/custom.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import {
@@ -34,7 +33,6 @@ export class SenderidMobileRouteComponent implements OnInit {
   constructor(
     public router: Router,
     public customService: CustomService,
-    public toastr: ToastrManager,
     public mobileSenderIdCustomService: MobileSenderidCustomService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder

@@ -23,7 +23,6 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class CrRmMobileComponent implements OnInit {
   constructor(
     public mobileCustomRoute: MobileCustomRouteService,
-    public toastr: ToastrManager
   ) {}
   searchvalue: "";
   sortingName: string;

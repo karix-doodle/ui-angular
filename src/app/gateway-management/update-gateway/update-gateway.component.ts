@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray, NgModel } f
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtDefaultTemplate_ApiResponse, GtDefaultTemplate_Data, GtUploadPriceFile_ApiResponse, getHeaderFromFile_ApiResponse, GtprocessPriceFile_ApiResponse, GtprocessPriceFile_Data } from '../models/gateway-management.model';
+import { GtDefaultTemplate_ApiResponse, GtDefaultTemplate_Data, getHeaderFromFile_ApiResponse, GtprocessPriceFile_ApiResponse, GtprocessPriceFile_Data } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -26,7 +26,6 @@ export class UpdateGatewayComponent implements OnInit {
 
   GtDefaultTemplateDataRes: GtDefaultTemplate_ApiResponse;
   GtDefaultTemplateData: GtDefaultTemplate_Data;
-  GtUploadPriceFileDataRes: GtUploadPriceFile_ApiResponse;
 
   GtprocessPriceFileDataRes: GtprocessPriceFile_ApiResponse;
   GtprocessPriceFileData: GtprocessPriceFile_Data;

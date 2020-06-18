@@ -731,19 +731,6 @@ export class GtDefaultTemplate_Data {
 
 /**
  * @module gateway-management
- * @description Gateway upload price file START
-*/
-export class GtUploadPriceFile_ApiResponse {
-    status: string;
-    uuid: number;
-    response: string
-}
-/**
- ************************* @description Gateway upload price file END
-*/
-
-/**
- * @module gateway-management
  * @description Gateway get headers from file START
 */
 export class getHeaderFromFile_ApiResponse {

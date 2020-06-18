@@ -36,7 +36,11 @@ export const environment = {
       min: 3,
       max: 1000
     }
-  }
+  },
+  charsetEncode: ['GSM','ISO-8859-1','ASCII'],
+  defaultCharsetEncode : 'GSM',
+  dlrType: ['No DLR','Handset DLR','SMSC DLR'],
+  defaultDlrType : 'Handset DLR'
 };
 
 /*
