@@ -103,6 +103,15 @@
                 <td>{{tableData.date}} | {{tableData.time}}</td>
                 <td>{{tableData.createby}}</td>
             </tr>
+            <tr
+        *ngIf="
+          !billplanTableListData.length ||
+          (billplanTableListData | filter: { billplanname: searchvalue })
+            .length == 0
+        "
+      >
+        <td colspan="5" style="text-align: center;">No Records Found</td>
+      </tr>
 
         </tbody>
     </table>
