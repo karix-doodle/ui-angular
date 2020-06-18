@@ -13,11 +13,11 @@
                     <div class="card-body">
                         <div class="row mb-2">
                             <label class="col-9">PREPAID</label>
-                            <span class="col-2 rm-badge">250</span>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.billplan_prepaid_count}}</span>
                         </div>
                         <div class="row mb-2">
                             <label class="col-9">POSTPAID</label>
-                            <span class="col-2 rm-badge">250</span>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.billplan_postpaid_count}}</span>
                         </div>
                     </div>
                 </div>
@@ -33,23 +33,23 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <label class="col-9">GROUP</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_group_count}}</span>
                     </div>
                     <div class="row mb-2">
                         <label class="col-9">COUNTRY</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_country_count}}</span>
                     </div>
                     <div class="row mb-2">
                         <label class="col-9">FLAT / FIXED</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_flatfix_count}}</span>
                     </div>
                     <div class="row mb-2">
                         <label class="col-9">COUNTRY + OPERATOR</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_countryoperator_count}}</span>
                     </div>
                     <div class="row mb-2">
                         <label class="col-9">SLAB</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_slab_count}}</span>
                     </div>
                 </div>
             </div>
@@ -60,15 +60,15 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <label class="col-9">COUNTRY</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_country_count}}</span>
                     </div>
                     <div class="row mb-2">
                         <label class="col-9">COUNTRY + OPERATOR</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_countryoperator_count}}</span>
                     </div>
                     <div class="row mb-2">
                         <label class="col-9">FLAT / FIXED</label>
-                        <span class="col-2 rm-badge">250</span>
+                        <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_flatfix_count}}</span>
                     </div>
                 </div>
             </div>

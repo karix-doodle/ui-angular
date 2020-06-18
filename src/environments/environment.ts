@@ -30,7 +30,7 @@ export const environment = {
   createClonePoolRouteFieldLength: {
     routeNameInputBox: {
       min: 3,
-      max: 100
+      max: 15
     },
     commentsTextArea: {
       min: 3,

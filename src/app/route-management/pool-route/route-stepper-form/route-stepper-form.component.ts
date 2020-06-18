@@ -168,7 +168,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
                } else if (!this.isClone) {
                   this.defineRowGatewaysList = JSON.parse(JSON.stringify(this.gatewaysList));
                }
-            }, 200);
+            }, 300);
          }
       });
       this.submitted = false;
@@ -597,7 +597,11 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          const obj = JSON.parse(JSON.stringify(this.newRoute));
          this.routeAlreadExist = false;
          this.poolRouteService.previewList.forEach(preview => {
-            if (_.isEqual(preview, obj)) {
+            // if (_.isEqual(preview, obj)) {
+            //    this.routeAlreadExist = true;
+            //    errorAlert('Route already exist', 'Warning');
+            // }
+            if (preview.country === obj.country && preview.operator === obj.operator) {
                this.routeAlreadExist = true;
                errorAlert('Route already exist', 'Warning');
             }
