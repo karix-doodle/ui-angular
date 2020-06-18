@@ -326,6 +326,10 @@ export class UpdateGatewayComponent implements OnInit {
 
           }
 
+          this.priceListFormGroup.patchValue({
+            filename: res.filename
+          });
+
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
