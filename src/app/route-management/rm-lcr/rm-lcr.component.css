@@ -15,3 +15,16 @@
         border       : none;
         border-radius: 5px;
     }
+
+    td {
+        cursor: pointer;
+    }
+
+    /* .gt-preview-modal .modal-dialog {
+        width          : 100% !important;
+        min-width      : 1000px !important;
+        display        : flex !important;
+        align-items    : center !important;
+        justify-content: space-evenly !important;
+        height         : 100% !important;
+    } */

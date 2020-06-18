@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray, NgModel } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgbModalConfig, NgbModal, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtDefaultTemplate_ApiResponse, GtDefaultTemplate_Data, GtUploadPriceFile_ApiResponse, getHeaderFromFile_ApiResponse, GtprocessPriceFile_ApiResponse } from '../models/gateway-management.model';
+import { GtDefaultTemplate_ApiResponse, GtDefaultTemplate_Data, GtUploadPriceFile_ApiResponse, getHeaderFromFile_ApiResponse, GtprocessPriceFile_ApiResponse, GtprocessPriceFile_Data } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+
+import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
 
 import { DndDropEvent, DropEffect } from "ngx-drag-drop";
 
@@ -25,6 +28,9 @@ export class UpdateGatewayComponent implements OnInit {
   GtDefaultTemplateData: GtDefaultTemplate_Data;
   GtUploadPriceFileDataRes: GtUploadPriceFile_ApiResponse;
 
+  GtprocessPriceFileDataRes: GtprocessPriceFile_ApiResponse;
+  GtprocessPriceFileData: GtprocessPriceFile_Data;
+
   priceListFormGroup: FormGroup;
   isPriceListValid: boolean = false;
   isGtPriceUpdateValid: boolean = false;
@@ -39,6 +45,9 @@ export class UpdateGatewayComponent implements OnInit {
 
   gt_id: string
   gt_name: string
+
+  @ViewChild('priceListSubmitSuccess', { static: true })
+  priceListSubmitSuccess: TemplateRef<any>;
 
   draggableListLeft = [];
 
@@ -95,6 +104,7 @@ export class UpdateGatewayComponent implements OnInit {
     private router: Router,
     private gatewayManagementService: GatewayManagementService,
     private formBuilder: FormBuilder,
+    private modalService: NgbModal,
   ) {
     this.priceListFormGroup = this.formBuilder.group({
       gw_id: [this.activeRoute.snapshot.params.id, [Validators.required]],
@@ -129,13 +139,6 @@ export class UpdateGatewayComponent implements OnInit {
   ngOnInit() {
     this.GtDefaultTemplate()
   }
-
-  // onDragged(item: any, list: any[], effect: DropEffect) {
-  //   if (effect === "copy") {
-  //     const index = list.indexOf(item);
-  //     list.splice(index, 1);
-  //   }
-  // }
 
   onDrop(event: DndDropEvent, column: string) {
 
@@ -173,9 +176,15 @@ export class UpdateGatewayComponent implements OnInit {
     let obj = {}
     if (value == false) {
       obj[field] = "";
-      console.log(obj, 'asdasdasd')
       this.priceListFormGroup.patchValue(obj)
     }
+  }
+
+  checkboxToggle(value, field) {
+    console.log(value, 'asdasdasd')
+    let obj = {}
+    obj[field] = value == true ? 1 : '';
+    this.priceListFormGroup.patchValue(obj)
   }
 
   GtDefaultTemplate() {
@@ -207,7 +216,7 @@ export class UpdateGatewayComponent implements OnInit {
               from_email: this.GtDefaultTemplateDataRes.data.from_email,
               from_subject: this.GtDefaultTemplateDataRes.data.from_subject,
               read_body: this.GtDefaultTemplateDataRes.data.read_body,
-              read_attachment: this.GtDefaultTemplateDataRes.data.read_attachment,
+              read_attachment: this.GtDefaultTemplateDataRes.data.read_attachment ? 1 : '',
               comment: this.GtDefaultTemplateDataRes.data.comment,
               useexistingtemplate: this.GtDefaultTemplateDataRes.switch_on ? true : false,
               overrideexisting: this.GtDefaultTemplateDataRes.switch_on ? false : true
@@ -255,9 +264,6 @@ export class UpdateGatewayComponent implements OnInit {
     this.selectedFileName = file.name
     const formData: FormData = new FormData();
     const getHeaderFormData: FormData = new FormData();
-    this.priceListFormGroup.patchValue({
-      filename: file.name
-    })
     formData.append("req_type", "fileupload");
     formData.append("gw_id", this.activeRoute.snapshot.params.id);
     formData.append("file", file, file.name);
@@ -275,25 +281,10 @@ export class UpdateGatewayComponent implements OnInit {
   }
 
   submitPriceFile() {
-    if (this.isFieldValid('filename') != "") {
-      // this.GtUploadPriceFile(this.priceFileData)
+    if (this.selectedFileName != "") {
       this.getHeaderFromFile(this.getFileHeaderData)
     }
   }
-
-  // GtUploadPriceFile(data) {
-  //   this.gatewayManagementService.GtUploadPriceFile(data).subscribe(
-  //     (res: GtUploadPriceFile_ApiResponse) => {
-  //       if (res.status === 'SUCCESS') {
-  //         this.getHeaderFromFile(this.getFileHeaderData)
-  //       } else if (res.status === 'FAILURE') {
-  //         errorAlert(res.response, '')
-  //       }
-  //     }, (error: HttpErrorResponse) => {
-  //       errorAlert(error.message, error.statusText)
-  //     }
-  //   );
-  // }
 
   getHeaderFromFile(data) {
     this.gatewayManagementService.getHeaderFromFile(data).subscribe(
@@ -342,38 +333,73 @@ export class UpdateGatewayComponent implements OnInit {
 
   onSubmitUpdateGatewayPrice(data) {
     this.isGtPriceUpdateValid = true;
+    let priceValidation = false;
+
+    data.is_autocompile = data.is_autocompile == true ? 1 : 0
+
+    removeValidators(this.priceListFormGroup, 'operator_column')
+    removeValidators(this.priceListFormGroup, 'country_column')
+    removeValidators(this.priceListFormGroup, 'mcc_mnc_column')
+    removeValidators(this.priceListFormGroup, 'mnc_column')
+    removeValidators(this.priceListFormGroup, 'mcc_column')
+
+    if (data.is_autocompile == 1) {
+      addValidators(this.priceListFormGroup, 'notify_email')
+      addValidators(this.priceListFormGroup, 'from_email')
+      addValidators(this.priceListFormGroup, 'from_subject')
+      addValidators(this.priceListFormGroup, 'read_attachment')
+    } else {
+      removeValidators(this.priceListFormGroup, 'notify_email')
+      removeValidators(this.priceListFormGroup, 'from_email')
+      removeValidators(this.priceListFormGroup, 'from_subject')
+      removeValidators(this.priceListFormGroup, 'read_attachment')
+    }
+
     if (this.priceListFormGroup.invalid) {
       return;
     }
+
+    if ((data.country_column != "" && data.country_column != null) && (data.operator_column != "" && data.operator_column != null)) {
+      priceValidation = true
+    } else if ((data.mcc_column != "" && data.mcc_column != null) && (data.mnc_column != "" && data.mnc_column != null)) {
+      priceValidation = true
+    } else if (data.mcc_mnc_column != "" && data.mcc_mnc_column != null) {
+      priceValidation = true
+    }
+
+    if (!priceValidation) {
+      addValidators(this.priceListFormGroup, 'operator_column')
+      addValidators(this.priceListFormGroup, 'country_column')
+      addValidators(this.priceListFormGroup, 'mcc_mnc_column')
+      addValidators(this.priceListFormGroup, 'mnc_column')
+      addValidators(this.priceListFormGroup, 'mcc_column')
+      return
+    }
+
     else {
       this.isGtPriceUpdateValid = false;
-      data.is_autocompile = data.is_autocompile == true ? 1 : 0
       data.read_body = data.read_body == true ? 1 : 0
       data.read_attachment = data.read_attachment == true ? 1 : 0
 
-      let priceValidation = false;
-      if ((data.country_column != "" && data.country_column != null) && (data.operator_column != "" && data.operator_column != null)) {
-        priceValidation = true
-      } else if ((data.mcc_column != "" && data.mcc_column != null) && (data.mnc_column != "" && data.mnc_column != null)) {
-        priceValidation = true
-      } else if (data.mcc_mnc_column != "" && data.mcc_mnc_column != null) {
-        priceValidation = true
-      }
+      this.gatewayManagementService.GtprocessPriceFile(data).subscribe(
+        (res: GtprocessPriceFile_ApiResponse) => {
+          if (res.status === 'SUCCESS') {
+            this.GtprocessPriceFileDataRes = res;
+            this.GtprocessPriceFileData = JSON.parse(JSON.stringify(this.GtprocessPriceFileDataRes));
 
-      if (priceValidation) {
-        this.gatewayManagementService.GtprocessPriceFile(data).subscribe(
-          (res: GtprocessPriceFile_ApiResponse) => {
-            if (res.status === 'SUCCESS') {
+            if (this.GtprocessPriceFileDataRes.invalid == 0) {
               successAlert(res.response, res.status)
-              this.router.navigate(['gateway-management']);
-            } else if (res.status === 'FAILURE') {
-              errorAlert(res.response, res.status)
+            } else {
+              this.modalService.open(this.priceListSubmitSuccess)
             }
-          }, (error: HttpErrorResponse) => {
-            errorAlert(error.message, error.statusText)
+            this.router.navigate(['gateway-management/gateway-details/' + this.activeRoute.snapshot.params.id]);
+          } else if (res.status === 'FAILURE') {
+            errorAlert(res.response, res.status)
           }
-        );
-      }
+        }, (error: HttpErrorResponse) => {
+          errorAlert(error.message, error.statusText)
+        }
+      );
 
     }
   }
