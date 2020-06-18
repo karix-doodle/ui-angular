@@ -40,7 +40,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
   constructor(
     public router: Router,
     public customService: CustomService,
-    public toastr: ToastrManager,
     public mobileSenderTemplateService: SenderCustomService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder

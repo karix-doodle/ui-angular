@@ -12,57 +12,98 @@
     <div class="col-8 mt-2">
         <label class="mr-2"><b>Total Bill</b></label>
         <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>435</b></span>
+        <span class="ml-3 badge badge-dark"><b>{{billplanTbaleListApiResponse?.data.totalbillplan}}</b></span>
     </div>
 
     <div class="col-3 text-right">
-        <input type="search" class="form-control" placeholder="&#xf002; Search by BillPlan Name, RC Name" />
+        <input type="search" class="form-control" placeholder="&#xf002; Search by BillPlan Name"
+        name="searchvalue"
+        [(ngModel)]="searchvalue" />
     </div>
     <div class="col-1">
-        <button class="icon-btn"><i aria-hidden="true" class="fa fa-download"></i></button>
+        <button class="icon-btn" (click)="BillPlanListDownload()" ><i aria-hidden="true" class="fa fa-download"></i></button>
     </div>
 </div>
 <div class="main-container table-responsive">
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
-                <th>Bill Plan Name</th>
-                <th>Rate Card Name</th>
-                <th>Billing type</th>
-                <th>No. Of Accounts Tagged</th>
-                <th>Billing Currency</th>
-                <th>Created Date & Time<i class="fa fa-caret-down"></i></th>
-                <th>Created By</th>
+              <th (click)="sort('billplanname')">
+                Bill Plan Name
+                <i
+                  *ngIf="sortingName === 'billplanname' && isDesc"
+                  class="fa fa-arrow-down sorticon m-1"
+                ></i>
+                <i
+                  *ngIf="sortingName === 'billplanname' && !isDesc"
+                  class="fa fa-arrow-up sorticon m-1"
+                ></i>
+              </th>
+
+              <th (click)="sort('ratecardname')">
+                Rate Card Name
+                <i
+                  *ngIf="sortingName === 'ratecardname' && isDesc"
+                  class="fa fa-arrow-down sorticon m-1"
+                ></i>
+                <i
+                  *ngIf="sortingName === 'ratecardname' && !isDesc"
+                  class="fa fa-arrow-up sorticon m-1"
+                ></i>
+              </th>
+              <th (click)="sort('billingtype')">
+                Billing type
+                <i
+                  *ngIf="sortingName === 'billingtype' && isDesc"
+                  class="fa fa-arrow-down sorticon m-1"
+                ></i>
+                <i
+                  *ngIf="sortingName === 'billingtype' && !isDesc"
+                  class="fa fa-arrow-up sorticon m-1"
+                ></i>
+              </th>
+              <th >
+                No. Of Accounts Tagged
+
+              </th>
+              <th >
+                Billing Currency
+
+              </th>
+              <th (click)="sort('date')">
+                Created Date & Time
+                <i
+                  *ngIf="sortingName === 'date' && isDesc"
+                  class="fa fa-arrow-down sorticon m-1"
+                ></i>
+                <i
+                  *ngIf="sortingName === 'date' && !isDesc"
+                  class="fa fa-arrow-up sorticon m-1"
+                ></i>
+              </th>
+              <th>
+                Created By
+
+              </th>
+
+
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-bold">billplan name</td>
-                <td>Test Name 1</td>
-                <td><a routerLink="/billplan-management-postpaid">Postpaid</a></td>
+            <tr  *ngFor="
+            let tableData of billplanTableListData
+              | filter: { billplanname: searchvalue }
+              | sort: sortingName:isDesc
+          ">
+                <td class="font-weight-bold">{{tableData.billplanname}}</td>
+                <td>{{tableData.ratecardname}}</td>
+                <td><a routerLink="/billplan-management-postpaid">{{tableData.billingtype}}</a></td>
                 <td class="text-center">23</td>
-                <td class="text-center">€</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
+                <td class="text-left" [innerHTML]="tableData.billingcurrency " > </td>
+                <td>{{tableData.date}} | {{tableData.time}}</td>
+                <td>{{tableData.createby}}</td>
             </tr>
-            <tr>
-                <td class="font-weight-bold">billplan name</td>
-                <td>Test Name 1</td>
-                <td><a routerLink="/billplan-management-postpaid">Postpaid</a></td>
-                <td class="text-center">23</td>
-                <td class="text-center">€</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
-            </tr>
-            <tr>
-                <td class="font-weight-bold">billplan name</td>
-                <td>Test Name 1</td>
-                <td><a routerLink="/billplan-management-prepaid">Prepaid</a></td>
-                <td class="text-center">23</td>
-                <td class="text-center">€</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
-            </tr>
+
         </tbody>
     </table>
 </div>
@@ -72,7 +113,7 @@
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <div class="row">
-            
+
             <div class="col-6">
                 <label>Bill Plan Name</label>
                 <div class="route-edit-div">
@@ -83,7 +124,7 @@
             <div class="col-6">
                 <label>Currency</label>
                 <select class="dropdown-select w-100">
-                    <option value="" default>€</option>
+                    <option value="" default>€ - Pound</option>
                     <option value="">option1</option>
                     <option value="">option2</option>
                     <option value="">option3</option>
