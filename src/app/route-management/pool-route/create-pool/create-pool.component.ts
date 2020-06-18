@@ -126,6 +126,23 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
             res.responsecode > environment.APIStatus.success.code
           ) {
             this.clonedRouteData = res.data;
+            res.data.routes_list.forEach(element => {
+              element.ratios.forEach((ratio) => {
+                delete ratio.gw_name; // to remove the gateway name for res
+              });
+            });
+            res.data.routes_list.forEach(element => {
+              element.ratios.sort((obj1, obj2) => {
+                if (obj1.ratio_in_percentage > obj2.ratio_in_percentage) {
+                  return 1;
+                }
+                if (obj1.ratio_in_percentage < obj2.ratio_in_percentage) {
+                  return -1;
+                }
+                return 0;
+              });
+            });
+            // console.log(res.data.routes_list);
             this.formOfCreateClone.patchValue({
               firstCtrl: '',
               route_name: res.data.route_name,
@@ -134,6 +151,8 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
             });
             this.prePopulateForm(res.data.routes_list[0]);
             this.poolRouteService.previewList = [];
+
+            // console.log(res.data.routes_list);
             this.poolRouteService.previewList = res.data.routes_list.slice(1);
             this.loadGatewaysList('cloneRouteParams');
             this.previewListData();
@@ -273,13 +292,6 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   onDeleteRoute(route: NewRoutesList) {
     confirmAlert().then((result) => {
       if (result.isConfirmed) {
-        // this.gatewaysList.forEach(element => {
-        //   route.ratios.forEach(ratios => {
-        //     if (ratios.gw_id === element.gw_id) {
-        //       element.isSelected = false;
-        //     }
-        //   });
-        // });
         this.poolRouteService.previewList = this.poolRouteService.previewList.filter((element) => element !== route);
         this.previewListData();
         this.poolRouteService.changeSubjectData(3);

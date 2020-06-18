@@ -51,7 +51,7 @@ export class GenericService {
           if (rawData.responsestatus === environment.APIStatus.success.text &&
             rawData.responsecode > environment.APIStatus.success.code) {
             const modifiedData = rawData.data.map(rawProduct => {
-              return { ...rawProduct, isSelected: false };
+              return { ...rawProduct, isSelected: false }; // added IsSelected key for dropdown.
             });
             rawData.data = modifiedData;
           }

@@ -36,7 +36,7 @@
             <span>Fallback - <b>LCR ({{formOfCreateClone.get('gw_type').value}})</b></span>
         </div>
     </div>
-    {{formOfCreateClone.value| json}}
+    <!-- {{formOfCreateClone.value| json}} -->
     <div class="main-container p-4">
         <app-route-stepper-form [isClone]="isClone" [parentForm]="formOfCreateClone" (isSubmitted)="submitState()"
             (routesList)="previewListData($event)" [gatewaysList]="gatewaysList" [clonedData]="clonedRouteData">
