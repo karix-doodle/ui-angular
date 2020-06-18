@@ -22,6 +22,10 @@ export class CmEditComponent implements OnInit {
   usersData: UserRoutingConfig;
   esmeaddr: string;
   process_row: any = 0;
+  charsetEncodings: string[];
+  dlrTypes: string[];
+  selectedCharSetEncoding: string;
+  selectedDlrType: string;
 
   constructor(config: NgbModalConfig, private modalService: NgbModal,private customerManagementService: CustomerManagementService,private activeRoute: ActivatedRoute) 
   {}
@@ -31,6 +35,8 @@ export class CmEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.charsetEncodings = environment.charsetEncode;
+    this.dlrTypes = environment.dlrType;
     let esmeaddr = this.activeRoute.snapshot.params.esmeaddr;
     this.getPendingUserDetails(esmeaddr);
   }
@@ -62,6 +68,18 @@ export class CmEditComponent implements OnInit {
           this.apiResponse = res;
           this.usersData = JSON.parse(JSON.stringify(this.apiResponse.data));
           this.process_row = this.usersData.process_row;
+          if(this.usersData.charsetEncoding){
+            this.selectedCharSetEncoding = this.usersData.charsetEncoding;
+          }else{
+            this.selectedCharSetEncoding = environment.defaultCharsetEncode;
+          }
+
+          if(this.usersData.dlrType){
+            this.selectedDlrType = this.usersData.dlrType;
+          }else{
+            this.selectedDlrType = environment.defaultDlrType;
+          }
+
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }

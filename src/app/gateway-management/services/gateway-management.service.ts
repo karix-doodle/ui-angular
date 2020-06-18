@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -33,11 +33,10 @@ import {
   GtESMEAddrRouted_ApiResponse,
   GtSenderidContentList_ApiResponse,
   GtDefaultTemplate_ApiResponse,
-  GtUploadPriceFile_ApiResponse,
   getHeaderFromFile_ApiResponse,
   GtprocessPriceFile_ApiResponse
 } from '../models/gateway-management.model';
-import { HttpHeaders } from '@angular/common/http';
+import { User } from '../../shared/models/commonModels';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -52,7 +51,7 @@ export class GatewayManagementService {
   httpOptions_file = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' }), responseType: 'blob' as 'json' };
   httpOptions_formdata = { headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data;' }) };
 
-  user = {
+  user: User = {
     loggedinusername: environment.loggedinusername,
     loggedinempid: environment.loggedinempid
   };
@@ -332,14 +331,6 @@ export class GatewayManagementService {
     return this.http.post(this.baseUrl + '/defaulttemplate', { ...this.user, ...body }, this.httpOptions)
       .pipe(map(m => m as GtDefaultTemplate_ApiResponse));
   }
-
-  /**
-   * @description Gateway UploadPriceFile
-  */
-  // GtUploadPriceFile(body): Observable<GtUploadPriceFile_ApiResponse> {
-  //   return this.http.post(this.baseUrl + '/uploadgatewaypricefile', body)
-  //     .pipe(map(m => m as GtUploadPriceFile_ApiResponse));
-  // }
 
   /**
    * @description Gateway get headers from file

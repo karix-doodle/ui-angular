@@ -89,4 +89,6 @@ export class UserRoutingConfig {
     effective_till: string;
     timezone: string;
     timezone_offset: string;
+    charsetEncoding: string;
+    dlrType: string;
 };

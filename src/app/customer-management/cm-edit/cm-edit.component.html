@@ -44,19 +44,13 @@
         <div class="col-3 border-left pl-4">
             <label>Char.Set Encoding</label>
             <select class="dropdown-select w-100">
-                <option value="" default>GSM</option>
-                <option value="">option1</option>
-                <option value="">option2</option>
-                <option value="">option3</option>
+                <option [value]=encoding *ngFor="let encoding of charsetEncodings"> {{encoding}} </option>
             </select>
         </div>
         <div class="col-3">
             <label>DLR Type</label>
             <select class="dropdown-select w-100">
-                <option value="" default>SMSC DLR</option>
-                <option value="">option1</option>
-                <option value="">option2</option>
-                <option value="">option3</option>
+                <option [value]=dlr *ngFor="let dlr of dlrTypes"> {{dlr}} </option>
             </select>
         </div>
     </div>
