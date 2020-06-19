@@ -1,7 +1,7 @@
-export class BlillPlanSumary_ApiResponse{
+export class BlillPlanSumary_ApiResponse {
   responsecode: number;
   responsestatus: string;
-  data: BillPlanSummary_Data
+  data: BillPlanSummary_Data;
 }
 
 export class BillPlanSummary_Data {
@@ -17,24 +17,19 @@ export class BillPlanSummary_Data {
   prepaid_countryoperator_count: number;
 }
 
-
-export class BillPlanTableList_ApiResponse{
-
-    responsecode: number;
-    responsestatus: string;
-    data:{
-      totalbillplan: number;
-      tabledata: BillPlanTableList_Data[];
-    }
-
-
-
+export class BillPlanTableList_ApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    totalbillplan: number;
+    tabledata: BillPlanTableList_Data[];
+  };
 }
 
 export class BillPlanTableList_Data {
   id: number;
   billplanname: string;
-  ratecardname:string;
+  ratecardname: string;
   billingtype: string;
   billingcurrency: string;
   createby: string;
@@ -42,8 +37,6 @@ export class BillPlanTableList_Data {
   time: string;
   noofesmetag: number;
 }
-
-
 
 export class BillPlanCurrency_ApiResponse {
   responsecode: number;
@@ -55,4 +48,19 @@ export class BillPlanCurrency_Data {
   currency_id: number;
   currency_name: string;
   currency_symbol: string;
+}
+
+export class BillPlanCountries_ApiRespone {
+  responsecode: number;
+  responsestatus: string;
+  data: BillPlanCountries_Data[];
+}
+
+export class BillPlanCountries_Data {
+  country: string;
+  country_code: number;
+  mcc: number;
+  continent: string;
+
+  isSelected?: boolean;
 }
