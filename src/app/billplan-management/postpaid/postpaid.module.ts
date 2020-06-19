@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
 import { PostpaidRoutingModule } from './postpaid-routing.module';
@@ -18,6 +18,7 @@ import { SlabModule } from './slab/slab.module';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     PostpaidRoutingModule,
     CountryModule,
@@ -25,6 +26,10 @@ import { SlabModule } from './slab/slab.module';
     FlatFixedModule,
     GroupModule,
     SlabModule
-  ]
+  ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class PostpaidModule { }

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatStepperModule, MatInputModule, MatButtonModule} from '@angular/material'
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatStepperModule, MatInputModule, MatButtonModule } from '@angular/material'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { GroupRoutingModule } from './group-routing.module';
 import { GroupComponent } from './group.component';
@@ -24,9 +25,10 @@ import { AssignedRatecardViewComponent } from './assigned-ratecard-view/assigned
     MatInputModule,
     MatButtonModule,
     BrowserAnimationsModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
-    GroupRoutingModule
+    GroupRoutingModule,
+    SharedModule
   ],
   exports: [
     CommonModule,
@@ -36,7 +38,7 @@ import { AssignedRatecardViewComponent } from './assigned-ratecard-view/assigned
     MatInputModule,
     MatButtonModule,
     BrowserAnimationsModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     GroupRoutingModule
   ]

@@ -27,7 +27,7 @@ export class BillManagementService {
   getBillPlanMgmtTableList(): Observable<BillPlanTableList_ApiResponse> {
 
     return this.http.get(`${this.baseUrl}/list?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid.toString()}`, this.httpOptions)
-    .pipe(map((data) => data as BillPlanTableList_ApiResponse))
+      .pipe(map((data) => data as BillPlanTableList_ApiResponse))
   }
 
 
@@ -42,9 +42,8 @@ export class BillManagementService {
   }
 
   getBillPlanMgmtSummary(): Observable<BlillPlanSumary_ApiResponse> {
-
     return this.http.get(`${this.baseUrl}/summary?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
-    .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
+      .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
   }
 
 }
