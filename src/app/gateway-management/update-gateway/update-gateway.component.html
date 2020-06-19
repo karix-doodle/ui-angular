@@ -19,7 +19,7 @@
                             <button class="upload-btn cursor-pointer position-relative" type="button">
                                 <i class="fa fa-upload mr-1" aria-hidden="true"></i>Drag and drop
                                 / Browse the file from Computer
-                                <input type="file" name="" class="w-100 h-100 cursor-pointer"
+                                <input type="file" name="" class="w-100 h-100 cursor-pointer" #filenameInput
                                     (change)="fileUpload($event.target.files)" />
                             </button>
                         </div>
