@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { } from '../../models/BillManagement/billplan-management.model';
 import { User } from '../../../shared/models/commonModels';
-import { BillPlanTableList_ApiResponse, BillPlanCurrency_ApiResponse, BlillPlanSumary_ApiResponse } from '../../models/BillManagement/blillplan.models';
+import { BillPlanTableList_ApiResponse, BillPlanCurrency_ApiResponse, BlillPlanSumary_ApiResponse, BillPlanCountries_ApiRespone } from '../../models/BillManagement/blillplan.models';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,12 @@ export class BillManagementService {
   getBillPlanMgmtSummary(): Observable<BlillPlanSumary_ApiResponse> {
     return this.http.get(`${this.baseUrl}/summary?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
       .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
+  }
+
+  getCountryList(): Observable<BillPlanCountries_ApiRespone> {
+
+    return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
+    .pipe(map((data) => data as BillPlanCountries_ApiRespone))
   }
 
 }

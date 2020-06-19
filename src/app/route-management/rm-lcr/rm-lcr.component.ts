@@ -83,6 +83,8 @@ export class RmLcrComponent implements OnInit {
           errorAlert(error.message, error.statusText);
         }
       );
+    } else {
+      this.modalService.dismissAll();
     }
   }
   /**
