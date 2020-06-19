@@ -45,6 +45,8 @@ export class UpdateGatewayComponent implements OnInit {
   gt_id: string
   gt_name: string
 
+  @ViewChild('filenameInput', { static: false }) filenameInput: any;
+
   @ViewChild('priceListSubmitSuccess', { static: true })
   priceListSubmitSuccess: TemplateRef<any>;
 
@@ -158,10 +160,14 @@ export class UpdateGatewayComponent implements OnInit {
     if (event) {
       this.GtDefaultTemplate()
     } else {
+      this.getFileHeaderData = null
+      this.selectedFileName = ''
+      this.filenameInput.nativeElement.value = '';
       this.disableWrapper = false
       this.priceListFormGroup.patchValue({
         useexistingtemplate: false,
-        overrideexisting: true
+        overrideexisting: true,
+        filename: ''
       })
     }
   }
@@ -305,20 +311,23 @@ export class UpdateGatewayComponent implements OnInit {
             });
             this.disableWrapper = false
 
+            this.draggableListLeft = [];
+            let headerValue = []
+            res.data.forEach((item) => {
+              this.draggableListLeft.push({
+                content: item
+              })
+              headerValue.push(item)
+            })
+
+            this.priceListFormGroup.patchValue({
+              headers: headerValue
+            });
+
           }
 
-          this.draggableListLeft = [];
-          let headerValue = []
-          res.data.forEach((item) => {
-            this.draggableListLeft.push({
-              content: item
-            })
-            headerValue.push(item)
-          })
-
           this.priceListFormGroup.patchValue({
-            filename: res.filename,
-            headers: headerValue
+            filename: res.filename
           });
 
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
@@ -360,7 +369,7 @@ export class UpdateGatewayComponent implements OnInit {
 
     if ((data.country_column != "" && data.country_column != null) && (data.operator_column != "" && data.operator_column != null)) {
       priceValidation = true
-    } else if ((data.mcc_column != "" && data.mcc_column != null) && (data.mnc_column != "" && data.mnc_column != null)) {
+    } else if ((data.mcc_column != "" && data.mcc_column != null)) {
       priceValidation = true
     } else if (data.mcc_mnc_column != "" && data.mcc_mnc_column != null) {
       priceValidation = true

@@ -168,7 +168,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
                } else if (!this.isClone) {
                   this.defineRowGatewaysList = JSON.parse(JSON.stringify(this.gatewaysList));
                }
-            }, 200);
+            }, 300);
          }
       });
       this.submitted = false;

@@ -10,6 +10,7 @@ import { BillplanListComponent } from './billplan-list/billplan-list.component';
 import { PrepaidModule } from './prepaid/prepaid.module';
 import { PostpaidModule } from './postpaid/postpaid.module';
 import { SharedModule } from '../shared/shared.module';
+import { ServicesModule } from './services/services.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SharedModule } from '../shared/shared.module';
     BillplanManagementRoutingModule,
     PrepaidModule,
     SharedModule,
-    PostpaidModule
+    PostpaidModule,
+    ServicesModule
   ]
 })
 export class BillplanManagementModule { }
