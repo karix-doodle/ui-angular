@@ -38,8 +38,7 @@
     </div>
     <pre>{{typeGroupFormGroup.value| json}}</pre>
     <div class="main-container p-4 group-stepper">
-        <app-group-stepper-form (groupsList)="groupListData($event)" [billGroupList]="billGroupList"
-            [parentForm]="typeGroupFormGroup">
+        <app-group-stepper-form (groupsList)="groupListData($event)" [parentForm]="typeGroupFormGroup">
         </app-group-stepper-form>
     </div>
 </form>
