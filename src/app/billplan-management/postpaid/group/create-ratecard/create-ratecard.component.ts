@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { count } from '../../../../shared/helper/helperFunctions'
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-create-ratecard',
@@ -14,6 +15,8 @@ export class CreateRatecardComponent implements OnInit {
   row_groups = []
   countryCount = 0
   searchvalue: string = ''
+
+  groupListData: Subject<[FormArray, number]> = new Subject<[FormArray, number]>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,6 +54,7 @@ export class CreateRatecardComponent implements OnInit {
 
   createGroupCountriesItem(): FormGroup {
     return this.formBuilder.group({
+      continent_name: [''],
       country_name: [''],
       operator_name: [''],
       mcc: [''],
@@ -70,14 +74,42 @@ export class CreateRatecardComponent implements OnInit {
     return <FormArray>this.typeGroupFormGroup.controls['groups'];
   }
 
-  groupListData(event: FormArray) {
+  countriesFormArray(indexGroup: any): FormArray {
+    return (<FormArray>this.typeGroupFormGroup.controls['groups']).at(indexGroup).get('countries') as FormArray;
+  }
+
+  parentGroupListData([event, index]) {
     let parentGroupArray = this.groupFormArray()
-    if (parentGroupArray.value.length == 1 && parentGroupArray.value[0].group_name == "") {
-      parentGroupArray.value[0] = event.value[0];
+    if (index == null) {
+      if (parentGroupArray.value.length == 1 && parentGroupArray.value[0].group_name == "") {
+        parentGroupArray.value[0] = event.value[0];
+      } else {
+        parentGroupArray.value.push(event.value[0]);
+      }
     } else {
-      parentGroupArray.value.push(event.value[0]);
+      parentGroupArray.value[index] = event.value[0];
     }
-    this.row_groups = JSON.parse(JSON.stringify(parentGroupArray.value));
+    this.updateRowGroups(parentGroupArray.value)
+  }
+
+  editGroups(gindex: number) {
+    let groupsControl = this.groupFormArray();
+    this.groupListData.next([groupsControl.value[gindex], gindex]);
+  }
+
+  deleteGroups(gindex: number, cindex: number) {
+    let groupsControl = this.groupFormArray();
+
+    if (groupsControl.value[gindex]['countries'].length == 1) {
+      groupsControl.value.splice(gindex, 1)
+    } else {
+      groupsControl.value[gindex].countries.splice(cindex, 1)
+    }
+    this.updateRowGroups(groupsControl.value)
+  }
+
+  updateRowGroups(value) {
+    this.row_groups = JSON.parse(JSON.stringify(value));
     this.countryCount = count(this.row_groups, 'countries', 'country_name')
   }
 

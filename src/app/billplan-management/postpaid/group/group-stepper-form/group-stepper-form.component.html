@@ -112,8 +112,9 @@
             </div>
             <div class="row mt-4 create-route-section">
                 <div class="col-6">
-                    <button type="button" class="btn btn-dark" (click)="addNewGroup()">ADD NEW
-                        GROUP</button>
+                    <button type="button" class="btn btn-dark" (click)="addNewGroup()">
+                        {{isEditMode ? 'UPDATE' : 'ADD NEW GROUP' }}
+                    </button>
                 </div>
                 <div class="col-6 text-right save-form-div">
                     <button class="btn btn-basic mr-3" mat-button>Cancel</button>

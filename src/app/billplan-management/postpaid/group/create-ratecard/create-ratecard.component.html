@@ -38,7 +38,8 @@
     </div>
     <pre>{{typeGroupFormGroup.value| json}}</pre>
     <div class="main-container p-4 group-stepper">
-        <app-group-stepper-form (groupsList)="groupListData($event)" [parentForm]="typeGroupFormGroup">
+        <app-group-stepper-form (parentGroupsList)="parentGroupListData($event, index)"
+            [groupsListEvent]="groupListData.asObservable()" [parentForm]="typeGroupFormGroup">
         </app-group-stepper-form>
     </div>
 </form>
@@ -80,9 +81,10 @@
                 <th>&nbsp;</th>
             </tr>
         </thead>
-        <tbody *ngFor="let items of row_groups | filter: { group_name: searchvalue }; let i=index">
-            <tr *ngFor="let item of items.countries; let j=index"
-                [ngClass]="{'border-bottom': items.countries.length - 1 == j}">
+        <tbody
+            *ngFor="let items of row_groups | filter: { group_name: searchvalue, continent_name: searchvalue }; let gindex=index">
+            <tr *ngFor="let item of items.countries; let cindex=index"
+                [ngClass]="{'border-bottom': items.countries.length - 1 == cindex}">
                 <td class="font-weight-semi-bold">{{items.group_name}}</td>
                 <td>{{items.continent_name ? items.continent_name : '-' }}</td>
                 <td>{{item.country_name}}</td>
@@ -90,16 +92,20 @@
                 <td>{{item.mcc}} + {{item.mcc}}</td>
                 <td>{{item.billing_rate}}</td>
                 <td>{{item.normalize_rate}}</td>
-                <td style="vertical-align: middle;padding: 0;" class="border-bottom" colspan="2"
-                    [attr.rowspan]="items.countries.length" *ngIf="j==0">
-                    <table width="100%">
-                        <tr>
-                            <td>
-                                <img src="assets/icons/edit-icon.svg" alt="edit" />
-                            </td>
-                            <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
-                        </tr>
-                    </table>
+                <td style="vertical-align: middle;padding: 0;" class="border-bottom"
+                    [attr.rowspan]="items.countries.length" *ngIf="cindex==0">
+                    <img (click)="editGroups(gindex)" src="assets/icons/edit-icon.svg" alt="edit" />
+                </td>
+                <td>
+                    <img (click)="deleteGroups(gindex, cindex)" src="assets/icons/delete-icon.svg"
+                        class="img-fluid cursor-pointer" alt="delete icon" />
+                </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="row_groups.length == 0">
+            <tr>
+                <td colspan="9" class="text-center py-3 main-heading">
+                    No Data Available
                 </td>
             </tr>
         </tbody>

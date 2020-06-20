@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
    selector: 'app-group-stepper-form',
@@ -15,9 +16,13 @@ export class GroupStepperFormComponent implements OnInit {
    thirdFormGroup: FormGroup;
 
    @Input() parentForm: FormGroup;
+   @Output() parentGroupsList = new EventEmitter<[FormArray, number]>();
 
-   @Output() groupsList = new EventEmitter();
+   private eventGroupsListEvent: Subscription;
+   @Input() groupsListEvent: Observable<[FormArray, number]>;
 
+   isEditMode: boolean = false
+   isIndexed: number = null
    groupSubmitted: boolean = false
 
    constructor(
@@ -35,12 +40,21 @@ export class GroupStepperFormComponent implements OnInit {
       this.thirdFormGroup = this.formBuilder.group({
          secondCtrl: ['', Validators.required]
       });
+
+      this.eventGroupsListEvent = this.groupsListEvent.subscribe(([value, indexed]) => {
+         console.log(value, indexed, 'asdasdas')
+         this.groupListData(value, indexed);
+      });
+   }
+
+   ngOnDestroy() {
+      this.eventGroupsListEvent.unsubscribe();
    }
 
    createGroupsItem(): FormGroup { // init = x
       return this.formBuilder.group({
-         group_name: new FormControl('', [Validators.required]),
-         continent_name: new FormControl(''),
+         group_name: ['', [Validators.required]],
+         continent_name: [''],
          //Ys = countries
          countries: this.formBuilder.array([this.createGroupCountriesItem()]) //init y
       });
@@ -49,7 +63,7 @@ export class GroupStepperFormComponent implements OnInit {
    createGroupCountriesItem(): FormGroup { // init = y
       return this.formBuilder.group({
          // y1, y2, y3, y4
-         continent_name: new FormControl(''),
+         continent_name: [''],
          country_name: ['', [Validators.required]],
          operator_name: ['', [Validators.required]],
          mcc: ['', [Validators.required]],
@@ -80,10 +94,10 @@ export class GroupStepperFormComponent implements OnInit {
       groupsControl.push(this.createGroupsItem());
    }
 
-   addToCountries(indexGroup) {
+   addToCountries(indexGroup, editMode = false) {
       const countriesControl = this.countriesFormArray(indexGroup);
       this.groupSubmitted = true
-      if (countriesControl.valid) {
+      if (countriesControl.valid || editMode) {
          this.groupSubmitted = false
          countriesControl.push(this.createGroupCountriesItem());
       }
@@ -99,12 +113,24 @@ export class GroupStepperFormComponent implements OnInit {
       this.groupSubmitted = true
       if (groupsControl.valid) {
          this.groupSubmitted = false
-         this.groupsList.emit(groupsControl);
+         this.parentGroupsList.emit([groupsControl, this.isIndexed]);
          this.firstFormGroup.reset();
          this.firstFormGroup = this.formBuilder.group({
             groups: this.formBuilder.array([this.createGroupsItem()]),
          });
+         this.isEditMode = false
+         this.isIndexed = null
       }
+   }
+
+   groupListData(value: FormArray, indexed: number) {
+      this.isEditMode = true
+      this.isIndexed = indexed
+      const groupsControl = this.groupFormArray();
+      [...Array(value['countries'].length - 1)].map(() =>
+         this.addToCountries(0, true)
+      )
+      groupsControl.at(0).patchValue(value)
    }
 
 
