@@ -21,6 +21,8 @@ export class GtSenderidContentComponent implements OnInit {
 
   sortingName: string;
   isDesc: boolean;
+  gw_id: string = null
+  gw_name: string = null
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -28,6 +30,8 @@ export class GtSenderidContentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.gw_id = this.activeRoute.snapshot.params.id;
+    this.gw_name = this.activeRoute.snapshot.params.name;
     this.GtSenderidContent_list()
   }
 
