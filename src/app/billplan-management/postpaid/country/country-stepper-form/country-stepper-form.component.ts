@@ -33,7 +33,7 @@ export class CountryStepperFormComponent implements OnInit {
     private _formBuilder: FormBuilder,
     config: NgbModalConfig,
     private billPlanservice: BillManagementService
-  ) {}
+  ) { }
 
   ngOnInit() {
     //  this.firstFormGroup = this._formBuilder.group({
@@ -50,14 +50,17 @@ export class CountryStepperFormComponent implements OnInit {
   get control() {
     return this.countryForm.controls;
   }
+
   getCountryList() {
-    this.billPlanservice.getCountryList().subscribe(
+    let data = {
+      continent: ''
+    }
+    this.billPlanservice.getCountryList(data).subscribe(
       (res: BillPlanCountries_ApiRespone) => {
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
-          console.log(res);
           this.billPalnApiResponse = res;
           this.billPlanCountryList = JSON.parse(
             JSON.stringify(this.billPalnApiResponse.data)
@@ -92,13 +95,13 @@ export class CountryStepperFormComponent implements OnInit {
     });
   }
 
-  onNextFrom(){
+  onNextFrom() {
 
   }
 
   countryArrayForm(): FormGroup {
     return this._formBuilder.group({
-      country_name: [null,Validators.required],
+      country_name: [null, Validators.required],
       billing_rate: [null, Validators.required],
       mcc: [""],
       normalize_rate: [],
@@ -107,39 +110,39 @@ export class CountryStepperFormComponent implements OnInit {
 
 
   onAddCountryARRay(value) {
-  const  arrayLength: number = this.billPlanCountryList.length;
-  const array = this.countryForm.get("countries") as FormArray;
+    const arrayLength: number = this.billPlanCountryList.length;
+    const array = this.countryForm.get("countries") as FormArray;
 
-  if(this.countryForm.valid){
-    value.forEach((el, index)=>{
-      this.billPlanCountryList.forEach((element, i) => {
-       if( el.country_name === element.country){
-           this.billPlanCountryList[i].isSelected = true
-           }
+    if (this.countryForm.valid) {
+      value.forEach((el, index) => {
+        this.billPlanCountryList.forEach((element, i) => {
+          if (el.country_name === element.country) {
+            this.billPlanCountryList[i].isSelected = true
+          }
 
-      });
+        });
 
-     })
+      })
 
-       // console.log(value);
-       // let lastValue = _.last(value);
-       // let check = value.some((country,i)=> i!==(value.length-1) && country.country_name === lastValue.country_name);
-       // lastValue.isError = check;
-       // console.log(value,check ,lastValue);
+      // console.log(value);
+      // let lastValue = _.last(value);
+      // let check = value.some((country,i)=> i!==(value.length-1) && country.country_name === lastValue.country_name);
+      // lastValue.isError = check;
+      // console.log(value,check ,lastValue);
 
 
-     if(arrayLength > value.length ){
-       array.push(
-         this._formBuilder.group({
-           country_name: [null, Validators.required],
-           billing_rate: [null,Validators.required],
-           mcc: [""],
-           normalize_rate: [],
-         })
-       );
-     }
+      if (arrayLength > value.length) {
+        array.push(
+          this._formBuilder.group({
+            country_name: [null, Validators.required],
+            billing_rate: [null, Validators.required],
+            mcc: [""],
+            normalize_rate: [],
+          })
+        );
+      }
 
-  }
+    }
 
 
   }
@@ -148,7 +151,7 @@ export class CountryStepperFormComponent implements OnInit {
     console.log(index, value);
 
     this.billPlanCountryList.forEach((el, i) => {
-      if(el.country === value.country_name){
+      if (el.country === value.country_name) {
         this.billPlanCountryList[i].isSelected = false
       }
     })

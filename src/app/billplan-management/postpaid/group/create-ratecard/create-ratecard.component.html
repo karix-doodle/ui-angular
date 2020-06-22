@@ -39,7 +39,7 @@
     <pre>{{typeGroupFormGroup.value| json}}</pre>
     <div class="main-container p-4 group-stepper">
         <app-group-stepper-form (parentGroupsList)="parentGroupListData($event, index)"
-            [groupsListEvent]="groupListData.asObservable()" [parentForm]="typeGroupFormGroup">
+            [groupsListEvent]="groupListData.asObservable()" [parentForm]="typeGroupFormGroup" [rowGroups]="row_groups">
         </app-group-stepper-form>
     </div>
 </form>
@@ -60,7 +60,6 @@
     </div>
 
     <div class="col-5 text-right">
-
         <input type="search" class="form-control" placeholder="&#xf002; Search by Group, Continent, Country, Operator"
             name="searchvalue" [(ngModel)]="searchvalue" />
     </div>
@@ -86,7 +85,7 @@
             <tr *ngFor="let item of items.countries; let cindex=index"
                 [ngClass]="{'border-bottom': items.countries.length - 1 == cindex}">
                 <td class="font-weight-semi-bold">{{items.group_name}}</td>
-                <td>{{items.continent_name ? items.continent_name : '-' }}</td>
+                <td>{{item.continent_name }}</td>
                 <td>{{item.country_name}}</td>
                 <td>{{item.operator_name}}</td>
                 <td>{{item.mcc}} + {{item.mcc}}</td>
@@ -94,7 +93,8 @@
                 <td>{{item.normalize_rate}}</td>
                 <td style="vertical-align: middle;padding: 0;" class="border-bottom"
                     [attr.rowspan]="items.countries.length" *ngIf="cindex==0">
-                    <img (click)="editGroups(gindex)" src="assets/icons/edit-icon.svg" alt="edit" />
+                    <img class="cursor-pointer" (click)="editGroups(gindex)" src="assets/icons/edit-icon.svg"
+                        alt="edit" />
                 </td>
                 <td>
                     <img (click)="deleteGroups(gindex, cindex)" src="assets/icons/delete-icon.svg"

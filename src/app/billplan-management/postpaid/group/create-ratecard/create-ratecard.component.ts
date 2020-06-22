@@ -36,10 +36,10 @@ export class CreateRatecardComponent implements OnInit {
       groups: this.formBuilder.array([this.createGroupsItem()]),
       ratetype_roc: [''],
       roc: this.formBuilder.array([this.createRocItem()]),
-      ratetype_row: [''],
+      ratetype_row: ['standard'],
       billing_rate_row: [''],
       discount_rate: [''],
-      discount_type: [''],
+      discount_type: ['percentage'],
       description: ['']
     });
   }
@@ -105,6 +105,7 @@ export class CreateRatecardComponent implements OnInit {
     } else {
       groupsControl.value[gindex].countries.splice(cindex, 1)
     }
+
     this.updateRowGroups(groupsControl.value)
   }
 

@@ -5,7 +5,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { } from '../../models/BillManagement/billplan-management.model';
 import { User } from '../../../shared/models/commonModels';
-import { BillPlanTableList_ApiResponse, BillPlanCurrency_ApiResponse, BlillPlanSumary_ApiResponse, BillPlanCountries_ApiRespone } from '../../models/BillManagement/blillplan.models';
+import {
+  BillPlanTableList_ApiResponse,
+  BillPlanCurrency_ApiResponse,
+  BlillPlanSumary_ApiResponse,
+  BillPlanContinent_ApiRespone,
+  BillPlanCountries_ApiRespone,
+  BillPlanOperator_ApiRespone
+} from '../../models/BillManagement/blillplan.models';
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +32,9 @@ export class BillManagementService {
   constructor(public http: HttpClient) { }
 
   getBillPlanMgmtTableList(): Observable<BillPlanTableList_ApiResponse> {
-
-    return this.http.get(`${this.baseUrl}/list?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid.toString()}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/list?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanTableList_ApiResponse))
   }
-
 
   BillPlanListdownload(): Observable<any> {
     return this.http.get(`${this.baseUrl}/download?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions_file)
@@ -46,10 +51,19 @@ export class BillManagementService {
       .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
   }
 
-  getCountryList(): Observable<BillPlanCountries_ApiRespone> {
+  getContinentList(): Observable<BillPlanContinent_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/continent?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanContinent_ApiRespone))
+  }
 
-    return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
-    .pipe(map((data) => data as BillPlanCountries_ApiRespone))
+  getCountryList(data): Observable<BillPlanCountries_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&continent=${data.continent}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanCountries_ApiRespone))
+  }
+
+  getOperatorList(data): Observable<BillPlanOperator_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country=${data.country}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanOperator_ApiRespone))
   }
 
 }

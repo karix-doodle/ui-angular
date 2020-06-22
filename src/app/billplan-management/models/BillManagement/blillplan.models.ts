@@ -50,6 +50,12 @@ export class BillPlanCurrency_Data {
   currency_symbol: string;
 }
 
+export class BillPlanContinent_ApiRespone {
+  responsecode: number;
+  responsestatus: string;
+  data: any;
+}
+
 export class BillPlanCountries_ApiRespone {
   responsecode: number;
   responsestatus: string;
@@ -61,6 +67,15 @@ export class BillPlanCountries_Data {
   country_code: number;
   mcc: number;
   continent: string;
-
   isSelected?: boolean;
+}
+
+export class BillPlanOperator_ApiRespone {
+  responsecode: number;
+  responsestatus: string;
+  data: BillPlanOperator_Data[];
+}
+
+export class BillPlanOperator_Data {
+
 }
