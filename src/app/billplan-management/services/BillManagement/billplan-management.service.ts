@@ -60,9 +60,13 @@ export class BillManagementService {
     return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&continent=${data.continent}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanCountries_ApiRespone))
   }
+   getCountriesList(): Observable<BillPlanCountries_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanCountries_ApiRespone))
+  }
 
   getOperatorList(data): Observable<BillPlanOperator_ApiRespone> {
-    return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country=${data.country}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country_code=${data}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanOperator_ApiRespone))
   }
 

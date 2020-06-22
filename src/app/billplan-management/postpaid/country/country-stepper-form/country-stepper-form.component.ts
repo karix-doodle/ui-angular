@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
@@ -16,6 +16,9 @@ import {
 import { errorAlert } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
 import * as _ from "lodash";
+import { Subscription, Observable } from "rxjs";
+import Swal from 'sweetalert2';
+import { MatStepper } from '@angular/material';
 
 @Component({
   selector: "app-country-stepper-form",
@@ -25,9 +28,17 @@ import * as _ from "lodash";
 export class CountryStepperFormComponent implements OnInit {
   countryForm: FormGroup;
   firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
   billPalnApiResponse: BillPlanCountries_ApiRespone;
   billPlanCountryList: BillPlanCountries_Data[] = [];
+  isEditMode: boolean = false;
+  isIndexed: number = null;
+  eventGroupsListEvent: Subscription;
+  @Input() countryListEvent: Observable<[FormArray, number]>;
+  @Input() parentForm: FormGroup;
+  @Input() patchForm: FormGroup;
+  @Output() countryList = new EventEmitter<[FormArray, number]>();
+  @ViewChild('stepper', { static: false }) stepper: MatStepper;
+  Submitted: boolean = false;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -36,26 +47,27 @@ export class CountryStepperFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //  this.firstFormGroup = this._formBuilder.group({
-    //     firstCtrl: ['', Validators.required]
-    //  });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ["", Validators.required],
+    this.firstFormGroup = this._formBuilder.group({
+      countries: this._formBuilder.array([this.countryArrayForm()]),
     });
 
-    this.initForm();
+
     this.getCountryList();
+    this.eventGroupsListEvent = this.countryListEvent.subscribe(
+      ([value, indexed]) => {
+        console.log(value, indexed, "asdasdas");
+        this.countryListData(value, indexed);
+      }
+    );
   }
 
-  get control() {
-    return this.countryForm.controls;
+  get countryControl() {
+    return (this.firstFormGroup.get("countries") as FormArray).controls;
   }
 
   getCountryList() {
-    let data = {
-      continent: ''
-    }
-    this.billPlanservice.getCountryList(data).subscribe(
+
+    this.billPlanservice.getCountriesList().subscribe(
       (res: BillPlanCountries_ApiRespone) => {
         if (
           res.responsestatus === environment.APIStatus.success.text &&
@@ -78,108 +90,87 @@ export class CountryStepperFormComponent implements OnInit {
     );
   }
 
-  initForm() {
-    this.countryForm = this._formBuilder.group({
-      loggedinusername: environment.loggedinempid,
-      loggedinempid: environment.loggedinempid,
-      billplan_id: [null],
-      billplan_currencyid: [null],
-      ratecard_type: ["country"],
-      ratecard_name: [""],
-      ratetype_row: ["custom"],
-      billing_rate_row: [null],
-      discount_rate: [null],
-      discount_type: [""],
-      description: [""],
-      countries: this._formBuilder.array([this.countryArrayForm()]),
-    });
+  handleCountryOperator(indexCountries, key, event) {
+    console.log(indexCountries, key, event);
+    let value = event.target.options[
+      event.target["selectedIndex"]
+    ].getAttribute("data-value");
+    console.log(value);
+    const countriesControl = this.getcountryControl();
+    let obj = {};
+    obj[key] = value;
+    countriesControl.at(indexCountries).patchValue(obj);
   }
 
-  onNextFrom() {
-
-  }
 
   countryArrayForm(): FormGroup {
     return this._formBuilder.group({
       country_name: [null, Validators.required],
       billing_rate: [null, Validators.required],
       mcc: [""],
-      normalize_rate: [],
+      normalize_rate: [""],
     });
   }
 
+  getcountryControl(): FormArray {
+    return <FormArray>this.firstFormGroup.controls["countries"];
+  }
 
-  onAddCountryARRay(value) {
-    const arrayLength: number = this.billPlanCountryList.length;
-    const array = this.countryForm.get("countries") as FormArray;
+  addToParentForm() {
+    const countryCountrol = this.getcountryControl();
+    this.Submitted = true;
+    if (countryCountrol.valid) {
+      this.Submitted = false;
+      this.countryList.emit([countryCountrol, this.isIndexed]);
+      this.firstFormGroup.reset();
+      this.resetForm();
+      this.isEditMode = false;
+      this.isIndexed = null;
+    }
+  }
 
-    if (this.countryForm.valid) {
-      value.forEach((el, index) => {
-        this.billPlanCountryList.forEach((element, i) => {
-          if (el.country_name === element.country) {
-            this.billPlanCountryList[i].isSelected = true
+
+
+  resetForm(){
+    this.firstFormGroup = this._formBuilder.group({
+      countries: this._formBuilder.array([this.countryArrayForm()]),
+    });
+  }
+  stepperView(stepper: MatStepper, prevIndex: number, index: number) {
+    if(this.firstFormGroup.untouched == true){
+      stepper.next()
+      return;
+    }
+    else if (prevIndex == 0 && index == 1) {
+       Swal.fire({
+          title: 'Are you sure want to Proceed Next?',
+          text: "Your unsaved data will get erassed",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes'
+       }).then((result) => {
+          if (result.value) {
+             this.resetForm()
+             this.isEditMode = false
+             stepper.selectedIndex = index;
+
           }
-
-        });
-
-      })
-
-      // console.log(value);
-      // let lastValue = _.last(value);
-      // let check = value.some((country,i)=> i!==(value.length-1) && country.country_name === lastValue.country_name);
-      // lastValue.isError = check;
-      // console.log(value,check ,lastValue);
-
-
-      if (arrayLength > value.length) {
-        array.push(
-          this._formBuilder.group({
-            country_name: [null, Validators.required],
-            billing_rate: [null, Validators.required],
-            mcc: [""],
-            normalize_rate: [],
-          })
-        );
-      }
-
+       })
     }
+ }
 
-
+  countryListData(value: FormArray, indexed: number) {
+    this.isEditMode = true;
+    this.isIndexed = indexed;
+    const groupsControl = this.getcountryControl();
+    groupsControl.at(0).patchValue(value);
+    this.stepper.selectedIndex = 0
   }
 
-  onDeleteCountryArray(index: number, value) {
-    console.log(index, value);
-
-    this.billPlanCountryList.forEach((el, i) => {
-      if (el.country === value.country_name) {
-        this.billPlanCountryList[i].isSelected = false
-      }
-    })
-    // value.forEach((el, index)=>{
-    //   this.billPlanCountryList.forEach((element, i) => {
-    //    if( el.country_name === element.country){
-    //        this.billPlanCountryList[i].isSelected = true
-    //        }
-
-    //        console.log(this.billPlanCountryList[i].isSelected)
-    //   });
-
-    //  })
-    const array = this.countryForm.get("countries") as FormArray;
-    if (array.length !== 1) {
-      (<FormArray>this.countryForm.get("countries")).removeAt(index);
-    }
+  onCountryFormSubmit(data){
+    console.log(data)
   }
 
-  get countryControl() {
-    return (this.countryForm.get("countries") as FormArray).controls;
-  }
 }
-
-
-
-// if( el.country === value[value.length].country_name){
-//   this.billPlanCountryList[index].isSelected = true
-//   } else{
-//    this.billPlanCountryList[index].isSelected = false
-//   }
