@@ -19,7 +19,8 @@
                         </div>
                         <div class="col-3 mb-2 offset-6">
                             <label>Continent(Optional)</label>
-                            <select class="dropdown-select w-100" formControlName="continent_name">
+                            <select [attr.disabled]="isEditMode ? 'disabled' : null" class="dropdown-select w-100"
+                                formControlName="continent_name">
                                 <option value="" default>Select Continent</option>
                                 <option *ngFor="let list of billPlanContinentList" [value]="list">
                                     {{ list }}
@@ -27,7 +28,8 @@
                             </select>
                         </div>
                     </div>
-                    <div class="gt-ratio-div">
+                    <div class="gt-ratio-div position-relative"
+                        [ngClass]="{'disable-wrapper' : disableWrapper == true }">
                         <div class="row mb-2">
                             <div class="col-10">
                                 <div formArrayName="countries">
@@ -37,37 +39,38 @@
                                             <div class="row">
                                                 <div class="col-3 mb-2">
                                                     <label>Country</label>
-                                                    <select class="dropdown-select w-100"
-                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mcc', $event)"
+                                                    <select class="dropdown-select w-100" #grpCountry
+                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mcc', $event, grpCountry.value)"
                                                         formControlName="country_name">
-                                                        <option value="" default>Select Country</option>
+                                                        <option value="" default disabled>Select Country</option>
                                                         <option *ngFor="let clist of billPlanCountryList"
                                                             [value]="clist.country" [attr.data-value]="clist.mcc"
+                                                            [attr.data-code]="clist.country_code"
                                                             [attr.data-continent]="clist.continent">
                                                             {{ clist.country }}
                                                         </option>
                                                     </select>
                                                     <span class="text-danger pl-1 f-12"
                                                         *ngIf="Y.get('country_name').hasError('required') && groupSubmitted">
-                                                        Group Name is required
+                                                        Country is required
                                                     </span>
                                                 </div>
                                                 <div class="col-3 mb-2">
                                                     <label>Operator</label>
                                                     <select class="dropdown-select w-100"
-                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mnc', $event)"
+                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mnc', $event, grpCountry.value)"
                                                         formControlName="operator_name">
-                                                        <option value="" default>Select Operator</option>
-                                                        <option value="option1" [attr.data-value]="1">option1
-                                                        </option>
-                                                        <option value="option2" [attr.data-value]="2">option2
-                                                        </option>
-                                                        <option value="option3" [attr.data-value]="3">option3
+                                                        <option value="" default disabled>Select Operator</option>
+                                                        <option
+                                                            *ngFor="let olist of operatorObj[Y.get('country_name').value]"
+                                                            value="{{olist.operator}}" [attr.data-value]="olist.mnc"
+                                                            [disabled]="olist.isSelected == true">
+                                                            {{olist.operator == 'All' ? 'All Operator' : olist.operator}}
                                                         </option>
                                                     </select>
                                                     <span class="text-danger pl-1 f-12"
                                                         *ngIf="Y.get('operator_name').hasError('required') && groupSubmitted">
-                                                        Group Name is required
+                                                        Operator is required
                                                     </span>
                                                 </div>
                                                 <div class="col-3 mb-2">
@@ -77,7 +80,11 @@
                                                             formControlName="billing_rate" placeholder="Enter Rate" />
                                                         <span class="text-danger pl-1 f-12"
                                                             *ngIf="Y.get('billing_rate').hasError('required') && groupSubmitted">
-                                                            Group Name is required
+                                                            Billing Rate is required
+                                                        </span>
+                                                        <span class="text-danger pl-1 f-12"
+                                                            *ngIf="Y.get('billing_rate').hasError('pattern') && Y.get('billing_rate').dirty">
+                                                            Please enter valid input
                                                         </span>
                                                     </div>
                                                 </div>
@@ -86,14 +93,11 @@
                                                     <div class="form-group">
                                                         <input type="search" class="form-control" disabled
                                                             formControlName="normalize_rate" placeholder="0.0678" />
-                                                        <span class="text-danger pl-1 f-12"
-                                                            *ngIf="Y.get('normalize_rate').hasError('required') && groupSubmitted">
-                                                            Group Name is required
-                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="indexCountries != 0" class="custom-delete add-div-btn">
+                                            <div *ngIf="firstFormGroup.get('groups').value[indexGroup].countries.length >= 2"
+                                                class="custom-delete add-div-btn">
                                                 <button type="button" class="btn btn-light"
                                                     (click)="removeFromCountries(indexGroup,indexCountries)">-</button>
                                             </div>
@@ -120,9 +124,8 @@
                 </div>
                 <div class="col-6 text-right save-form-div">
                     <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
-                    <!-- *ngIf="rowGroups.length != 0" -->
-                    <button type="button" class="btn erp-intl-btn" (click)="stepperView(stepper, 0, 1)"
-                        mat-button>Next</button>
+                    <button [attr.disabled]="isEditMode ? 'disabled' : null" *ngIf="rowGroups.length != 0" type="button"
+                        class="btn erp-intl-btn" (click)="stepperView(stepper, 0, 1)" mat-button>Next</button>
                 </div>
             </div>
         </form>

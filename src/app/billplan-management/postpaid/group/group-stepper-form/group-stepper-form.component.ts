@@ -43,13 +43,19 @@ export class GroupStepperFormComponent implements OnInit {
    @Output() parentGroupsList = new EventEmitter<[FormArray, number]>();
    @ViewChild('stepper', { static: false }) stepper: MatStepper;
 
+   operatorObj: object = {}
+
    private eventGroupsListEvent: Subscription;
    @Input() groupsListEvent: Observable<[FormArray, number]>;
+
+   private eventHandleGroupsDelete: Subscription;
+   @Input() handleGroupsDelete: Observable<[string, number]>;
 
    isEditMode: boolean = false
    isIndexed: number = null
    groupSubmitted: boolean = false
    isContinentCanceled: string = null
+   disableWrapper: boolean = false
 
    constructor(
       private formBuilder: FormBuilder,
@@ -68,6 +74,10 @@ export class GroupStepperFormComponent implements OnInit {
 
       this.eventGroupsListEvent = this.groupsListEvent.subscribe(([value, indexed]) => {
          this.groupListData(value, indexed);
+      });
+
+      this.eventHandleGroupsDelete = this.handleGroupsDelete.subscribe(([value, indexed]) => {
+         this.handleGroupsListDelete(value, indexed);
       });
 
       this.getContinentList();
@@ -95,8 +105,14 @@ export class GroupStepperFormComponent implements OnInit {
                   confirmButtonText: 'Yes'
                }).then((result) => {
                   if (result.value) {
-                     this.getCountryList(next);
-                     this.isContinentCanceled = null
+                     this.reActiveOperator();
+                     this.disableWrapper = true
+                     setTimeout(() => {
+                        this.resetCountriesGroup()
+                        this.getCountryList(next);
+                        this.isContinentCanceled = null;
+                        this.disableWrapper = false
+                     }, 2000)
                   } else {
                      this.isContinentCanceled = next
                      groupsControl.at(0).get('continent_name').setValue(prev ? prev : '')
@@ -106,6 +122,19 @@ export class GroupStepperFormComponent implements OnInit {
                this.isContinentCanceled = null
             }
          });
+   }
+
+   reActiveOperator() {
+      const countriesControl = this.countriesFormArray(0);
+      countriesControl.value.forEach((items, index) => {
+         if (items.country_name != '') {
+            this.operatorObj[items.country_name].filter((item) => {
+               if (item.mnc == items.mnc) {
+                  item.isSelected = false
+               }
+            })
+         }
+      })
    }
 
    getContinentList() {
@@ -147,34 +176,45 @@ export class GroupStepperFormComponent implements OnInit {
       );
    }
 
-   getOperatorList(value) {
+   getOperatorList(value, name) {
       let data = {
-         country: value
+         country_code: value
       }
-      this.billPlanservice.getOperatorList(data).subscribe(
-         (res: BillPlanCountries_ApiRespone) => {
-            if (
-               res.responsestatus === environment.APIStatus.success.text &&
-               res.responsecode > environment.APIStatus.success.code
-            ) {
-               this.billPalnOperatorApiResponse = res;
-               this.billPlanOperator = JSON.parse(
-                  JSON.stringify(this.billPalnOperatorApiResponse.data)
-               );
-            } else if (
-               res.responsestatus === environment.APIStatus.error.text &&
-               res.responsecode < environment.APIStatus.error.code
-            ) {
-               errorAlert(res.responsestatus, res.responsecode);
+      let countryOptData = Object.keys(this.operatorObj)
+      if (!countryOptData.includes(name)) {
+         this.billPlanservice.getOperatorList(data).subscribe(
+            (res: BillPlanOperator_ApiRespone) => {
+               if (
+                  res.responsestatus === environment.APIStatus.success.text &&
+                  res.responsecode > environment.APIStatus.success.code
+               ) {
+                  this.billPalnOperatorApiResponse = res;
+                  const modifiedData = this.billPalnOperatorApiResponse.data.map(rawProduct => {
+                     return { ...rawProduct, isSelected: false }; // added IsSelected key for dropdown.
+                  });
+                  this.billPalnOperatorApiResponse.data = modifiedData;
+                  this.billPlanOperator = JSON.parse(
+                     JSON.stringify(this.billPalnOperatorApiResponse.data)
+                  );
+                  this.operatorObj[name] = []
+                  this.operatorObj[name] = this.billPlanOperator
+               } else if (
+                  res.responsestatus === environment.APIStatus.error.text &&
+                  res.responsecode < environment.APIStatus.error.code
+               ) {
+                  errorAlert(res.responsestatus, res.responsecode);
+               }
+            }, (error: HttpErrorResponse) => {
+               errorAlert(error.message, error.statusText);
             }
-         }, (error: HttpErrorResponse) => {
-            errorAlert(error.message, error.statusText);
-         }
-      );
+         );
+      }
+      console.log(this.operatorObj, 'asdasd')
    }
 
    ngOnDestroy() {
       this.eventGroupsListEvent.unsubscribe();
+      this.eventHandleGroupsDelete.unsubscribe();
    }
 
    createGroupsItem(): FormGroup { // init = x
@@ -194,7 +234,7 @@ export class GroupStepperFormComponent implements OnInit {
          operator_name: ['', [Validators.required]],
          mcc: ['', [Validators.required]],
          mnc: ['', [Validators.required]],
-         billing_rate: ['', [Validators.required]],
+         billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
          normalize_rate: [''],
       });
    }
@@ -202,8 +242,8 @@ export class GroupStepperFormComponent implements OnInit {
    createRocItem(): FormGroup {
       return this.formBuilder.group({
          continent_name: [''],
-         routedCountries: [''],
          groupName: [''],
+         routedCountries: [''],
          billing_rate: ['']
       });
    }
@@ -212,26 +252,63 @@ export class GroupStepperFormComponent implements OnInit {
       return <FormArray>this.firstFormGroup.controls['groups'];
    }
 
-   rocFormArray(): FormArray {
-      return <FormArray>this.secondFormGroup.controls['roc'];
-   }
-
    countriesFormArray(indexGroup: any): FormArray {
       return (<FormArray>this.firstFormGroup.controls['groups']).at(indexGroup).get('countries') as FormArray;
    }
 
-   handleCountryOperator(indexGroup, indexCountries, key, event) {
+   rocFormArray(): FormArray {
+      return <FormArray>this.secondFormGroup.controls['roc'];
+   }
+
+   handleCountryOperator(indexGroup, indexCountries, key, event, country) {
       let value = event.target.options[event.target["selectedIndex"]].getAttribute("data-value")
       const countriesControl = this.countriesFormArray(indexGroup);
+
+      if (key == 'mcc') {
+         if (countriesControl.value[indexCountries].mnc != '') {
+            let itemCountry = this.billPlanCountryList.filter((item) => {
+               if (item.mcc == countriesControl.value[indexCountries].mcc) {
+                  return item.country
+               }
+            })
+            this.operatorObj[itemCountry[0]['country']].filter((item) => {
+               if (item.mnc == countriesControl.value[indexCountries].mnc) {
+                  item.isSelected = false
+               }
+            })
+         }
+      }
+
+      if (key == 'mnc') {
+         if (countriesControl.value[indexCountries].mnc != "") {
+            this.operatorObj[country].filter((item) => {
+               if (item.mnc == countriesControl.value[indexCountries].mnc) {
+                  item.isSelected = false
+               }
+            })
+         }
+      }
+
       let obj = {}
-      obj[key] = value
+      obj[key] = value != null ? value : '';
       countriesControl.at(indexCountries).patchValue(obj)
       if (key == 'mcc') {
          let continentValue = event.target.options[event.target["selectedIndex"]].getAttribute("data-continent")
+         let countryCode = event.target.options[event.target["selectedIndex"]].getAttribute("data-code")
          countriesControl.at(indexCountries).patchValue({
-            continent_name: continentValue
+            continent_name: continentValue != null ? continentValue : '',
+            operator_name: '',
+            mnc: '',
          })
-         this.getOperatorList(event.target.value);
+         this.getOperatorList(countryCode, event.target.value);
+      } else if (key == 'mnc') {
+         if (country != '') {
+            this.operatorObj[country].filter((item) => {
+               if (item.mnc == value) {
+                  item.isSelected = true
+               }
+            })
+         }
       }
    }
 
@@ -256,6 +333,15 @@ export class GroupStepperFormComponent implements OnInit {
 
    removeFromCountries(indexGroup, indexCountries) {
       const countriesControl = this.countriesFormArray(indexGroup);
+      let country = countriesControl.value[indexCountries].country_name
+      let mnc = countriesControl.value[indexCountries].mnc
+      if (country != '' && mnc != '') {
+         this.operatorObj[country].filter((item) => {
+            if (item.mnc == mnc) {
+               item.isSelected = false
+            }
+         })
+      }
       countriesControl.removeAt(indexCountries)
    }
 
@@ -266,6 +352,7 @@ export class GroupStepperFormComponent implements OnInit {
          this.groupSubmitted = false
          this.parentGroupsList.emit([groupsControl, this.isIndexed]);
          this.resetFirstFormGroup();
+         this.getCountryList('');
          this.isEditMode = false
          this.isIndexed = null
       }
@@ -278,9 +365,18 @@ export class GroupStepperFormComponent implements OnInit {
       [...Array(value['countries'].length - 1)].map(() =>
          this.addToCountries(0, true)
       )
-      this.isContinentCanceled = ''
+      this.isContinentCanceled = '';
+      this.getCountryList(value['continent_name']);
       groupsControl.at(0).patchValue(value)
       this.stepper.selectedIndex = 0
+   }
+
+   handleGroupsListDelete(value, indexed) {
+      this.operatorObj[value].filter((item) => {
+         if (item.mnc == indexed) {
+            item.isSelected = false
+         }
+      })
    }
 
    resetFirstFormGroup() {
@@ -290,7 +386,24 @@ export class GroupStepperFormComponent implements OnInit {
       this.handleContinentChange()
    }
 
+   resetCountriesGroup() {
+      const countriesControl = this.countriesFormArray(0);
+      let countriesLength = countriesControl.value.length;
+      for (let i = countriesLength; i > 0; i--) {
+         countriesControl.removeAt(i - 1)
+         console.log("Block statement execution no.", i - 1, 'adadas');
+      }
+      countriesControl.push(this.createGroupCountriesItem());
+   }
+
    stepperView(stepper: MatStepper, prevIndex: number, index: number) {
+      if (this.firstFormGroup.untouched == true) {
+         this.resetFirstFormGroup();
+         this.isEditMode = false;
+         stepper.selectedIndex = index;
+         this.populateROC();
+         return;
+      }
       if (prevIndex == 0 && index == 1) {
          Swal.fire({
             title: 'Are you sure want to Proceed Next?',
@@ -302,19 +415,78 @@ export class GroupStepperFormComponent implements OnInit {
             confirmButtonText: 'Yes'
          }).then((result) => {
             if (result.value) {
-               this.resetFirstFormGroup()
+               this.reActiveOperator();
+               setTimeout(() => {
+                  this.resetFirstFormGroup();
+               }, 2000)
+               this.isEditMode = false;
                stepper.selectedIndex = index;
-               this.populateROC()
+               this.populateROC();
             }
          })
       }
    }
 
    populateROC() {
-      let continentCount = count(this.rowGroups, 'countries', 'continent_name');
-      [...Array(continentCount - 1)].map(() =>
+
+      this.secondFormGroup = this.formBuilder.group({
+         ratetype_roc: ['custom', Validators.required],
+         roc: this.formBuilder.array([this.createRocItem()]),
+      });
+
+      let continentList = []
+      this.rowGroups.forEach((element) => {
+         let elements: any = element
+         elements['countries'].forEach(elementsub => {
+            continentList.push(elementsub['continent_name'])
+         });
+      });
+
+      const continentListFinal = [...new Set(continentList)];
+      let continentObj = {}
+      continentListFinal.forEach((citem) => {
+         continentObj[citem] = []
+         this.rowGroups.forEach((item, index) => {
+            let grpName = item['group_name']
+            let countriesArray: any = item['countries'];
+            countriesArray.forEach((coitem) => {
+               if (coitem['continent_name'] == citem) {
+                  let obj = {}
+                  obj['groupName'] = grpName
+                  obj['countries'] = coitem['country_name']
+                  continentObj[citem].push(obj)
+               }
+            })
+         })
+      })
+
+      let continentStructure = []
+      Object.entries(continentObj).map(([key, value]) => {
+         let obj = {}
+         obj['continent_name'] = key
+         obj['groupName'] = []
+         obj['routedCountries'] = []
+         obj['billing_rate'] = ''
+         let values: any = value
+         values.forEach((item) => {
+            obj['groupName'].push(item['groupName']);
+            obj['routedCountries'].push(item['countries']);
+         });
+         continentStructure.push(obj)
+      })
+
+      continentStructure.forEach((item) => {
+         item.groupName = [...new Set(item['groupName'])].toString();
+         item.routedCountries = [...new Set(item['routedCountries'])].length;
+      });
+
+      [...Array(continentStructure.length - 1)].map(() => {
          this.addToROC()
-      )
+      });
+
+      const rocControl = this.rocFormArray();
+      rocControl.patchValue(continentStructure)
+
    }
 
    onSubmitGroupsData(data) {

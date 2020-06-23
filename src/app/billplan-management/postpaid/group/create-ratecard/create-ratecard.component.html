@@ -39,7 +39,8 @@
     <pre>{{typeGroupFormGroup.value| json}}</pre>
     <div class="main-container p-4 group-stepper">
         <app-group-stepper-form (parentGroupsList)="parentGroupListData($event, index)"
-            [groupsListEvent]="groupListData.asObservable()" [parentForm]="typeGroupFormGroup" [rowGroups]="row_groups">
+            [groupsListEvent]="groupListData.asObservable()" [handleGroupsDelete]="handleGroupsDelete.asObservable()"
+            [parentForm]="typeGroupFormGroup" [rowGroups]="row_groups">
         </app-group-stepper-form>
     </div>
 </form>
@@ -87,17 +88,18 @@
                 <td class="font-weight-semi-bold">{{items.group_name}}</td>
                 <td>{{item.continent_name }}</td>
                 <td>{{item.country_name}}</td>
-                <td>{{item.operator_name}}</td>
-                <td>{{item.mcc}} + {{item.mcc}}</td>
+                <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+                <td>{{item.mcc}} + {{item.mnc}}</td>
                 <td>{{item.billing_rate}}</td>
                 <td>{{item.normalize_rate}}</td>
                 <td style="vertical-align: middle;padding: 0;" class="border-bottom"
-                    [attr.rowspan]="items.countries.length" *ngIf="cindex==0">
+                    [ngClass]="{'disabled': isEditMode == true}" [attr.rowspan]="items.countries.length"
+                    *ngIf="cindex==0">
                     <img class="cursor-pointer" (click)="editGroups(gindex)" src="assets/icons/edit-icon.svg"
                         alt="edit" />
                 </td>
-                <td>
-                    <img (click)="deleteGroups(gindex, cindex)" src="assets/icons/delete-icon.svg"
+                <td [ngClass]="{'disabled': isEditMode == true}">
+                    <img (click)="deleteGroups(gindex, cindex, item)" src="assets/icons/delete-icon.svg"
                         class="img-fluid cursor-pointer" alt="delete icon" />
                 </td>
             </tr>
