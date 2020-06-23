@@ -8,8 +8,8 @@
                         <label>Country</label>
                         <select #coun class="dropdown-select w-100" formControlName="country_name"
                             (change)="initOperatorSubscription(coun.value)">
-                            <option value="" default>Select Country</option>
-                            <option *ngFor="let obj of countriesList" [ngValue]="obj">
+                            <option value="" disabled>Select Country</option>
+                            <option *ngFor="let obj of countriesList" [value]="obj.country">
                                 {{ obj.country }}</option>
                         </select>
                         <span class="text-danger pl-1 f-12"
@@ -19,10 +19,13 @@
                     </div>
                     <div class="col-3  mb-2">
                         <label>Operator</label>
-                        <select class="dropdown-select w-100" formControlName="operator_name">
-                            <option value="" default>Select Operator</option>
-                            <option *ngFor="let obj of operatorsList" [value]="obj.mnc">
+                        <select #oper class="dropdown-select w-100" formControlName="operator_name"
+                        (change)="operatorDropOnChange(oper.value)">
+                            <option value="" disabled>Select Operator</option>
+                            <!-- <ng-container *ngIf="operatorsList !== null"> -->
+                            <option *ngFor="let obj of operatorsList" [value]="obj.operator">
                                 {{ obj.operator }}</option>
+                            <!-- </ng-container> -->
                         </select>
                         <span class="text-danger pl-1 f-12"
                             *ngIf="parentForm.get('operator_name').hasError('required') && firstStepSubmitted">
@@ -33,7 +36,7 @@
                         <label>Continent(Optional)</label>
                         <select #conti class="dropdown-select w-100" formControlName="continent_name"
                             (change)="initCountrySubscription(conti.value)">
-                            <option value="" default>Select Continent</option>
+                            <option value="" disabled>Select Continent</option>
                             <option [value]=continent *ngFor="let continent of continentList">{{continent}}</option>
                         </select>
                     </div>

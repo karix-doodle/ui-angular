@@ -15,8 +15,10 @@ export class CreateRatecardComponent implements OnInit {
 
   SlabFormGroup: FormGroup;
   previewList: Countries[] = [];
-  editMode: Subject<[boolean, number]> = new Subject<[boolean, number]>();
+  editMode: Subject<[boolean, number, string]> = new Subject<[boolean, number, string]>();
   editModeStatus: boolean;
+  countryCount: number;
+  operatorCount: number;
   constructor(
     private formBuilder: FormBuilder,
     private slabRouteService: SlabRouteService
@@ -61,12 +63,13 @@ export class CreateRatecardComponent implements OnInit {
     // console.log(list);
     this.editModeStatus = false;
     this.previewList = this.slabRouteService.previewList;
-    console.log(this.slabRouteService.previewList);
+    this.countryCount = this.slabRouteService.count('country_name');
+    this.operatorCount = this.slabRouteService.count('operator_name');
   }
-  editPreviewSlabs(listIndex) {
+  editPreviewSlabs(listIndex, countryName) {
     console.log(listIndex);
     this.editModeStatus = true;
-    this.editMode.next([true, listIndex]);
+    this.editMode.next([true, listIndex, countryName]);
     this.SlabFormGroup.patchValue({
       continent_name: this.slabRouteService.previewList[listIndex].continent_name,
       country_name: this.slabRouteService.previewList[listIndex].country_name,
