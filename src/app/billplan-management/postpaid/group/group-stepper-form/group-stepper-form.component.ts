@@ -1,22 +1,25 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { startWith, pairwise, debounceTime } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { MatStepper } from '@angular/material';
 import { BillManagementService } from "src/app/billplan-management/services/BillManagement/billplan-management.service";
+import { GroupRouteService } from "src/app/billplan-management/services/BillManagement/Group/group-route.service";
 import {
    BillPlanCountries_ApiRespone,
    BillPlanCountries_Data,
    BillPlanContinent_ApiRespone,
    BillPlanOperator_ApiRespone,
-   BillPlanOperator_Data
+   BillPlanOperator_Data,
+   BillPlanCreateGroup_ApiResponse
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
+
 import { HttpErrorResponse } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { count } from '../../../../shared/helper/helperFunctions'
 
 import Swal from 'sweetalert2';
-import { errorAlert } from "src/app/shared/sweet-alert/sweet-alert";
+import { errorAlert, successAlert } from "src/app/shared/sweet-alert/sweet-alert";
 
 @Component({
    selector: 'app-group-stepper-form',
@@ -41,6 +44,7 @@ export class GroupStepperFormComponent implements OnInit {
    @Input() parentForm: FormGroup;
    @Input() rowGroups: [];
    @Output() parentGroupsList = new EventEmitter<[FormArray, number]>();
+   @Output() parentRocData = new EventEmitter<[any]>();
    @ViewChild('stepper', { static: false }) stepper: MatStepper;
 
    operatorObj: object = {}
@@ -59,7 +63,9 @@ export class GroupStepperFormComponent implements OnInit {
 
    constructor(
       private formBuilder: FormBuilder,
+      private router: Router,
       private billPlanservice: BillManagementService,
+      private billPlanGroupservice: GroupRouteService,
    ) { }
 
    ngOnInit() {
@@ -105,14 +111,12 @@ export class GroupStepperFormComponent implements OnInit {
                   confirmButtonText: 'Yes'
                }).then((result) => {
                   if (result.value) {
-                     this.reActiveOperator();
-                     this.disableWrapper = true
-                     setTimeout(() => {
+                     this.functionActiveOperator(() => {
                         this.resetCountriesGroup()
                         this.getCountryList(next);
                         this.isContinentCanceled = null;
                         this.disableWrapper = false
-                     }, 2000)
+                     });
                   } else {
                      this.isContinentCanceled = next
                      groupsControl.at(0).get('continent_name').setValue(prev ? prev : '')
@@ -122,6 +126,12 @@ export class GroupStepperFormComponent implements OnInit {
                this.isContinentCanceled = null
             }
          });
+   }
+
+   functionActiveOperator(callBackFunction) {
+      this.reActiveOperator();
+      this.disableWrapper = true;
+      callBackFunction();
    }
 
    reActiveOperator() {
@@ -352,16 +362,21 @@ export class GroupStepperFormComponent implements OnInit {
          this.groupSubmitted = false
          this.parentGroupsList.emit([groupsControl, this.isIndexed]);
          this.resetFirstFormGroup();
-         this.getCountryList('');
          this.isEditMode = false
          this.isIndexed = null
       }
    }
 
+   updateRoc(stepper: MatStepper) {
+      this.parentRocData.emit([this.secondFormGroup.value]);
+      stepper.next()
+   }
+
    groupListData(value: FormArray, indexed: number) {
-      this.isEditMode = true
-      this.isIndexed = indexed
       const groupsControl = this.groupFormArray();
+      groupsControl.markAsUntouched();
+      this.isEditMode = true;
+      this.isIndexed = indexed;
       [...Array(value['countries'].length - 1)].map(() =>
          this.addToCountries(0, true)
       )
@@ -384,6 +399,7 @@ export class GroupStepperFormComponent implements OnInit {
          groups: this.formBuilder.array([this.createGroupsItem()]),
       });
       this.handleContinentChange()
+      this.getCountryList('');
    }
 
    resetCountriesGroup() {
@@ -391,7 +407,6 @@ export class GroupStepperFormComponent implements OnInit {
       let countriesLength = countriesControl.value.length;
       for (let i = countriesLength; i > 0; i--) {
          countriesControl.removeAt(i - 1)
-         console.log("Block statement execution no.", i - 1, 'adadas');
       }
       countriesControl.push(this.createGroupCountriesItem());
    }
@@ -401,6 +416,7 @@ export class GroupStepperFormComponent implements OnInit {
          this.resetFirstFormGroup();
          this.isEditMode = false;
          stepper.selectedIndex = index;
+         this.parentGroupsList.emit([null, null]);
          this.populateROC();
          return;
       }
@@ -415,13 +431,13 @@ export class GroupStepperFormComponent implements OnInit {
             confirmButtonText: 'Yes'
          }).then((result) => {
             if (result.value) {
-               this.reActiveOperator();
-               setTimeout(() => {
+               this.functionActiveOperator(() => {
                   this.resetFirstFormGroup();
-               }, 2000)
-               this.isEditMode = false;
-               stepper.selectedIndex = index;
-               this.populateROC();
+                  this.isEditMode = false;
+                  stepper.selectedIndex = index;
+                  this.populateROC();
+                  this.disableWrapper = false
+               });
             }
          })
       }
@@ -490,7 +506,29 @@ export class GroupStepperFormComponent implements OnInit {
    }
 
    onSubmitGroupsData(data) {
-      console.log(data, 'asdasdsad')
+
+      data.groups.forEach((item) => {
+         delete item.continent_name
+      })
+      data.roc.forEach((item) => {
+         delete item.routedCountries
+         delete item.groupName
+      })
+      data.billing_rate_row = data.ratetype_row == 'standard' ? '' : data.billing_rate_row;
+
+      this.billPlanGroupservice.BillPlanCreateGroup(data).subscribe(
+         (res: BillPlanCreateGroup_ApiResponse) => {
+            if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+               successAlert(res.message, res.responsestatus)
+               this.router.navigate(['billplan-management']);
+            } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+               errorAlert(res.message, res.responsestatus)
+            }
+         }, (error: HttpErrorResponse) => {
+            errorAlert(error.message, error.statusText)
+         }
+      );
+
    }
 
 }

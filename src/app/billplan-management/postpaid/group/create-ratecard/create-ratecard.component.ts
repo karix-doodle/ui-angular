@@ -32,7 +32,7 @@ export class CreateRatecardComponent implements OnInit {
   private createGroupForm() {
     this.typeGroupFormGroup = this.formBuilder.group({
       billplan_id: ['12', Validators.required],
-      billplan_currencyid: ['15', [Validators.required]],
+      billplan_currencyid: ['13', [Validators.required]],
       ratecard_type: ['Group', [Validators.required]],
       ratecard_name: [''],
       groups: this.formBuilder.array([this.createGroupsItem()]),
@@ -68,6 +68,8 @@ export class CreateRatecardComponent implements OnInit {
   createRocItem(): FormGroup {
     return this.formBuilder.group({
       continent_name: [''],
+      groupName: [''],
+      routedCountries: [''],
       billing_rate: ['']
     });
   }
@@ -80,19 +82,45 @@ export class CreateRatecardComponent implements OnInit {
     return (<FormArray>this.typeGroupFormGroup.controls['groups']).at(indexGroup).get('countries') as FormArray;
   }
 
+  rocFormArray(): FormArray {
+    return <FormArray>this.typeGroupFormGroup.controls['roc'];
+  }
+
+  addToROC(): void {
+    const rocControl = this.rocFormArray();
+    rocControl.push(this.createRocItem());
+  }
+
   parentGroupListData([event, index]) {
     let parentGroupArray = this.groupFormArray()
-    if (index == null) {
-      if (parentGroupArray.value.length == 1 && parentGroupArray.value[0].group_name == "") {
-        parentGroupArray.value[0] = event.value[0];
+    if (event != null) {
+      if (index == null) {
+        if (parentGroupArray.value.length == 1 && parentGroupArray.value[0].group_name == "") {
+          parentGroupArray.value[0] = event.value[0];
+        } else {
+          parentGroupArray.value.push(event.value[0]);
+        }
       } else {
-        parentGroupArray.value.push(event.value[0]);
+        parentGroupArray.value[index] = event.value[0];
       }
-    } else {
-      parentGroupArray.value[index] = event.value[0];
+      this.updateRowGroups(parentGroupArray.value)
     }
-    this.updateRowGroups(parentGroupArray.value)
     this.isEditMode = false
+  }
+
+  parentRocData([event]) {
+    let parentRocArray = this.rocFormArray();
+    let parentRocLength = parentRocArray.value.length;
+    for (let i = parentRocLength; i > 0; i--) {
+      parentRocArray.removeAt(i - 1)
+    }
+    [...Array(event.roc.length)].map(() => {
+      this.addToROC();
+    });
+    parentRocArray.patchValue(event.roc)
+    this.typeGroupFormGroup.patchValue({
+      ratetype_roc: event.ratetype_roc
+    })
   }
 
   editGroups(gindex: number) {
@@ -115,6 +143,7 @@ export class CreateRatecardComponent implements OnInit {
       } else {
         groupsControl.value[gindex].countries.splice(cindex, 1)
       }
+
       this.updateRowGroups(groupsControl.value)
     }
 

@@ -80,3 +80,10 @@ export class BillPlanOperator_Data {
   operator: string;
   mnc: number;
 }
+
+export class BillPlanCreateGroup_ApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  message: string;
+  data: any;
+}

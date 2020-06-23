@@ -124,8 +124,9 @@
                 </div>
                 <div class="col-6 text-right save-form-div">
                     <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
-                    <button [attr.disabled]="isEditMode ? 'disabled' : null" *ngIf="rowGroups.length != 0" type="button"
-                        class="btn erp-intl-btn" (click)="stepperView(stepper, 0, 1)" mat-button>Next</button>
+                    <button [attr.disabled]="isEditMode && this.firstFormGroup.untouched == 0 ? 'disabled' : null"
+                        *ngIf="rowGroups.length != 0" type="button" class="btn erp-intl-btn"
+                        (click)="stepperView(stepper, 0, 1)" mat-button>Next</button>
                 </div>
             </div>
         </form>
@@ -199,7 +200,7 @@
             <div class="row mt-4 create-route-section">
                 <div class="col-12 text-center save-form-div">
                     <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
-                    <button class="btn erp-intl-btn" mat-button matStepperNext>Next</button>
+                    <button class="btn erp-intl-btn" mat-button (click)="updateRoc(stepper)">Next</button>
                 </div>
             </div>
         </form>
@@ -227,7 +228,7 @@
                     <div class="col-6 p-0 text-right f-14"><label class="font-weight-semi-bold">Note: If there is no
                             specific ROW BillPlan, copy from Default Rate Card and Save</label></div>
                 </div>
-                <div class="gt-ratio-div">
+                <div class="gt-ratio-div" *ngIf="parentForm.get('ratetype_row').value == 'custom'">
                     <div class="row mb-2">
                         <div class="col-5 mb-2">
                             <label>Billing Rate (€)</label>
@@ -258,7 +259,7 @@
                         </div>
                         <div class="col-6 discount-select">
                             <select class="dropdown-select w-100" formControlName="discount_type">
-                                <option value="percentage" default>percentage</option>
+                                <option value="percentage" default>Percentage</option>
                                 <option value="amount">Amount</option>
                             </select>
                         </div>

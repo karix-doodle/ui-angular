@@ -39,8 +39,9 @@
     <pre>{{typeGroupFormGroup.value| json}}</pre>
     <div class="main-container p-4 group-stepper">
         <app-group-stepper-form (parentGroupsList)="parentGroupListData($event, index)"
-            [groupsListEvent]="groupListData.asObservable()" [handleGroupsDelete]="handleGroupsDelete.asObservable()"
-            [parentForm]="typeGroupFormGroup" [rowGroups]="row_groups">
+            (parentRocData)="parentRocData($event)" [groupsListEvent]="groupListData.asObservable()"
+            [handleGroupsDelete]="handleGroupsDelete.asObservable()" [parentForm]="typeGroupFormGroup"
+            [rowGroups]="row_groups">
         </app-group-stepper-form>
     </div>
 </form>
