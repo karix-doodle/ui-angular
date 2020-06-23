@@ -15,8 +15,10 @@ export class CreateRatecardComponent implements OnInit {
   row_groups = []
   countryCount = 0
   searchvalue: string = ''
+  isEditMode: boolean = false
 
   groupListData: Subject<[FormArray, number]> = new Subject<[FormArray, number]>();
+  handleGroupsDelete: Subject<[string, number]> = new Subject<[string, number]>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,23 +92,32 @@ export class CreateRatecardComponent implements OnInit {
       parentGroupArray.value[index] = event.value[0];
     }
     this.updateRowGroups(parentGroupArray.value)
+    this.isEditMode = false
   }
 
   editGroups(gindex: number) {
-    let groupsControl = this.groupFormArray();
-    this.groupListData.next([groupsControl.value[gindex], gindex]);
+    if (this.isEditMode == false) {
+      let groupsControl = this.groupFormArray();
+      this.groupListData.next([groupsControl.value[gindex], gindex]);
+      this.isEditMode = true
+    }
   }
 
-  deleteGroups(gindex: number, cindex: number) {
+  deleteGroups(gindex: number, cindex: number, item: any) {
     let groupsControl = this.groupFormArray();
 
-    if (groupsControl.value[gindex]['countries'].length == 1) {
-      groupsControl.value.splice(gindex, 1)
-    } else {
-      groupsControl.value[gindex].countries.splice(cindex, 1)
+    if (this.isEditMode == false) {
+
+      this.handleGroupsDelete.next([item.country_name, item.mnc]);
+
+      if (groupsControl.value[gindex]['countries'].length == 1) {
+        groupsControl.value.splice(gindex, 1)
+      } else {
+        groupsControl.value[gindex].countries.splice(cindex, 1)
+      }
+      this.updateRowGroups(groupsControl.value)
     }
 
-    this.updateRowGroups(groupsControl.value)
   }
 
   updateRowGroups(value) {

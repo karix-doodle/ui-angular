@@ -79,6 +79,6 @@ export class BillPlanOperator_ApiRespone {
 }
 
 export class BillPlanOperator_Data {
-  mnc: number;
   operator: string;
+  mnc: number;
 }

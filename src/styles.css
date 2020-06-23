@@ -935,3 +935,6 @@ select {
   cursor: pointer;
   z-index: 2;
 }
+.disabled img {
+  cursor: not-allowed;
+}

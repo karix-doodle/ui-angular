@@ -66,7 +66,7 @@ export class BillManagementService {
   }
 
   getOperatorList(data): Observable<BillPlanOperator_ApiRespone> {
-    return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country_code=${data}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country_code=${data.country_code}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanOperator_ApiRespone))
   }
 
