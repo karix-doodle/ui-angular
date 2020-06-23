@@ -61,6 +61,11 @@ export class BillManagementService {
       .pipe(map((data) => data as BillPlanCountries_ApiRespone))
   }
 
+  getCountriesList(): Observable<BillPlanCountries_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanCountries_ApiRespone))
+  }
+
   getOperatorList(data): Observable<BillPlanOperator_ApiRespone> {
     return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country_code=${data.country_code}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanOperator_ApiRespone))

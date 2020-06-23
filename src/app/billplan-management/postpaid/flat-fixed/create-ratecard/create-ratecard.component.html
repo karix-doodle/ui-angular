@@ -32,6 +32,7 @@
     </div>
 </div>
 <div class="main-container p-4 second-form-div">
+  <form [formGroup] ="fixedRateFrom" (ngSubmit)="onSubmit()">
     <div class="row">
             <div class="col-6">
                 <label class="font-weight-bold col-12">Flat / Fixed</label>
@@ -40,13 +41,13 @@
                     <div class="col-6">
                         <label>Billing Rate (€)</label>
                         <div class="form-group">
-                            <input type="search" class="form-control" id="" placeholder="Enter Rate" />
+                            <input type="search" formControlName="billing_rate" class="form-control" id="" placeholder="Enter Rate" />
                         </div>
                     </div>
                     <div class="col-6">
                         <label>Normalize Rate (€)</label>
                         <div class="form-group">
-                            <input type="search" class="form-control" id="" placeholder="0.0678" />
+                            <input type="search" style="cursor:not-allowed;" readonly   class="form-control" id="" placeholder="0.0678" />
                         </div>
                     </div>
                 </div>
@@ -57,19 +58,18 @@
             <label class="font-weight-bold col-12">Discount in % or Amount in €</label>
             <div class="gt-ratio-div">
                 <div class="row">
-                    <div class="col-7">
+                    <div class="col-6">
                         <label>Discount Amount</label>
                         <div class="form-group">
-                            <input type="search" class="form-control" id="" placeholder="Enter Discount" />
-                        </div>
+                          <input type="search" class="form-control" id="" placeholder="Enter Discount"
+                              formControlName="discount_rate" />
+                      </div>
                     </div>
-                    <div class="col-2 mt-31">
-                        <select class="dropdown-select w-100">
-                            <option value="" default>%</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
+                    <div class="col-6 mt-31 discount-select">
+                      <select class="dropdown-select w-100" formControlName="discount_type">
+                        <option value="percentage" default>percentage</option>
+                        <option value="amount">Amount</option>
+                    </select>
                     </div>
 
 
@@ -82,15 +82,17 @@
 
     <div class="row mt-4">
         <div class="col-12">
-            <Label class="font-weight-bold">Description:</Label>
-            <textarea rows="4" class="w-100" placeholder="Enter short Description here"></textarea>
+            <Label class="font-weight-bold"  >Description:</Label>
+            <textarea rows="4" class="w-100" formControlName="description" placeholder="Enter short Description here"></textarea>
         </div>
     </div>
 
     <div class="row mt-4 create-route-section">
         <div class="col-12 text-center">
-            <input type="reset" class="btn btn-basic mr-3" value="Cancel" />
-            <input type="submit" class="btn erp-intl-btn" value="Save" />
+          <button type="reset" class="btn btn-basic mr-3" > Cancel</button>
+          <button type="submit" class="btn erp-intl-btn" > Save</button>
+
         </div>
     </div>
+  </form>
 </div>
