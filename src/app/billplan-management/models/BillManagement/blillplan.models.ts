@@ -44,6 +44,7 @@ export class BillPlanCurrency_ApiResponse {
   data: BillPlanCurrency_Data[];
   message: string;
 }
+
 export class BillPlanCurrency_Data {
   currency_id: number;
   currency_name: string;
@@ -84,6 +85,20 @@ export class BillPlanOperator_Data {
 }
 
 export class BillPlanCreateGroup_ApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  message: string;
+  data: any;
+}
+
+export class CreateBillPlan_ApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  message: string;
+  data: any;
+}
+
+export class GetNameCheck_ApiResponse {
   responsecode: number;
   responsestatus: string;
   message: string;

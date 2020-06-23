@@ -417,6 +417,7 @@ export class GroupStepperFormComponent implements OnInit {
          this.isEditMode = false;
          stepper.selectedIndex = index;
          this.parentGroupsList.emit([null, null]);
+         this.isIndexed = null
          this.populateROC();
          return;
       }
@@ -437,6 +438,7 @@ export class GroupStepperFormComponent implements OnInit {
                   stepper.selectedIndex = index;
                   this.populateROC();
                   this.disableWrapper = false
+                  this.isIndexed = null
                });
             }
          })
