@@ -2,9 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SlabRouteService } from '../../../services/BillManagement/Slab/slab-route.service';
-import { Countries, Slabs, SlabCreateRateCardBody } from '../../../models/BillManagement/Slab/slab.model';
+import { Countries, Slabs, SlabCreateRateCardBody, SlabCreateRateCardRes } from '../../../models/BillManagement/Slab/slab.model';
 import { Observable, Subscription } from 'rxjs';
-import { errorAlert, confirmAlert } from '../../../../shared/sweet-alert/sweet-alert';
+import { errorAlert, confirmAlert, successAlert } from '../../../../shared/sweet-alert/sweet-alert';
 import { MatStepper } from '@angular/material';
 import { BillManagementService } from '../../../services/BillManagement/billplan-management.service';
 import {
@@ -14,7 +14,7 @@ import {
 } from '../../../models/BillManagement/blillplan.models';
 import { environment } from '../../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { Router } from '@angular/router';
 
 @Component({
    selector: 'app-slab-stepper-form',
@@ -43,7 +43,8 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
       private slabRouteService: SlabRouteService,
-      private billMgmtService: BillManagementService
+      private billMgmtService: BillManagementService,
+      private router: Router,
    ) { }
 
    ngOnDestroy() {
@@ -57,6 +58,45 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.initContinentSubscription();
       this.initCountrySubscription('');
    }
+
+   // ------------------- common -------------------
+   createSlabsItem(min?: number, max?: number): FormGroup {
+      console.log(min, max);
+      return this.formBuilder.group({
+         min: min === undefined ? [1] : [min],
+         max: max === undefined ?
+            [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
+            : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
+         billing_rate: ['', [Validators.required]],
+         normalize_rate: ['']
+      });
+   }
+   onNext(stepper: MatStepper) {
+      console.log(this.parentForm);
+      if (!this.editModeState) {
+         if (this.slabRouteService.previewList.length) {
+            if (this.parentForm.touched || this.parentForm.dirty) {
+               confirmAlert('Your unsaved data will get erassed', 'Yes, delete it!')
+                  .then((result) => {
+                     if (result.isConfirmed) {
+                        stepper.next();
+                        this.parentFormReset();
+                     }
+                  });
+            } else {
+               stepper.next();
+            }
+         } else {
+            errorAlert('Add at least one country & operator', 'warning');
+         }
+      } else {
+         errorAlert('You are in edit mode', 'Warning');
+      }
+
+   }
+   // ------------------- common ----------------------------------
+
+   // ------------------- Parent(First) Form -------------------
    initContinentSubscription() {
       this.billMgmtService.getContinentList()
          .subscribe((res: string[]) => {
@@ -124,40 +164,6 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          }
       });
    }
-   // ------------------- common -------------------
-   createSlabsItem(min?: number, max?: number): FormGroup {
-      console.log(min, max);
-      return this.formBuilder.group({
-         min: min === undefined ? [1] : [min],
-         max: max === undefined ?
-            [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
-            : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
-         billing_rate: ['', [Validators.required]],
-         normalize_rate: ['']
-      });
-   }
-   onNext(stepper: MatStepper) {
-      console.log(this.parentForm);
-      if (this.parentForm.untouched || this.parentForm.pristine) {
-         if (this.slabRouteService.previewList.length) {
-            stepper.next();
-         } else {
-            errorAlert('Add at least one country & operator', 'warning');
-         }
-
-      } else {
-         confirmAlert('Your unsaved data will get erassed', 'Yes, delete it!')
-            .then((result) => {
-               if (result.isConfirmed) {
-                  stepper.next();
-                  this.parentFormReset();
-               }
-            });
-      }
-   }
-   // ------------------- common ----------------------------------
-
-   // ------------------- Parent(First) Form -------------------
    initEditModeSubscription() {
       this.editModeState = false;
       this.sub = this.editMode.subscribe(([value, index, editCountry]) => {
@@ -228,7 +234,6 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                   }
                });
                if (!countryOperatorAlreadExist) {
-                  console.log('in');
                   if (this.editModeState) {
                      this.slabRouteService.previewList.forEach((element, index) => {
                         if (index === this.editModeIndex) {
@@ -251,8 +256,6 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             } else {
                this.pushDataToPreviewList(obj);
             }
-
-
          } else {
             errorAlert('Your last slab Max limit must be 999999999', 'Warning');
          }
@@ -271,7 +274,14 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.operatorsList = [];
       // this.countriesList = this.continentListCopy;
       this.initCountrySubscription('');
+      const form = this.parentForm;
       this.parentForm.reset({
+         loggedinusername: form.value.loggedinusername,
+         loggedinempid: form.value.loggedinempid,
+         billplan_id: form.value.billplan_id,
+         billplan_currencyid: form.value.billplan_currencyid,
+         ratecard_type: form.value.ratecard_type,
+         ratecard_name: form.value.ratecard_name,
          continent_name: '',
          country_name: '',
          operator_name: '',
@@ -361,6 +371,23 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.SlabCreateRateCardInput.discount_type = this.secondFormGroup.value.discount_type;
       this.SlabCreateRateCardInput.description = this.secondFormGroup.value.description;
       console.log(this.SlabCreateRateCardInput);
+      this.slabRouteService.createSlabRateCard(this.SlabCreateRateCardInput)
+         .subscribe((res: SlabCreateRateCardRes) => {
+            if (
+               res.responsestatus === environment.APIStatus.success.text &&
+               res.responsecode > environment.APIStatus.success.code
+            ) {
+               successAlert(res.message, res.responsestatus);
+               this.router.navigate(['billplan-management-postpaid']);
+            } else if (
+               res.responsestatus === environment.APIStatus.error.text &&
+               res.responsecode < environment.APIStatus.error.code
+            ) {
+               errorAlert(res.message, res.responsestatus);
+            }
+         }, (error: HttpErrorResponse) => {
+            errorAlert(error.message, error.statusText);
+         });
    }
 
    // ------------------- 2nd Form --------------------------------

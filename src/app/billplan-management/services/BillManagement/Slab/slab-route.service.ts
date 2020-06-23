@@ -4,7 +4,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../../../../shared/models/commonModels';
-import { Countries } from '../../../models/BillManagement/Slab/slab.model';
+import { Countries, SlabCreateRateCardRes, SlabCreateRateCardBody } from '../../../models/BillManagement/Slab/slab.model';
 import { FormGroup, FormArray } from '@angular/forms';
 
 @Injectable({
@@ -23,10 +23,10 @@ export class SlabRouteService {
 
   constructor(public http: HttpClient) { }
 
-  // createSlabRateCard(): Observable<BillPlanTableList_ApiResponse> {
-  //   // createratecard/slab
-  //   return this.http.post(`${this.baseUrl}createratecard/slab`, {}, this.httpOptions);
-  // }
+  createSlabRateCard(input: SlabCreateRateCardBody): Observable<SlabCreateRateCardRes> {
+    return this.http.post(`${this.baseUrl}createratecard/slab`, input, this.httpOptions)
+      .pipe(map(m => m as SlabCreateRateCardRes));
+  }
   /**
    * @param params consists of preview list element value.
    * @description gets the unique elements count.
