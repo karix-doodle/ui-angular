@@ -14,9 +14,9 @@ import { errorAlert } from '../../../shared/sweet-alert/sweet-alert';
   styleUrls: ['./ratecard-list.component.css']
 })
 export class RatecardListComponent implements OnInit {
-  rateCardType = 'country';
+  rateCardType = 'slab';
   rateCardSearchForm: FormGroup;
-  rateCardNameList: RateCardList[]
+  rateCardNameList: RateCardList[];
   constructor(
     private formBuilder: FormBuilder,
     private createAssignRateCardService: CreateAssignRateCardService
@@ -30,7 +30,7 @@ export class RatecardListComponent implements OnInit {
     this.rateCardSearchForm = this.formBuilder.group({
       loggedinusername: [environment.loggedinusername, Validators.required],
       loggedinempid: [environment.loggedinempid, Validators.required],
-      ratecardtype: ['country', Validators.required],
+      ratecardtype: ['slab', Validators.required],
       ratecardname: ['', Validators.required],
     });
   }

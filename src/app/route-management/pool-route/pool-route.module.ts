@@ -16,19 +16,24 @@ import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
-  declarations: [PoolRouteComponent, CreatePoolComponent, PoolRouteListComponent, RouteStepperFormComponent, PrActWiseViewComponent],
+  declarations: [
+    PoolRouteComponent,
+    CreatePoolComponent,
+    PoolRouteListComponent,
+    RouteStepperFormComponent,
+    PrActWiseViewComponent
+  ],
   imports: [
     CommonModule,
-    FormsModule,
-    SharedModule,
-    ReactiveFormsModule,
     PoolRouteRoutingModule,
+    BrowserModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatStepperModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatStepperModule, MatInputModule, MatButtonModule,
-    ReactiveFormsModule
+    MatInputModule,
+    MatButtonModule
   ],
   exports: [RouteStepperFormComponent]
 

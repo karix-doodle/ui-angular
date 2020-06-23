@@ -60,6 +60,7 @@ export class BillPlanCountries_ApiRespone {
   responsecode: number;
   responsestatus: string;
   data: BillPlanCountries_Data[];
+  message?: string;
 }
 
 export class BillPlanCountries_Data {
@@ -74,8 +75,10 @@ export class BillPlanOperator_ApiRespone {
   responsecode: number;
   responsestatus: string;
   data: BillPlanOperator_Data[];
+  message?: string;
 }
 
 export class BillPlanOperator_Data {
-
+  mnc: number;
+  operator: string;
 }

@@ -10,8 +10,8 @@ import { CreateRatecardComponent } from './create-ratecard/create-ratecard.compo
 const routes: Routes = [
   {
     path: 'billplan-management/postpaid/slab',
-    component:  SlabComponent,
-  
+    component: SlabComponent,
+
     children: [
       {
         path: 'create-ratecard',
@@ -21,8 +21,9 @@ const routes: Routes = [
         path: 'assigned-ratecard-view',
         component: AssignedRatecardViewComponent
       },
-    ]}
-  
+    ]
+  }
+
 ];
 
 @NgModule({
