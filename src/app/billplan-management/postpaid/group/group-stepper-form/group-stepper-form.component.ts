@@ -29,7 +29,7 @@ export class GroupStepperFormComponent implements OnInit {
    firstFormGroup: FormGroup;
    secondFormGroup: FormGroup;
 
-   billPalnContinentApiResponse: string[];
+   billPalnContinentApiResponse: BillPlanContinent_ApiRespone;
    billPlanContinentList = [];
 
    billPalnCountriesApiResponse: BillPlanCountries_ApiRespone;
@@ -139,7 +139,7 @@ export class GroupStepperFormComponent implements OnInit {
 
    getContinentList() {
       this.billPlanservice.getContinentList().subscribe(
-         (res: string[]) => {
+         (res: BillPlanContinent_ApiRespone) => {
             this.billPalnContinentApiResponse = res;
             this.billPlanContinentList = JSON.parse(
                JSON.stringify(this.billPalnContinentApiResponse)
