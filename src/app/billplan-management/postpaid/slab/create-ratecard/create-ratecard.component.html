@@ -50,18 +50,18 @@
             <div class="col-5">
                 <label class="mr-2"><b>Total Countries</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
             </div>
             <div class="col-7">
                 <label class="mr-2"><b>Total Operators</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{operatorCount}}</b></span>
             </div>
         </div>
     </div>
 
     <div class="col-5 text-right">
-        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Continent, Country, Operator" />
+        <input type="search" class="form-control" placeholder="&#xf002; Search by Continent, Country, Operator" />
     </div>
 
 </div>
@@ -95,7 +95,8 @@
                 <td>{{item.normalize_rate}}</td>
                 <td style="vertical-align: middle;padding: 0;" class="border-bottom" [attr.rowspan]="items.slabs.length"
                     *ngIf="sindex==0">
-                    <img src="assets/icons/edit-icon.svg" alt="edit" (click)="editPreviewSlabs(cindex)" />
+                    <img src="assets/icons/edit-icon.svg" alt="edit"
+                        (click)="editPreviewSlabs(cindex, items.country_name)" />
                 </td>
                 <!-- <td>
                     <img src="assets/icons/edit-icon.svg" alt="edit" />

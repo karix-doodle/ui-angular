@@ -32,11 +32,12 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    sub: Subscription;
    firstStepSubmitted: boolean;
    @Input() parentForm: FormGroup;
-   @Input() editMode: Observable<[boolean, number]>;
+   @Input() editMode: Observable<[boolean, number, string]>;
    @Output() countriesListChildToParent = new EventEmitter();
    secondStepSubmitted: boolean;
    continentList: string[];
    countriesList: BillPlanCountries_Data[];
+   // continentListCopy: BillPlanCountries_Data[];
    operatorsList: BillPlanOperator_Data[];
    constructor(
       private formBuilder: FormBuilder,
@@ -72,7 +73,15 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                res.responsecode > environment.APIStatus.success.code
             ) {
                this.countriesList = res.data;
-               this.initOperatorSubscription(this.countriesList[0]);
+               // this.continentListCopy = JSON.parse(JSON.stringify(res.data));
+               if (countryName !== '') {
+                  this.operatorsList = [];
+                  this.parentForm.patchValue({
+                     country_name: '',
+                     operator_name: ''
+                  });
+               }
+
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
                res.responsecode < environment.APIStatus.error.code
@@ -83,9 +92,16 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             errorAlert(error.message, error.statusText);
          });
    }
-   initOperatorSubscription(countryObj: BillPlanCountries_Data) {
-      console.log(countryObj.country_code);
-      this.billMgmtService.getOperatorList(countryObj.country_code)
+   initOperatorSubscription(countryName: string) {
+      let country;
+      this.countriesList.forEach(element => {
+         if (element.country === countryName) {
+            country = element;
+            this.parentForm.patchValue({ mcc: element.mcc }); // add mcc
+         }
+      });
+      // console.log(country);
+      this.billMgmtService.getOperatorList(country)
          .subscribe((res: BillPlanOperator_ApiRespone) => {
             if (res.responsestatus === environment.APIStatus.success.text &&
                res.responsecode > environment.APIStatus.success.code) {
@@ -99,6 +115,14 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          }, (error: HttpErrorResponse) => {
             errorAlert(error.message, error.statusText);
          });
+   }
+   operatorDropOnChange(operatorName: string) {
+      console.log(operatorName);
+      this.operatorsList.forEach(element => {
+         if (element.operator === operatorName) {
+            this.parentForm.patchValue({ mnc: element.mnc }); // add mnc
+         }
+      });
    }
    // ------------------- common -------------------
    createSlabsItem(min?: number, max?: number): FormGroup {
@@ -136,9 +160,10 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    // ------------------- Parent(First) Form -------------------
    initEditModeSubscription() {
       this.editModeState = false;
-      this.sub = this.editMode.subscribe(([value, index]) => {
+      this.sub = this.editMode.subscribe(([value, index, editCountry]) => {
          this.editModeState = value; // value = true;
          this.editModeIndex = index;
+         this.initOperatorSubscription(editCountry);
          console.log(this.editModeIndex);
       });
    }
@@ -188,36 +213,46 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             this.countrySlabInput.mnc = this.parentForm.value.mnc;
             this.countrySlabInput.slabs = this.firstFormArray.value;
             const obj = JSON.parse(JSON.stringify(this.countrySlabInput));
-            if (this.editModeState) {
+
+            if (this.slabRouteService.previewList.length) {
+               let countryOperatorAlreadExist = false;
                this.slabRouteService.previewList.forEach((element, index) => {
-                  if (index === this.editModeIndex) {
-                     element.continent_name = obj.continent_name;
-                     element.country_name = obj.country_name;
-                     element.operator_name = obj.operator_name;
-                     element.mcc = obj.mcc;
-                     element.mnc = obj.mnc;
-                     element.slabs = obj.slabs;
-                  }
-               });
-               this.pushDataToPreviewList(obj);
-            } else {
-               if (this.slabRouteService.previewList.length) {
-                  let countryOperatorAlreadExist = false;
-                  this.slabRouteService.previewList.forEach(element => {
-                     if (element.country_name === obj.country_name && element.operator_name === obj.operator_name) {
+                  if (element.country_name === obj.country_name && element.operator_name === obj.operator_name) {
+                     console.log('index', index, this.editModeIndex);
+                     if (index === this.editModeIndex) {
+                        countryOperatorAlreadExist = false;
+                     } else {
                         errorAlert('country & operator already exist', 'Warning');
                         countryOperatorAlreadExist = true;
                      }
-                  });
-                  if (!countryOperatorAlreadExist) {
-                     console.log('in');
+                  }
+               });
+               if (!countryOperatorAlreadExist) {
+                  console.log('in');
+                  if (this.editModeState) {
+                     this.slabRouteService.previewList.forEach((element, index) => {
+                        if (index === this.editModeIndex) {
+                           element.continent_name = obj.continent_name;
+                           element.country_name = obj.country_name;
+                           element.operator_name = obj.operator_name;
+                           element.mcc = obj.mcc;
+                           element.mnc = obj.mnc;
+                           element.slabs = obj.slabs;
+                        }
+                     });
+                     this.editModeState = false;
+                     this.editModeIndex = undefined;
+                     this.parentFormReset();
+                     this.countriesListChildToParent.emit(obj);
+                  } else {
                      this.pushDataToPreviewList(obj);
                   }
-               } else {
-                  this.pushDataToPreviewList(obj);
                }
-
+            } else {
+               this.pushDataToPreviewList(obj);
             }
+
+
          } else {
             errorAlert('Your last slab Max limit must be 999999999', 'Warning');
          }
@@ -226,12 +261,16 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    }
    pushDataToPreviewList(obj) {
       this.editModeState = false;
+      this.editModeIndex = undefined;
       this.slabRouteService.previewList.push(obj);
       console.log(this.slabRouteService.previewList);
       this.countriesListChildToParent.emit(obj);
       this.parentFormReset();
    }
    parentFormReset() {
+      this.operatorsList = [];
+      // this.countriesList = this.continentListCopy;
+      this.initCountrySubscription('');
       this.parentForm.reset({
          continent_name: '',
          country_name: '',
