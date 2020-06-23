@@ -9,9 +9,10 @@ import {
   BillPlanTableList_ApiResponse,
   BillPlanCurrency_ApiResponse,
   BlillPlanSumary_ApiResponse,
-  BillPlanContinent_ApiRespone,
   BillPlanCountries_ApiRespone,
-  BillPlanOperator_ApiRespone
+  BillPlanOperator_ApiRespone,
+  CreateBillPlan_ApiResponse,
+  GetNameCheck_ApiResponse
 } from '../../models/BillManagement/blillplan.models';
 
 @Injectable({
@@ -39,6 +40,16 @@ export class BillManagementService {
   BillPlanListdownload(): Observable<any> {
     return this.http.get(`${this.baseUrl}/download?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions_file)
       .pipe(map(m => m as any));
+  }
+
+  createBillPlan(body): Observable<CreateBillPlan_ApiResponse> {
+    return this.http.post(this.baseUrl + '/createbillplan', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as CreateBillPlan_ApiResponse));
+  }
+
+  GetNameCheck(data, type): Observable<GetNameCheck_ApiResponse> {
+    return this.http.get(`${this.baseUrl}/getnamecheck?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&name=${data}&type=${type}`, this.httpOptions)
+      .pipe(map(m => m as GetNameCheck_ApiResponse));
   }
 
   BillPlancurrency(): Observable<BillPlanCurrency_ApiResponse> {
