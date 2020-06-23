@@ -16,3 +16,4 @@ export class RateCardList {
     ratecard_id: number;
     ratecard_name: string;
 }
+

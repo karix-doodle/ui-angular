@@ -51,16 +51,15 @@ export class BillManagementService {
       .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
   }
 
-  getContinentList(): Observable<BillPlanContinent_ApiRespone> {
+  getContinentList(): Observable<string[]> {
     return this.http.get(`${this.baseUrl}/continent?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
-      .pipe(map((data) => data as BillPlanContinent_ApiRespone))
+      .pipe(map((data) => data as string[]));
   }
 
   getCountryList(data): Observable<BillPlanCountries_ApiRespone> {
     return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&continent=${data.continent}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanCountries_ApiRespone))
   }
-
   getCountriesList(): Observable<BillPlanCountries_ApiRespone> {
     return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanCountries_ApiRespone))
