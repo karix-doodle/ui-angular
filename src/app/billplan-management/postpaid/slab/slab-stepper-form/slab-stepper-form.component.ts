@@ -62,7 +62,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.initEditModeSubscription();
       this.initContinentSubscription();
       this.initCountrySubscription('');
-      this.initCurrencyConversation();
+      this.initCurrencyConversion();
       this.initFirstFormArrayValueChangesSubscription();
       this.initSecondFormArrayValueChangesSubscription();
 
@@ -117,7 +117,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    // ------------------- common ----------------------------------
 
    // ------------------- Parent(First) Form -------------------
-   initCurrencyConversation() {
+   initCurrencyConversion() {
       this.billMgmtService.getCurrencyRate(this.parentForm.value.billplan_currencyid).subscribe(
          (res: CurrencyRateRes) => {
             if (
