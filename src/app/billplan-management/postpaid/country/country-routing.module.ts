@@ -8,18 +8,19 @@ import { AssignedRatecardViewComponent } from './assigned-ratecard-view/assigned
 
 const countryRoutes: Routes = [
   {
-  path: 'billplan-management/postpaid/country',
-  component: CountryComponent,
-  children: [
-    {
-      path: 'create-ratecard',
-      component: CreateRatecardComponent
-    },
-    {
-      path: 'assigned-ratecard-view',
-      component: AssignedRatecardViewComponent
-    },
-  ]}
+    path: 'billplan-management/postpaid/country',
+    component: CountryComponent,
+    children: [
+      {
+        path: 'create-ratecard/:name/:cId/:bId',
+        component: CreateRatecardComponent
+      },
+      {
+        path: 'assigned-ratecard-view',
+        component: AssignedRatecardViewComponent
+      },
+    ]
+  }
 ];
 
 @NgModule({

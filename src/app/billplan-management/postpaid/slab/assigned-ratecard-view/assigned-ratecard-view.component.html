@@ -19,12 +19,12 @@
 </div>
 <div class="row btm-border second-row-det">
 
-    <div class="col-3 ">
-        <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
-    </div>
-    <div class="col-3 offset-6 text-right">
-        <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
-    </div>
+  <div class="col-3 ">
+      <input type="search" class="form-control" readonly id="" [placeholder]="ratecardname" />
+  </div>
+  <div class="col-3 offset-6 text-right">
+      <input type="search" class="form-control" id="" readonly [placeholder]="currency" />
+  </div>
 
 </div>
 
@@ -32,14 +32,14 @@
     <div class="col-7">
         <div class="row mt-1">
             <div class="col-5">
-                <label class="mr-2"><b>Total Groups</b></label>
+                <label class="mr-2"><b>Total Countries</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{totalCountries}}</b></span>
             </div>
             <div class="col-7">
                 <label class="mr-2"><b>Total Operators</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{totalOperator}}</b></span>
             </div>
         </div>
     </div>
@@ -63,36 +63,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-355</td>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-              
+            <tr *ngFor="let item of slabratecard">
+                <td class="font-weight-semi-bold">{{item.country}}}</td>
+                <td>{{item.operator}}</td>
+                <td>{{item.mcc}} + {{item.mnc}}</td>
+                <td>{{item.min}}</td>
+                <td>{{item.max}}</td>
+                <td>{{item.billing_rate}}</td>
+            <td>{{item.normalizerate}}</td>
+
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-355</td>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-              
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-355</td>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-               
-            </tr>
+
         </tbody>
     </table>
 </div>
@@ -109,34 +90,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>4%</td>
+            <tr *ngFor="let item of rowArray">
+              <td>{{item.min}}</td>
+              <td>{{item.max}}</td>
+              <td>{{item.billing_rate}}</td>
+          <td>{{item.normalizerate}}</td>
             </tr>
-            <tr>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>4%</td>
-            </tr>
-            <tr>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>4%</td>
-            </tr>
+
         </tbody>
     </table>
     <div class="col-12 my-4">
         <label class="sub-heading">Description</label>
         <textarea rows="4" class="w-100" placeholder="Enter short Description here"></textarea>
     </div>
-    
+
 </div>
 
 

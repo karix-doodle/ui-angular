@@ -1,3 +1,8 @@
-.date-select-div{
-    width:auto;
+.date-select-div {
+    width: auto;
+}
+
+.single-picker {
+    background: #3e4b5b;
+    color: #fff;
 }

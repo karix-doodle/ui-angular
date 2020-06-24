@@ -32,21 +32,25 @@
         </div>
     </div>
 </div>
+<pre>{{totalCountryForm.value |json}}</pre>
 <div class="main-container p-4">
-    <app-country-stepper-form></app-country-stepper-form>
+    <app-country-stepper-form  [parentForm]="totalCountryForm"
+    (countryList)="countryListData($event,index)"
+      [countryListEvent]="countryLisData.asObservable()"
+      [handleCountryDelete]="handleCountryDelete.asObservable()"></app-country-stepper-form>
 </div>
 <div class="row btm-border second-row-det">
     <div class="col-7">
         <div class="row mt-1">
-            <div class="col-4">
+            <!-- <div class="col-4">
                 <label class="mr-2"><b>Total Groups</b></label>
                 <span class="border-right">&nbsp;</span>
                 <span class="ml-3 badge badge-dark"><b>435</b></span>
-            </div>
+            </div> -->
             <div class="col-7">
                 <label class="mr-2"><b>Total Countries</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{countrtyCount}}</b></span>
             </div>
         </div>
     </div>
@@ -69,37 +73,26 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>345</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
+            <tr *ngFor="let item of countriesArray; let i= index;">
+                <td class="font-weight-semi-bold">{{item.country_name}}</td>
+                <td>{{item.mcc}}</td>
+                <td>{{item.billing_rate}}</td>
+                <td>{{item.normalize_rate}}</td>
+                <td [ngClass]="{'disabled': editMode == true}">
+                    <img src="assets/icons/edit-icon.svg"  (click)="editGroups(i)"alt="edit"/>
                 </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
+                <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg" class="img-fluid" (click)="deleteGroups(i,item)"  alt="delete icon" /></td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>345</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
-                </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>345</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
-                </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
-            </tr>
+            <tr *ngIf="countriesArray.length == 0">
+              <td colspan="9" class="text-center py-3 main-heading">
+                  No Data Available
+              </td>
+          </tr>
+
         </tbody>
+
+
+
     </table>
 </div>
 

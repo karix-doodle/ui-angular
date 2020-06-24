@@ -19,17 +19,17 @@
 </div>
 <div class="row btm-border second-row-det">
 
-    <div class="col-3 ">
-        <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
-    </div>
-    <div class="col-3 offset-6 text-right">
-        <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
-    </div>
+  <div class="col-3 ">
+      <input type="search" class="form-control" readonly id="" [placeholder]="ratecardname" />
+  </div>
+  <div class="col-3 offset-6 text-right">
+      <input type="search" class="form-control" id="" readonly [placeholder]="currency" />
+  </div>
 
 </div>
 
 <div class="row btm-border second-row-det">
-    <div class="col-7">
+    <!-- <div class="col-7">
         <div class="row mt-1">
             <div class="col-5">
                 <label class="mr-2"><b>Total Countries</b></label>
@@ -42,7 +42,7 @@
                 <span class="ml-3 badge badge-dark"><b>435</b></span>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="col-5 text-right">
         <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Continent, Country, Operator" />
@@ -61,20 +61,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>0.0045</td>
-                     <td>0.0080</td>
-                    <td>4%</td>
+                    <td>{{countryArray.billing_rate}}</td>
+                    <td>{{countryArray.normalizerate}}</td>
+                    <td>{{countryArray.discount_percentage}}%</td>
                 </tr>
-                <tr>
-                    <td>0.0045</td>
-                    <td>0.0080</td>
-                    <td>4%</td>
-                </tr>
-                <tr>
-                    <td>0.0045</td>
-                    <td>0.0080</td>
-                    <td>4%</td> 
-                </tr>
+
             </tbody>
         </table>
         <div class="col-12 my-4">

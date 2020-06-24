@@ -4,6 +4,7 @@ import { CustomService } from './RouteManagement/custom-route/custom.service';
 import { RouteManagementService } from './RouteManagement/route-management.service';
 import { LcrService } from './RouteManagement/LeastCostRouting/lcr.service';
 import { GenericService } from './RouteManagement/Generic/generic.service';
+import { PoolRouteService } from './RouteManagement/poolRoute/pool-route.service';
 
 
 
@@ -16,6 +17,7 @@ import { GenericService } from './RouteManagement/Generic/generic.service';
     RouteManagementService,
     GenericService,
     LcrService,
+    PoolRouteService,
     CustomService
   ]
 })

@@ -5,7 +5,17 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { } from '../../models/BillManagement/billplan-management.model';
 import { User } from '../../../shared/models/commonModels';
-import { BillPlanTableList_ApiResponse, BillPlanCurrency_ApiResponse, BlillPlanSumary_ApiResponse } from '../../models/BillManagement/blillplan.models';
+import {
+  BillPlanTableList_ApiResponse,
+  BillPlanCurrency_ApiResponse,
+  BlillPlanSumary_ApiResponse,
+  BillPlanCountries_ApiRespone,
+  BillPlanOperator_ApiRespone,
+  CreateBillPlan_ApiResponse,
+  GetNameCheck_ApiResponse,
+  CurrencyRateBody,
+  CurrencyRateRes
+} from '../../models/BillManagement/blillplan.models';
 
 @Injectable({
   providedIn: 'root'
@@ -25,15 +35,23 @@ export class BillManagementService {
   constructor(public http: HttpClient) { }
 
   getBillPlanMgmtTableList(): Observable<BillPlanTableList_ApiResponse> {
-
-    return this.http.get(`${this.baseUrl}/list?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid.toString()}`, this.httpOptions)
-    .pipe(map((data) => data as BillPlanTableList_ApiResponse))
+    return this.http.get(`${this.baseUrl}/list?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanTableList_ApiResponse))
   }
-
 
   BillPlanListdownload(): Observable<any> {
     return this.http.get(`${this.baseUrl}/download?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions_file)
       .pipe(map(m => m as any));
+  }
+
+  createBillPlan(body): Observable<CreateBillPlan_ApiResponse> {
+    return this.http.post(this.baseUrl + '/createbillplan', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as CreateBillPlan_ApiResponse));
+  }
+
+  GetNameCheck(data, type): Observable<GetNameCheck_ApiResponse> {
+    return this.http.get(`${this.baseUrl}/getnamecheck?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&name=${data}&type=${type}`, this.httpOptions)
+      .pipe(map(m => m as GetNameCheck_ApiResponse));
   }
 
   BillPlancurrency(): Observable<BillPlanCurrency_ApiResponse> {
@@ -42,9 +60,33 @@ export class BillManagementService {
   }
 
   getBillPlanMgmtSummary(): Observable<BlillPlanSumary_ApiResponse> {
-
     return this.http.get(`${this.baseUrl}/summary?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
-    .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
+      .pipe(map((data) => data as BlillPlanSumary_ApiResponse))
+  }
+
+  getContinentList(): Observable<string[]> {
+    return this.http.get(`${this.baseUrl}/continent?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
+      .pipe(map((data) => data as string[]));
+  }
+
+  getCountryList(data): Observable<BillPlanCountries_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&continent=${data.continent}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanCountries_ApiRespone))
+  }
+  getCountriesList(): Observable<BillPlanCountries_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/country?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanCountries_ApiRespone))
+  }
+
+  getOperatorList(data): Observable<BillPlanOperator_ApiRespone> {
+    return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country_code=${data.country_code}`, this.httpOptions)
+      .pipe(map((data) => data as BillPlanOperator_ApiRespone))
+  }
+  getCurrencyRate(formCurrencyId: number): Observable<CurrencyRateRes> {
+    return this.http.get(`
+    ${this.baseUrl}/currencyrate?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&fromcurrencyid=${formCurrencyId}&tocurrencyid=${environment.currencyDefault}
+    `)
+      .pipe(map((data) => data as CurrencyRateRes));
   }
 
 }

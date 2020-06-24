@@ -17,3 +17,17 @@ export function removeValidators(form: FormGroup, key: string) {
     form.get(key).clearValidators();
     form.get(key).updateValueAndValidity();
 }
+
+export function count(data, param, paramsub) {
+    const uniqueId = new Set();
+    data.forEach(element => {
+        if (paramsub != undefined && paramsub != '') {
+            element[param].forEach(elementsub => {
+                uniqueId.add(elementsub[paramsub]);
+            });
+        } else {
+            uniqueId.add(element[param]);
+        }
+    });
+    return uniqueId.size;
+}

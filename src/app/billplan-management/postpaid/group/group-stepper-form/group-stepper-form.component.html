@@ -1,105 +1,117 @@
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
     <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup">
-            <section class="mb-2">
-                <div class="row">
-                    <div class="col-3 mb-2">
-                        <label>Group Name</label>
-                        <div class="form-group">
-                            <input type="search" class="form-control" id="" placeholder="Enter Group Name" />
+            <section class="mb-2" formArrayName="groups"
+                *ngFor="let X of firstFormGroup['controls'].groups['controls']; let indexGroup=index">
+                <div formGroupName="{{indexGroup}}">
+                    {{firstFormGroup.value | json}}
+                    <div class="row">
+                        <div class="col-3 mb-2">
+                            <label>Group Name</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" formControlName="group_name"
+                                    placeholder="Enter Group Name" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="X.get('group_name').hasError('required') && groupSubmitted">
+                                    Group Name is required
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-3 mb-2 offset-6">
+                            <label>Continent(Optional)</label>
+                            <select [attr.disabled]="isEditMode ? 'disabled' : null" class="dropdown-select w-100"
+                                formControlName="continent_name">
+                                <option value="" default>Select Continent</option>
+                                <option *ngFor="let list of billPlanContinentList" [value]="list">
+                                    {{ list }}
+                                </option>
+                            </select>
                         </div>
                     </div>
-
-                    <div class="col-3 mb-2 offset-6">
-                        <label>Continent(Optional)</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>Select Continent</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="gt-ratio-div">
-                    <div class="row mb-2">
-                        <div class="col-10">
-                            <div class="row">
-                                <div class="col-3 mb-2">
-                                    <label>Country</label>
-                                    <select class="dropdown-select w-100">
-                                        <option value="" default>Select Country</option>
-                                        <option value="">option1</option>
-                                        <option value="">option2</option>
-                                        <option value="">option3</option>
-                                    </select>
-                                </div>
-                                <div class="col-3 mb-2">
-                                    <label>Operator</label>
-                                    <select class="dropdown-select w-100">
-                                        <option value="" default>Select Operator</option>
-                                        <option value="">option1</option>
-                                        <option value="">option2</option>
-                                        <option value="">option3</option>
-                                    </select>
-                                </div>
-                                <div class="col-3 mb-2">
-                                    <label>Billing Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="Enter Rate" />
+                    <div class="gt-ratio-div position-relative"
+                        [ngClass]="{'disable-wrapper' : disableWrapper == true }">
+                        <div class="row mb-2">
+                            <div class="col-10">
+                                <div formArrayName="countries">
+                                    <div
+                                        *ngFor="let Y of X['controls'].countries['controls']; let indexCountries=index">
+                                        <div formGroupName="{{indexCountries}}" class="position-relative">
+                                            <div class="row">
+                                                <div class="col-3 mb-2">
+                                                    <label>Country</label>
+                                                    <select class="dropdown-select w-100" #grpCountry
+                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mcc', $event, grpCountry.value)"
+                                                        formControlName="country_name">
+                                                        <option value="" default disabled>Select Country</option>
+                                                        <option *ngFor="let clist of billPlanCountryList"
+                                                            [value]="clist.country" [attr.data-value]="clist.mcc"
+                                                            [attr.data-code]="clist.country_code"
+                                                            [attr.data-continent]="clist.continent">
+                                                            {{ clist.country }}
+                                                        </option>
+                                                    </select>
+                                                    <span class="text-danger pl-1 f-12"
+                                                        *ngIf="Y.get('country_name').hasError('required') && groupSubmitted">
+                                                        Country is required
+                                                    </span>
+                                                </div>
+                                                <div class="col-3 mb-2">
+                                                    <label>Operator</label>
+                                                    <select class="dropdown-select w-100"
+                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mnc', $event, grpCountry.value)"
+                                                        formControlName="operator_name">
+                                                        <option value="" default disabled>Select Operator</option>
+                                                        <option
+                                                            *ngFor="let olist of operatorObj[Y.get('country_name').value]"
+                                                            value="{{olist.operator}}" [attr.data-value]="olist.mnc"
+                                                            [disabled]="olist.isSelected == true">
+                                                            {{olist.operator == 'All' ? 'All Operator' : olist.operator}}
+                                                        </option>
+                                                    </select>
+                                                    <span class="text-danger pl-1 f-12"
+                                                        *ngIf="Y.get('operator_name').hasError('required') && groupSubmitted">
+                                                        Operator is required
+                                                    </span>
+                                                </div>
+                                                <div class="col-3 mb-2">
+                                                    <label>Billing Rate (€)</label>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                            formControlName="billing_rate" placeholder="Enter Rate" />
+                                                        <span class="text-danger pl-1 f-12"
+                                                            *ngIf="Y.get('billing_rate').hasError('required') && groupSubmitted">
+                                                            Billing Rate is required
+                                                        </span>
+                                                        <span class="text-danger pl-1 f-12"
+                                                            *ngIf="Y.get('billing_rate').hasError('pattern') && Y.get('billing_rate').dirty">
+                                                            Please enter valid input
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 mb-2">
+                                                    <label>Normalize Rate (€)</label>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" disabled
+                                                            [value]="round(Y.get('billing_rate').value)"
+                                                            formControlName="normalize_rate" placeholder="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="firstFormGroup.get('groups').value[indexGroup].countries.length >= 2"
+                                                class="custom-delete add-div-btn">
+                                                <button type="button" class="btn btn-light"
+                                                    (click)="removeFromCountries(indexGroup,indexCountries)">-</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-3 mb-2">
-                                    <label>Normalize Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="0.0678" />
-                                    </div>
-                                </div>
-
+                            </div>
+                            <div class="col-2 add-div-btn">
+                                <button type="button" class="btn btn-light"
+                                    (click)="addToCountries(indexGroup)">+</button>
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-2">
-                        <div class="col-10">
-                            <div class="row">
-                                <div class="col-3 mb-2">
-                                    <label>Country</label>
-                                    <select class="dropdown-select w-100">
-                                        <option value="" default>Select Country</option>
-                                        <option value="">option1</option>
-                                        <option value="">option2</option>
-                                        <option value="">option3</option>
-                                    </select>
-                                </div>
-                                <div class="col-3 mb-2">
-                                    <label>Operator</label>
-                                    <select class="dropdown-select w-100">
-                                        <option value="" default>Select Operator</option>
-                                        <option value="">option1</option>
-                                        <option value="">option2</option>
-                                        <option value="">option3</option>
-                                    </select>
-                                </div>
-                                <div class="col-3 mb-2">
-                                    <label>Billing Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="Enter Rate" />
-                                    </div>
-                                </div>
-                                <div class="col-3 mb-2">
-                                    <label>Normalize Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="0.0678" />
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-2 add-div-btn">
-                            <button type="button" class="btn btn-light">+</button>
-                        </div>
-                    </div>
-
                 </div>
             </section>
             <div>
@@ -107,93 +119,76 @@
             </div>
             <div class="row mt-4 create-route-section">
                 <div class="col-6">
-                    <button type="button" class="btn btn-dark">ADD NEW GROUP</button>
+                    <button type="button" class="btn btn-dark" (click)="addNewGroup()">
+                        {{isEditMode ? 'UPDATE' : 'ADD NEW GROUP' }}
+                    </button>
                 </div>
                 <div class="col-6 text-right save-form-div">
-                    <button class="btn btn-basic mr-3" mat-button>Cancel</button>
-                    <button class="btn erp-intl-btn" mat-button matStepperNext>Next</button>
+                    <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
+                    <button [attr.disabled]="isEditMode && this.firstFormGroup.untouched == 0 ? 'disabled' : null"
+                        *ngIf="rowGroups.length != 0" type="button" class="btn erp-intl-btn"
+                        (click)="stepperView(stepper, 0, 1)" mat-button>Next</button>
                 </div>
             </div>
         </form>
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
+            {{secondFormGroup.value | json}}
             <section class="mb-2">
                 <div class="row ml-0">
                     <label class="col-12 pl-0">ROC - <span class="font-weight-bold ">CONTINENTS</span></label>
                     <div class="col-6">
                         <div class="row">
                             <div class=" form-group col-7 px-0">
-                                <input type="radio" name="row" id="std-bp" checked>
-                                <label for="std-bp" class="radio-inline">Copy from Default Rate Card</label>
+                                <input type="radio" name="ratetype_roc" id="default-roc" value="default"
+                                    formControlName="ratetype_roc">
+                                <label for="default-roc" class="radio-inline">Copy from Default Rate Card</label>
                                 <a routerLink="/settings/default-rate-card" class="ml-2"> <i class="fa fa-eye"></i></a>
                             </div>
                             <div class="form-group col-5 px-0">
-                                <input type="radio" name="row" id="define-cr">
-                                <label for="define-cr" class="radio-inline">Define Custom Rate</label>
+                                <input type="radio" name="ratetype_roc" id="custom-roc" value="custom"
+                                    formControlName="ratetype_roc">
+                                <label for="custom-roc" class="radio-inline">Define Custom Rate</label>
                             </div>
-
                         </div>
-
                     </div>
-                    <div class="col-6 px-0 f-14"><label class="font-weight-semi-bold">Note: If there is no specific ROC BillPlan, check Standard BillPlan and click Next</label></div>
+                    <div class="col-6 px-0 f-14">
+                        <label class="font-weight-semi-bold">Note: If there is no specific ROC BillPlan, check Standard
+                            BillPlan and click Next</label>
+                    </div>
                 </div>
 
-                <div class="gt-ratio-div roc-div">
-                    <div class="row">
+                <div class="gt-ratio-div roc-div" formArrayName="roc"
+                    *ngFor="let X of secondFormGroup['controls'].roc['controls']; let indexROC=index">
+                    <div class="row" formGroupName="{{indexROC}}">
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-4">
-                                    <label>Continent - <span class="font-weight-bold">Asia</span></label>
+                                    <label>Continent - <span
+                                            class="font-weight-bold">{{X.get('continent_name').value}}</span></label>
                                 </div>
                                 <div class="col-6">
-                                    <label>Group Name - <span class="font-weight-bold">groupname12</span></label>
+                                    <label>Group Name - <span
+                                            class="font-weight-bold">{{X.get('groupName').value}}</span></label>
                                 </div>
                                 <div class="col-12 country-count">
-                                    ALREADY ROUTED COUNTRIES : <span class="font-weight-bold">52</span>
+                                    ALREADY ROUTED COUNTRIES : <span
+                                        class="font-weight-bold">{{X.get('routedCountries').value}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-3">
                             <label>Billing Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate" />
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate"
+                                    formControlName="billing_rate" />
                             </div>
                         </div>
                         <div class="col-3">
                             <label>Normalize Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="0.0678" />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="gt-ratio-div roc-div">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-4">
-                                    <label>Continent - <span class="font-weight-bold">Asia</span></label>
-                                </div>
-                                <div class="col-6">
-                                    <label>Group Name - <span class="font-weight-bold">groupname12</span></label>
-                                </div>
-                                <div class="col-12 country-count">
-                                    ALREADY ROUTED COUNTRIES : <span class="font-weight-bold">52</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <label>Billing Rate (€)</label>
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate" />
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <label>Normalize Rate (€)</label>
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled placeholder="0.0678" />
                             </div>
                         </div>
 
@@ -206,45 +201,47 @@
             <div class="row mt-4 create-route-section">
                 <div class="col-12 text-center save-form-div">
                     <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
-                    <button class="btn erp-intl-btn" mat-button matStepperNext>Next</button>
+                    <button class="btn erp-intl-btn" mat-button (click)="updateRoc(stepper)">Next</button>
                 </div>
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup">
-        <form [formGroup]="thirdFormGroup">
+    <mat-step [stepControl]="parentForm">
+        <form [formGroup]="parentForm" (ngSubmit)="onSubmitGroupsData(parentForm.value)">
             <div class="main-container second-form-div">
                 <div class="row">
                     <label class="font-weight-bold col-12">REST OF THE WORLD (ROW)</label>
                     <div class="col-6 pr-0">
                         <div class="row">
                             <div class=" form-group col-7 pr-0">
-                                <input type="radio" name="row" id="std-bp" checked>
-                                <label for="std-bp" class="radio-inline">Copy from Default Rate Card</label>
+                                <input type="radio" name="ratetype_row" id="std-row" value="standard"
+                                    formControlName="ratetype_row">
+                                <label for="std-row" class="radio-inline">Copy from Default Rate Card</label>
                                 <a routerLink="/settings/default-rate-card" class="ml-2"> <i class="fa fa-eye"></i></a>
                             </div>
                             <div class="form-group col-5 pr-0">
-                                <input type="radio" name="row" id="define-cr">
-                                <label for="define-cr" class="radio-inline">Define Custom Rate</label>
+                                <input type="radio" name="ratetype_row" id="custom-row" value="custom"
+                                    formControlName="ratetype_row">
+                                <label for="custom-row" class="radio-inline">Define Custom Rate</label>
                             </div>
-
                         </div>
-
                     </div>
-                    <div class="col-6 p-0 text-right f-14"><label class="font-weight-semi-bold">Note: If there is no specific ROW BillPlan, copy from Default Rate Card and Save</label></div>
+                    <div class="col-6 p-0 text-right f-14"><label class="font-weight-semi-bold">Note: If there is no
+                            specific ROW BillPlan, copy from Default Rate Card and Save</label></div>
                 </div>
-                <div class="gt-ratio-div">
+                <div class="gt-ratio-div" *ngIf="parentForm.get('ratetype_row').value == 'custom'">
                     <div class="row mb-2">
                         <div class="col-5 mb-2">
                             <label>Billing Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate" />
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate"
+                                    formControlName="billing_rate_row" />
                             </div>
                         </div>
                         <div class="col-5 mb-2">
                             <label>Normalize Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled placeholder="0.0678" />
                             </div>
                         </div>
                     </div>
@@ -257,15 +254,14 @@
                         <div class="col-6">
                             <label>Discount Amount</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Discount" />
+                                <input type="text" class="form-control" id="" placeholder="Enter Discount"
+                                    formControlName="discount_rate" />
                             </div>
                         </div>
-                        <div class="col-2 discount-select">
-                            <select class="dropdown-select w-100">
-                                <option value="" default>%</option>
-                                <option value="">option1</option>
-                                <option value="">option2</option>
-                                <option value="">option3</option>
+                        <div class="col-6 discount-select">
+                            <select class="dropdown-select w-100" formControlName="discount_type">
+                                <option value="percentage" default>Percentage</option>
+                                <option value="unit">Unit</option>
                             </select>
                         </div>
                     </div>
@@ -274,15 +270,15 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <Label class="font-weight-bold">Description:</Label>
-                        <textarea rows="4" class="w-100" placeholder="Enter short Description here"></textarea>
+                        <textarea rows="4" class="w-100" placeholder="Enter short Description here"
+                            formControlName="description"></textarea>
                     </div>
                 </div>
 
                 <div class="row mt-4 create-route-section">
-
                     <div class="col-12 text-center">
                         <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
-                        <button class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
+                        <button type="submit" class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
                     </div>
                 </div>
             </div>

@@ -20,10 +20,10 @@
 <div class="row btm-border second-row-det">
 
     <div class="col-3 ">
-        <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
+        <input type="search" class="form-control" readonly id="" [placeholder]="ratecardname"  />
     </div>
     <div class="col-3 offset-6 text-right">
-        <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
+        <input type="search" class="form-control" readonly [placeholder]="currency" />
     </div>
 
 </div>
@@ -32,14 +32,14 @@
     <div class="col-7">
         <div class="row mt-1">
             <div class="col-4">
-                <label class="mr-2"><b>Total Groups</b></label>
+                <label class="mr-2"><b>Total Operators</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{totalOperator}}</b></span>
             </div>
             <div class="col-7">
                 <label class="mr-2"><b>Total Countries</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{totalCountries}}</b></span>
             </div>
         </div>
     </div>
@@ -61,30 +61,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-365</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-              
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-               
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-375</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-              
-            </tr>
+          <tr *ngFor="let item of countryArray">
+            <td class="font-weight-semi-bold">{{item.country}}</td>
+            <td>{{item.operator}}</td>
+            <td>{{item.mcc}} + {{item.mnc}}</td>
+            <td>{{item.billing_rate}}</td>
+            <td>{{item.normalizerate}}</td>
+        </tr>
+
         </tbody>
     </table>
 </div>
@@ -100,21 +84,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>0.0045</td>
-                     <td>0.0080</td>
-                    <td>4%</td>
-                </tr>
-                <tr>
-                    <td>0.0045</td>
-                    <td>0.0080</td>
-                    <td>4%</td>
-                </tr>
-                <tr>
-                    <td>0.0045</td>
-                    <td>0.0080</td>
-                    <td>4%</td> 
-                </tr>
+              <tr *ngFor="let item of rowArray">
+                <td>{{item.billing_rate}}</td>
+                 <td>{{item.normalizerate}}</td>
+                <td>{{item.discount_percentage}}%</td>
+            </tr>
             </tbody>
         </table>
         <div class="col-12 my-4">
