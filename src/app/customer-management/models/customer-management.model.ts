@@ -70,6 +70,7 @@ export class UserActivation_ApiResponse {
 export class UserRoutingConfig {
     esmeaddr: number;
     username: string;
+    msg_type: number;
     company_name: string;
     billing_type: string;
     intl_routetype: string;
@@ -80,15 +81,53 @@ export class UserRoutingConfig {
     lcr_route: string;
     gwid_primary: string;
     gwid_fallback: string;
-    pool_route_id: number;
-    pool_route_name: number;
+    pool_route_id: string;
+    pool_route_name: string;
     process_row: number;
     process_at_loss: number;
-    max_loss_per_sms: string;
+    max_loss_per_sms: number;
     is_permanent: number;
     effective_till: string;
     timezone: string;
     timezone_offset: string;
     charsetEncoding: string;
     dlrType: string;
+    lcrOnly: number;
+    comments: string;
+    notifysales: number;
+    notifyclient: number;
 };
+
+export class TimeZones {
+    id: number;
+    offset: string;
+    country_name: string;
+    timezone: string;
+};
+
+export class TimeZonesApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: TimeZones[];
+    message: string;
+};
+
+
+export class Gateway {
+    gw_id: string;
+    gw_name: string;
+};
+
+export class Pool {
+    id: string;
+    route_name: string;
+};
+
+export class ApiResponse_Generic{
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}
+
+
+
