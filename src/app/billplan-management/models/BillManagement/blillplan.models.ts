@@ -91,6 +91,26 @@ export class BillPlanCreateGroup_ApiResponse {
   data: any;
 }
 
+export class BillPlanCreateCountry_ApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  message: string;
+  data: any;
+}
+
+export class BillPlanCreateCountryOperator_ApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  message: string;
+  data: any;
+}
+export class BillPlanCreateFlatFixed_ApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  message: string;
+  data: any;
+}
+
 export class CreateBillPlan_ApiResponse {
   responsecode: number;
   responsestatus: string;
@@ -122,3 +142,141 @@ export class CurrencyRateData {
   conversion_rate: number;
 }
 // ----------------------- currency rate --------------------
+export class RateCardCountryView_ApiRResponse {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    ratecardname: string;
+    currency: string;
+    totalcountry: number;
+    countryratecard: RatecardViewCountry_Data[];
+    row: RatecardViewCountryRow_Data[];
+    description: string;
+  };
+}
+export class RatecardViewCountryRow_Data {
+  billing_rate: string;
+  normalizerate: string;
+  discount_percentage: number;
+}
+
+export class RatecardViewCountry_Data {
+  country: string;
+  mcc: number;
+  billing_rate: string;
+  normalizerate: string;
+}
+
+export class RateCardCountryOperatorView_ApiRResponse {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    ratecardname: string;
+    currency: string;
+    totalcountry: number;
+    totaloperator: number;
+    countryratecard: RatecardViewCountryOperator_Data[];
+    row: RatecardViewCountryOperatorRow_Data[];
+    description: string;
+  };
+}
+
+export class RatecardViewCountryOperatorRow_Data {
+  billing_rate: string;
+  normalizerate: string;
+  discount_percentage: number;
+}
+
+export class RatecardViewCountryOperator_Data {
+  country: string;
+  mcc: number;
+  operator: string
+  mnc: number
+  billing_rate: string;
+  normalizerate: string;
+
+}
+
+
+export class RateCardGroupView_ApiRResponse {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    ratecardname: string;
+    currency: string;
+    totalcountry: number;
+    totalgroup: number;
+    countryratecard: RatecardViewGroup_Data[];
+    row: RatecardViewGroupRow_Data[];
+    roc: RatecardViewRocGroup_Data[];
+    description: string;
+  };
+}
+
+export class RatecardViewGroupRow_Data {
+  billing_rate: string;
+  normalizerate: string;
+  discount_percentage: number;
+}
+
+export class RatecardViewGroup_Data {
+  country: string;
+  mcc: number;
+  operator: string
+  mnc: number
+  billing_rate: string;
+  normalizerate: string;
+  group_name: string;
+
+
+}
+
+export class RatecardViewRocGroup_Data {
+  country: string;
+  mcc: number;
+  operator: string
+  mnc: number
+  billing_rate: string;
+  normalizerate: string;
+
+
+
+}
+
+
+export class RateCardSlabView_ApiRResponse {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    ratecardname: string;
+    currency: string;
+    totalcountry: number;
+    totaloperator: number;
+    slabratecard: RatecardViewSlabCountry_Data[];
+    row: RatecardViewSlabRow_Data[];
+    description: string;
+  };
+}
+
+export class RatecardViewSlabRow_Data {
+  min: number
+  max: number
+  billing_rate: string;
+  normalizerate: string;
+  discount_percentage: number;
+}
+
+export class RatecardViewSlabCountry_Data {
+  country: string;
+  mcc: number;
+  operator: string
+  mnc: number
+  min: number
+  max: number
+  billing_rate: string;
+  normalizerate: string;
+
+}
+
+
+
