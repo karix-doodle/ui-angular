@@ -17,6 +17,8 @@ import { errorAlert, confirmAlert, successAlert } from '../../../shared/sweet-al
 import { addValidators, removeValidators } from '../../../shared/helper/helperFunctions';
 
 import * as moment from 'moment';
+import { BillManagementService } from '../../services/BillManagement/billplan-management.service';
+import { GetNameCheck_ApiResponse } from '../../models/BillManagement/blillplan.models';
 
 @Component({
   selector: 'app-ratecard-list',
@@ -41,7 +43,8 @@ export class RatecardListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private createAssignRateCardService: CreateAssignRateCardService
+    private createAssignRateCardService: CreateAssignRateCardService,
+    private billplanListService: BillManagementService,
   ) {
     this.params = {
       type: 'dateOnly',
@@ -153,9 +156,32 @@ export class RatecardListComponent implements OnInit {
 
   onrateCardSearchFormSubmit(data) {
     if (data.ratecardid == '') {
-      this.createRatecard(data)
+      this.nameCheck(data);
     } else {
       this.assignRatecard(data)
+    }
+  }
+
+  nameCheck(data) {
+    if (data !== '') {
+      this.billplanListService.GetNameCheck(data.ratecardname, 'ratecard').subscribe(
+        (res: GetNameCheck_ApiResponse) => {
+          if (
+            res.responsestatus === environment.APIStatus.success.text &&
+            res.responsecode > environment.APIStatus.success.code
+          ) {
+            this.createRatecard(data);
+          } else if (
+            res.responsestatus === environment.APIStatus.error.text &&
+            res.responsecode < environment.APIStatus.error.code
+          ) {
+            errorAlert(res.message, res.responsestatus);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          errorAlert(error.message, error.statusText);
+        }
+      );
     }
   }
 
