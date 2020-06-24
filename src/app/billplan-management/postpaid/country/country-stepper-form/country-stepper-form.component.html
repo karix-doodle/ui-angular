@@ -3,7 +3,9 @@
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup" (ngSubmit)="addToParentForm()">
       <section class="mb-2">
+        <pre>{{firstFormGroup.value |json}}</pre>
         <div class="gt-ratio-div">
+
           <div class="row mb-2">
 
             <div  class="col-12" formArrayName="countries" *ngFor="let count of countryControl; let i = index">
@@ -11,10 +13,11 @@
                 <div class="col-4 mb-2">
                   <label>Country</label>
 
-                  <select [attr.disabled]="isEditMode ? 'disabled' : null" class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode"
-                  (click)="handleCountryOperator( i, 'mcc', $event)">
+                  <select class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode" #country
+                  (click)="handleCountryOperator( i, 'mcc', $event , country.value)">
                     <option value="null" disabled>Select country</option>
-                    <option *ngFor="let cnt of billPlanCountryList" [attr.data-value]="cnt.mcc" [value]="cnt.country">
+                    <option *ngFor="let cnt of billPlanCountryList" [attr.data-value]="cnt.mcc" [value]="cnt.country"
+                    [disabled]="cnt.isSelected == true">
                       {{ cnt.country }}
                     </option>
                   </select>
@@ -55,8 +58,8 @@
           </button>
         </div>
         <div class="col-6 text-right save-form-div">
-          <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
-          <button type="button" class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
+          <button type="button"  class="btn btn-basic mr-3" mat-button>Cancel</button>
+          <button type="button"  class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
             Next
           </button>
         </div>

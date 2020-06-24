@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BillplanFlatFixedService } from 'src/app/billplan-management/services/BillManagement/billplan-country-flat-fixed/billplan-flat-fixed.service';
+import { BillPlanCreateFlatFixed_ApiResponse } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { successAlert, errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-ratecard',
@@ -26,7 +32,9 @@ export class CreateRatecardComponent implements OnInit {
   //   "discount_type": "string",
   //   "description": "string"
   // }
-  constructor( private formBuilder: FormBuilder) { }
+  constructor( private formBuilder: FormBuilder,
+    private billplanflat: BillplanFlatFixedService,
+    private router: Router) { }
 
   ngOnInit() {
   this.fixedRateFrom = this.formBuilder.group({
@@ -44,7 +52,18 @@ export class CreateRatecardComponent implements OnInit {
 
   onSubmit(){
     if(this.fixedRateFrom.valid){
-      console.log(this.fixedRateFrom.value,'23456')
+      this.billplanflat.BillPlanCreate(this.fixedRateFrom.value).subscribe(
+        (res: BillPlanCreateFlatFixed_ApiResponse) => {
+           if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+              successAlert(res.message, res.responsestatus)
+              this.router.navigate(['billplan-management']);
+           } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+              errorAlert(res.message, res.responsestatus)
+           }
+        }, (error: HttpErrorResponse) => {
+           errorAlert(error.message, error.statusText)
+        }
+     );
     }
   }
 

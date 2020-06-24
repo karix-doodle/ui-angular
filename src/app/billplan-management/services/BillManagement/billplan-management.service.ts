@@ -12,7 +12,9 @@ import {
   BillPlanCountries_ApiRespone,
   BillPlanOperator_ApiRespone,
   CreateBillPlan_ApiResponse,
-  GetNameCheck_ApiResponse
+  GetNameCheck_ApiResponse,
+  CurrencyRateBody,
+  CurrencyRateRes
 } from '../../models/BillManagement/blillplan.models';
 
 @Injectable({
@@ -79,6 +81,12 @@ export class BillManagementService {
   getOperatorList(data): Observable<BillPlanOperator_ApiRespone> {
     return this.http.get(`${this.baseUrl}/operator?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&country_code=${data.country_code}`, this.httpOptions)
       .pipe(map((data) => data as BillPlanOperator_ApiRespone))
+  }
+  getCurrencyRate(formCurrencyId: number): Observable<CurrencyRateRes> {
+    return this.http.get(`
+    ${this.baseUrl}/currencyrate?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&fromcurrencyid=${formCurrencyId}&tocurrencyid=${environment.currencyDefault}
+    `)
+      .pipe(map((data) => data as CurrencyRateRes));
   }
 
 }

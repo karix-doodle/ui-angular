@@ -35,7 +35,9 @@
 <pre>{{totalCountryForm.value |json}}</pre>
 <div class="main-container p-4">
     <app-country-stepper-form  [parentForm]="totalCountryForm"
-    (countryList)="countryListData($event,index)"   [countryListEvent]="countryLisData.asObservable()"></app-country-stepper-form>
+    (countryList)="countryListData($event,index)"
+      [countryListEvent]="countryLisData.asObservable()"
+      [handleCountryDelete]="handleCountryDelete.asObservable()"></app-country-stepper-form>
 </div>
 <div class="row btm-border second-row-det">
     <div class="col-7">
@@ -76,10 +78,10 @@
                 <td>{{item.mcc}}</td>
                 <td>{{item.billing_rate}}</td>
                 <td>{{item.normalize_rate}}</td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" (click)="editGroups(i)"alt="edit"/>
+                <td [ngClass]="{'disabled': editMode == true}">
+                    <img src="assets/icons/edit-icon.svg"  (click)="editGroups(i)"alt="edit"/>
                 </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" (click)="deleteGroups(i)" alt="delete icon" /></td>
+                <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg" class="img-fluid" (click)="deleteGroups(i,item)"  alt="delete icon" /></td>
             </tr>
             <tr *ngIf="countriesArray.length == 0">
               <td colspan="9" class="text-center py-3 main-heading">

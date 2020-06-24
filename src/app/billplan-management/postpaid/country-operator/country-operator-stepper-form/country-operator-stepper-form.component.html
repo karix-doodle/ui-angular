@@ -8,10 +8,10 @@
               <div class="row" [formGroupName]="i">
                 <div class="col-3 mb-2">
                   <label>Country</label>
-                  <select [attr.disabled]="isEditMode ? 'disabled' : null" class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode"
-                    (click)="handleCountryOperator(i, 'mcc', $event)" (change)="getCountryBasedOperator(count.value['country_name'])" >
-                    <option value="null" disabled>Select country</option>
-                    <option *ngFor="let cnt of billPlanCountryList" [attr.data-value]="cnt.mcc" [value]="cnt.country">
+                  <select #country class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode"
+                    (click)="handleCountryOperator(i, 'mcc', $event, country.value)"  >
+                    <option value="" disabled>Select country</option>
+                    <option *ngFor="let cnt of billPlanCountryList"  [attr.data-code]="cnt.country_code"  [attr.data-value]="cnt.mcc" [value]="cnt.country">
                       {{ cnt.country}}
                     </option>
                   </select>
@@ -25,9 +25,11 @@
                 <div class="col-3 mb-2">
                   <label>Operator</label>
                   <select class="dropdown-select w-100" formControlName="operator_name"
-                  (click)="handleCountryOperator( i, 'mnc', $event)">
-                    <option value="null" disabled>Select Operator</option>
-                    <option *ngFor="let cnt of operatorList" [attr.data-value]="cnt.mnc" [value]="cnt.operator">
+                  (click)="handleCountryOperator( i, 'mnc', $event, country.value)">
+                    <option value="" disabled>Select Operator</option>
+                    <option *ngFor="let cnt of operatorObj[count.get('country_name').value]"
+                   [attr.data-value]="cnt.mnc" [value]="cnt.operator"
+                    [disabled]="cnt.isSelected == true">
                       {{ cnt.operator }}
                     </option>
                   </select>
@@ -69,7 +71,7 @@
         </div>
         <div class="col-6 text-right save-form-div">
           <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
-          <button type="button" class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
+          <button type="button"  class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
             Next
           </button>
         </div>
