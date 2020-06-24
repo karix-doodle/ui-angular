@@ -108,6 +108,10 @@
                 Bill Plan Name is required
               </span>
               <span class="text-danger pl-1 f-12"
+                *ngIf="createBillPlanFormGroup.get('billplan_name').hasError('pattern') && isCreateValid">
+                Bill Plan Name is not valid input
+              </span>
+              <span class="text-danger pl-1 f-12"
                 *ngIf="createBillPlanFormGroup.get('billplan_name').dirty && isNameCheck">
                 Bill Plan Name is already exists
               </span>

@@ -169,7 +169,16 @@ export class BillplanListComponent implements OnInit {
 
   onSubmitCreateBillPlan(data) {
     this.isCreateValid = true;
-    if (this.createBillPlanFormGroup.invalid || !this.createBillPlanFormGroup.pristine) {
+    if (!this.createBillPlanFormGroup.get('billplan_name').pristine) {
+      return
+    }
+    // for (let el in this.createBillPlanFormGroup.controls) {
+    //   if (this.createBillPlanFormGroup.controls[el].errors) {
+    //     console.log(el, 'asdasd')
+    //   }
+    // }
+    // console.log(this.createBillPlanFormGroup, this.createBillPlanFormGroup.get('billplan_name').pristine, 'asdasd')
+    if (this.createBillPlanFormGroup.invalid) {
       return;
     } else {
       this.isCreateValid = false;
