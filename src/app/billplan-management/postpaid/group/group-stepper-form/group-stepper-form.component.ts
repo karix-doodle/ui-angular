@@ -187,7 +187,7 @@ export class GroupStepperFormComponent implements OnInit {
    }
 
    round(data) {
-      return data * 0.0003
+      return data
    }
 
    getOperatorList(value, name) {

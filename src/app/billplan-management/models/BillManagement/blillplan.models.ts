@@ -115,7 +115,12 @@ export class CreateBillPlan_ApiResponse {
   responsecode: number;
   responsestatus: string;
   message: string;
-  data: any;
+  data: CreateBillPlan_Data;
+}
+
+export class CreateBillPlan_Data {
+  billplan_id: number;
+  billplan_name: string;
 }
 
 export class GetNameCheck_ApiResponse {

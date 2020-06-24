@@ -188,9 +188,9 @@ export class BillplanListComponent implements OnInit {
             successAlert(res.message, res.responsestatus)
             this.closeCBP()
             if (data.billing_type == 'Postpaid') {
-              // this.router.navigate(['billplan-management-postpaid']);
+              this.router.navigate(['billplan-management-postpaid/', res.data.billplan_id]);
             } else {
-              // this.router.navigate(['billplan-management-prepaid']);
+              this.router.navigate(['billplan-management-prepaid/', res.data.billplan_id]);
             }
           } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
             errorAlert(res.message, res.responsestatus)
