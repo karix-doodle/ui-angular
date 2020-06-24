@@ -36,7 +36,7 @@ export class CreateRatecardComponent implements OnInit {
       loggedinusername: [environment.loggedinusername],
       loggedinempid: [environment.loggedinempid],
       billplan_id: ['2'],
-      billplan_currencyid: ['13'],
+      billplan_currencyid: [13],
       ratecard_type: ['slab'],
       ratecard_name: ['slabTest8'],
       continent_name: [''],

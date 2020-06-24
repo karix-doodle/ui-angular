@@ -104,3 +104,21 @@ export class GetNameCheck_ApiResponse {
   message: string;
   data: any;
 }
+
+// ----------------------- currency rate --------------------
+export class CurrencyRateBody {
+  loggedinusername: string;
+  loggedinempid: number;
+  fromcurrencyid: number;
+  tocurrencyid: number;
+}
+export class CurrencyRateRes {
+  responsecode: number;
+  responsestatus: string;
+  data: CurrencyRateData;
+  message?: string;
+}
+export class CurrencyRateData {
+  conversion_rate: number;
+}
+// ----------------------- currency rate --------------------

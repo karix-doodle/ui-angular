@@ -10,11 +10,13 @@ import { BillManagementService } from '../../../services/BillManagement/billplan
 import {
    BillPlanContinent_ApiRespone, BillPlanCountries_ApiRespone, BillPlanCountries_Data,
    BillPlanOperator_ApiRespone,
-   BillPlanOperator_Data
+   BillPlanOperator_Data,
+   CurrencyRateRes
 } from '../../../models/BillManagement/blillplan.models';
 import { environment } from '../../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
    selector: 'app-slab-stepper-form',
@@ -39,6 +41,8 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    countriesList: BillPlanCountries_Data[];
    // continentListCopy: BillPlanCountries_Data[];
    operatorsList: BillPlanOperator_Data[];
+   conversionRate: number;
+   focusedFormArrayIndex: number;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -53,10 +57,16 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    ngOnInit() {
       this.firstStepSubmitted = false;
       this.secondStepSubmitted = false;
+      this.focusedFormArrayIndex = 0;
       this.initSecondForm();
       this.initEditModeSubscription();
       this.initContinentSubscription();
       this.initCountrySubscription('');
+      this.initCurrencyConversation();
+      this.initFirstFormArrayValueChangesSubscription();
+      this.initSecondFormArrayValueChangesSubscription();
+
+
    }
 
    // ------------------- common -------------------
@@ -94,9 +104,56 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       }
 
    }
+   setIndex(index) {
+      // on bill rate card gain focus
+      // console.log(index);
+      this.focusedFormArrayIndex = index;
+   }
+   onBlur(index) {
+      // on bill rate card lose focus
+      // console.log(index);
+      this.focusedFormArrayIndex = undefined;
+   }
    // ------------------- common ----------------------------------
 
    // ------------------- Parent(First) Form -------------------
+   initCurrencyConversation() {
+      this.billMgmtService.getCurrencyRate(this.parentForm.value.billplan_currencyid).subscribe(
+         (res: CurrencyRateRes) => {
+            if (
+               res.responsestatus === environment.APIStatus.success.text &&
+               res.responsecode > environment.APIStatus.success.code
+            ) {
+               this.conversionRate = +res.data.conversion_rate;
+               // console.log(this.conversionRate);
+            } else if (
+               res.responsestatus === environment.APIStatus.error.text &&
+               res.responsecode < environment.APIStatus.error.code
+            ) {
+               errorAlert(res.message, res.responsestatus);
+            }
+         }, (error: HttpErrorResponse) => {
+            errorAlert(error.message, error.statusText);
+         }
+      );
+   }
+   initFirstFormArrayValueChangesSubscription() {
+      const slabs = this.firstFormArray;
+      this.sub = slabs.valueChanges
+         .pipe(
+            debounceTime(100),
+            distinctUntilChanged()
+         )
+         .subscribe(data => {
+            // console.log(data[this.focusedFormArrayIndex]);
+            if (data[this.focusedFormArrayIndex] !== undefined) {
+               slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
+                  data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
+                  , { onlySelf: true }
+               );
+            }
+         });
+   }
    initContinentSubscription() {
       this.billMgmtService.getContinentList()
          .subscribe((res: string[]) => {
@@ -337,6 +394,23 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          slabs.at(index - 1).patchValue({ max });
          slabs.removeAt(index);
       }
+   }
+   initSecondFormArrayValueChangesSubscription() {
+      const slabs = this.secondFormArray;
+      this.sub = slabs.valueChanges
+         .pipe(
+            debounceTime(100),
+            distinctUntilChanged()
+         )
+         .subscribe(data => {
+            // console.log(data[this.focusedFormArrayIndex]);
+            if (data[this.focusedFormArrayIndex] !== undefined) {
+               slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
+                  data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
+                  , { onlySelf: true }
+               );
+            }
+         });
    }
    onSecondStepSubmit() {
       this.secondStepSubmitted = true;

@@ -20,7 +20,7 @@
                     <div class="col-3  mb-2">
                         <label>Operator</label>
                         <select #oper class="dropdown-select w-100" formControlName="operator_name"
-                        (change)="operatorDropOnChange(oper.value)">
+                            (change)="operatorDropOnChange(oper.value)">
                             <option value="" disabled>Select Operator</option>
                             <!-- <ng-container *ngIf="operatorsList !== null"> -->
                             <option *ngFor="let obj of operatorsList" [value]="obj.operator">
@@ -73,7 +73,8 @@
                                                 <label>Billing Rate (€)</label>
                                                 <div class="form-group">
                                                     <input type="number" class="form-control" placeholder="Enter Rate"
-                                                        formControlName="billing_rate" />
+                                                        formControlName="billing_rate" (focus)="setIndex(i)"
+                                                        (blur)="onBlur()" />
                                                 </div>
                                                 <span class="text-danger pl-1 f-12"
                                                     *ngIf="!slab.get('billing_rate').valid && firstStepSubmitted ">
@@ -83,7 +84,7 @@
                                             <div class="col-3 mb-2">
                                                 <label>Normalize Rate (€)</label>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control" placeholder="0.0678"
+                                                    <input type="number" class="form-control"
                                                         formControlName="normalize_rate" [readonly]="true" />
                                                 </div>
                                             </div>
@@ -175,7 +176,8 @@
                                                 <label>Billing Rate (€)</label>
                                                 <div class="form-group">
                                                     <input type="number" class="form-control" placeholder="Enter Rate"
-                                                        formControlName="billing_rate" />
+                                                        formControlName="billing_rate" (focus)="setIndex(i)"
+                                                        (blur)="onBlur()" />
                                                 </div>
                                                 <span class="text-danger pl-1 f-12"
                                                     *ngIf="!slab.get('billing_rate').valid && secondStepSubmitted">
