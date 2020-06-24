@@ -39,6 +39,7 @@ export class RatecardListComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private router: Router,
     private activeRoute: ActivatedRoute,
     private createAssignRateCardService: CreateAssignRateCardService
   ) {
@@ -152,10 +153,8 @@ export class RatecardListComponent implements OnInit {
 
   onrateCardSearchFormSubmit(data) {
     if (data.ratecardid == '') {
-      addValidators(this.rateCardSearchForm, 'ratecardid')
       this.createRatecard(data)
     } else {
-      removeValidators(this.rateCardSearchForm, 'ratecardid')
       this.assignRatecard(data)
     }
   }
@@ -196,7 +195,7 @@ export class RatecardListComponent implements OnInit {
     if (this.rateCardSearchForm.invalid) {
       return;
     } else {
-      let pageURL = ''
+      let pageURL = '';
       switch (data.ratecardtype) {
         case 'country':
           pageURL = '/billplan-management/postpaid/country/create-ratecard/'
@@ -214,7 +213,8 @@ export class RatecardListComponent implements OnInit {
           pageURL = '/billplan-management/postpaid/slab/create-ratecard/'
           break;
       }
-      pageURL = pageURL + data.ratecardname;
+      pageURL = pageURL + data.ratecardname + '/' + 13 + '/' + data.billplanid;
+      this.router.navigate([pageURL]);
     }
   }
 

@@ -14,7 +14,7 @@ const routes: Routes = [
 
     children: [
       {
-        path: 'create-ratecard',
+        path: 'create-ratecard/:name/:cId/:bId',
         component: CreateRatecardComponent
       },
       {

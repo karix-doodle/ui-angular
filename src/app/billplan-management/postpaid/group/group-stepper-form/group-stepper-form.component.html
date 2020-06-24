@@ -9,7 +9,7 @@
                         <div class="col-3 mb-2">
                             <label>Group Name</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" formControlName="group_name"
+                                <input type="text" class="form-control" formControlName="group_name"
                                     placeholder="Enter Group Name" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="X.get('group_name').hasError('required') && groupSubmitted">
@@ -76,7 +76,7 @@
                                                 <div class="col-3 mb-2">
                                                     <label>Billing Rate (€)</label>
                                                     <div class="form-group">
-                                                        <input type="search" class="form-control"
+                                                        <input type="text" class="form-control"
                                                             formControlName="billing_rate" placeholder="Enter Rate" />
                                                         <span class="text-danger pl-1 f-12"
                                                             *ngIf="Y.get('billing_rate').hasError('required') && groupSubmitted">
@@ -91,7 +91,7 @@
                                                 <div class="col-3 mb-2">
                                                     <label>Normalize Rate (€)</label>
                                                     <div class="form-group">
-                                                        <input type="number" class="form-control" disabled
+                                                        <input type="text" class="form-control" disabled
                                                             [value]="round(Y.get('billing_rate').value)"
                                                             formControlName="normalize_rate" placeholder="" />
                                                     </div>
@@ -181,14 +181,14 @@
                         <div class="col-3">
                             <label>Billing Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate"
                                     formControlName="billing_rate" />
                             </div>
                         </div>
                         <div class="col-3">
                             <label>Normalize Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" disabled placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled placeholder="0.0678" />
                             </div>
                         </div>
 
@@ -234,14 +234,14 @@
                         <div class="col-5 mb-2">
                             <label>Billing Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate"
                                     formControlName="billing_rate_row" />
                             </div>
                         </div>
                         <div class="col-5 mb-2">
                             <label>Normalize Rate (€)</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" disabled placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled placeholder="0.0678" />
                             </div>
                         </div>
                     </div>
@@ -254,7 +254,7 @@
                         <div class="col-6">
                             <label>Discount Amount</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Discount"
+                                <input type="text" class="form-control" id="" placeholder="Enter Discount"
                                     formControlName="discount_rate" />
                             </div>
                         </div>
