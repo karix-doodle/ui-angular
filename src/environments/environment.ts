@@ -40,7 +40,8 @@ export const environment = {
   charsetEncode: ['GSM','ISO-8859-1','ASCII'],
   defaultCharsetEncode : 'GSM',
   dlrType: ['No DLR','Handset DLR','SMSC DLR'],
-  defaultDlrType : 'Handset DLR'
+  customerTypes : ['Direct','Premium','Wholesale'],
+  dateTimePickerTimeDifference : 10
 };
 
 /*
