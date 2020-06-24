@@ -143,7 +143,7 @@ export class BillplanListComponent implements OnInit {
 
   nameCheck(data) {
     if (data != '') {
-      this.billplanListService.GetNameCheck(data, true).subscribe(
+      this.billplanListService.GetNameCheck(data, 'billplan').subscribe(
         (res: GetNameCheck_ApiResponse) => {
           if (
             res.responsestatus === environment.APIStatus.success.text &&

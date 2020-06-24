@@ -19,16 +19,48 @@ export class RateCardList {
 
 
 // -----------------------delete ratecard form billplan--------------
-export class DeteletRatecardBody {
-    loggedinusername: string;
-    loggedinempid: number;
-    billplanid: number;
-    ratecardid: number;
-}
 export class DeleteRatecardRes {
     responsecode: number;
     responsestatus: string;
-    messgae: string;
+    message: string;
 }
 // -----------------------delete ratecard form billplan--------------
 
+
+export class BillPlanDetailsView_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: BillPlanDetailsView_Data;
+    message?: string;
+}
+export class BillPlanDetailsView_Data {
+    data: BillPlanDetailsView_Data;
+    billplanid: number;
+    billplanname: string;
+    ratecardtype: string;
+    billingtype: string;
+    createdby: string;
+    date: Date;
+    time: string;
+    isratecardtypeenabled: boolean
+    tabledata: BillPlanDetailsView_TableDataList[]
+}
+export class BillPlanDetailsView_TableDataList {
+    billplanid: number;
+    ratecardid: number;
+    ratecardname: string;
+    ratecardtype: string;
+    uploadby: string;
+    uploaduser: string;
+    uploaddate: Date;
+    uploadtime: string;
+    fromeffectivedate: Date;
+    toeffectivedate: string
+}
+
+
+export class AssigendRateCard_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+}

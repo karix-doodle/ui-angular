@@ -186,6 +186,10 @@ export class GroupStepperFormComponent implements OnInit {
       );
    }
 
+   round(data) {
+      return data
+   }
+
    getOperatorList(value, name) {
       let data = {
          country_code: value

@@ -14,6 +14,10 @@ export class CalendarPickerComponent implements OnInit {
   public date: any;
 
   selected: any;
+  autoApply: boolean = false
+  singleDatePicker: boolean = false
+  showCustomRangeLabel: boolean = true
+  linkedCalendars: boolean = true
 
   alwaysShowCalendars: boolean;
   ranges: any = {
@@ -26,14 +30,32 @@ export class CalendarPickerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selected = {
-      startDate: this.params.fromdate,
-      endDate: this.params.todate
+    if (this.params['type'] == 'dateOnly') {
+      this.ranges = {}
+      this.autoApply = true
+      this.singleDatePicker = true
+      this.showCustomRangeLabel = false
+      this.linkedCalendars = false
+      this.selected = this.params.startdate;
+    } else {
+      this.selected = {
+        startDate: this.params.fromdate,
+        endDate: this.params.todate
+      }
     }
+
   }
 
   change(e): void {
-    this.selectDate.emit(e)
+    if (this.params['type'] != 'dateOnly') {
+      this.selectDate.emit(e)
+    }
+  }
+
+  eventClicked(e): void {
+    if (this.params['type'] == 'dateOnly') {
+      this.selectDate.emit(e)
+    }
   }
 
 }

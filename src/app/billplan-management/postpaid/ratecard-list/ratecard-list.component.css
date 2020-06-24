@@ -7,9 +7,8 @@
 }
 
 .delete-icon {
-    display: none
+    display: none;
 }
-
 
 /* searchSuggestion */
 
@@ -18,8 +17,8 @@
 }
 
 .filter-select-list {
-    display      : block;
-    padding      : 5px 0;
+    display: block;
+    padding: 5px 0;
     /* border-top: 1px solid #ddd; */
 }
 
@@ -29,38 +28,37 @@
 } */
 
 .filter-select-list .pool-tags {
-    display     : block;
-    font-size   : 12px;
-    line-height : 16px;
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
     padding-left: 0;
 }
 
 .filter-select-list .rateCard-name {
-    display          : inline-block;
+    display: inline-block;
     /* vertical-align: middle; */
-    font-size        : 16px;
-    line-height      : 5px;
-    padding-left     : 6px;
+    font-size: 16px;
+    line-height: 5px;
+    padding-left: 6px;
 }
 
 .search-suggestion-wrapper {
-    width   : 100%;
-    display : inline-block;
+    width: 100%;
+    display: inline-block;
     position: relative;
 }
 
-.search-suggestion-input:hover+.pad-r-3 {
+.search-suggestion-input:hover + .pad-r-3 {
     display: block !important;
 }
 
-.search-suggestion-input:placeholder-shown+.pad-r-3 {
+.search-suggestion-input:placeholder-shown + .pad-r-3 {
     display: none !important;
 }
 
-
 .pad-r-3 {
     padding-left: 3px;
-    display     : none;
+    display: none;
 }
 
 .pad-r-3:hover {
@@ -68,17 +66,17 @@
 }
 
 .suggestion-select {
-    width           : 98%;
-    max-height      : 150px;
-    color           : white;
+    width: 98%;
+    max-height: 150px;
+    color: white;
     background-color: #3e4b5b;
-    display         : block;
-    padding         : 0 10px;
-    position        : absolute;
-    z-index         : 45;
-    box-shadow      : 0px 2px 7px -2px #000;
-    top             : 100%;
-    overflow-y      : auto;
+    display: block;
+    padding: 0 10px;
+    position: absolute;
+    z-index: 45;
+    box-shadow: 0px 2px 7px -2px #000;
+    top: 100%;
+    overflow-y: auto;
 }
 
 .filter-select-list:first-child {

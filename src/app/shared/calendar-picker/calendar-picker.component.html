@@ -1,3 +1,4 @@
-<input type="text" class="form-control date-select-div" ngxDaterangepickerMd [(ngModel)]="selected"
-  [showCustomRangeLabel]="true" [ranges]="ranges" [linkedCalendars]="true" placeholder="&#xf073;"
-  (change)="change($event)" />
+<input style="width: 100%;" type="text" class="form-control date-select-div" ngxDaterangepickerMd
+  [singleDatePicker]="singleDatePicker" [ngClass]="{'single-picker': singleDatePicker == true}" [(ngModel)]="selected"
+  [showCustomRangeLabel]="showCustomRangeLabel" [ranges]="ranges" [linkedCalendars]="linkedCalendars"
+  [autoApply]="autoApply" placeholder="&#xf073;" (change)="change($event)" (startDateChanged)="eventClicked($event)" />

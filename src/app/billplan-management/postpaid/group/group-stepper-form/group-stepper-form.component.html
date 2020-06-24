@@ -91,8 +91,9 @@
                                                 <div class="col-3 mb-2">
                                                     <label>Normalize Rate (€)</label>
                                                     <div class="form-group">
-                                                        <input type="search" class="form-control" disabled
-                                                            formControlName="normalize_rate" placeholder="0.0678" />
+                                                        <input type="number" class="form-control" disabled
+                                                            [value]="round(Y.get('billing_rate').value)"
+                                                            formControlName="normalize_rate" placeholder="" />
                                                     </div>
                                                 </div>
                                             </div>
