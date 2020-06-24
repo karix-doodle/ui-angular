@@ -4,9 +4,11 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
 import { CreateAssignRateCardService } from '../../services/BillManagement/CreateAssignRateCard/create-assign-rate-card.service';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { RateCardSearchRes, RateCardList } from '../../models/CreateAssignRateCard/createAssignRateCard.model';
+import {
+  RateCardSearchRes, RateCardList, DeleteRatecardRes, DeteletRatecardBody
+} from '../../models/CreateAssignRateCard/createAssignRateCard.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { errorAlert } from '../../../shared/sweet-alert/sweet-alert';
+import { errorAlert, confirmAlert } from '../../../shared/sweet-alert/sweet-alert';
 
 @Component({
   selector: 'app-ratecard-list',
@@ -17,6 +19,7 @@ export class RatecardListComponent implements OnInit {
   rateCardType = 'slab';
   rateCardSearchForm: FormGroup;
   rateCardNameList: RateCardList[];
+  DeteletRatecardBodyInput: DeteletRatecardBody = new DeteletRatecardBody()
   constructor(
     private formBuilder: FormBuilder,
     private createAssignRateCardService: CreateAssignRateCardService
@@ -61,5 +64,31 @@ export class RatecardListComponent implements OnInit {
     this.rateCardSearchForm.get('ratecardname').patchValue(
       RateCard.ratecard_name, { onlySelf: true }
     );
+  }
+  delete() {
+    confirmAlert(`You won't be able to revert !`)
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.DeteletRatecardBodyInput.loggedinempid = environment.loggedinempid;
+          this.DeteletRatecardBodyInput.loggedinusername = environment.loggedinusername;
+          this.DeteletRatecardBodyInput.billplanid = 0;
+          this.DeteletRatecardBodyInput.ratecardid = 0;
+          this.createAssignRateCardService.deleteRateCardFormBillPlan(this.DeteletRatecardBodyInput).subscribe(
+            (res: DeleteRatecardRes) => {
+              if (res.responsestatus === environment.APIStatus.success.text &&
+                res.responsecode > environment.APIStatus.success.code) {
+                console.log(res);
+              } else if (
+                res.responsestatus === environment.APIStatus.error.text &&
+                res.responsecode < environment.APIStatus.error.code
+              ) {
+                errorAlert(res.messgae, res.responsestatus);
+              }
+            }, (error: HttpErrorResponse) => {
+              errorAlert(error.message, error.statusText);
+            }
+          );
+        }
+      });
   }
 }

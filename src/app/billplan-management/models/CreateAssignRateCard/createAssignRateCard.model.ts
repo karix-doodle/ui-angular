@@ -17,3 +17,18 @@ export class RateCardList {
     ratecard_name: string;
 }
 
+
+// -----------------------delete ratecard form billplan--------------
+export class DeteletRatecardBody {
+    loggedinusername: string;
+    loggedinempid: number;
+    billplanid: number;
+    ratecardid: number;
+}
+export class DeleteRatecardRes {
+    responsecode: number;
+    responsestatus: string;
+    messgae: string;
+}
+// -----------------------delete ratecard form billplan--------------
+
