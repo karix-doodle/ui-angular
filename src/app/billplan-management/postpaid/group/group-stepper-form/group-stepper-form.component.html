@@ -74,7 +74,8 @@
                                                     </span>
                                                 </div>
                                                 <div class="col-3 mb-2">
-                                                    <label>Billing Rate (€)</label>
+                                                    <label
+                                                        innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control"
                                                             formControlName="billing_rate" placeholder="Enter Rate" />
@@ -179,16 +180,21 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label>Billing Rate (€)</label>
+                            <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Rate"
                                     formControlName="billing_rate" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty">
+                                    Please enter valid input
+                                </span>
                             </div>
                         </div>
                         <div class="col-3">
                             <label>Normalize Rate (€)</label>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" disabled placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled formControlName="normalize_rate"
+                                    [value]="round(X.get('billing_rate').value)" />
                             </div>
                         </div>
 
@@ -232,7 +238,7 @@
                 <div class="gt-ratio-div" *ngIf="parentForm.get('ratetype_row').value == 'custom'">
                     <div class="row mb-2">
                         <div class="col-5 mb-2">
-                            <label>Billing Rate (€)</label>
+                            <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Rate"
                                     formControlName="billing_rate_row" />
@@ -247,7 +253,8 @@
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label class="font-weight-bold col-12">Discount in % or Amount in €</label>
+                    <label class="font-weight-bold col-12"
+                        innerHTML="Discount in % or Amount in {{currencySybmol.bCurrency.symbol}}"></label>
                 </div>
                 <div class="gt-ratio-div">
                     <div class="row">

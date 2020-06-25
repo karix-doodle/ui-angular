@@ -62,6 +62,7 @@ export class RatecardListComponent implements OnInit {
     this.rateCardSearchForm = this.formBuilder.group({
       billplanid: ['', Validators.required],
       ratecardid: [''],
+      currencyid: [''],
       effectdate: [moment().utcOffset(environment.UTC), Validators.required],
       ratecardtype: ['slab', Validators.required],
       ratecardname: ['', Validators.required],
@@ -79,6 +80,7 @@ export class RatecardListComponent implements OnInit {
           this.billPlanDetailsViewData = JSON.parse(JSON.stringify(this.billPlanDetailsViewDataRes));
           this.rateCardSearchForm.patchValue({
             billplanid: this.billPlanDetailsViewData.data.billplanid,
+            currencyid: this.billPlanDetailsViewData.data.currency_id,
             ratecardtype: this.billPlanDetailsViewData.data.ratecardtype ? this.billPlanDetailsViewData.data.ratecardtype : ''
           })
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
@@ -163,7 +165,11 @@ export class RatecardListComponent implements OnInit {
   }
 
   nameCheck(data) {
-    if (data !== '') {
+    this.rateCardValid = true;
+    if (this.rateCardSearchForm.invalid) {
+      return;
+    } else {
+      this.rateCardValid = false;
       this.billplanListService.GetNameCheck(data.ratecardname, 'ratecard').subscribe(
         (res: GetNameCheck_ApiResponse) => {
           if (
@@ -193,7 +199,6 @@ export class RatecardListComponent implements OnInit {
   }
 
   assignRatecard(data) {
-    // console.log(moment(data.effectdate).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).format('DD/MM/YYYY HH:mm:ss'))
     this.rateCardValid = true;
     if (this.rateCardSearchForm.invalid) {
       return;
@@ -239,7 +244,7 @@ export class RatecardListComponent implements OnInit {
           pageURL = '/billplan-management/postpaid/slab/create-ratecard/'
           break;
       }
-      pageURL = pageURL + data.ratecardname + '/' + 13 + '/' + data.billplanid;
+      pageURL = pageURL + data.ratecardname + '/' + data.currencyid + '/' + data.billplanid;
       this.router.navigate([pageURL]);
     }
   }

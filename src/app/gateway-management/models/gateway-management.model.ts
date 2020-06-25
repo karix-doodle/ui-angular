@@ -398,7 +398,7 @@ export class GtTimeZone_Data {
 export class GtCurrency_ApiResponse {
     responsecode: number;
     responsestatus: string;
-    data: GtCurrency_Data;
+    data: GtCurrency_Data[];
     message: string;
 }
 export class GtCurrency_Data {

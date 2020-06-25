@@ -1,17 +1,39 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { BillManagementService } from "src/app/billplan-management/services/BillManagement/billplan-management.service";
 import { count } from '../../../../shared/helper/helperFunctions'
 import { Subject } from 'rxjs';
+
+const ngHtmlParser = require('angular-html-parser');
+
+import {
+  BillPlanCurrency_ApiResponse,
+  BillPlanCurrency_Data,
+} from '../../../models/BillManagement/blillplan.models';
+
+import { successAlert, errorAlert, infoAlert } from 'src/app/shared/sweet-alert/sweet-alert';
+
+import { environment } from 'src/environments/environment';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-ratecard',
   templateUrl: './create-ratecard.component.html',
   styleUrls: ['./create-ratecard.component.css']
 })
+
 export class CreateRatecardComponent implements OnInit {
 
   typeGroupFormGroup: FormGroup;
 
+  billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
+  billPlanCurrencyData: BillPlanCurrency_Data;
+
+  currencySybmol: object = {
+    bCurrency: '',
+    nCurrency: ''
+  }
   row_groups = []
   countryCount = 0
   searchvalue: string = ''
@@ -19,22 +41,72 @@ export class CreateRatecardComponent implements OnInit {
 
   groupListData: Subject<[FormArray, number]> = new Subject<[FormArray, number]>();
   handleGroupsDelete: Subject<[string, number]> = new Subject<[string, number]>();
+  handlecurrencyList: Subject<[object]> = new Subject<[object]>();
 
   constructor(
+    private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
+    private billPlanservice: BillManagementService,
   ) {
     this.createGroupForm();
   }
 
   ngOnInit() {
+    this.getBillPlanCurrency();
+  }
+
+  getBillPlanCurrency() {
+    this.billPlanservice.BillPlancurrency().subscribe(
+      (res: BillPlanCurrency_ApiResponse) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.billPlanCurrencyRes = res;
+          this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
+          let bcurrency = {}
+          let ncurrency = {}
+          this.billPlanCurrencyRes.data.filter((item) => {
+            if (item.currency_id == this.activeRoute.snapshot.params.cId) {
+              bcurrency = {
+                symbol: item.currency_symbol,
+                id: item.currency_id
+              }
+            }
+            if (item.currency_id == environment.currencyDefault) {
+              ncurrency = {
+                symbol: item.currency_symbol,
+                id: item.currency_id
+              }
+            }
+          })
+
+          this.currencySybmol = {
+            bCurrency: bcurrency,
+            nCurrency: ncurrency
+          }
+
+          this.handlecurrencyList.next([this.currencySybmol]);
+
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.responsestatus);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+      }
+    );
   }
 
   private createGroupForm() {
     this.typeGroupFormGroup = this.formBuilder.group({
-      billplan_id: ['12', Validators.required],
-      billplan_currencyid: ['13', [Validators.required]],
+      billplan_id: [this.activeRoute.snapshot.params.bId, Validators.required],
+      billplan_currencyid: [this.activeRoute.snapshot.params.cId, [Validators.required]],
       ratecard_type: ['Group', [Validators.required]],
-      ratecard_name: [''],
+      ratecard_name: [this.activeRoute.snapshot.params.name, Validators.required],
       groups: this.formBuilder.array([this.createGroupsItem()]),
       ratetype_roc: [''],
       roc: this.formBuilder.array([this.createRocItem()]),
