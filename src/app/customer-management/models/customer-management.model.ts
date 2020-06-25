@@ -47,7 +47,11 @@ export class ExistingUsers{
     orgname: string;
     billingtype: string;
     salespersonname: string;
+    ratecardtype: string;
+    ratecardname: string;
+    ratecardid: string;
     intlaccttype: string;
+    routingtype: string;
 }
 
 

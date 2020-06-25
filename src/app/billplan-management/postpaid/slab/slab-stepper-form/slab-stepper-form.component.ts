@@ -42,7 +42,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    // continentListCopy: BillPlanCountries_Data[];
    operatorsList: BillPlanOperator_Data[];
    conversionRate: number;
-   focusedFormArrayIndex: number;
+   // focusedFormArrayIndex: number;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -57,32 +57,32 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    ngOnInit() {
       this.firstStepSubmitted = false;
       this.secondStepSubmitted = false;
-      this.focusedFormArrayIndex = 0;
+      // this.focusedFormArrayIndex = 0;
       this.initSecondForm();
       this.initEditModeSubscription();
       this.initContinentSubscription();
       this.initCountrySubscription('');
       this.initCurrencyConversion();
-      this.initFirstFormArrayValueChangesSubscription();
-      this.initSecondFormArrayValueChangesSubscription();
+      // this.initFirstFormArrayValueChangesSubscription();
+      // this.initSecondFormArrayValueChangesSubscription();
 
 
    }
 
    // ------------------- common -------------------
    createSlabsItem(min?: number, max?: number): FormGroup {
-      console.log(min, max);
+      // console.log(min, max);
       return this.formBuilder.group({
          min: min === undefined ? [1] : [min],
          max: max === undefined ?
             [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
             : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
-         billing_rate: ['', [Validators.required]],
+         billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
          normalize_rate: ['']
       });
    }
    onNext(stepper: MatStepper) {
-      console.log(this.parentForm);
+      // console.log(this.parentForm);
       if (!this.editModeState) {
          if (this.slabRouteService.previewList.length) {
             if (this.parentForm.touched || this.parentForm.dirty) {
@@ -104,15 +104,18 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       }
 
    }
-   setIndex(index) {
-      // on bill rate card gain focus
-      // console.log(index);
-      this.focusedFormArrayIndex = index;
-   }
-   onBlur(index) {
-      // on bill rate card lose focus
-      // console.log(index);
-      this.focusedFormArrayIndex = undefined;
+   // setIndex(index) {
+   //    // on bill rate card gain focus
+   //    // console.log(index);
+   //    this.focusedFormArrayIndex = index;
+   // }
+   // onBlur(index) {
+   //    // on bill rate card lose focus
+   //    // console.log(index);
+   //    this.focusedFormArrayIndex = undefined;
+   // }
+   round(data) {
+      return data * this.conversionRate;
    }
    // ------------------- common ----------------------------------
 
@@ -137,23 +140,23 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          }
       );
    }
-   initFirstFormArrayValueChangesSubscription() {
-      const slabs = this.firstFormArray;
-      this.sub = slabs.valueChanges
-         .pipe(
-            debounceTime(100),
-            distinctUntilChanged()
-         )
-         .subscribe(data => {
-            // console.log(data[this.focusedFormArrayIndex]);
-            if (data[this.focusedFormArrayIndex] !== undefined) {
-               slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
-                  data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
-                  , { onlySelf: true }
-               );
-            }
-         });
-   }
+   // initFirstFormArrayValueChangesSubscription() {
+   //    const slabs = this.firstFormArray;
+   //    this.sub = slabs.valueChanges
+   //       .pipe(
+   //          debounceTime(100),
+   //          distinctUntilChanged()
+   //       )
+   //       .subscribe(data => {
+   //          // console.log(data[this.focusedFormArrayIndex]);
+   //          if (data[this.focusedFormArrayIndex] !== undefined) {
+   //             slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
+   //                data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
+   //                , { onlySelf: true }
+   //             );
+   //          }
+   //       });
+   // }
    initContinentSubscription() {
       this.billMgmtService.getContinentList()
          .subscribe((res: string[]) => {
@@ -194,7 +197,10 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.countriesList.forEach(element => {
          if (element.country === countryName) {
             country = element;
-            this.parentForm.patchValue({ mcc: element.mcc }); // add mcc
+            this.parentForm.patchValue({
+               mcc: element.mcc,
+               operator_name: ''
+            }); // add mcc
          }
       });
       // console.log(country);
@@ -214,7 +220,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          });
    }
    operatorDropOnChange(operatorName: string) {
-      console.log(operatorName);
+      // console.log(operatorName);
       this.operatorsList.forEach(element => {
          if (element.operator === operatorName) {
             this.parentForm.patchValue({ mnc: element.mnc }); // add mnc
@@ -227,7 +233,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          this.editModeState = value; // value = true;
          this.editModeIndex = index;
          this.initOperatorSubscription(editCountry);
-         console.log(this.editModeIndex);
+         // console.log(this.editModeIndex);
       });
    }
    get firstFormArray(): FormArray {
@@ -281,7 +287,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                let countryOperatorAlreadExist = false;
                this.slabRouteService.previewList.forEach((element, index) => {
                   if (element.country_name === obj.country_name && element.operator_name === obj.operator_name) {
-                     console.log('index', index, this.editModeIndex);
+                     // console.log('index', index, this.editModeIndex);
                      if (index === this.editModeIndex) {
                         countryOperatorAlreadExist = false;
                      } else {
@@ -292,6 +298,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                });
                if (!countryOperatorAlreadExist) {
                   if (this.editModeState) {
+                     // console.log(obj);
                      this.slabRouteService.previewList.forEach((element, index) => {
                         if (index === this.editModeIndex) {
                            element.continent_name = obj.continent_name;
@@ -323,7 +330,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.editModeState = false;
       this.editModeIndex = undefined;
       this.slabRouteService.previewList.push(obj);
-      console.log(this.slabRouteService.previewList);
+      // console.log(this.slabRouteService.previewList);
       this.countriesListChildToParent.emit(obj);
       this.parentFormReset();
    }
@@ -395,23 +402,23 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          slabs.removeAt(index);
       }
    }
-   initSecondFormArrayValueChangesSubscription() {
-      const slabs = this.secondFormArray;
-      this.sub = slabs.valueChanges
-         .pipe(
-            debounceTime(100),
-            distinctUntilChanged()
-         )
-         .subscribe(data => {
-            // console.log(data[this.focusedFormArrayIndex]);
-            if (data[this.focusedFormArrayIndex] !== undefined) {
-               slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
-                  data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
-                  , { onlySelf: true }
-               );
-            }
-         });
-   }
+   // initSecondFormArrayValueChangesSubscription() {
+   //    const slabs = this.secondFormArray;
+   //    this.sub = slabs.valueChanges
+   //       .pipe(
+   //          debounceTime(100),
+   //          distinctUntilChanged()
+   //       )
+   //       .subscribe(data => {
+   //          // console.log(data[this.focusedFormArrayIndex]);
+   //          if (data[this.focusedFormArrayIndex] !== undefined) {
+   //             slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
+   //                data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
+   //                , { onlySelf: true }
+   //             );
+   //          }
+   //       });
+   // }
    onSecondStepSubmit() {
       this.secondStepSubmitted = true;
       if (this.secondFormGroup.value.ratetype_row === 'custom') {
@@ -444,7 +451,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.SlabCreateRateCardInput.discount_rate = this.secondFormGroup.value.discount_rate;
       this.SlabCreateRateCardInput.discount_type = this.secondFormGroup.value.discount_type;
       this.SlabCreateRateCardInput.description = this.secondFormGroup.value.description;
-      console.log(this.SlabCreateRateCardInput);
+      // console.log(this.SlabCreateRateCardInput);
       this.slabRouteService.createSlabRateCard(this.SlabCreateRateCardInput)
          .subscribe((res: SlabCreateRateCardRes) => {
             if (
@@ -452,7 +459,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                res.responsecode > environment.APIStatus.success.code
             ) {
                successAlert(res.message, res.responsestatus);
-               this.router.navigate(['billplan-management-postpaid']);
+               this.router.navigate(['billplan-management/home']);
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
                res.responsecode < environment.APIStatus.error.code

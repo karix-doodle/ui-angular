@@ -3,6 +3,7 @@ import { FormGroup, FormArray, FormBuilder, Validators } from "@angular/forms";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-create-ratecard",
@@ -16,6 +17,9 @@ export class CreateRatecardComponent implements OnInit {
   countryOperatorArray = [];
   duplicates: boolean = false;
   editMode: boolean = false;
+  billplan_id
+  billplan_currencyid
+  ratecard_name
   countryOperatorListData: Subject<[FormArray, number]> = new Subject<
     [FormArray, number]
   >();
@@ -23,22 +27,26 @@ export class CreateRatecardComponent implements OnInit {
     [string, number]
   >();
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+    private activeRoute: ActivatedRoute) {
     this.initForm();
+    this.billplan_id = +this.activeRoute.snapshot.params.bId
+    this.billplan_currencyid = +this.activeRoute.snapshot.params.cId
+    this.ratecard_name = this.activeRoute.snapshot.params.name
   }
 
   ngOnInit() {}
 
   private initForm() {
     this.totalCountryOperatorForm = this.formBuilder.group({
-      billplan_id: [12, [Validators.required]],
-      billplan_currencyid: [15, [Validators.required]],
+      billplan_id: +this.activeRoute.snapshot.params.bId,
+      billplan_currencyid: +this.activeRoute.snapshot.params.cId,
       ratecard_type: ["country-operator", [Validators.required]],
-      ratecard_name: [""],
+      ratecard_name: this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
       billing_rate_row: [null],
       discount_rate: [null],
-      discount_type: ["Percentage"],
+      discount_type: ["percentage"],
       description: [""],
       countries: this.formBuilder.array([this.countryArrayForm()]),
     });

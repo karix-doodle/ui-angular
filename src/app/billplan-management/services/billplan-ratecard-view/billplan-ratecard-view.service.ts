@@ -17,26 +17,26 @@ export class BillplanRatecardViewService {
 
   constructor(public http: HttpClient) { }
   getRatecardCountryView(data): Observable<RateCardCountryView_ApiRResponse> {
-    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${data.id}&ratecardtype=${data.type}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${Number(data.id)}&ratecardtype=${data.type}`, this.httpOptions)
       .pipe(map(m => m as RateCardCountryView_ApiRResponse));
   }
   getRatecardCountryOperatorView(data): Observable<RateCardCountryOperatorView_ApiRResponse> {
-    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${data.id}&ratecardtype=${data.type}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${Number(data.id)}&ratecardtype=${data.type}`, this.httpOptions)
       .pipe(map(m => m as RateCardCountryOperatorView_ApiRResponse));
   }
 
   getRatecardfFlatFixedView(data): Observable<RateCardCountryOperatorView_ApiRResponse> {
-    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${data.id}&ratecardtype=${data.type}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${Number(data.id)}&ratecardtype=${data.type}`, this.httpOptions)
       .pipe(map(m => m as RateCardCountryOperatorView_ApiRResponse));
   }
 
   getRatecardGroupView(data): Observable<RateCardGroupView_ApiRResponse> {
-    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${data.id}&ratecardtype=${data.type}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${Number(data.id)}&ratecardtype=${data.type}`, this.httpOptions)
       .pipe(map(m => m as RateCardGroupView_ApiRResponse));
   }
 
   getRatecardSlabView(data): Observable<RateCardSlabView_ApiRResponse> {
-    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${data.id}&ratecardtype=${data.type}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}/ratecard/view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardid=${Number(data.id)}&ratecardtype=${data.type}`, this.httpOptions)
       .pipe(map(m => m as RateCardSlabView_ApiRResponse));
   }
 

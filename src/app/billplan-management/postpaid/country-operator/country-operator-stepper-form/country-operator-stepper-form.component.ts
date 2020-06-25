@@ -87,7 +87,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     return this.formBuilder.group({
       country_name: ["", Validators.required],
       operator_name: ["", Validators.required],
-      billing_rate: ["", Validators.required],
+      billing_rate: ["", [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
       mnc: [""],
       mcc: [""],
       normalize_rate: [""],
@@ -285,6 +285,10 @@ export class CountryOperatorStepperFormComponent implements OnInit {
 
     callBackFunction();
   }
+
+  round(data) {
+    return data * 0.785
+ }
 
   reActiveOperator() {
     const countriesControl = this.getcountryControl();

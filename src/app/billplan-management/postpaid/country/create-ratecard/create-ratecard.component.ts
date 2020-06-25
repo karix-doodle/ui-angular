@@ -4,6 +4,7 @@ import { environment } from "src/environments/environment";
 import { count } from "../../../../shared/helper/helperFunctions";
 import { Subject } from "rxjs";
 import Swal from "sweetalert2";
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: "app-create-ratecard",
   templateUrl: "./create-ratecard.component.html",
@@ -15,31 +16,36 @@ export class CreateRatecardComponent implements OnInit {
   countriesArray = [];
   duplicates: boolean = false;
   editMode: boolean = false
+  billplan_id: number;
+  billplan_currencyid
+  ratecard_name
   countryLisData: Subject<[FormArray, number]> = new Subject<
     [FormArray, number]
   >();
   handleCountryDelete: Subject< number> = new Subject<
      number
   >();
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _formBuilder: FormBuilder,
+    private activeRoute: ActivatedRoute) {
     this.initForm();
+    this.billplan_id = +this.activeRoute.snapshot.params.bId
+      this.billplan_currencyid = this.activeRoute.snapshot.params.cId
+      this.ratecard_name = this.activeRoute.snapshot.params.name
+
   }
 
   ngOnInit() {}
 
   private initForm() {
     this.totalCountryForm = this._formBuilder.group({
-      loggedinusername: environment.loggedinusername,
-      loggedinempid: environment.loggedinempid,
-      billplan_id: [12, [Validators.required]],
-      billplan_currencyid: [15, [Validators.required]],
-      ratecard_type: ["country", [Validators.required]],
-      ratecard_name: [""],
+      billplan_id: +this.activeRoute.snapshot.params.bId,
+      billplan_currencyid:  +this.activeRoute.snapshot.params.cId,
+      ratecard_type: ["country"],
+      ratecard_name:  this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
       billing_rate_row: [null],
-      billing_rate: [""],
       discount_rate: [null],
-      discount_type: ["Percentage"],
+      discount_type: ["percentage"],
       description: [""],
       countries: this._formBuilder.array([this.countryArrayForm()]),
     });

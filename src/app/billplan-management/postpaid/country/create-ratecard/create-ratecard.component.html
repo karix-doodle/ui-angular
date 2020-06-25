@@ -22,17 +22,17 @@
     <div class="row">
         <div class="col-3 text-right">
             <div class="form-group">
-                <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
+                <input type="search" class="form-control"readonly [placeholder]="ratecard_name" />
             </div>
         </div>
         <div class="col-3 offset-6 text-right">
             <div class="form-group">
-                <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
+                <input type="search" class="form-control" readonly [placeholder]="billplan_currencyid" />
             </div>
         </div>
     </div>
 </div>
-<pre>{{totalCountryForm.value |json}}</pre>
+
 <div class="main-container p-4">
     <app-country-stepper-form  [parentForm]="totalCountryForm"
     (countryList)="countryListData($event,index)"
