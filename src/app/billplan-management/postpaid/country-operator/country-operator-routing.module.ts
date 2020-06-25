@@ -11,7 +11,7 @@ const routes: Routes = [
   component: CountryOperatorComponent,
   children: [
     {
-      path: 'create-ratecard',
+      path: 'create-ratecard/:name/:cId/:bId',
       component: CreateRatecardComponent
     },
     {
@@ -19,6 +19,7 @@ const routes: Routes = [
       component: AssignedRatecardViewComponent
     },
   ]}
+
 ];
 
 @NgModule({

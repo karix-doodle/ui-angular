@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -16,17 +16,21 @@ import { CmAuditLogComponent } from './cm-audit-log/cm-audit-log.component';
 import { CmShowMarginComponent } from './cm-show-margin/cm-show-margin.component';
 import { CountryOperatorListComponent } from './country-operator-list/country-operator-list.component';
 
-
 @NgModule({
   declarations: [CustomerManagementComponent, CmListComponent, CmViewComponent, CmEditComponent, CmViewLogComponent, CmAuditLogComponent, CmShowMarginComponent, CountryOperatorListComponent],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     NgbModule,
     MatTabsModule,
     CustomerManagementRoutingModule,
     CmListModule
+  ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class CustomerManagementModule { }

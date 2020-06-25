@@ -72,19 +72,25 @@
                                             <div class="col-3 mb-2">
                                                 <label>Billing Rate (€)</label>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control" placeholder="Enter Rate"
-                                                        formControlName="billing_rate" (focus)="setIndex(i)"
-                                                        (blur)="onBlur()" />
+                                                    <input type="text" class="form-control" placeholder="Enter Rate"
+                                                        formControlName="billing_rate" />
+                                                    <!-- (focus)="setIndex(i)"
+                                                        (blur)="onBlur()" -->
                                                 </div>
                                                 <span class="text-danger pl-1 f-12"
-                                                    *ngIf="!slab.get('billing_rate').valid && firstStepSubmitted ">
-                                                    Billing Rate is invalid
+                                                    *ngIf="!slab.get('billing_rate').hasError('required') && firstStepSubmitted ">
+                                                    Billing Rate is required
+                                                </span>
+                                                <span class="text-danger pl-1 f-12"
+                                                    *ngIf="slab.get('billing_rate').hasError('pattern') && slab.get('billing_rate').dirty">
+                                                    Please enter valid input
                                                 </span>
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <label>Normalize Rate (€)</label>
                                                 <div class="form-group">
                                                     <input type="number" class="form-control"
+                                                        [value]="round(slab.get('billing_rate').value)"
                                                         formControlName="normalize_rate" [readonly]="true" />
                                                 </div>
                                             </div>
@@ -112,7 +118,7 @@
                         OPERATOR'}}</button>
                 </div>
                 <div class="col-6 text-right save-form-div">
-                    <button type="button" class="btn btn-basic mr-3" [routerLink]="['/billplan-management-postpaid']"
+                    <button type="button" class="btn btn-basic mr-3" [routerLink]="['/billplan-management/home']"
                         mat-button>Cancel</button>
                     <button type="button" class="btn erp-intl-btn" mat-button (click)="onNext(stepper)">Next</button>
                     <!-- matStepperNext -->
@@ -175,19 +181,25 @@
                                             <div class="col-3 mb-2">
                                                 <label>Billing Rate (€)</label>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control" placeholder="Enter Rate"
-                                                        formControlName="billing_rate" (focus)="setIndex(i)"
-                                                        (blur)="onBlur()" />
+                                                    <input type="text" class="form-control" placeholder="Enter Rate"
+                                                        formControlName="billing_rate" />
+                                                    <!-- (focus)="setIndex(i)"
+                                                        (blur)="onBlur()" -->
                                                 </div>
                                                 <span class="text-danger pl-1 f-12"
-                                                    *ngIf="!slab.get('billing_rate').valid && secondStepSubmitted">
-                                                    Billing Rate is invalid
+                                                    *ngIf="!slab.get('billing_rate').hasError('required') && secondStepSubmitted">
+                                                    Billing Rate is required
+                                                </span>
+                                                <span class="text-danger pl-1 f-12"
+                                                    *ngIf="slab.get('billing_rate').hasError('pattern') && slab.get('billing_rate').dirty">
+                                                    Please enter valid input
                                                 </span>
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <label>Normalize Rate (€)</label>
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control" placeholder="0.0678"
+                                                    <input type="number" class="form-control"
+                                                        [value]="round(slab.get('billing_rate').value)"
                                                         formControlName="normalize_rate" [readonly]="true" />
                                                 </div>
                                             </div>

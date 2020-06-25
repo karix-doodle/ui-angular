@@ -42,7 +42,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    // continentListCopy: BillPlanCountries_Data[];
    operatorsList: BillPlanOperator_Data[];
    conversionRate: number;
-   focusedFormArrayIndex: number;
+   // focusedFormArrayIndex: number;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -57,14 +57,14 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    ngOnInit() {
       this.firstStepSubmitted = false;
       this.secondStepSubmitted = false;
-      this.focusedFormArrayIndex = 0;
+      // this.focusedFormArrayIndex = 0;
       this.initSecondForm();
       this.initEditModeSubscription();
       this.initContinentSubscription();
       this.initCountrySubscription('');
       this.initCurrencyConversion();
-      this.initFirstFormArrayValueChangesSubscription();
-      this.initSecondFormArrayValueChangesSubscription();
+      // this.initFirstFormArrayValueChangesSubscription();
+      // this.initSecondFormArrayValueChangesSubscription();
 
 
    }
@@ -77,7 +77,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          max: max === undefined ?
             [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
             : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
-         billing_rate: ['', [Validators.required]],
+         billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
          normalize_rate: ['']
       });
    }
@@ -104,15 +104,18 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       }
 
    }
-   setIndex(index) {
-      // on bill rate card gain focus
-      // console.log(index);
-      this.focusedFormArrayIndex = index;
-   }
-   onBlur(index) {
-      // on bill rate card lose focus
-      // console.log(index);
-      this.focusedFormArrayIndex = undefined;
+   // setIndex(index) {
+   //    // on bill rate card gain focus
+   //    // console.log(index);
+   //    this.focusedFormArrayIndex = index;
+   // }
+   // onBlur(index) {
+   //    // on bill rate card lose focus
+   //    // console.log(index);
+   //    this.focusedFormArrayIndex = undefined;
+   // }
+   round(data) {
+      return data * this.conversionRate;
    }
    // ------------------- common ----------------------------------
 
@@ -137,23 +140,23 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          }
       );
    }
-   initFirstFormArrayValueChangesSubscription() {
-      const slabs = this.firstFormArray;
-      this.sub = slabs.valueChanges
-         .pipe(
-            debounceTime(100),
-            distinctUntilChanged()
-         )
-         .subscribe(data => {
-            // console.log(data[this.focusedFormArrayIndex]);
-            if (data[this.focusedFormArrayIndex] !== undefined) {
-               slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
-                  data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
-                  , { onlySelf: true }
-               );
-            }
-         });
-   }
+   // initFirstFormArrayValueChangesSubscription() {
+   //    const slabs = this.firstFormArray;
+   //    this.sub = slabs.valueChanges
+   //       .pipe(
+   //          debounceTime(100),
+   //          distinctUntilChanged()
+   //       )
+   //       .subscribe(data => {
+   //          // console.log(data[this.focusedFormArrayIndex]);
+   //          if (data[this.focusedFormArrayIndex] !== undefined) {
+   //             slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
+   //                data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
+   //                , { onlySelf: true }
+   //             );
+   //          }
+   //       });
+   // }
    initContinentSubscription() {
       this.billMgmtService.getContinentList()
          .subscribe((res: string[]) => {
@@ -395,23 +398,23 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          slabs.removeAt(index);
       }
    }
-   initSecondFormArrayValueChangesSubscription() {
-      const slabs = this.secondFormArray;
-      this.sub = slabs.valueChanges
-         .pipe(
-            debounceTime(100),
-            distinctUntilChanged()
-         )
-         .subscribe(data => {
-            // console.log(data[this.focusedFormArrayIndex]);
-            if (data[this.focusedFormArrayIndex] !== undefined) {
-               slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
-                  data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
-                  , { onlySelf: true }
-               );
-            }
-         });
-   }
+   // initSecondFormArrayValueChangesSubscription() {
+   //    const slabs = this.secondFormArray;
+   //    this.sub = slabs.valueChanges
+   //       .pipe(
+   //          debounceTime(100),
+   //          distinctUntilChanged()
+   //       )
+   //       .subscribe(data => {
+   //          // console.log(data[this.focusedFormArrayIndex]);
+   //          if (data[this.focusedFormArrayIndex] !== undefined) {
+   //             slabs.at(this.focusedFormArrayIndex).get('normalize_rate').patchValue(
+   //                data[this.focusedFormArrayIndex].billing_rate * this.conversionRate
+   //                , { onlySelf: true }
+   //             );
+   //          }
+   //       });
+   // }
    onSecondStepSubmit() {
       this.secondStepSubmitted = true;
       if (this.secondFormGroup.value.ratetype_row === 'custom') {
@@ -452,7 +455,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                res.responsecode > environment.APIStatus.success.code
             ) {
                successAlert(res.message, res.responsestatus);
-               this.router.navigate(['billplan-management-postpaid']);
+               this.router.navigate(['billplan-management/home']);
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
                res.responsecode < environment.APIStatus.error.code

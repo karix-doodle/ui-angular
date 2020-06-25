@@ -5,6 +5,7 @@ import { SlabRouteService } from '../../../services/BillManagement/Slab/slab-rou
 import { Countries } from '../../../models/BillManagement/Slab/slab.model';
 import { Subject } from 'rxjs';
 import { errorAlert } from '../../../../shared/sweet-alert/sweet-alert';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-create-ratecard',
@@ -19,11 +20,14 @@ export class CreateRatecardComponent implements OnInit {
   editModeStatus: boolean;
   countryCount: number;
   operatorCount: number;
+  // paramsData: Params;
   constructor(
     private formBuilder: FormBuilder,
-    private slabRouteService: SlabRouteService
+    private slabRouteService: SlabRouteService,
+    private Route: ActivatedRoute,
   ) {
     this.createSlabForm();
+    this.initRouteParams();
   }
 
   ngOnInit() {
@@ -38,7 +42,7 @@ export class CreateRatecardComponent implements OnInit {
       billplan_id: ['2'],
       billplan_currencyid: [13],
       ratecard_type: ['slab'],
-      ratecard_name: ['slabTest8'],
+      ratecard_name: ['slabTest10'],
       continent_name: [''],
       country_name: ['', [Validators.required]],
       operator_name: ['', [Validators.required]],
@@ -47,12 +51,23 @@ export class CreateRatecardComponent implements OnInit {
       slabs: this.formBuilder.array([this.createSlabsItem()])
     });
   }
+  initRouteParams() {
+    this.Route.params.subscribe((data: Params) => {
+      // console.log(data);
+      // this.paramsData = data;
+      this.SlabFormGroup.patchValue({
+        billplan_id: data.bId,
+        billplan_currencyid: data.cId,
+        ratecard_name: data.name,
+      });
+    });
+  }
 
   createSlabsItem(): FormGroup {
     return this.formBuilder.group({
       min: [1],
       max: [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]],
-      billing_rate: ['', [Validators.required]],
+      billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
       normalize_rate: ['']
     });
   }

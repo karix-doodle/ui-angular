@@ -12,7 +12,7 @@ const countryRoutes: Routes = [
   component: CountryComponent,
   children: [
     {
-      path: 'create-ratecard',
+      path: 'create-ratecard/:name/:cId/:bId',
       component: CreateRatecardComponent
     },
     {
@@ -20,7 +20,7 @@ const countryRoutes: Routes = [
       component: AssignedRatecardViewComponent
     },
   ]}
-];
+]
 
 @NgModule({
   imports: [RouterModule.forChild(countryRoutes)],

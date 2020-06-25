@@ -17,6 +17,8 @@ import { errorAlert, confirmAlert, successAlert } from '../../../shared/sweet-al
 import { addValidators, removeValidators } from '../../../shared/helper/helperFunctions';
 
 import * as moment from 'moment';
+import { BillManagementService } from '../../services/BillManagement/billplan-management.service';
+import { GetNameCheck_ApiResponse } from '../../models/BillManagement/blillplan.models';
 
 @Component({
   selector: 'app-ratecard-list',
@@ -39,8 +41,10 @@ export class RatecardListComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private router: Router,
     private activeRoute: ActivatedRoute,
-    private createAssignRateCardService: CreateAssignRateCardService
+    private createAssignRateCardService: CreateAssignRateCardService,
+    private billplanListService: BillManagementService,
   ) {
     this.params = {
       type: 'dateOnly',
@@ -152,11 +156,32 @@ export class RatecardListComponent implements OnInit {
 
   onrateCardSearchFormSubmit(data) {
     if (data.ratecardid == '') {
-      addValidators(this.rateCardSearchForm, 'ratecardid')
-      this.createRatecard(data)
+      this.nameCheck(data);
     } else {
-      removeValidators(this.rateCardSearchForm, 'ratecardid')
       this.assignRatecard(data)
+    }
+  }
+
+  nameCheck(data) {
+    if (data !== '') {
+      this.billplanListService.GetNameCheck(data.ratecardname, 'ratecard').subscribe(
+        (res: GetNameCheck_ApiResponse) => {
+          if (
+            res.responsestatus === environment.APIStatus.success.text &&
+            res.responsecode > environment.APIStatus.success.code
+          ) {
+            this.createRatecard(data);
+          } else if (
+            res.responsestatus === environment.APIStatus.error.text &&
+            res.responsecode < environment.APIStatus.error.code
+          ) {
+            errorAlert(res.message, res.responsestatus);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          errorAlert(error.message, error.statusText);
+        }
+      );
     }
   }
 
@@ -196,7 +221,7 @@ export class RatecardListComponent implements OnInit {
     if (this.rateCardSearchForm.invalid) {
       return;
     } else {
-      let pageURL = ''
+      let pageURL = '';
       switch (data.ratecardtype) {
         case 'country':
           pageURL = '/billplan-management/postpaid/country/create-ratecard/'
@@ -214,7 +239,8 @@ export class RatecardListComponent implements OnInit {
           pageURL = '/billplan-management/postpaid/slab/create-ratecard/'
           break;
       }
-      pageURL = pageURL + data.ratecardname;
+      pageURL = pageURL + data.ratecardname + '/' + 13 + '/' + data.billplanid;
+      this.router.navigate([pageURL]);
     }
   }
 
