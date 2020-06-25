@@ -110,7 +110,6 @@ export class GroupStepperFormComponent implements OnInit {
 
    handleCurrencyData(value) {
       this.currencySybmol = value
-      console.log(value, 'asdasd')
    }
 
    handleContinentChange() {

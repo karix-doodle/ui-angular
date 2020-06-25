@@ -5,8 +5,6 @@ import { BillManagementService } from "src/app/billplan-management/services/Bill
 import { count } from '../../../../shared/helper/helperFunctions'
 import { Subject } from 'rxjs';
 
-const ngHtmlParser = require('angular-html-parser');
-
 import {
   BillPlanCurrency_ApiResponse,
   BillPlanCurrency_Data,
@@ -108,10 +106,10 @@ export class CreateRatecardComponent implements OnInit {
       ratecard_type: ['Group', [Validators.required]],
       ratecard_name: [this.activeRoute.snapshot.params.name, Validators.required],
       groups: this.formBuilder.array([this.createGroupsItem()]),
-      ratetype_roc: [''],
+      ratetype_roc: ['custom'],
       roc: this.formBuilder.array([this.createRocItem()]),
       ratetype_row: ['standard'],
-      billing_rate_row: [''],
+      billing_rate_row: ['', [Validators.pattern('[0-9.]{6,6}')]],
       discount_rate: [''],
       discount_type: ['percentage'],
       description: ['']
