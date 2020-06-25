@@ -71,7 +71,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
 
    // ------------------- common -------------------
    createSlabsItem(min?: number, max?: number): FormGroup {
-      console.log(min, max);
+      // console.log(min, max);
       return this.formBuilder.group({
          min: min === undefined ? [1] : [min],
          max: max === undefined ?
@@ -82,7 +82,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       });
    }
    onNext(stepper: MatStepper) {
-      console.log(this.parentForm);
+      // console.log(this.parentForm);
       if (!this.editModeState) {
          if (this.slabRouteService.previewList.length) {
             if (this.parentForm.touched || this.parentForm.dirty) {
@@ -197,7 +197,10 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.countriesList.forEach(element => {
          if (element.country === countryName) {
             country = element;
-            this.parentForm.patchValue({ mcc: element.mcc }); // add mcc
+            this.parentForm.patchValue({
+               mcc: element.mcc,
+               operator_name: ''
+            }); // add mcc
          }
       });
       // console.log(country);
@@ -217,7 +220,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          });
    }
    operatorDropOnChange(operatorName: string) {
-      console.log(operatorName);
+      // console.log(operatorName);
       this.operatorsList.forEach(element => {
          if (element.operator === operatorName) {
             this.parentForm.patchValue({ mnc: element.mnc }); // add mnc
@@ -230,7 +233,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          this.editModeState = value; // value = true;
          this.editModeIndex = index;
          this.initOperatorSubscription(editCountry);
-         console.log(this.editModeIndex);
+         // console.log(this.editModeIndex);
       });
    }
    get firstFormArray(): FormArray {
@@ -284,7 +287,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                let countryOperatorAlreadExist = false;
                this.slabRouteService.previewList.forEach((element, index) => {
                   if (element.country_name === obj.country_name && element.operator_name === obj.operator_name) {
-                     console.log('index', index, this.editModeIndex);
+                     // console.log('index', index, this.editModeIndex);
                      if (index === this.editModeIndex) {
                         countryOperatorAlreadExist = false;
                      } else {
@@ -295,6 +298,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                });
                if (!countryOperatorAlreadExist) {
                   if (this.editModeState) {
+                     // console.log(obj);
                      this.slabRouteService.previewList.forEach((element, index) => {
                         if (index === this.editModeIndex) {
                            element.continent_name = obj.continent_name;
@@ -326,7 +330,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.editModeState = false;
       this.editModeIndex = undefined;
       this.slabRouteService.previewList.push(obj);
-      console.log(this.slabRouteService.previewList);
+      // console.log(this.slabRouteService.previewList);
       this.countriesListChildToParent.emit(obj);
       this.parentFormReset();
    }
@@ -447,7 +451,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.SlabCreateRateCardInput.discount_rate = this.secondFormGroup.value.discount_rate;
       this.SlabCreateRateCardInput.discount_type = this.secondFormGroup.value.discount_type;
       this.SlabCreateRateCardInput.description = this.secondFormGroup.value.description;
-      console.log(this.SlabCreateRateCardInput);
+      // console.log(this.SlabCreateRateCardInput);
       this.slabRouteService.createSlabRateCard(this.SlabCreateRateCardInput)
          .subscribe((res: SlabCreateRateCardRes) => {
             if (
