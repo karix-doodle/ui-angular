@@ -41,21 +41,26 @@
                 <div class="col-3 mb-2">
                   <label>Billing Rate (€)</label>
                   <div class="form-group">
-                    <input type="search" class="form-control" id="" placeholder="Enter Rate"
-                      formControlName="billing_rate" />
+                      <input type="search" class="form-control"
+                          formControlName="billing_rate" placeholder="Enter Rate" />
                       <span class="text-danger pl-1 f-12"
-                      *ngIf="count.get('billing_rate').hasError('required') && Submitted">
-                      Billing Rate  is required
-                  </span>
+                          *ngIf="count.get('billing_rate').hasError('required') && Submitted">
+                          Billing Rate is required
+                      </span>
+                      <span class="text-danger pl-1 f-12"
+                          *ngIf="count.get('billing_rate').hasError('pattern') && count.get('billing_rate').dirty">
+                          Please enter valid input
+                      </span>
                   </div>
+              </div>
+              <div class="col-3 mb-2">
+                <label>Normalize Rate (€)</label>
+                <div class="form-group">
+                    <input type="number" class="form-control" disabled
+                        [value]="round(count.get('billing_rate').value)"
+                        formControlName="normalize_rate" placeholder="" />
                 </div>
-                <div class="col-3 mb-2">
-                  <label>Normalize Rate (€)</label>
-                  <div class="form-group">
-                    <input type="search" class="form-control" disabled id="" placeholder="0.0678"
-                      formControlName="normalize_rate" />
-                  </div>
-                </div>
+            </div>
               </div>
             </div>
           </div>
@@ -101,7 +106,7 @@
             <div class="col-6 p-0 text-right f-14"><label class="font-weight-semi-bold">Note: If there is no
                     specific ROW BillPlan, copy from Default Rate Card and Save</label></div>
         </div>
-        <div class="gt-ratio-div">
+        <div class="gt-ratio-div" *ngIf="parentForm.get('ratetype_row').value === 'custom'">
             <div class="row mb-2">
                 <div class="col-5 mb-2">
                     <label>Billing Rate (€)</label>
@@ -132,8 +137,8 @@
                 </div>
                 <div class="col-6 discount-select">
                     <select class="dropdown-select w-100" formControlName="discount_type">
-                        <option value="Percentage" default>percentage</option>
-                        <option value="Amount">Amount</option>
+                        <option value="percentage" default>Percentage</option>
+                        <option value="mmount">Amount</option>
                     </select>
                 </div>
             </div>

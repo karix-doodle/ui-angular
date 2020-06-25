@@ -286,6 +286,10 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     callBackFunction();
   }
 
+  round(data) {
+    return data * 0.785
+ }
+
   reActiveOperator() {
     const countriesControl = this.getcountryControl();
     countriesControl.value.forEach((items, index) => {

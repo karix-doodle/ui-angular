@@ -15,7 +15,7 @@ const routes: Routes = [
       component: CreateRatecardComponent
     },
     {
-      path: 'assigned-ratecard-view',
+      path: 'assigned-ratecard-view/:id/:type',
       component: AssignedRatecardViewComponent
     },
   ]}

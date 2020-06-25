@@ -9,18 +9,18 @@ const routes: Routes = [
   {
     path: 'billplan-management/postpaid/group',
     component:  GroupComponent,
-  
+
     children: [
       {
         path: 'create-ratecard',
         component: CreateRatecardComponent
       },
       {
-        path: 'assigned-ratecard-view',
+        path: 'assigned-ratecard-view/:id/:type',
         component: AssignedRatecardViewComponent
       },
     ]}
-  
+
 ];
 
 @NgModule({

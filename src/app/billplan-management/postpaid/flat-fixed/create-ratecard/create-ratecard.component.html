@@ -21,12 +21,12 @@
     <div class="row">
         <div class="col-3 text-right">
             <div class="form-group">
-                <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
+                <input type="search" class="form-control" readonly [placeholder]="ratecard_name" />
             </div>
         </div>
         <div class="col-3 offset-6 text-right">
             <div class="form-group">
-                <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
+                <input type="search" class="form-control" readonly [placeholder]="billplan_currencyid"  />
             </div>
         </div>
     </div>
@@ -41,14 +41,25 @@
                     <div class="col-6">
                         <label>Billing Rate (€)</label>
                         <div class="form-group">
-                            <input type="search" formControlName="billing_rate" class="form-control" id="" placeholder="Enter Rate" />
-                        </div>
+                          <input type="text" class="form-control"
+                              formControlName="billing_rate" placeholder="Enter Rate" />
+                          <span class="text-danger pl-1 f-12"
+                          *ngIf="fixedRateFrom.get('billing_rate').hasError('required') && Submitted">
+                              Billing Rate is required
+                          </span>
+                          <span class="text-danger pl-1 f-12"
+                          *ngIf="fixedRateFrom.get('billing_rate').hasError('pattern') && fixedRateFrom.get('billing_rate').dirty">
+                              Please enter valid input
+                          </span>
+                      </div>
                     </div>
                     <div class="col-6">
                         <label>Normalize Rate (€)</label>
                         <div class="form-group">
-                            <input type="search" style="cursor:not-allowed;" readonly   class="form-control" id="" placeholder="0.0678" />
-                        </div>
+                          <input type="number" class="form-control" disabled
+                              [value]="round(control.billing_rate.value)"
+                              formControlName="normalize_rate" placeholder="" />
+                      </div>
                     </div>
                 </div>
             </div>

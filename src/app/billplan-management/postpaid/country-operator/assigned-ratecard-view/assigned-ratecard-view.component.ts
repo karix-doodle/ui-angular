@@ -26,14 +26,16 @@ export class AssignedRatecardViewComponent implements OnInit {
 
   ngOnInit() {
     this.Route.params.subscribe((data: Params) => {
+      console.log(data);
       this.ratecardviewservice.getRatecardCountryOperatorView(data).subscribe((res: RateCardCountryOperatorView_ApiRResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-        this.totalCountries = data.data.totalcountry;
-        this.totalOperator = data.data.totalOperator;
-        this.currency = data.data.currency;
-        this.ratecardname = data.data.ratecardname;
-        this.countryArray = data.data.countryratecard;
-        this.rowArray = data.data.row;
+          console.log(res)
+        this.totalCountries = res.data.totalcountry;
+        this.totalOperator = res.data.totaloperator;
+        this.currency = res.data.currency;
+        this.ratecardname = res.data.ratecardname;
+        this.countryArray = res.data.countryratecard;
+        this.rowArray = res.data.row;
        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.responsestatus)
        }
