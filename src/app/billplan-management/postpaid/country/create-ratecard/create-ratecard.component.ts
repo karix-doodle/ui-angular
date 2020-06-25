@@ -28,8 +28,8 @@ export class CreateRatecardComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute) {
     this.initForm();
-    this.billplan_id = this.activeRoute.snapshot.params.bid
-      this.billplan_currencyid = this.activeRoute.snapshot.params.cid
+    this.billplan_id = this.activeRoute.snapshot.params.bId
+      this.billplan_currencyid = this.activeRoute.snapshot.params.cId
       this.ratecard_name = this.activeRoute.snapshot.params.name
   }
 
