@@ -82,7 +82,7 @@ export class CreateRatecardComponent implements OnInit {
     this.operatorCount = this.slabRouteService.count('operator_name');
   }
   editPreviewSlabs(listIndex, countryName) {
-    console.log(listIndex);
+    // console.log(listIndex);
     this.editModeStatus = true;
     this.editMode.next([true, listIndex, countryName]);
     this.SlabFormGroup.patchValue({
@@ -108,7 +108,7 @@ export class CreateRatecardComponent implements OnInit {
     });
   }
   deletePreviewSlabs(listIndex) {
-    console.log(listIndex);
+    // console.log(listIndex);
     if (!this.editModeStatus) {
       this.slabRouteService.previewList.splice(listIndex, 1);
     } else {

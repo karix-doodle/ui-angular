@@ -78,7 +78,7 @@
                                                         (blur)="onBlur()" -->
                                                 </div>
                                                 <span class="text-danger pl-1 f-12"
-                                                    *ngIf="!slab.get('billing_rate').hasError('required') && firstStepSubmitted ">
+                                                    *ngIf="slab.get('billing_rate').hasError('required') && firstStepSubmitted ">
                                                     Billing Rate is required
                                                 </span>
                                                 <span class="text-danger pl-1 f-12"
@@ -187,7 +187,7 @@
                                                         (blur)="onBlur()" -->
                                                 </div>
                                                 <span class="text-danger pl-1 f-12"
-                                                    *ngIf="!slab.get('billing_rate').hasError('required') && secondStepSubmitted">
+                                                    *ngIf="slab.get('billing_rate').hasError('required') && secondStepSubmitted">
                                                     Billing Rate is required
                                                 </span>
                                                 <span class="text-danger pl-1 f-12"
