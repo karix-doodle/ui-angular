@@ -30,25 +30,13 @@
                 <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">{{existinguser.esmeaddr}}</a></td>
                 <td>{{existinguser.username}}</td>
                 <td>{{existinguser.orgname}}</td>
-                <td></td>
+                <td>{{existinguser.billingtype}}</td>
                 <td>{{existinguser.salespersonname}}</td>
-                <!--<td>Country + Operator</td>
-                <td>ratecard name212</td>-->
+                <td>{{existinguser.ratecardtype}}</td>
+                <td>{{existinguser.ratecardname}}</td>
                 <td><span class="font-weight-bold">{{existinguser.routingtype | uppercase}}</span> - {{existinguser.intlaccttype}}</td>
                 <td><a routerLink="/customer-management/customer-management-edit/{{existinguser.esmeaddr}}"><img src="assets/icons/edit-icon.svg" alt="edit"/></a></td>
-            </tr>
-          <!-- <tr>
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
-                <td>usrname</td>
-                <td>xxx xxx xxx</td>
-                <td>Direct</td>
-                <td>Nawal</td>
-                <td>Country + Operator</td>
-                <td>ratecard name212</td>
-                <td><span class="font-weight-bold">LCR</span> - Direct</td>
-                <td><a routerLink="/customer-management/customer-management-edit"><img src="assets/icons/edit-icon.svg" alt="edit"/></a></td>
-            </tr>-->
-            
+            </tr>            
         </tbody>
     </table>
 </div>
