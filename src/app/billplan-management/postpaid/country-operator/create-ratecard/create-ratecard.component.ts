@@ -30,8 +30,8 @@ export class CreateRatecardComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute) {
     this.initForm();
-    this.billplan_id = this.activeRoute.snapshot.params.bId
-    this.billplan_currencyid = this.activeRoute.snapshot.params.cId
+    this.billplan_id = +this.activeRoute.snapshot.params.bId
+    this.billplan_currencyid = +this.activeRoute.snapshot.params.cId
     this.ratecard_name = this.activeRoute.snapshot.params.name
   }
 
@@ -39,10 +39,10 @@ export class CreateRatecardComponent implements OnInit {
 
   private initForm() {
     this.totalCountryOperatorForm = this.formBuilder.group({
-      billplan_id: this.billplan_id,
-      billplan_currencyid: this.billplan_currencyid,
+      billplan_id: +this.activeRoute.snapshot.params.bId,
+      billplan_currencyid: +this.activeRoute.snapshot.params.cId,
       ratecard_type: ["country-operator", [Validators.required]],
-      ratecard_name: this.ratecard_name,
+      ratecard_name: this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
       billing_rate_row: [null],
       discount_rate: [null],

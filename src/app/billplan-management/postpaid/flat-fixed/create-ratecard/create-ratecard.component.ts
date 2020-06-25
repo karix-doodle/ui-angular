@@ -24,18 +24,18 @@ Submitted = false
     private billplanflat: BillplanFlatFixedService,
     private router: Router,
     private activeRoute: ActivatedRoute) {
-      this.billplan_id = this.activeRoute.snapshot.params.bId
-      this.billplan_currencyid = this.activeRoute.snapshot.params.cId
+      this.billplan_id = +this.activeRoute.snapshot.params.bId
+      this.billplan_currencyid = +this.activeRoute.snapshot.params.cId
       this.ratecard_name = this.activeRoute.snapshot.params.name
     }
 
   ngOnInit() {
   this.fixedRateFrom = this.formBuilder.group({
-    billplan_id: this.billplan_id,
-    billplan_currencyid:this.billplan_currencyid,
-    ratecard_name:this.ratecard_name,
-    ratecard_type:this.ratecard_type,
-    billing_rate:['',[Validators.required]],
+    billplan_id:  +this.activeRoute.snapshot.params.bId,
+    billplan_currencyid:+this.activeRoute.snapshot.params.cId,
+    ratecard_name:this.activeRoute.snapshot.params.name,
+    ratecard_type:['flat-fixed'],
+    billing_rate:['',[Validators.required, Validators.pattern('[0-9.]{6,6}')]],
     normalize_rate:[''],
     discount_rate:[''],
     discount_type:['percentage'],
@@ -54,6 +54,7 @@ Submitted = false
 
 
   onSubmit(){
+    console.log(this.fixedRateFrom.value)
     this.Submitted = true
     if(this.fixedRateFrom.valid){
       this.billplanflat.BillPlanCreate(this.fixedRateFrom.value).subscribe(

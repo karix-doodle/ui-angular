@@ -158,7 +158,7 @@ export class CountryStepperFormComponent implements OnInit {
   countryArrayForm(): FormGroup {
     return this._formBuilder.group({
       country_name: [null, Validators.required],
-      billing_rate: [null, Validators.required],
+      billing_rate: [null, [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
       mcc: [""],
       normalize_rate: [""],
     });
@@ -253,6 +253,7 @@ export class CountryStepperFormComponent implements OnInit {
   }
 
   onCountryFormSubmit(data) {
+    console.log(data);
     data.billing_rate_row = data.ratetype_row == 'standard' ? '' : data.billing_rate_row;
     this.billplancountryService.BillPlanCreateCountry(data).subscribe(
       (res: BillPlanCreateCountry_ApiResponse) => {

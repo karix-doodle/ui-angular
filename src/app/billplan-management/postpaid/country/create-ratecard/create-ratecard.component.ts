@@ -16,7 +16,7 @@ export class CreateRatecardComponent implements OnInit {
   countriesArray = [];
   duplicates: boolean = false;
   editMode: boolean = false
-  billplan_id
+  billplan_id: number;
   billplan_currencyid
   ratecard_name
   countryLisData: Subject<[FormArray, number]> = new Subject<
@@ -28,23 +28,24 @@ export class CreateRatecardComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute) {
     this.initForm();
-    this.billplan_id = this.activeRoute.snapshot.params.bId
+    this.billplan_id = +this.activeRoute.snapshot.params.bId
       this.billplan_currencyid = this.activeRoute.snapshot.params.cId
       this.ratecard_name = this.activeRoute.snapshot.params.name
+
   }
 
   ngOnInit() {}
 
   private initForm() {
     this.totalCountryForm = this._formBuilder.group({
-      billplan_id: this.billplan_id,
-      billplan_currencyid:  this.billplan_currencyid,
+      billplan_id: +this.activeRoute.snapshot.params.bId,
+      billplan_currencyid:  +this.activeRoute.snapshot.params.cId,
       ratecard_type: ["country"],
-      ratecard_name:  this.ratecard_name,
+      ratecard_name:  this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
       billing_rate_row: [null],
       discount_rate: [null],
-      discount_type: ["Percentage"],
+      discount_type: ["percentage"],
       description: [""],
       countries: this._formBuilder.array([this.countryArrayForm()]),
     });
