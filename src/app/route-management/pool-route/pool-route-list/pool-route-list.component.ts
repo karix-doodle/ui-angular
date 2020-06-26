@@ -5,6 +5,7 @@ import { PoolRouteListRes, TaggedAccountsList, PoolRouteRes, RoutesRowlist } fro
 import { environment } from '../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { errorAlert, confirmAlert } from '../../../shared/sweet-alert/sweet-alert';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 @Component({
   selector: 'app-pool-route-list',
   templateUrl: './pool-route-list.component.html',
@@ -28,7 +29,8 @@ export class PoolRouteListComponent implements OnInit {
   constructor(
     config: NgbModalConfig,
     private modalService: NgbModal,
-    private poolRouteService: PoolRouteService
+    private poolRouteService: PoolRouteService,
+    private authorizationService: AuthorizationService
   ) { }
 
   open(
