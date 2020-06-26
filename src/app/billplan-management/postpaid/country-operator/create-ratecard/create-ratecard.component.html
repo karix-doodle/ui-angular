@@ -21,13 +21,13 @@
   <div class="row">
       <div class="col-3 text-right">
           <div class="form-group">
-              <input type="search" class="form-control" readonly [placeholder]="ratecard_name" />
+            <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" [innerHTML]=" ratecard_name" ></button>
           </div>
       </div>
       <div class="col-3 offset-6 text-right">
-          <div class="form-group">
-              <input type="search" class="form-control" readonly [placeholder]="billplan_currencyid"  />
-          </div>
+        <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})" >
+        </button>
+
       </div>
   </div>
 </div>
@@ -36,7 +36,8 @@
     [parentForm]="totalCountryOperatorForm"
     (countryOperatorList)="countryListData($event,index)"
      [countryOperatorListEvent]="countryOperatorListData.asObservable()"
-     [handleCountryDelete]="handleCountryDelete.asObservable()"></app-country-operator-stepper-form>
+     [handleCountryDelete]="handleCountryDelete.asObservable()"
+     [handlecurrencyList]="handlecurrencyList.asObservable()"></app-country-operator-stepper-form>
 </div>
 <div class="row btm-border second-row-det">
     <div class="col-7">
@@ -66,8 +67,8 @@
                 <th>Country</th>
                 <th>Operator</th>
                 <th>MCC + MNC</th>
-                <th>Billing Rate (€)</th>
-                <th>Normalize Rate (€)</th>
+                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></th>
+                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>

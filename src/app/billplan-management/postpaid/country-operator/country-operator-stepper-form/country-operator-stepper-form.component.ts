@@ -22,6 +22,7 @@ import {
   BillPlanOperator_ApiRespone,
   BillPlanOperator_Data,
   BillPlanCreateCountryOperator_ApiResponse,
+  CurrencyRateRes,
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
 import { environment } from "src/environments/environment";
 import { errorAlert, successAlert } from "src/app/shared/sweet-alert/sweet-alert";
@@ -54,8 +55,16 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   @ViewChild("stepper", { static: false }) stepper: MatStepper;
   private eventHandleCountryDelete: Subscription;
   @Input() handleCountryDelete: Observable<[string, number]>;
+  private eventCurrencyList: Subscription;
+  @Input() handlecurrencyList: Observable<[object]>;
   Submitted: boolean = false;
   operatorObj: object = {};
+  currencySybmol: object = {
+    bCurrency: '',
+    nCurrency: ''
+ }
+
+  conversionRate:number;
   constructor(
     private formBuilder: FormBuilder,
     config: NgbModalConfig,
@@ -81,7 +90,16 @@ export class CountryOperatorStepperFormComponent implements OnInit {
         this.handleCountryListDelete(value, indexed);
       }
     );
+    this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
+      this.handleCurrencyData(value);
+   });
+    this.initCurrencyConversion();
   }
+
+  handleCurrencyData(value) {
+    this.currencySybmol = value
+    console.log(value, 'asdasd')
+ }
 
   countryArrayForm(): FormGroup {
     return this.formBuilder.group({
@@ -287,7 +305,30 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   }
 
   round(data) {
-    return data * 0.785
+    return data * this.conversionRate;
+ }
+ // ------------------- common ----------------------------------
+
+ // ------------------- Parent(First) Form -------------------
+ initCurrencyConversion() {
+    this.billPlanservice.getCurrencyRate(this.parentForm.value.billplan_currencyid).subscribe(
+       (res: CurrencyRateRes) => {
+          if (
+             res.responsestatus === environment.APIStatus.success.text &&
+             res.responsecode > environment.APIStatus.success.code
+          ) {
+             this.conversionRate = +res.data.conversion_rate;
+             // console.log(this.conversionRate);
+          } else if (
+             res.responsestatus === environment.APIStatus.error.text &&
+             res.responsecode < environment.APIStatus.error.code
+          ) {
+             errorAlert(res.message, res.responsestatus);
+          }
+       }, (error: HttpErrorResponse) => {
+          errorAlert(error.message, error.statusText);
+       }
+    );
  }
 
   reActiveOperator() {

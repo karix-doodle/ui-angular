@@ -5,7 +5,7 @@ import { BillManagementService } from "src/app/billplan-management/services/Bill
 import { count } from '../../../../shared/helper/helperFunctions'
 import { Subject } from 'rxjs';
 
-const ngHtmlParser = require('angular-html-parser');
+
 
 import {
   BillPlanCurrency_ApiResponse,
