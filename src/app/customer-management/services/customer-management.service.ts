@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PendingUsers_ApiResponse, UserActivation_ApiResponse, TimeZonesApiResponse, ApiResponse_Generic } from '../models/customer-management.model';
+import * as _ from 'lodash';
 
 @Injectable({
     providedIn: 'root'
@@ -69,6 +70,14 @@ export class CustomerManagementService {
     return this.http.post(this.baseUrl + '/saveuserdetails', body, this.httpOptions)
       .pipe(map(m => m as ApiResponse_Generic));
   }
+
+  /**
+       * @description Calculare margin price
+  */
+  calculateMarginalPrice(queryParams): Observable<ApiResponse_Generic> {
+      return this.http.get(this.baseUrl + `/showmargin?${queryParams}`, this.httpOptions)
+        .pipe(map(m => m as ApiResponse_Generic));
+  };
 
       
 
