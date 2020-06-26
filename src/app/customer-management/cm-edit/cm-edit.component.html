@@ -1,11 +1,11 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="showEditPage">
     <div class="col-12">
         <label class="main-heading">
             <a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
         <span> {{esmeaddr}}</span>
     </div>
 </div>
-<div class="row btm-border second-row-det">
+<div class="row btm-border second-row-det" *ngIf="showEditPage">
     <div class="col-12">
         <div class="row">
             <div class="col-12">
@@ -33,7 +33,7 @@
 </div>
 
 <form [formGroup]="updateAccountFormGroup">
-<div class="data-container m-lr_15">
+<div class="data-container m-lr_15" *ngIf="showEditPage">
 <!-- <form [formGroup]="updateAccountFormGroup" (ngSubmit)="onSubmit(updateAccountFormGroup.value)"> -->
     <div class="row border-bottom pb-4">
         <div class=" form-group col-4">
@@ -125,7 +125,7 @@
                 <label class="toggle-switch">
                     <input type="checkbox" formControlName="process_row"
                             class="switch-btn"
-                            [checked]="process_row === 1">
+                            [checked]="process_row === 1" (change)="$event.target.checked?process_row=1:process_row=0">
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -135,7 +135,9 @@
                 <div class="col-8"><label>Process @ Loss</label></div>
                 <div class="col-4">
                     <label class="toggle-switch">
-                        <input type="checkbox" class="switch-btn" formControlName="process_at_loss" (click)="handleStatus($event)" [checked]="process_at_loss === 1">
+                        <input type="checkbox" class="switch-btn" formControlName="process_at_loss" 
+                            [checked]="process_at_loss === 1"
+                            (change)="handleStatus($event)">
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -181,7 +183,8 @@
         <button class="btn btn-basic mr-3"  *ngIf="!isSelected('lcr')" (click)="open(selectedRouteModal)">Save</button>
         <!-- <button class="btn btn-basic mr-3"  *ngIf="isSelected('gt')" (click)="open(selectedRouteModal)">Save</button> -->
         <!-- <button class="btn btn-basic mr-3"  *ngIf="isSelected('pr')" (click)="open(selectedRouteModal)">Save</button> -->
-        <a routerLink="/customer-management/customer-management-show-margin-list" class="btn erp-intl-btn mr-3">Show Margin</a>
+        <!-- <a routerLink="/customer-management/customer-management-show-margin-list" class="btn erp-intl-btn mr-3" (click)="toggleShowMargin('showmargin')">Show Margin</a> -->
+        <button class="btn btn-basic mr-3" (click)="toggleShowMargin('showmargin')">Show Margin</button>
         <a routerLink="/customer-management/customer-management-audit-log" class="btn btn-basic">Audit Log</a>
     </div>
 <!-- </form> -->
@@ -278,5 +281,7 @@
         <!-- </form> -->
     </div> 
 </ng-template>
+
+<app-cm-show-margin *ngIf="showMargin" [marginPageInput]="marginPageInput" (notify)='onNotify($event)'></app-cm-show-margin>
 
 </form>

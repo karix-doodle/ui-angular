@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { startWith, pairwise, debounceTime } from 'rxjs/operators';
@@ -28,7 +28,7 @@ import { errorAlert, successAlert } from "src/app/shared/sweet-alert/sweet-alert
    styleUrls: ['./group-stepper-form.component.css']
 })
 
-export class GroupStepperFormComponent implements OnInit {
+export class GroupStepperFormComponent implements OnInit, OnDestroy {
 
    firstFormGroup: FormGroup;
    secondFormGroup: FormGroup;
@@ -110,7 +110,6 @@ export class GroupStepperFormComponent implements OnInit {
 
    handleCurrencyData(value) {
       this.currencySybmol = value
-      console.log(value, 'asdasd')
    }
 
    handleContinentChange() {

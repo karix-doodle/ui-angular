@@ -938,3 +938,10 @@ select {
 .disabled img {
   cursor: not-allowed;
 }
+
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+  text-decoration: none;
+}

@@ -4,7 +4,7 @@
             <section class="mb-2" formArrayName="groups"
                 *ngFor="let X of firstFormGroup['controls'].groups['controls']; let indexGroup=index">
                 <div formGroupName="{{indexGroup}}">
-                    {{firstFormGroup.value | json}}
+                    <!-- {{firstFormGroup.value | json}} -->
                     <div class="row">
                         <div class="col-3 mb-2">
                             <label>Group Name</label>
@@ -125,7 +125,8 @@
                     </button>
                 </div>
                 <div class="col-6 text-right save-form-div">
-                    <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
+                    <button type="button" class="btn btn-basic mr-3" mat-button
+                        [routerLink]="['/billplan-management-postpaid/', parentForm.get('billplan_id').value]">Cancel</button>
                     <button [attr.disabled]="isEditMode && this.firstFormGroup.untouched == 0 ? 'disabled' : null"
                         *ngIf="rowGroups.length != 0" type="button" class="btn erp-intl-btn"
                         (click)="stepperView(stepper, 0, 1)" mat-button>Next</button>
@@ -135,7 +136,7 @@
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
-            {{secondFormGroup.value | json}}
+            <!-- {{secondFormGroup.value | json}} -->
             <section class="mb-2">
                 <div class="row ml-0">
                     <label class="col-12 pl-0">ROC - <span class="font-weight-bold ">CONTINENTS</span></label>
@@ -242,12 +243,17 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Rate"
                                     formControlName="billing_rate_row" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('billing_rate_row').hasError('pattern')">
+                                    Please enter valid input
+                                </span>
                             </div>
                         </div>
                         <div class="col-5 mb-2">
                             <label>Normalize Rate (€)</label>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" disabled placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled
+                                    [value]="round(parentForm.get('billing_rate_row').value)" />
                             </div>
                         </div>
                     </div>

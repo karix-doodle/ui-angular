@@ -131,6 +131,7 @@ export class ApiResponse_Generic{
     responsecode: number;
     responsestatus: string;
     message: string;
+    data: any;
 }
 
 

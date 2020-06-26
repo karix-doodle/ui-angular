@@ -35,6 +35,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    firstStepSubmitted: boolean;
    @Input() parentForm: FormGroup;
    @Input() editMode: Observable<[boolean, number, string]>;
+   @Input() handlecurrencyList: Observable<[object]>;
    @Output() countriesListChildToParent = new EventEmitter();
    secondStepSubmitted: boolean;
    continentList: string[];
@@ -43,6 +44,10 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    operatorsList: BillPlanOperator_Data[];
    conversionRate: number;
    // focusedFormArrayIndex: number;
+   currencySybmol: object = {
+      bCurrency: '',
+      nCurrency: ''
+   };
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -65,11 +70,18 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.initCurrencyConversion();
       // this.initFirstFormArrayValueChangesSubscription();
       // this.initSecondFormArrayValueChangesSubscription();
-
-
+      this.initCurrencyListSubscription();
    }
 
    // ------------------- common -------------------
+   initCurrencyListSubscription() {
+      this.sub = this.handlecurrencyList.subscribe(([value]) => {
+         this.handleCurrencyData(value);
+      });
+   }
+   handleCurrencyData(value) {
+      this.currencySybmol = value;
+   }
    createSlabsItem(min?: number, max?: number): FormGroup {
       // console.log(min, max);
       return this.formBuilder.group({

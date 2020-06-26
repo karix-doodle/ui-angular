@@ -69,9 +69,11 @@
                 <th>Non-LCR Gateway</th>
             </tr>
         </thead>
+        <!-- authorizationService.authorizationState.billplan_mgmt.billplan_create_ratecard_enabled -->
         <tbody>
             <tr *ngFor="let gateway of LCRListRes?.data.gateways 
-            | filter : searchText : 1 | sort: sortingName: isDesc" (click)="onRow(gtModal, gateway)">
+            | filter : searchText : 1 | sort: sortingName: isDesc" (click)="authorizationService.authorizationState.route_mgmt.lcr_list_enabled
+                 && onRow(gtModal, gateway)">
                 <td>{{gateway.country}}</td>
                 <td>{{gateway.mcc}}</td>
                 <td>
@@ -128,7 +130,9 @@
                             <div class="form-group col-3">
                                 <label class="toggle-switch">
                                     <input type="checkbox" class="switch-btn" [checked]="direct.status === 1"
-                                        (change)="toggleStatus($event, Gateways.mcc , direct)">
+                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
+                                        toggleStatus($event, Gateways.mcc , direct)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -145,7 +149,9 @@
                             <div class="form-group col-3">
                                 <label class="toggle-switch">
                                     <input type="checkbox" class="switch-btn" [checked]="premium.status === 1"
-                                        (change)="toggleStatus($event, Gateways.mcc , premium)">
+                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled && 
+                                        toggleStatus($event, Gateways.mcc , premium)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -162,7 +168,9 @@
                             <div class="form-group col-3">
                                 <label class="toggle-switch">
                                     <input type="checkbox" class="switch-btn" [checked]="wholesale.status === 1"
-                                        (change)="toggleStatus($event, Gateways.mcc , wholesale)">
+                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
+                                        toggleStatus($event, Gateways.mcc , wholesale)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>

@@ -17,6 +17,7 @@ import { SettingsModule } from './settings/settings.module';
 import { RouteManagementModule } from './route-management/route-management.module';
 import { CustomerManagementModule } from './customer-management/customer-management.module';
 import { BillplanManagementModule } from './billplan-management/billplan-management.module';
+import { ServiceModule } from './service/service.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +41,7 @@ import { BillplanManagementModule } from './billplan-management/billplan-managem
     CustomerManagementModule,
     BillplanManagementModule,
     SettingsModule,
+    ServiceModule,
   ],
   exports: [],
   providers: [],

@@ -14,6 +14,7 @@ import { startWith, pairwise } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { errorAlert, successAlert, confirmAlert } from '../../../shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorizationService } from '../../../service/auth/authorization.service';
 
 @Component({
   selector: 'app-create-pool',
@@ -46,7 +47,8 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private genericService: GenericService,
-    private poolRouteService: PoolRouteService
+    private poolRouteService: PoolRouteService,
+    private authService: AuthorizationService
   ) {
     this.createForm();
     this.routeNameMin = environment.createClonePoolRouteFieldLength.routeNameInputBox.min;

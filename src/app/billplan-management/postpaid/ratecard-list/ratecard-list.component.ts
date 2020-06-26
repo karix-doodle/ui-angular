@@ -251,6 +251,10 @@ export class RatecardListComponent implements OnInit {
 
   resetForm() {
     this.initRateCardSearchForm()
+    this.initSearchSuggestion();
+    this.rateCardSearchForm.patchValue({
+      effectdate: moment().utcOffset(environment.UTC)
+    })
   }
 
 }

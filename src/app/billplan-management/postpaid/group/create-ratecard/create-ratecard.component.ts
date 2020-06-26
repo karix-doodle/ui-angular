@@ -62,6 +62,7 @@ export class CreateRatecardComponent implements OnInit {
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
+          console.log(res);
           this.billPlanCurrencyRes = res;
           this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
           let bcurrency = {}
@@ -108,10 +109,10 @@ export class CreateRatecardComponent implements OnInit {
       ratecard_type: ['Group', [Validators.required]],
       ratecard_name: [this.activeRoute.snapshot.params.name, Validators.required],
       groups: this.formBuilder.array([this.createGroupsItem()]),
-      ratetype_roc: [''],
+      ratetype_roc: ['custom'],
       roc: this.formBuilder.array([this.createRocItem()]),
       ratetype_row: ['standard'],
-      billing_rate_row: [''],
+      billing_rate_row: ['', [Validators.pattern('[0-9.]{6,6}')]],
       discount_rate: [''],
       discount_type: ['percentage'],
       description: ['']
