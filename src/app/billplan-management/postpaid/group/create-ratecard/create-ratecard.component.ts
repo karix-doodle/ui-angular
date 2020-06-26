@@ -60,6 +60,7 @@ export class CreateRatecardComponent implements OnInit {
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
+          console.log(res);
           this.billPlanCurrencyRes = res;
           this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
           let bcurrency = {}
