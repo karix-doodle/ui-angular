@@ -1,12 +1,11 @@
 <div class="row btm-border headings-div">
   <div class="col-12">
     <label class="main-heading">
-      <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label
-    >
+      <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
     <span> CUSTOM ROUTE</span>
   </div>
 </div>
-<section class="rm-dashboard">
+<section class="rm-dashboard" *ngIf="AuthService.authorizationState.route_mgmt.customroute_dashboard_enabled">
   <div class="row">
     <div class="col-4">
       <a routerLink="/route-management/custom-route/mobile">
@@ -67,3 +66,6 @@
     </div>
   </div>
 </section>
+<div *ngIf="!AuthService.authorizationState.route_mgmt.customroute_dashboard_enabled">
+  <span>You are not <b>authorized</b> for this page</span>
+</div>

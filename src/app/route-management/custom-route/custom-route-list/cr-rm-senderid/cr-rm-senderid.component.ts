@@ -11,6 +11,7 @@ import {
   deleteAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-cr-rm-senderid",
@@ -26,7 +27,10 @@ export class CrRmSenderidComponent implements OnInit {
   sortingName: any;
   isDesc: boolean;
 
-  constructor(public senderService: SenderCustomService) {}
+  constructor(
+    public senderService: SenderCustomService,
+    private authService: AuthorizationService
+    ) { }
 
   ngOnInit() {
     this.getAllSenderidData();

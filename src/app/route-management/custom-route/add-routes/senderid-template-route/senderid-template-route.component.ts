@@ -19,6 +19,7 @@ import {
 } from "src/app/route-management/models/RouteManagement/Generic/generic";
 import { SenderCustomService } from "src/app/route-management/services/RouteManagement/custom-route/sender-custom.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-senderid-template-route",
@@ -42,7 +43,8 @@ export class SenderidTemplateRouteComponent implements OnInit {
     public customService: CustomService,
     public mobileSenderTemplateService: SenderCustomService,
     public route: ActivatedRoute,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private authService: AuthorizationService
   ) {}
 
   ngOnInit() {
