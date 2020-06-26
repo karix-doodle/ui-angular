@@ -29,7 +29,7 @@ export class GroupRouteService {
   BillPlanCreateGroup(data): Observable<BillPlanCreateGroup_ApiResponse> {
     let details = {
       ...data,
-      loggedinempid: 10001
+      loggedinempid: environment.loggedinempid
     }
     return this.http.post(this.baseUrl + '/createratecard/group', details, this.httpOptions)
       .pipe(map(m => m as BillPlanCreateGroup_ApiResponse));

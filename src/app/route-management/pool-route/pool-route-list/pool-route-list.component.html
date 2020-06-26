@@ -70,7 +70,8 @@
                 <td>{{row.created_date}} | {{row.created_time}}</td>
                 <td>{{row.createdby}}</td>
                 <td>
-                    <a [routerLink]="['/route-management/pool-route/clone-pool', row.route_id]">
+                    <a [ngClass]="{'disabled': !authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled}"
+                        [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled ? ['/route-management/pool-route/clone-pool', row.route_id] : []">
                         <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon" />
                     </a>
                 </td>

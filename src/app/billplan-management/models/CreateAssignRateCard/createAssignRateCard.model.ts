@@ -39,6 +39,7 @@ export class BillPlanDetailsView_Data {
     billplanname: string;
     ratecardtype: string;
     billingtype: string;
+    currency_id: number;
     createdby: string;
     date: Date;
     time: string;

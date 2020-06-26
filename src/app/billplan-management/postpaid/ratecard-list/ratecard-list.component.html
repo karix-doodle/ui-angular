@@ -136,8 +136,7 @@
         <tbody>
             <tr *ngFor="let item of billPlanDetailsViewData?.data.tabledata">
                 <td class="font-weight-semi-bold">
-                    <!-- routerLink="/billplan-management/postpaid/country/assigned-ratecard-view/" -->
-                    <a *ngIf="item.ratecardtype === 'country'"
+                    <a *ngIf="item.ratecardtype === 'country' || item.ratecardtype === 'Country'"
                         [routerLink]="['/billplan-management/postpaid/country/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                         {{item.ratecardname}}
                     </a>
@@ -149,11 +148,11 @@
                         [routerLink]="['/billplan-management/postpaid/flat-fixed/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                         {{item.ratecardname}}
                     </a>
-                    <a *ngIf="item.ratecardtype === 'group'"
+                    <a *ngIf="item.ratecardtype === 'group' || item.ratecardtype === 'Group'"
                         [routerLink]="['/billplan-management/postpaid/group/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                         {{item.ratecardname}}
                     </a>
-                    <a *ngIf="item.ratecardtype === 'slab'"
+                    <a *ngIf="item.ratecardtype === 'slab' || item.ratecardtype === 'Slab'"
                         [routerLink]="['/billplan-management/postpaid/slab/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                         {{item.ratecardname}}
                     </a>
@@ -163,8 +162,8 @@
                 <td>{{item.uploaddate}} | {{item.uploadtime}}</td>
                 <td>{{item.uploaduser}}</td>
                 <td>
-                    <img (click)="delete(item.billplanid, item.ratecardid)" src="assets/icons/delete-icon.svg"
-                        class="img-fluid cursor-pointer" alt="delete icon" />
+                    <img *ngIf="item.deleteenabled" (click)="delete(item.billplanid, item.ratecardid)"
+                        src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon" />
                 </td>
             </tr>
         </tbody>

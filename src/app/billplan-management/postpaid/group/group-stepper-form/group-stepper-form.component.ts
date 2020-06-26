@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { startWith, pairwise, debounceTime } from 'rxjs/operators';
@@ -12,7 +12,8 @@ import {
    BillPlanContinent_ApiRespone,
    BillPlanOperator_ApiRespone,
    BillPlanOperator_Data,
-   BillPlanCreateGroup_ApiResponse
+   BillPlanCreateGroup_ApiResponse,
+   CurrencyRateRes
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
 
 import { HttpErrorResponse } from "@angular/common/http";
@@ -27,7 +28,7 @@ import { errorAlert, successAlert } from "src/app/shared/sweet-alert/sweet-alert
    styleUrls: ['./group-stepper-form.component.css']
 })
 
-export class GroupStepperFormComponent implements OnInit {
+export class GroupStepperFormComponent implements OnInit, OnDestroy {
 
    firstFormGroup: FormGroup;
    secondFormGroup: FormGroup;
@@ -40,6 +41,13 @@ export class GroupStepperFormComponent implements OnInit {
 
    billPalnOperatorApiResponse: BillPlanOperator_ApiRespone;
    billPlanOperator: BillPlanOperator_Data[] = [];
+
+   conversionRate: number = 0;
+
+   currencySybmol: object = {
+      bCurrency: '',
+      nCurrency: ''
+   }
 
    @Input() parentForm: FormGroup;
    @Input() rowGroups: [];
@@ -54,6 +62,9 @@ export class GroupStepperFormComponent implements OnInit {
 
    private eventHandleGroupsDelete: Subscription;
    @Input() handleGroupsDelete: Observable<[string, number]>;
+
+   private eventCurrencyList: Subscription;
+   @Input() handlecurrencyList: Observable<[object]>;
 
    isEditMode: boolean = false
    isIndexed: number = null
@@ -86,10 +97,19 @@ export class GroupStepperFormComponent implements OnInit {
          this.handleGroupsListDelete(value, indexed);
       });
 
+      this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
+         this.handleCurrencyData(value);
+      });
+
       this.getContinentList();
       this.getCountryList('');
+      this.initCurrencyConversion();
       this.handleContinentChange();
 
+   }
+
+   handleCurrencyData(value) {
+      this.currencySybmol = value
    }
 
    handleContinentChange() {
@@ -186,8 +206,28 @@ export class GroupStepperFormComponent implements OnInit {
       );
    }
 
+   initCurrencyConversion() {
+      this.billPlanservice.getCurrencyRate(this.parentForm.value.billplan_currencyid).subscribe(
+         (res: CurrencyRateRes) => {
+            if (
+               res.responsestatus === environment.APIStatus.success.text &&
+               res.responsecode > environment.APIStatus.success.code
+            ) {
+               this.conversionRate = Number(res.data.conversion_rate);
+            } else if (
+               res.responsestatus === environment.APIStatus.error.text &&
+               res.responsecode < environment.APIStatus.error.code
+            ) {
+               errorAlert(res.message, res.responsestatus);
+            }
+         }, (error: HttpErrorResponse) => {
+            errorAlert(error.message, error.statusText);
+         }
+      );
+   }
+
    round(data) {
-      return data
+      return (data * this.conversionRate).toFixed(6)
    }
 
    getOperatorList(value, name) {
@@ -229,6 +269,7 @@ export class GroupStepperFormComponent implements OnInit {
    ngOnDestroy() {
       this.eventGroupsListEvent.unsubscribe();
       this.eventHandleGroupsDelete.unsubscribe();
+      this.eventCurrencyList.unsubscribe();
    }
 
    createGroupsItem(): FormGroup { // init = x
@@ -258,7 +299,8 @@ export class GroupStepperFormComponent implements OnInit {
          continent_name: [''],
          groupName: [''],
          routedCountries: [''],
-         billing_rate: ['']
+         billing_rate: ['', [Validators.pattern('[0-9.]{6,6}')]],
+         normalize_rate: [''],
       });
    }
 

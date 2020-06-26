@@ -26,17 +26,22 @@ export class CalendarPickerComponent implements OnInit {
     'Last 30 Days': [moment().subtract(29, 'days').utcOffset(environment.UTC), moment()]
   }
 
+  minDate: any = null
+
   constructor() {
   }
 
   ngOnInit() {
-    if (this.params['type'] == 'dateOnly') {
+    if (this.params['type'] && this.params['type'] == 'dateOnly') {
       this.ranges = {}
       this.autoApply = true
       this.singleDatePicker = true
       this.showCustomRangeLabel = false
       this.linkedCalendars = false
-      this.selected = this.params.startdate;
+      this.selected = {
+        startDate: this.params.startdate.add(1, 'days'),
+      }
+      this.minDate = this.params.startdate
     } else {
       this.selected = {
         startDate: this.params.fromdate,
@@ -47,13 +52,13 @@ export class CalendarPickerComponent implements OnInit {
   }
 
   change(e): void {
-    if (this.params['type'] != 'dateOnly') {
+    if (this.params['type'] && this.params['type'] != 'dateOnly') {
       this.selectDate.emit(e)
     }
   }
 
   eventClicked(e): void {
-    if (this.params['type'] == 'dateOnly') {
+    if (this.params['type'] && this.params['type'] == 'dateOnly') {
       this.selectDate.emit(e)
     }
   }

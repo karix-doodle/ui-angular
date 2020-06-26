@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LcrService } from '../services/RouteManagement/LeastCostRouting/lcr.service';
 import { errorAlert, successAlert } from '../../shared/sweet-alert/sweet-alert';
+import { AuthorizationService } from '../../service/auth/authorization.service';
 @Component({
   selector: 'app-rm-lcr',
   templateUrl: './rm-lcr.component.html',
@@ -28,7 +29,8 @@ export class RmLcrComponent implements OnInit {
   constructor(
     config: NgbModalConfig,
     private modalService: NgbModal,
-    private lcrService: LcrService
+    private lcrService: LcrService,
+    private authorizationService: AuthorizationService
   ) { }
 
   ngOnInit() {

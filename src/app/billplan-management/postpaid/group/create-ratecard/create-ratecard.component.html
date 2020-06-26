@@ -7,41 +7,32 @@
         </div>
         <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
             <span class="green-heading">BILL TYPE - POSTPAID</span>
-            <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+            <button class="btn dropdown-basic px-4" id="erp-dropdown" disabled>
                 Group
             </button>
-            <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-                <a class="dropdown-item" routerLink="/billplan-management/postpaid/country/create-ratecard">Country</a>
-                <a class="dropdown-item" routerLink="/billplan-management/postpaid/country-operator/create-ratecard">
-                    Country + Operator</a>
-                <a class="dropdown-item" routerLink="/billplan-management/postpaid/flat-fixed/create-ratecard">Flat /
-                    Fixed</a>
-                <a class="dropdown-item" routerLink="/billplan-management/postpaid/slab/create-ratecard">Slab</a>
-            </div>
         </div>
     </div>
     <div class="btm-border second-row-pr mb_10">
         <div class="row">
             <div class="col-3 text-right">
                 <div class="form-group">
-                    <input type="search" class="form-control" id="" placeholder="Enter Ratecard Name"
+                    <input type="search" class="form-control" id="" placeholder="Enter Ratecard Name" disabled
                         formControlName="ratecard_name" />
                 </div>
             </div>
             <div class="col-3 offset-6 text-right">
                 <div class="form-group">
-                    <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)"
-                        formControlName="billplan_currencyid" />
+                    <button disabled innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})"></button>
                 </div>
             </div>
         </div>
     </div>
-    <pre>{{typeGroupFormGroup.value| json}}</pre>
+    <!-- <pre>{{typeGroupFormGroup.value| json}}</pre> -->
     <div class="main-container p-4 group-stepper">
         <app-group-stepper-form (parentGroupsList)="parentGroupListData($event, index)"
-            (parentRocData)="parentRocData($event)" [groupsListEvent]="groupListData.asObservable()"
-            [handleGroupsDelete]="handleGroupsDelete.asObservable()" [parentForm]="typeGroupFormGroup"
-            [rowGroups]="row_groups">
+            [handlecurrencyList]="handlecurrencyList.asObservable()" (parentRocData)="parentRocData($event)"
+            [groupsListEvent]="groupListData.asObservable()" [handleGroupsDelete]="handleGroupsDelete.asObservable()"
+            [parentForm]="typeGroupFormGroup" [rowGroups]="row_groups">
         </app-group-stepper-form>
     </div>
 </form>
@@ -76,8 +67,8 @@
                 <th>Country</th>
                 <th>Operator</th>
                 <th>MCC + MNC</th>
-                <th>Billing Rate (€)</th>
-                <th>Normalize Rate (€)</th>
+                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></th>
+                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>
