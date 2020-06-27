@@ -63,7 +63,7 @@
       <tr *ngFor="
             let tableData of billplanTableListData
               | filter: { billplanname: searchvalue }
-
+              | sort: sortingName:!isDesc
           ">
         <td class="font-weight-bold"> <a routerLink="/billplan-management-postpaid/{{tableData.id}}">{{tableData.billplanname}}</a></td>
         <td>{{tableData.ratecardname}}</td>
@@ -89,8 +89,7 @@
 
 <!-- modal pop-up -->
 <ng-template #createBillplan let-c="close" let-d="dismiss">
-  <button type="button" class="offset-11 col-1 modal-close-btn cursor-pointer" aria-label="Close"
-    (click)="closeCBP()">&times;</button>
+  <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="closeCBP()">&times;</button>
   <div class="modal-body">
     <form class="my-form" [formGroup]="createBillPlanFormGroup"
       (ngSubmit)="onSubmitCreateBillPlan(createBillPlanFormGroup.value)">
@@ -101,7 +100,7 @@
             <label>Bill Plan Name</label>
             <div class="route-edit-div">
               <input type="text" class="form-control" placeholder="Enter Billplan Name" formControlName="billplan_name"
-                (blur)="nameCheck(createBillPlanFormGroup.get('billplan_name').value)" maxlength="100" />
+                (blur)="nameCheck(createBillPlanFormGroup.get('billplan_name').value)" />
               <span class="text-danger pl-1 f-12"
                 *ngIf="createBillPlanFormGroup.get('billplan_name').hasError('required') && isCreateValid">
                 Bill Plan Name is required

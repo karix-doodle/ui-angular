@@ -39,7 +39,7 @@
                       innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                         <div class="form-group">
                           <input type="text" class="form-control"
-                              formControlName="billing_rate" placeholder="Enter Rate" />
+                              formControlName="billing_rate" placeholder="Enter Rate" maxlength="10" />
                           <span class="text-danger pl-1 f-12"
                           *ngIf="fixedRateFrom.get('billing_rate').hasError('required') && Submitted">
                               Billing Rate is required
@@ -98,7 +98,8 @@
 
     <div class="row mt-4 create-route-section">
         <div class="col-12 text-center">
-          <button type="reset" class="btn btn-basic mr-3" > Cancel</button>
+          <button type="reset" class="btn btn-basic mr-3"
+          [routerLink]="['/billplan-management-postpaid/', fixedRateFrom.get('billplan_id').value]"> Cancel</button>
           <button type="submit" class="btn erp-intl-btn" > Save</button>
 
         </div>
