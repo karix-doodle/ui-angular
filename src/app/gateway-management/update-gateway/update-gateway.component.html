@@ -1,12 +1,13 @@
-<div class="row btm-border headings-div first-row">
+<div class="row btm-border headings-div first-row" *ngIf="GtMgmtAuthControls.gw_rateupload_enabled">
     <div class="col-12 mt-1">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span><a routerLink="/gateway-management/gateway-details/{{gt_id}}"> {{gt_id}} - {{gt_name}} /</a>
             UPLOAD FILE</span>
     </div>
 </div>
-<div class="data-container mb-3">
-    <form [formGroup]="priceListFormGroup" (ngSubmit)="onSubmitUpdateGatewayPrice(priceListFormGroup.value)">
+<div class="data-container mb-3" *ngIf="GtMgmtAuthControls.gw_rateupload_enabled">
+    <form [formGroup]="priceListFormGroup"
+        (ngSubmit)="GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? onSubmitUpdateGatewayPrice(priceListFormGroup.value) : ''">
         <section class="main-section">
             <div class="row">
                 <!-- <pre>Form values: {{priceListFormGroup.value | json}}</pre> -->
@@ -20,7 +21,7 @@
                                 <i class="fa fa-upload mr-1" aria-hidden="true"></i>Drag and drop
                                 / Browse the file from Computer
                                 <input type="file" name="" class="w-100 h-100 cursor-pointer" #filenameInput
-                                    (change)="fileUpload($event.target.files)" />
+                                    (change)="GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? fileUpload($event.target.files) : ''" />
                             </button>
                         </div>
                         <button (click)="submitPriceFile()" type="button"
@@ -35,10 +36,12 @@
                 <div class="col-3 text-center">
                     <label>Use default Template Rule to update price from File</label>
                     <label class="toggle-switch">
-                        <input type="checkbox" (change)="changeDefaultRule($event.target.checked)" class="switch-btn"
-                            [disabled]="!GtDefaultTemplateData?.switch_enabled"
+                        <input type="checkbox"
+                            (change)="GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? changeDefaultRule($event.target.checked) : ''"
+                            class="switch-btn" [disabled]="!GtDefaultTemplateData?.switch_enabled"
                             [checked]="GtDefaultTemplateData?.switch_on == true" />
-                        <span class="slider round"></span>
+                        <span class="slider round"
+                            [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? null : true }"></span>
                     </label>
                 </div>
 
@@ -65,10 +68,10 @@
                             dndEffectAllowed="copy" (dndDrop)="onDrop($event, item.column)">
                             <div class="card-body">
                                 <label class="mb-0 pb-1" *ngIf="priceListFormGroup.get(item.column).value == '' || 
-                                priceListFormGroup.get(item.column).value == null">
+                                    priceListFormGroup.get(item.column).value == null">
                                     {{item.content}}</label>
                                 <div class="w-100 font-weight-bold pb-1" *ngIf="priceListFormGroup.get(item.column).value != '' && 
-                                priceListFormGroup.get(item.column).value != null">
+                                    priceListFormGroup.get(item.column).value != null">
                                     {{item.text}} = "{{priceListFormGroup.get(item.column).value}}"
                                     <img (click)="removeDroppedPriceList(item.column)" alt="delete icon"
                                         class="img-fluid cursor-pointer" src="assets/icons/delete-icon.svg">
@@ -183,7 +186,9 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <a routerLink="/gateway-management/gateway-details/{{gt_id}}" class="btn btn-basic mr-3">Cancel</a>
-                    <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
+                    <input type="submit"
+                        [ngClass]="{'disabled': GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? null : true }"
+                        class="btn erp-intl-btn save-btn" value="Save">
                 </div>
             </div>
         </div>
@@ -191,7 +196,7 @@
 
 </div>
 
-<ng-template #priceListSubmitSuccess let-c="close" let-d="dismiss">
+<ng-template #priceListSubmitSuccess let-c="close" let-d="dismiss" *ngIf="GtMgmtAuthControls.gw_rateupload_enabled">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
@@ -245,17 +250,13 @@
                                 </span>
                             </td>
                         </tr>
-                        <!-- <tr>
-                            <td>1</td>
-                            <td>
-                                <span placement="top" ngbTooltip="{{draggableListRight | json}}">
-                                    test
-                                </span>
-                            </td>
-                        </tr> -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </ng-template>
+
+<div class="pt-3" *ngIf="!GtMgmtAuthControls.gw_rateupload_enabled">
+    Your are not <b>Authorized</b> to access this page
+</div>

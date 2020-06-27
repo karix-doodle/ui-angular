@@ -39,7 +39,8 @@
               </span>
                 </div>
                 <div class="col-3 mb-2">
-                  <label>Billing Rate (€)</label>
+                  <label
+                  innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                   <div class="form-group">
                       <input type="search" class="form-control"
                           formControlName="billing_rate" placeholder="Enter Rate" />
@@ -54,11 +55,12 @@
                   </div>
               </div>
               <div class="col-3 mb-2">
-                <label>Normalize Rate (€)</label>
+                <label
+                innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
                 <div class="form-group">
                     <input type="number" class="form-control" disabled
                         [value]="round(count.get('billing_rate').value)"
-                        formControlName="normalize_rate" placeholder="" />
+                        formControlName="normalize_rate" placeholder="0.0000" />
                 </div>
             </div>
               </div>
@@ -75,7 +77,7 @@
           </button>
         </div>
         <div class="col-6 text-right save-form-div">
-          <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
+          <button type="button" class="btn btn-basic mr-3" mat-button [routerLink]="['/billplan-management/home']" >Cancel</button>
           <button type="button"  class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
             Next
           </button>
@@ -109,16 +111,20 @@
         <div class="gt-ratio-div" *ngIf="parentForm.get('ratetype_row').value === 'custom'">
             <div class="row mb-2">
                 <div class="col-5 mb-2">
-                    <label>Billing Rate (€)</label>
+                  <label
+                  innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                     <div class="form-group">
                         <input type="search" class="form-control" id="" placeholder="Enter Rate"
                             formControlName="billing_rate_row" />
                     </div>
                 </div>
                 <div class="col-5 mb-2">
-                    <label>Normalize Rate (€)</label>
+                  <label
+                  innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
                     <div class="form-group">
-                        <input type="search" class="form-control" id="" disabled placeholder="0.0678" />
+                      <input type="number" class="form-control" disabled
+                      [value]="round(parentForm.get('billing_rate_row').value)"
+                       placeholder="0.0000" />
                     </div>
                 </div>
             </div>

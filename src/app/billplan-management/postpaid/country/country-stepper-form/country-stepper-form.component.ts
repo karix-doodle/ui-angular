@@ -20,6 +20,7 @@ import {
   BillPlanCountries_ApiRespone,
   BillPlanCountries_Data,
   BillPlanCreateCountry_ApiResponse,
+  CurrencyRateRes,
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
 import { errorAlert, successAlert } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -54,6 +55,14 @@ export class CountryStepperFormComponent implements OnInit {
   @ViewChild("stepper", { static: false }) stepper: MatStepper;
   Submitted: boolean = false;
   countryObj: object = {};
+  conversionRate: number;
+  private eventCurrencyList: Subscription;
+  @Input() handlecurrencyList: Observable<[object]>;
+  operatorObj: object = {};
+  currencySybmol: object = {
+    bCurrency: '',
+    nCurrency: ''
+ }
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -78,6 +87,11 @@ export class CountryStepperFormComponent implements OnInit {
     this.eventHandleCountryDelete = this.handleCountryDelete.subscribe((value) => {
       this.handleCountryListDelete(value, );
    });
+   this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
+    this.handleCurrencyData(value);
+ });
+
+   this.initCurrencyConversion();
   }
 
   get countryControl() {
@@ -118,6 +132,10 @@ export class CountryStepperFormComponent implements OnInit {
       );
 
   }
+  handleCurrencyData(value) {
+    this.currencySybmol = value
+    console.log(value, 'asdasd')
+ }
 
   handleCountryOperator(indexCountries, key, event, country) {
     console.log(country);
@@ -224,9 +242,31 @@ export class CountryStepperFormComponent implements OnInit {
     this.reActiveOperator();
     callBackFunction();
  }
-
  round(data) {
-  return data * 0.785
+  return data * this.conversionRate;
+}
+// ------------------- common ----------------------------------
+
+// ------------------- Parent(First) Form -------------------
+initCurrencyConversion() {
+  this.billPlanservice.getCurrencyRate(this.parentForm.value.billplan_currencyid).subscribe(
+     (res: CurrencyRateRes) => {
+        if (
+           res.responsestatus === environment.APIStatus.success.text &&
+           res.responsecode > environment.APIStatus.success.code
+        ) {
+           this.conversionRate = +res.data.conversion_rate;
+           // console.log(this.conversionRate);
+        } else if (
+           res.responsestatus === environment.APIStatus.error.text &&
+           res.responsecode < environment.APIStatus.error.code
+        ) {
+           errorAlert(res.message, res.responsestatus);
+        }
+     }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+     }
+  );
 }
 
 
