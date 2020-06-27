@@ -11,6 +11,8 @@ import { addValidators, removeValidators } from '../../shared/helper/helperFunct
 
 import { DndDropEvent, DropEffect } from "ngx-drag-drop";
 
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+
 import {
   errorAlert,
   successAlert,
@@ -44,6 +46,8 @@ export class UpdateGatewayComponent implements OnInit {
 
   gt_id: string
   gt_name: string
+
+  GtMgmtAuthControls = null
 
   @ViewChild('filenameInput', { static: false }) filenameInput: any;
 
@@ -106,7 +110,10 @@ export class UpdateGatewayComponent implements OnInit {
     private gatewayManagementService: GatewayManagementService,
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
+    private authorizationService: AuthorizationService
   ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    console.log(this.GtMgmtAuthControls, 'adadasdas')
     this.priceListFormGroup = this.formBuilder.group({
       gw_id: [this.activeRoute.snapshot.params.id, [Validators.required]],
       filename: ['', [Validators.required]],

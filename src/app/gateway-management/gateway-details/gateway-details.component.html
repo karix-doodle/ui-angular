@@ -1,4 +1,4 @@
-<div class="row btm-border headings-div first-row">
+<div class="row btm-border headings-div first-row" *ngIf="GtMgmtAuthControls.gw_view_enabled">
     <div class="col-5">
         <label class="main-heading pl-2">
             <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
@@ -9,22 +9,27 @@
             <div class="col-8 border-right">
                 <a routerLink="/gateway-management/country-list/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
                     class="btn btn-basic mr-2 ">Countries List</a>
-                <a routerLink="/gateway-management/file-audit-log/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
+                <a [ngClass]="{'disabled': GtMgmtAuthControls.gw_rate_files_audit_logs_enabled ? null : true }"
+                    *ngIf="GtDetailsData"
+                    [routerLink]="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled ? ['/gateway-management/file-audit-log/',GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name]: []"
                     class="btn erp-intl-btn">File Audit</a>
             </div>
-            <div class="col-2 border-right text-center">
-                <a routerLink="/gateway-management/update-gateway/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}/{{GtDetailsData?.data.currency_id}}"
-                    class="fa-2x icon-btn icons-div"><i class="fa fa-upload" aria-hidden="true"></i></a>
+            <div class="col-2 border-right text-center" *ngIf="GtDetailsData?.data">
+                <a [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_rateupload_enabled ? null : true }"
+                    [routerLink]="GtMgmtAuthControls.gw_rateupload_enabled ? ['/gateway-management/update-gateway/', gwId,GtDetailsData?.data.gw_name,GtDetailsData?.data.currency_id] : []"
+                    class="fa-2x icon-btn icons-div"><i class="fa fa-upload" aria-hidden="true"></i>
+                </a>
             </div>
             <div class="col-2 text-center">
-                <a routerLink="/gateway-management/edit-gateway/{{GtDetailsData?.data.gw_id}}"
-                    class="fa-2x icon-btn icons-div"><img src="assets/icons/edit-icon.svg" alt="edit" /></a>
+                <a [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_edit_enabled ? null : true }"
+                    [routerLink]="GtMgmtAuthControls.gw_edit_enabled ? ['/gateway-management/edit-gateway/', gwId] : []"
+                    class="fa-2x icon-btn icons-div"><img src="assets/icons/edit-icon.svg" alt="edit" />
+                </a>
             </div>
         </div>
-
     </div>
 </div>
-<div class="row second-row-det">
+<div class="row second-row-det" *ngIf="GtMgmtAuthControls.gw_view_enabled">
     <div class="col-4">
         <div class="row mb-2">
             <div class="col-5 border-right"><label>Gateway ID</label></div>
@@ -85,7 +90,7 @@
         </div>
     </div>
 </div>
-<section>
+<section *ngIf="GtMgmtAuthControls.gw_view_enabled">
     <div class="data-container mb-3">
         <label class="gateway-section-heading">VALIDATION</label>
         <section class="main-section validation-section">
@@ -126,7 +131,8 @@
                         <label class="box-heading">Supported Destination</label>
                         <div class="row">
                             <div class="col-6 box-data">
-                                <label>Active<span><b>{{GtDetailsData?.data.activedestination}}</b></span></label></div>
+                                <label>Active<span><b>{{GtDetailsData?.data.activedestination}}</b></span></label>
+                            </div>
                             <div class="col-6 box-data">
                                 <label>In-active<span><b>{{GtDetailsData?.data.inactivedestination}}</b></span></label>
                             </div>
@@ -186,7 +192,9 @@
         <div class="row">
             <label class="gateway-section-heading col-6">GATEWAY ACTIVITIES</label>
             <div class="col-6 text-right f-12">
-                <a routerLink="/gateway-management/details-view-log/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
+                <a *ngIf="GtDetailsData"
+                    [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_activity_logs_enabled ? null : true }"
+                    [routerLink]="GtMgmtAuthControls.gw_activity_logs_enabled ? ['/gateway-management/details-view-log/',GtDetailsData?.data.gw_id, GtDetailsData?.data.gw_name] : []"
                     class="font-weight-bold">
                     View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>
                 </a>
@@ -323,8 +331,9 @@
         </section>
     </div>
 </section>
+
 <!-- modal pop-up -->
-<ng-template #addedCountryListModal let-c="close" let-d="dismiss">
+<ng-template #addedCountryListModal let-c="close" let-d="dismiss" *ngIf="GtMgmtAuthControls.gw_view_enabled">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
@@ -335,7 +344,8 @@
             </div>
             <div class="row my-2 f-14">
                 <div class="col-3"><label>Total Countries</label></div>
-                <div class="col-9"><span class="badge badge-dark">{{GtAddedCountryListData?.data.total}}</span></div>
+                <div class="col-9"><span class="badge badge-dark">{{GtAddedCountryListData?.data.total}}</span>
+                </div>
             </div>
             <div class="row">
                 <div class="table-responsive senderid-list-table">
@@ -351,7 +361,7 @@
         </form>
     </div>
 </ng-template>
-<ng-template #inactiveCountryListModal let-c="close" let-d="dismiss">
+<ng-template #inactiveCountryListModal let-c="close" let-d="dismiss" *ngIf="GtMgmtAuthControls.gw_view_enabled">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
@@ -362,7 +372,8 @@
             </div>
             <div class="row my-2 f-14">
                 <div class="col-3"><label>Total Countries</label></div>
-                <div class="col-9"><span class="badge badge-dark">{{GtInactiveCountryListData?.data.total}}</span></div>
+                <div class="col-9"><span class="badge badge-dark">{{GtInactiveCountryListData?.data.total}}</span>
+                </div>
             </div>
             <div class="row">
                 <div class="table-responsive senderid-list-table">
@@ -378,7 +389,7 @@
         </form>
     </div>
 </ng-template>
-<ng-template #priceChangeCountryListModal let-c="close" let-d="dismiss">
+<ng-template #priceChangeCountryListModal let-c="close" let-d="dismiss" *ngIf="GtMgmtAuthControls.gw_view_enabled">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
@@ -406,3 +417,6 @@
         </form>
     </div>
 </ng-template>
+<div class="pt-3" *ngIf="!GtMgmtAuthControls.gw_view_enabled">
+    Your are not <b>Authorized</b> to access this page
+</div>

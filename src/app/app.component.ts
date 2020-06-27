@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from './service/auth/authorization.service';
 import { AuthorizationStateData, AuthorizationState } from './model/authorization.model';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +21,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.authorizationService.getAuthorizationState().subscribe(
       (res: AuthorizationState) => {
-        if (res.responsestatus === 'success') {
-          console.log(res);
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.stateBoolean = true;
           this.state = res.data;
         }

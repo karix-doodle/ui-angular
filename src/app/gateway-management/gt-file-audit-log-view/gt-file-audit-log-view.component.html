@@ -1,4 +1,4 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_rate_file_view_or_download_enabled">
     <div class="col-12">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span> <a routerLink="/gateway-management/gateway-details/{{gatewayFileAuditFileLogData?.data.gw_id}}">
@@ -9,7 +9,7 @@
                 FILE AUDIT LOG</a> / File Name</span>
     </div>
 </div>
-<div class="row btm-border second-row-det">
+<div class="row btm-border second-row-det" *ngIf="GtMgmtAuthControls.gw_rate_file_view_or_download_enabled">
     <div class="col-6">
         <div class="row mt-1">
             <div class="col-6">
@@ -39,7 +39,8 @@
     </div>
 
 </div>
-<div class="main-container table-responsive audit-log-list">
+<div class="main-container table-responsive audit-log-list"
+    *ngIf="GtMgmtAuthControls.gw_rate_file_view_or_download_enabled">
     <table class="table table-borderless erp-list-table audit-log-list-table mb-0">
         <thead>
             <tr>
@@ -67,4 +68,7 @@
             </tr>
         </tbody>
     </table>
+</div>
+<div class="pt-3" *ngIf="!GtMgmtAuthControls.gw_rate_file_view_or_download_enabled">
+    Your are not <b>Authorized</b> to access this page
 </div>
