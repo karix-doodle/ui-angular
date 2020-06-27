@@ -23,7 +23,7 @@ export class BillplanFlatFixedService {
   BillPlanCreate(data): Observable<BillPlanCreateFlatFixed_ApiResponse> {
     let details = {
       ...data,
-      loggedinempid: 10001
+      loggedinempid: environment.loggedinempid
     }
     return this.http.post(this.baseUrl + '/createratecard', details, this.httpOptions)
       .pipe(map(m => m as BillPlanCreateFlatFixed_ApiResponse));

@@ -147,6 +147,7 @@ export class CreateRatecardComponent implements OnInit {
     this.updateRowGroups(parentGroupArray.value);
    }
    this.editMode = false
+   console.log(this.countryOperatorArray)
   }
 
   editGroups(cindex: number) {

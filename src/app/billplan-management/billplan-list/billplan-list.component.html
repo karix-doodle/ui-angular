@@ -51,10 +51,8 @@
         <th>
           Billing Currency
         </th>
-        <th (click)="sort('date')">
+        <th >
           Created Date & Time
-          <i *ngIf="sortingName === 'date' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
-          <i *ngIf="sortingName === 'date' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
         </th>
         <th>
           Created By
@@ -65,12 +63,12 @@
       <tr *ngFor="
             let tableData of billplanTableListData
               | filter: { billplanname: searchvalue }
-              | sort: sortingName:isDesc
+
           ">
-        <td class="font-weight-bold">{{tableData.billplanname}}</td>
+        <td class="font-weight-bold"> <a routerLink="/billplan-management-postpaid/{{tableData.id}}">{{tableData.billplanname}}</a></td>
         <td>{{tableData.ratecardname}}</td>
         <td>
-          <a routerLink="/billplan-management-postpaid/{{tableData.id}}">{{tableData.billingtype}}</a>
+          {{tableData.billingtype}}
         </td>
         <td class="text-center">{{tableData.noofesmetag}}</td>
         <td class="text-left" [innerHTML]="tableData.billingcurrency "> </td>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from './service/auth/authorization.service';
 import { AuthorizationStateData, AuthorizationState } from './model/authorization.model';
 import { environment } from '../environments/environment';
+import { errorAlert } from './shared/sweet-alert/sweet-alert';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -21,12 +23,17 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.authorizationService.getAuthorizationState().subscribe(
       (res: AuthorizationState) => {
-        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+        if (res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code) {
+          // console.log(res);
           this.stateBoolean = true;
           this.state = res.data;
+        } else if (res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code) {
+          errorAlert(res.responsestatus);
         }
-      }, error => {
-        console.log(error);
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
       }
     );
   }

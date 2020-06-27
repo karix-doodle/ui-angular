@@ -24,7 +24,7 @@
   </div>
   <div class="col-3 offset-6 text-right">
     <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
-      [innerHTML]="'Billingcurrency' + '(' + currency + ')'">
+    innerHTML="Billing Rate ({{currency}})">
       Country + Operator </button>
 
   </div>
@@ -62,7 +62,7 @@
         <th>Country</th>
         <th>Operator</th>
         <th>MCC + MNC</th>
-        <th [innerHTML]="'Billing Rate' + '(' + currency + ')'"></th>
+        <th innerHTML="Billing Rate ({{currency}})"></th>
         <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
       </tr>
     </thead>
@@ -88,7 +88,7 @@
         <thead>
           <tr>
             <th>Continent</th>
-            <th [innerHTML]="'Billing Rate' + '(' + currency + ')'"></th>
+            <th innerHTML="Billing Rate ({{currency}})"></th>
             <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
           </tr>
         </thead>
@@ -110,7 +110,7 @@
             <th>Country</th>
             <th>Operator</th>
             <th>MCC + MNC</th>
-            <th [innerHTML]="'Billing Rate' + '(' + currency + ')'"></th>
+            <th innerHTML="Billing Rate ({{currency}})"></th>
             <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
           </tr>
         </thead>
@@ -138,16 +138,16 @@
       <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
           <tr>
-            <th [innerHTML]="'Billing Rate' + '(' + currency + ')'"></th>
+            <th innerHTML="Billing Rate ({{currency}})"></th>
             <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
-            <th>Discount(%)</th>
+            <th>Discount (%)</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of rowArray">
             <td>{{item.billing_rate}}</td>
             <td>{{item.normalizerate}}</td>
-            <td>{{item.discount_percentage}}%</td>
+            <td>{{item.discount_percentage}} </td>
           </tr>
 
         </tbody>
@@ -167,7 +167,7 @@
             <th>Country</th>
             <th>Operator</th>
             <th>MCC + MNC</th>
-            <th [innerHTML]="'Billing Rate' + '(' + currency + ')'"></th>
+            <th innerHTML="Billing Rate ({{currency}})"></th>
             <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
           </tr>
         </thead>

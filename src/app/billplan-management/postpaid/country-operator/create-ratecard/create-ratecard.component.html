@@ -7,14 +7,9 @@
     <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+        <button class="btn dropdown-basic px-4" style="cursor: not-allowed;" id="erp-dropdown" >
            Country + Operator</button>
-           <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country/create-ratecard">Country</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/flat-fixed/create-ratecard">Flat / Fixed</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/group/create-ratecard">Group</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/slab/create-ratecard">Slab</a>
-        </div>
+
     </div>
 </div>
 <div class="btm-border second-row-pr mb_10">
@@ -77,7 +72,7 @@
             <tr *ngFor="let item of countryOperatorArray; let i= index;">
                 <td class="font-weight-semi-bold">{{item.country_name}}</td>
                 <td>{{item.operator_name}}</td>
-                <td>{{item.mcc}}-{{item.mnc}}</td>
+                <td>{{item.mcc}} + {{item.mnc}}</td>
                 <td>{{item.billing_rate}}</td>
                 <td>{{item.normalize_rate}}</td>
                 <td [ngClass]="{'disabled': editMode == true}">

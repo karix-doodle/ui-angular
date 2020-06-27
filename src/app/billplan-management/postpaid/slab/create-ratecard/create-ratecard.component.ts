@@ -30,7 +30,8 @@ export class CreateRatecardComponent implements OnInit {
   currencySybmol: object = {
     bCurrency: '',
     nCurrency: ''
-  }
+  };
+  searchvalue: any;
   constructor(
     private formBuilder: FormBuilder,
     private slabRouteService: SlabRouteService,
