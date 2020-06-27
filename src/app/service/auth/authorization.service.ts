@@ -24,7 +24,6 @@ export class AuthorizationService {
       .pipe(
         tap((data: AuthorizationState) => {
           this.authorizationState = data.data;
-          console.log(this.authorizationState);
         }),
         map((data) => data as AuthorizationState));
   }
