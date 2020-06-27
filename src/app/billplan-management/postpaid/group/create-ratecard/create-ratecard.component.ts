@@ -38,6 +38,7 @@ export class CreateRatecardComponent implements OnInit {
   countryCount = 0
   searchvalue: string = ''
   isEditMode: boolean = false
+  ratecard_name: string
 
   groupListData: Subject<[FormArray, number]> = new Subject<[FormArray, number]>();
   handleGroupsDelete: Subject<[string, number]> = new Subject<[string, number]>();
@@ -49,6 +50,7 @@ export class CreateRatecardComponent implements OnInit {
     private billPlanservice: BillManagementService,
   ) {
     this.createGroupForm();
+    this.ratecard_name = this.activeRoute.snapshot.params.name
   }
 
   ngOnInit() {
@@ -135,6 +137,7 @@ export class CreateRatecardComponent implements OnInit {
       mcc: [''],
       mnc: [''],
       billing_rate: [''],
+      normalize_rate: [''],
     });
   }
 

@@ -120,7 +120,9 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
             startWith(null),
             pairwise()
          ).subscribe(([prev, next]: [string, string]) => {
-            if (this.isContinentCanceled == null) {
+            const countriesControl = this.countriesFormArray(0);
+            console.log(countriesControl.controls[0].touched, 'asdasd')
+            if (this.isContinentCanceled == null && countriesControl.controls[0].touched != false) {
                Swal.fire({
                   title: 'Are you sure want to change continent?',
                   text: "If yes, entered data will get cleared",
@@ -226,8 +228,14 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
       );
    }
 
-   round(data) {
-      return (data * this.conversionRate).toFixed(6)
+   round(data, form: FormGroup) {
+      let NormalizedRate = (data * this.conversionRate).toFixed(6)
+      if (form != undefined) {
+         form.patchValue({
+            normalize_rate: NormalizedRate
+         })
+      }
+      return NormalizedRate
    }
 
    getOperatorList(value, name) {
@@ -289,7 +297,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          operator_name: ['', [Validators.required]],
          mcc: ['', [Validators.required]],
          mnc: ['', [Validators.required]],
-         billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
          normalize_rate: [''],
       });
    }
@@ -299,7 +307,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          continent_name: [''],
          groupName: [''],
          routedCountries: [''],
-         billing_rate: ['', [Validators.pattern('[0-9.]{6,6}')]],
+         billing_rate: ['', [Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
          normalize_rate: [''],
       });
    }
@@ -414,8 +422,12 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
    }
 
    updateRoc(stepper: MatStepper) {
-      this.parentRocData.emit([this.secondFormGroup.value]);
-      stepper.next()
+      if (this.secondFormGroup.invalid) {
+         return true
+      } else {
+         this.parentRocData.emit([this.secondFormGroup.value]);
+         stepper.next()
+      }
    }
 
    groupListData(value: FormArray, indexed: number) {
@@ -557,6 +569,9 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
 
       data.groups.forEach((item) => {
          delete item.continent_name
+         item.countries.forEach((items) => {
+            delete items.normalize_rate
+         })
       })
       data.roc.forEach((item) => {
          delete item.routedCountries

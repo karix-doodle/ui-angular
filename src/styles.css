@@ -936,12 +936,15 @@ select {
   z-index: 2;
 }
 .disabled img,
-.disabled-func,
+.disabled-func {
+  cursor: not-allowed;
+}
+
 [type="button"]:not(:disabled),
 [type="reset"]:not(:disabled),
 [type="submit"]:not(:disabled),
 button:not(:disabled) {
-  cursor: not-allowed;
+  cursor: pointer;
 }
 
 .isDisabled {

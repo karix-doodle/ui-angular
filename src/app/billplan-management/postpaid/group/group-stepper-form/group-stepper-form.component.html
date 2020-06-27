@@ -77,7 +77,7 @@
                                                     <label
                                                         innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control"
+                                                        <input type="text" class="form-control" maxlength="10"
                                                             formControlName="billing_rate" placeholder="Enter Rate" />
                                                         <span class="text-danger pl-1 f-12"
                                                             *ngIf="Y.get('billing_rate').hasError('required') && groupSubmitted">
@@ -90,10 +90,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-3 mb-2">
-                                                    <label>Normalize Rate (€)</label>
+                                                    <label
+                                                        innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" disabled
-                                                            [value]="round(Y.get('billing_rate').value)"
+                                                            [value]="round(Y.get('billing_rate').value, Y)"
                                                             formControlName="normalize_rate" placeholder="" />
                                                     </div>
                                                 </div>
@@ -127,9 +128,10 @@
                 <div class="col-6 text-right save-form-div">
                     <button type="button" class="btn btn-basic mr-3" mat-button
                         [routerLink]="['/billplan-management-postpaid/', parentForm.get('billplan_id').value]">Cancel</button>
-                    <button [attr.disabled]="isEditMode && this.firstFormGroup.untouched == 0 ? 'disabled' : null"
-                        *ngIf="rowGroups.length != 0" type="button" class="btn erp-intl-btn"
-                        (click)="stepperView(stepper, 0, 1)" mat-button>Next</button>
+                    <button
+                        [disabled]="(isEditMode && this.firstFormGroup.untouched == 0) ? true : rowGroups.length == 0 ? true : false"
+                        type="button" class="btn erp-intl-btn"
+                        (click)="rowGroups.length != 0 ? stepperView(stepper, 0, 1) : ''" mat-button>Next</button>
                 </div>
             </div>
         </form>
@@ -146,7 +148,8 @@
                                 <input type="radio" name="ratetype_roc" id="default-roc" value="default"
                                     formControlName="ratetype_roc">
                                 <label for="default-roc" class="radio-inline">Copy from Default Rate Card</label>
-                                <a routerLink="/settings/default-rate-card" class="ml-2"> <i class="fa fa-eye"></i></a>
+                                <a target="_blank" routerLink="/settings/default-rate-card" class="ml-2"> <i
+                                        class="fa fa-eye"></i></a>
                             </div>
                             <div class="form-group col-5 px-0">
                                 <input type="radio" name="ratetype_roc" id="custom-roc" value="custom"
@@ -183,7 +186,7 @@
                         <div class="col-3">
                             <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" placeholder="Enter Rate"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="10"
                                     formControlName="billing_rate" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty">
@@ -192,10 +195,10 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label>Normalize Rate (€)</label>
+                            <label innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" disabled formControlName="normalize_rate"
-                                    [value]="round(X.get('billing_rate').value)" />
+                                    [value]="round(X.get('billing_rate').value, X)" />
                             </div>
                         </div>
 
@@ -224,7 +227,8 @@
                                 <input type="radio" name="ratetype_row" id="std-row" value="standard"
                                     formControlName="ratetype_row">
                                 <label for="std-row" class="radio-inline">Copy from Default Rate Card</label>
-                                <a routerLink="/settings/default-rate-card" class="ml-2"> <i class="fa fa-eye"></i></a>
+                                <a target="_blank" routerLink="/settings/default-rate-card" class="ml-2"> <i
+                                        class="fa fa-eye"></i></a>
                             </div>
                             <div class="form-group col-5 pr-0">
                                 <input type="radio" name="ratetype_row" id="custom-row" value="custom"
@@ -241,7 +245,7 @@
                         <div class="col-5 mb-2">
                             <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" placeholder="Enter Rate"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="10"
                                     formControlName="billing_rate_row" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('billing_rate_row').hasError('pattern')">
@@ -250,10 +254,10 @@
                             </div>
                         </div>
                         <div class="col-5 mb-2">
-                            <label>Normalize Rate (€)</label>
+                            <label innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" disabled
-                                    [value]="round(parentForm.get('billing_rate_row').value)" />
+                                    [value]="round(parentForm.get('billing_rate_row').value, parentForm)" />
                             </div>
                         </div>
                     </div>

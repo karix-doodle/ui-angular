@@ -16,13 +16,13 @@
         <div class="row">
             <div class="col-3 text-right">
                 <div class="form-group">
-                    <input type="search" class="form-control" id="" placeholder="Enter Ratecard Name" disabled
-                        formControlName="ratecard_name" />
+                    <button class="btn w-100 dropdown-basic" disabled [innerHTML]="ratecard_name"></button>
                 </div>
             </div>
             <div class="col-3 offset-6 text-right">
                 <div class="form-group">
-                    <button disabled innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})"></button>
+                    <button class="btn w-100 dropdown-basic" disabled
+                        innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})"></button>
                 </div>
             </div>
         </div>

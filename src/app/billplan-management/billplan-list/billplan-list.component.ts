@@ -67,7 +67,7 @@ export class BillplanListComponent implements OnInit {
   }
 
   initialBillPlanGroup() {
-    let billplan_name = '[0-9a-zA-Z]{5,20}';
+    let billplan_name = '[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{5,20}';
     this.createBillPlanFormGroup = this.formBuilder.group({
       billplan_name: new FormControl('', [Validators.required, Validators.pattern(billplan_name)]),
       currency_id: new FormControl('', [Validators.required]),
