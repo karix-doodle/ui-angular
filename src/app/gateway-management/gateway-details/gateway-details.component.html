@@ -333,7 +333,7 @@
 </section>
 
 <!-- modal pop-up -->
-<ng-template #addedCountryListModal let-c="close" let-d="dismiss" *ngIf="GtMgmtAuthControls.gw_view_enabled">
+<ng-template #addedCountryListModal let-c="close" let-d="dismiss">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
@@ -361,7 +361,7 @@
         </form>
     </div>
 </ng-template>
-<ng-template #inactiveCountryListModal let-c="close" let-d="dismiss" *ngIf="GtMgmtAuthControls.gw_view_enabled">
+<ng-template #inactiveCountryListModal let-c="close" let-d="dismiss">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
@@ -389,7 +389,7 @@
         </form>
     </div>
 </ng-template>
-<ng-template #priceChangeCountryListModal let-c="close" let-d="dismiss" *ngIf="GtMgmtAuthControls.gw_view_enabled">
+<ng-template #priceChangeCountryListModal let-c="close" let-d="dismiss">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
