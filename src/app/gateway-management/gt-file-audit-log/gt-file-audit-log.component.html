@@ -1,4 +1,4 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
     <div class="col-12">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span>
@@ -7,7 +7,7 @@
                 {{gatewayFileAuditLogData?.data.gw_name}}</a> / FILE AUDIT LOG</span>
     </div>
 </div>
-<div class="row btm-border second-row-det">
+<div class="row btm-border second-row-det" *ngIf="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
     <div class="col-7">
         <div class="row">
             <div class="col-12">
@@ -52,7 +52,7 @@
     </div>
 
 </div>
-<div class="main-container table-responsive audit-log-list">
+<div class="main-container table-responsive audit-log-list" *ngIf="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
     <table class="table table-borderless erp-list-table audit-log-list-table mb-0">
         <thead>
             <tr>
@@ -73,8 +73,9 @@
                 <td>{{item.processedby}}</td>
                 <td>
                     <span class="cursor-pointer"
-                        (click)="downloadFileAuditLogFile(item.uploaded_filename)">Download</span> | <a
-                        routerLink="/gateway-management/file-audit-log-view/{{gatewayFileAuditLogData?.data.gw_id}}/{{gatewayFileAuditLogData?.data.gw_name}}/{{item.uuid}}">View
+                        (click)="GtMgmtAuthControls.gw_rate_file_view_or_download_enabled ? downloadFileAuditLogFile(item.uploaded_filename) : ''">Download</span>
+                    | <a *ngIf="gatewayFileAuditLogData"
+                        [routerLink]="GtMgmtAuthControls.gw_rate_file_view_or_download_enabled ? ['/gateway-management/file-audit-log-view/', gatewayFileAuditLogData?.data.gw_id,gatewayFileAuditLogData?.data.gw_name,item.uuid] : []">View
                     </a>
                 </td>
                 <td>{{item.status == '1' ? 'Success' : 'Failed'}}</td>
@@ -84,4 +85,7 @@
             </tr>
         </tbody>
     </table>
+</div>
+<div class="pt-3" *ngIf="!GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
+    Your are not <b>Authorized</b> to access this page
 </div>

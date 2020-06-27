@@ -10,6 +10,7 @@ import {
 } from "../../shared/sweet-alert/sweet-alert";
 
 import * as moment from 'moment';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-details-view-log',
@@ -22,10 +23,15 @@ export class GtDetailsViewLogComponent implements OnInit {
   GtDetailsViewLog: GtDetailsViewLog_Data;
   public params: any;
 
+  GtMgmtAuthControls = null
+
   constructor(
     private activeRoute: ActivatedRoute,
-    private gatewayManagementService: GatewayManagementService
+    private gatewayManagementService: GatewayManagementService,
+    private authorizationService: AuthorizationService
   ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    console.log(this.GtMgmtAuthControls, 'adadasdas')
     let startDate = moment().subtract(9, 'days').utcOffset(environment.UTC);
     let todate = moment().utcOffset(environment.UTC);
     let dayDiffer = todate.diff(startDate, 'days') + 1;

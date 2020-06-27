@@ -281,6 +281,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       }
    }
    addNewSlabCountryOperator() {
+      console.log(this.parentForm.value);
       this.firstStepSubmitted = true;
       if (this.parentForm.valid) {
          const formArrayLength = this.firstFormArray.length;

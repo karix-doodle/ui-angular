@@ -53,7 +53,8 @@
     </div>
 
     <div class="col-5 text-right">
-        <input type="search" class="form-control" placeholder="&#xf002; Search by Continent, Country, Operator" />
+        <input type="search" [(ngModel)]="searchvalue" class="form-control"
+            placeholder="&#xf002; Search by Country, Operator" />
     </div>
 
 </div>
@@ -72,7 +73,13 @@
                 <th>&nbsp;</th>
             </tr>
         </thead>
-        <tbody *ngFor="let items of slabRouteService.previewList; let cindex=index">
+        <tbody *ngFor="let items of slabRouteService.previewList| 
+        filter: { 
+             country_name: searchvalue,
+             operator_name: searchvalue,
+             mcc: searchvalue,
+             mnc: searchvalue
+            }; let cindex=index">
             <tr *ngFor="let item of items.slabs; let sindex=index"
                 [ngClass]="{'border-bottom': items.slabs.length - 1 == sindex}">
                 <td style="vertical-align: middle;" class="font-weight-semi-bold border-bottom"
@@ -80,7 +87,7 @@
                 <td style="vertical-align: middle;" class="border-bottom" [attr.rowspan]="items.slabs.length"
                     *ngIf="sindex==0">{{items.operator_name}}</td>
                 <td style="vertical-align: middle;" class="border-bottom" [attr.rowspan]="items.slabs.length"
-                    *ngIf="sindex==0">{{items.mcc}}-{{items.mnc}}</td>
+                    *ngIf="sindex==0">{{items.mcc}} + {{items.mnc}}</td>
                 <td style="padding-left: 26px;">{{item.min}}</td>
                 <td>{{item.max}}</td>
                 <td>{{item.billing_rate}}</td>
@@ -100,6 +107,17 @@
                         (click)="deletePreviewSlabs(cindex)" />
                 </td>
             </tr>
+
+        </tbody>
+        <tbody *ngIf="!slabRouteService.previewList.length  
+                || (slabRouteService.previewList  |
+                 filter: { 
+                    country_name: searchvalue,
+                    operator_name: searchvalue,
+                    mcc: searchvalue,
+                    mnc: searchvalue 
+                }).length === 0">
+            <td colspan="9" style="text-align: center;">No Records Found</td>
         </tbody>
     </table>
 </div>

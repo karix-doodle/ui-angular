@@ -935,7 +935,12 @@ select {
   cursor: pointer;
   z-index: 2;
 }
-.disabled img {
+.disabled img,
+.disabled-func,
+[type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled),
+button:not(:disabled) {
   cursor: not-allowed;
 }
 

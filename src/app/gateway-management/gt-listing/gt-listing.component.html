@@ -1,12 +1,13 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_listing_enabled">
     <div class="col-8">
         <label class="main-heading">GATEWAY MANAGEMENT</label>
     </div>
     <div class="col-4 text-right">
-        <a routerLink="create-gateway" routerLinkActive="active" class="btn erp-intl-btn">Create Gateway</a>
+        <a [routerLink]="GtMgmtAuthControls.gw_create_enabled ? ['create-gateway'] : []" class="btn erp-intl-btn">Create
+            Gateway</a>
     </div>
 </div>
-<div class="row btm-border second-row-det">
+<div class="row btm-border second-row-det" *ngIf="GtMgmtAuthControls.gw_listing_enabled">
     <div class="col-6">
         <div class="row">
             <div class="col-12">
@@ -52,7 +53,7 @@
     </div>
 
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive" *ngIf="GtMgmtAuthControls.gw_listing_enabled">
     <table class="table table-borderless erp-list-table row-hover-effect mb-0">
         <thead>
             <tr>
@@ -79,8 +80,10 @@
         <tbody>
             <tr
                 *ngFor="let item of gatewayData?.data.tabledata | filter: { gw_id: searchvalue, gw_name: searchvalue } | sort: sortingName: isDesc">
-                <td class="font-weight-bold"><a
-                        routerLink="/gateway-management/gateway-details/{{item.gw_id}}">{{item.gw_id}}
+                <td class="font-weight-bold">
+                    <a [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_view_enabled ? null : true }"
+                        [routerLink]="GtMgmtAuthControls.gw_view_enabled ? ['/gateway-management/gateway-details/', item.gw_id] : []">
+                        {{item.gw_id}}
                     </a>
                 </td>
                 <td>{{item.gw_name}}</td>
@@ -91,9 +94,11 @@
                     <div class="form-group text-center">
                         <label class="toggle-switch">
                             <input type="checkbox" [(ngModel)]="item.status"
-                                (click)="handleStatus(item.gw_id, item.gw_name, item.status)" class="switch-btn"
-                                [checked]="item.status === 1">
-                            <span class="slider round"></span>
+                                [disabled]="!GtMgmtAuthControls.gw_change_status_enabled"
+                                (click)="GtMgmtAuthControls.gw_change_status_enabled ? handleStatus(item.gw_id, item.gw_name, item.status) : ''"
+                                class="switch-btn" [checked]="item.status === 1">
+                            <span class="slider round"
+                                [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_change_status_enabled ? null : true }"></span>
                         </label>
                     </div>
                 </td>
@@ -103,4 +108,7 @@
             </tr>
         </tbody>
     </table>
+</div>
+<div class="pt-3" *ngIf="!GtMgmtAuthControls.gw_listing_enabled">
+    Your are not <b>Authorized</b> to access this page
 </div>

@@ -9,6 +9,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-listing',
@@ -25,9 +26,15 @@ export class GtListingComponent implements OnInit {
 
   searchvalue: string = ''
 
+  GtMgmtAuthControls = null
+
   constructor(
     private gatewayManagementService: GatewayManagementService,
-  ) { }
+    private authorizationService: AuthorizationService
+  ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    console.log(this.GtMgmtAuthControls, 'adadasdas')
+  }
 
   ngOnInit() {
     this.GtListing_list();

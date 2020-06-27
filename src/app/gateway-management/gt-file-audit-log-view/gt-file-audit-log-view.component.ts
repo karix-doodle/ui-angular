@@ -8,6 +8,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-file-audit-log-view',
@@ -28,10 +29,16 @@ export class GtFileAuditLogViewComponent implements OnInit {
   GtFileAuditFileOperatorDataRes: GtFileAuditFileOperator_ApiResponse;
   GtFileAuditFileOperatorData: GtFileAuditFileOperator_Data;
 
+  GtMgmtAuthControls = null
+
   constructor(
     private activeRoute: ActivatedRoute,
     private gatewayManagementService: GatewayManagementService,
-  ) { }
+    private authorizationService: AuthorizationService
+  ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    console.log(this.GtMgmtAuthControls, 'adadasdas')
+  }
 
   ngOnInit() {
     this.GtFileAuditFileLog_list();
