@@ -33,7 +33,8 @@
     <!-- <pre>{{SlabFormGroup.value | json}}</pre> -->
     <div class="main-container p-4">
         <app-slab-stepper-form [parentForm]="SlabFormGroup" (countriesListChildToParent)="listenAddNew($event)"
-            [editMode]="editMode.asObservable()" [handlecurrencyList]="handlecurrencyList.asObservable()">
+            [editMode]="editMode.asObservable()" [previewDeleteEvent]="previewDeleteEvent.asObservable()"
+            [handlecurrencyList]="handlecurrencyList.asObservable()">
         </app-slab-stepper-form>
     </div>
 </form>
@@ -82,7 +83,7 @@
              mcc: searchvalue,
              mnc: searchvalue
             }; let cindex=index">
-            <tr *ngFor="let item of items.slabs; let sindex=index"
+            <tr #tableRow *ngFor="let item of items.slabs; let sindex=index"
                 [ngClass]="{'border-bottom': items.slabs.length - 1 == sindex}">
                 <td style="vertical-align: middle;" class="font-weight-semi-bold border-bottom"
                     [attr.rowspan]="items.slabs.length" *ngIf="sindex==0">{{items.country_name}}</td>

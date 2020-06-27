@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SlabRouteService } from '../../../services/BillManagement/Slab/slab-route.service';
@@ -24,19 +24,23 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
    styleUrls: ['./slab-stepper-form.component.css']
 })
 export class SlabStepperFormComponent implements OnInit, OnDestroy {
+   @ViewChild('stepper', { static: true }) stepper: MatStepper;
+   isLinear = false;
+   @Input() parentForm: FormGroup;
+   @Input() editMode: Observable<[boolean, number, string]>;
+   @Input() handlecurrencyList: Observable<[object]>;
+   @Input() previewDeleteEvent: Observable<void>;
+   @Output() countriesListChildToParent = new EventEmitter();
+
+   SlabCreateRateCardInput: SlabCreateRateCardBody = new SlabCreateRateCardBody();
+   countrySlabInput: Countries = new Countries();
 
    firstFormGroup: FormGroup;
    secondFormGroup: FormGroup;
-   countrySlabInput: Countries = new Countries();
-   SlabCreateRateCardInput: SlabCreateRateCardBody = new SlabCreateRateCardBody();
    editModeState: boolean;
    editModeIndex: number;
    sub: Subscription;
    firstStepSubmitted: boolean;
-   @Input() parentForm: FormGroup;
-   @Input() editMode: Observable<[boolean, number, string]>;
-   @Input() handlecurrencyList: Observable<[object]>;
-   @Output() countriesListChildToParent = new EventEmitter();
    secondStepSubmitted: boolean;
    continentList: string[];
    countriesList: BillPlanCountries_Data[];
@@ -65,6 +69,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       // this.focusedFormArrayIndex = 0;
       this.initSecondForm();
       this.initEditModeSubscription();
+      this.initDeleteEventSubscription();
       this.initContinentSubscription();
       this.initCountrySubscription('');
       this.initCurrencyConversion();
@@ -74,6 +79,16 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    }
 
    // ------------------- common -------------------
+   private onScrollTop() {
+      const scrollToTop = window.setInterval(() => {
+         const posTop = window.pageYOffset;
+         if (posTop > 0) {
+            window.scrollTo(0, posTop - 10); // how far to scroll on each step
+         } else {
+            window.clearInterval(scrollToTop);
+         }
+      }, 16);
+   }
    initCurrencyListSubscription() {
       this.sub = this.handlecurrencyList.subscribe(([value]) => {
          this.handleCurrencyData(value);
@@ -244,12 +259,25 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       });
    }
    initEditModeSubscription() {
+      // console.log(this.stepper.selectedIndex);
       this.editModeState = false;
       this.sub = this.editMode.subscribe(([value, index, editCountry]) => {
          this.editModeState = value; // value = true;
          this.editModeIndex = index;
          this.initOperatorSubscription(editCountry);
-         // console.log(this.editModeIndex);
+         this.onScrollTop();
+         if (this.stepper.selectedIndex === 1) {
+            this.stepper.previous();
+         }
+      });
+   }
+   initDeleteEventSubscription() {
+      this.sub = this.previewDeleteEvent.subscribe(() => {
+         if (!this.slabRouteService.previewList.length) {
+            if (this.stepper.selectedIndex === 1) {
+               this.stepper.previous();
+            }
+         }
       });
    }
    get firstFormArray(): FormArray {
