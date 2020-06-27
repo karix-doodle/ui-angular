@@ -23,7 +23,7 @@ export class BillplanCountryOperatorService {
   BillPlanCreateCountryOperator(data): Observable<BillPlanCreateCountryOperator_ApiResponse> {
     let details = {
       ...data,
-      loggedinempid: 10001
+      loggedinempid: environment.loggedinempid
     }
     return this.http.post(this.baseUrl + '/createratecard/countryoperator', details, this.httpOptions)
       .pipe(map(m => m as BillPlanCreateCountryOperator_ApiResponse));
