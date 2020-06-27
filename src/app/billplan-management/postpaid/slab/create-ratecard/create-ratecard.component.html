@@ -17,13 +17,15 @@
         <div class="row">
             <div class="col-3 text-right">
                 <div class="form-group">
-                    <input type="search" class="form-control" placeholder="Lorem Ispum" formControlName="ratecard_name"
-                        [readonly]="true" />
+                    <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
+                        [innerHTML]="SlabFormGroup.value.ratecard_name"></button>
                 </div>
             </div>
             <div class="col-3 offset-6 text-right">
                 <div class="form-group">
-                    <button disabled innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})"></button>
+                    <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
+                        innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})">
+                    </button>
                 </div>
             </div>
         </div>
@@ -67,8 +69,8 @@
                 <th>MCC + MNC</th>
                 <th>Min Limit</th>
                 <th>Max Limit</th>
-                <th>Billing Rate (€)</th>
-                <th>Normalize Rate (€)</th>
+                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></th>
+                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>

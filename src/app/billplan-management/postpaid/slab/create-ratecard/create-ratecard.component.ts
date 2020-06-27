@@ -131,7 +131,7 @@ export class CreateRatecardComponent implements OnInit {
     return this.formBuilder.group({
       min: [1],
       max: [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]],
-      billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+      billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
       normalize_rate: ['']
     });
   }

@@ -89,7 +89,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          max: max === undefined ?
             [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
             : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
-         billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
          normalize_rate: ['']
       });
    }
@@ -126,8 +126,12 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    //    // console.log(index);
    //    this.focusedFormArrayIndex = undefined;
    // }
-   round(data) {
-      return data * this.conversionRate;
+   round(data, form: FormGroup) {
+      const NormalizedRate = (data * this.conversionRate).toFixed(6);
+      form.patchValue({
+         normalize_rate: NormalizedRate
+      });
+      return NormalizedRate;
    }
    // ------------------- common ----------------------------------
 
@@ -281,7 +285,6 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       }
    }
    addNewSlabCountryOperator() {
-      console.log(this.parentForm.value);
       this.firstStepSubmitted = true;
       if (this.parentForm.valid) {
          const formArrayLength = this.firstFormArray.length;
@@ -472,7 +475,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                res.responsecode > environment.APIStatus.success.code
             ) {
                successAlert(res.message, res.responsestatus);
-               this.router.navigate(['billplan-management/home']);
+               this.router.navigate(['billplan-management-postpaid/' + this.SlabCreateRateCardInput.billplan_id]);
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
                res.responsecode < environment.APIStatus.error.code
