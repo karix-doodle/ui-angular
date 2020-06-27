@@ -114,7 +114,7 @@ export class CreateRatecardComponent implements OnInit {
       ratetype_roc: ['custom'],
       roc: this.formBuilder.array([this.createRocItem()]),
       ratetype_row: ['standard'],
-      billing_rate_row: ['', [Validators.pattern('[0-9.]{6,6}')]],
+      billing_rate_row: ['', [Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
       discount_rate: [''],
       discount_type: ['percentage'],
       description: ['']

@@ -70,7 +70,7 @@
                 </section>
             </div>
         </div>
-        <div class="col-5">
+        <div class="col-5" *ngIf="rateCardSearchForm.get('ratecardid').value != ''">
             <div class="form-group date-div">
                 <label>Effective Date & Time from (IST) (HH:MM:SS => 00:00:00)</label>
                 <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)"></app-calendar-picker>
