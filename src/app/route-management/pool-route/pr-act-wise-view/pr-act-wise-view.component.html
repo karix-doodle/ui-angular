@@ -3,51 +3,53 @@
         <label class="main-heading">
             <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
         <span> <a routerLink="/route-management/pool-route"> POOL ROUTE /</a>
-            {{listDataRes?.data.route_name | uppercase}}</span>
+            <small *ngIf="authService.authorizationState.route_mgmt.poolroute_view_enabled">
+                <b> {{listDataRes?.data.route_name | uppercase}}</b></small></span>
     </div>
 </div>
-<div class="row btm-border second-row-pr">
-    <div class="col-5 mt-2">
-        <label class="mr-2"><b>Total Countries</b></label>
-        <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>{{listDataRes?.data.countries_count}}</b></span>
-    </div>
-    <div class="col-3 text-right lcr-value">
-        <span>Fallback - <b>{{listDataRes?.data.fallback_route}} ({{listDataRes?.data.gw_type}})</b></span>
-    </div>
+<div *ngIf="authService.authorizationState.route_mgmt.poolroute_view_enabled">
+    <div class="row btm-border second-row-pr">
+        <div class="col-5 mt-2">
+            <label class="mr-2"><b>Total Countries</b></label>
+            <span class="border-right">&nbsp;</span>
+            <span class="ml-3 badge badge-dark"><b>{{listDataRes?.data.countries_count}}</b></span>
+        </div>
+        <div class="col-3 text-right lcr-value">
+            <span>Fallback - <b>{{listDataRes?.data.fallback_route}} ({{listDataRes?.data.gw_type}})</b></span>
+        </div>
 
-    <div class="col-4 text-right ">
-        <input type="search" [(ngModel)]="searchText" class="form-control"
-            placeholder="&#xf002; Search by Continent, Country, Operator, MCC & MNC"
-            title="Search by Continent, Country, Operator, MCC & MNC" />
-    </div>
+        <div class="col-4 text-right ">
+            <input type="search" [(ngModel)]="searchText" class="form-control"
+                placeholder="&#xf002; Search by Continent, Country, Operator, MCC & MNC"
+                title="Search by Continent, Country, Operator, MCC & MNC" />
+        </div>
 
-</div>
-<div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-            <tr>
-                <th (click)="sort('continent')">Continent
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('country')">Country
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('operator')">Operator
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('mcc')">MCC + MNC
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
-                </th>
-                <th class="font-weight-semi-bold">DISTRIBUTED GATEWAYS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let row of listDataRes?.data.routes_list
+    </div>
+    <div class="main-container table-responsive">
+        <table class="table table-borderless erp-list-table row-hover-effect">
+            <thead>
+                <tr>
+                    <th (click)="sort('continent')">Continent
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('country')">Country
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('operator')">Operator
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('mcc')">MCC + MNC
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
+                    </th>
+                    <th class="font-weight-semi-bold">DISTRIBUTED GATEWAYS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of listDataRes?.data.routes_list
             | filter: { continent: searchText,  
                 country: searchText, 
                 operator: searchText,
@@ -55,34 +57,38 @@
                 mnc: searchText 
                 }
             | sort: sortingName: isDesc">
-                <td class="font-weight-semi-bold">{{row.continent}}</td>
-                <td class="font-weight-semi-bold">{{row.country}}</td>
-                <td>{{row.operator}}</td>
-                <td>{{row.mcc}}-{{row.mnc}}</td>
-                <td>
-                    <div class="row-details">
-                        <label class="mt-1" *ngFor="let ratio of row.ratios">{{ratio.gw_id}}
-                            <span class="badge badge-white">{{ratio.ratio_in_percentage}}%</span>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr *ngIf="!listDataRes?.data.routes_list  
+                    <td class="font-weight-semi-bold">{{row.continent}}</td>
+                    <td class="font-weight-semi-bold">{{row.country}}</td>
+                    <td>{{row.operator}}</td>
+                    <td>{{row.mcc}}-{{row.mnc}}</td>
+                    <td>
+                        <div class="row-details">
+                            <label class="mt-1" *ngFor="let ratio of row.ratios">{{ratio.gw_id}}
+                                <span class="badge badge-white">{{ratio.ratio_in_percentage}}%</span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="!listDataRes?.data.routes_list  
             || (listDataRes?.data.routes_list  | filter: { continent: searchText,  
                 country: searchText, 
                 operator: searchText,
                 mcc: searchText, 
                 mnc: searchText }).length == 0">
-                <td colspan="5" style="text-align: center;">No Records Found</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class="main-container table-responsive p-4" *ngIf="listDataRes?.data.row_routes_list.length">
-    <label class="table-heading">ROW (Defined)</label>
-    <div class="row-details ">
-        <label class="mt-1" *ngFor="let ratio of listDataRes?.data.row_routes_list">{{ratio.gw_id}}
-            <span class="badge badge-white">{{ratio.ratio_in_percentage}}%</span>
-        </label>
+                    <td colspan="5" style="text-align: center;">No Records Found</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    <div class="main-container table-responsive p-4" *ngIf="listDataRes?.data.row_routes_list.length">
+        <label class="table-heading">ROW (Defined)</label>
+        <div class="row-details ">
+            <label class="mt-1" *ngFor="let ratio of listDataRes?.data.row_routes_list">{{ratio.gw_id}}
+                <span class="badge badge-white">{{ratio.ratio_in_percentage}}%</span>
+            </label>
+        </div>
+    </div>
+</div>
+<div *ngIf="!authService.authorizationState.route_mgmt.poolroute_view_enabled">
+    <span>You are not <b>authorized</b> for this page</span>
 </div>

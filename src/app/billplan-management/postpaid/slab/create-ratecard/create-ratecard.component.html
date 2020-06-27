@@ -7,16 +7,9 @@
     <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
-            Slab</button>
-        <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country/create-ratecard">Country</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country-operator/create-ratecard">Country
-                + Operator</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/flat-fixed/create-ratecard">Flat /
-                Fixed</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/group/create-ratecard">Group</a>
-        </div>
+        <button class="btn dropdown-basic px-4" id="erp-dropdown" disabled>
+            Slab
+        </button>
     </div>
 </div>
 <form [formGroup]="SlabFormGroup">
@@ -30,8 +23,7 @@
             </div>
             <div class="col-3 offset-6 text-right">
                 <div class="form-group">
-                    <input type="search" class="form-control" placeholder="Bill Plan Currency (€)"
-                        formControlName="billplan_currencyid" [readonly]="true" />
+                    <button disabled innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})"></button>
                 </div>
             </div>
         </div>
@@ -39,7 +31,7 @@
     <!-- <pre>{{SlabFormGroup.value | json}}</pre> -->
     <div class="main-container p-4">
         <app-slab-stepper-form [parentForm]="SlabFormGroup" (countriesListChildToParent)="listenAddNew($event)"
-            [editMode]="editMode.asObservable()">
+            [editMode]="editMode.asObservable()" [handlecurrencyList]="handlecurrencyList.asObservable()">
         </app-slab-stepper-form>
     </div>
 </form>

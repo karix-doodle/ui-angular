@@ -5,6 +5,8 @@ import { BillManagementService } from "src/app/billplan-management/services/Bill
 import { count } from '../../../../shared/helper/helperFunctions'
 import { Subject } from 'rxjs';
 
+
+
 import {
   BillPlanCurrency_ApiResponse,
   BillPlanCurrency_Data,
@@ -60,6 +62,7 @@ export class CreateRatecardComponent implements OnInit {
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
+          console.log(res);
           this.billPlanCurrencyRes = res;
           this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
           let bcurrency = {}

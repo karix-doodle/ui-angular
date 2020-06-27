@@ -5,6 +5,7 @@ import { SelectedPoolRouteRes, SelectedPoolRoute } from '../../models/RouteManag
 import { environment } from '../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { errorAlert } from '../../../shared/sweet-alert/sweet-alert';
+import { AuthorizationService } from '../../../service/auth/authorization.service';
 
 @Component({
   selector: 'app-pr-act-wise-view',
@@ -22,7 +23,8 @@ export class PrActWiseViewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private poolRouteService: PoolRouteService
+    private poolRouteService: PoolRouteService,
+    private authService: AuthorizationService
   ) { }
 
   ngOnInit() {

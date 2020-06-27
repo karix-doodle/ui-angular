@@ -51,6 +51,8 @@ export class CmEditComponent implements OnInit {
   effectiveTill: string;
   is_permanent: number = 0;
   timeZonesMap: any = {};
+  showMargin: boolean = false;
+  showEditPage: boolean = true;
 
   routeTypeUiMapping: any = {
     "lcr":"lcr", "gateway":"gt", "pool":"pr"
@@ -351,14 +353,14 @@ export class CmEditComponent implements OnInit {
     let validationSuccess = this.validateAndconstructPayloadForSave(payload);
     if(validationSuccess){
       this.modalService.dismissAll();
-      console.log(`payload = ${JSON.stringify(payload)}`);
+      //console.log(`payload = ${JSON.stringify(payload)}`);
       this.customerManagementService.saveUserDetails(payload).subscribe(
         (res: ApiResponse_Generic) => {
           if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code){
             successAlert(res.message, res.responsestatus);
             this.router.navigate(['customer-management']);
           }else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-            errorAlert(res.message, res.responsestatus)
+            errorAlert(res.message, res.responsestatus);
           }
         },(error: HttpErrorResponse) => {
           errorAlert(error.message, error.statusText);
@@ -534,6 +536,92 @@ export class CmEditComponent implements OnInit {
     return validationSuccess;
   };
 
+  marginPageInput:string = '';
+  toggleShowMargin(div):void{
+    if(!_.isUndefined(div) && !_.isNull(div) && _.isEqual(div,'showmargin')){
+      let validationSuccess = true;
+      let message = '';
+      let queryParams = `loggedinempid=${environment.loggedinempid}&esmeaddr=${this.esmeaddr}`;
+      let routingtype = this.routeTypeNodeMapping[this.updateAccountFormGroup.value.selectedRouteType];
+      if(!_.isUndefined(routingtype) && !_.isNull(routingtype) && !_.isEmpty(_.trim(routingtype))){
+        queryParams = `${queryParams}&route_type=${routingtype}`;
+        if(_.isEqual(routingtype,'gateway')){
+          let pgwid = this.updateAccountFormGroup.value.primary_gwid;
+          let fgwid = this.updateAccountFormGroup.value.fallback_gwid;
+          if(!_.isUndefined(pgwid) && !_.isNull(pgwid) && !_.isEmpty(_.trim(pgwid)) && !_.isUndefined(fgwid) && !_.isNull(fgwid) && !_.isEmpty(_.trim(fgwid))){
+            queryParams = `${queryParams}&primary_gw_id=${pgwid}&fallback_gw_id=${fgwid}`;
+          }else{
+            validationSuccess = false;
+            message = 'Please select primary & fallback gateways.';
+          }
+        }else if(_.isEqual(routingtype,'pool')){
+          let pool_id = this.updateAccountFormGroup.value.selectedPoolRouteId;
+          pool_id = 202;
+          if(!_.isUndefined(pool_id) && !_.isNull(pool_id) && !_.isEmpty(_.trim(pool_id))){
+            queryParams = `${queryParams}&pool_id=${pool_id}`;
+          }else{
+            validationSuccess = false;
+            message = 'Please select pool route.';
+          }
+        }else if(_.isEqual(routingtype,'lcr')){
+
+        }else{
+            validationSuccess = false;
+        }
+      }else{
+        validationSuccess = false;
+      }
+
+      if(validationSuccess){
+        queryParams = `${queryParams}&intl_acc_type=${this.updateAccountFormGroup.value.selectedCustomerType}`;
+        this.marginPageInput = queryParams;
+        this.showMargin = true;
+        this.showEditPage = false;
+      }else{
+        errorAlert(message, 'failure');
+      }      
+      //console.log(`On showmargin = ${JSON.stringify(this.updateAccountFormGroup.value)}`);
+    }else{
+      this.showEditPage = true;
+      this.showMargin = false;
+      //console.log(`On editpage = ${JSON.stringify(this.updateAccountFormGroup.value)}`);
+    }
+
+    
+    if(this.updateAccountFormGroup.value.process_row || this.updateAccountFormGroup.value.process_row == 1){
+      this.process_row = 1;
+    }else{
+      this.process_row = 0;
+    }
+
+    if(this.updateAccountFormGroup.value.process_at_loss || this.updateAccountFormGroup.value.process_at_loss == 1){
+      this.process_at_loss = 1;
+    }else{
+      this.process_at_loss = 0;
+    }
+
+    if(this.updateAccountFormGroup.value.lcrOnly || this.updateAccountFormGroup.value.lcrOnly == 1){
+      this.lcrOnly = 1;
+    }else{
+      this.lcrOnly = 0;
+    }
+
+    if(this.updateAccountFormGroup.value.notifysales || this.updateAccountFormGroup.value.notifysales == 1){
+      this.updateAccountFormGroup.value.notifysales = 1;
+    }else{
+      this.updateAccountFormGroup.value.notifysales = 0;
+    }
+
+    if(this.updateAccountFormGroup.value.notifyclient || this.updateAccountFormGroup.value.notifyclient == 1){
+      this.updateAccountFormGroup.value.notifyclient = 1;
+    }else{
+      this.updateAccountFormGroup.value.notifyclient = 0;
+    }
+  }
+
+  onNotify(message:string):void {
+    this.toggleShowMargin(message);
+  }
 
 
 }

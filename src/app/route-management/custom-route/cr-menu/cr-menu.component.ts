@@ -7,6 +7,7 @@ import {
 import { environment } from "src/environments/environment";
 import { errorAlert } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-cr-menu",
@@ -17,7 +18,10 @@ export class CrMenuComponent implements OnInit {
   customSummaryApiResponse: CustomSummary_ApiResponse;
   customSummaryData: CustomSummary_Data;
 
-  constructor(public customService: CustomService) {}
+  constructor(
+    public customService: CustomService,
+    private AuthService: AuthorizationService
+  ) { }
 
   ngOnInit() {
     this.getSummaryData();

@@ -4,6 +4,10 @@ import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { ActivatedRoute } from '@angular/router';
+import { BillManagementService } from 'src/app/billplan-management/services/BillManagement/billplan-management.service';
+import { BillPlanCurrency_ApiResponse, BillPlanCurrency_Data } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
+import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: "app-create-ratecard",
@@ -20,22 +24,32 @@ export class CreateRatecardComponent implements OnInit {
   billplan_id
   billplan_currencyid
   ratecard_name
+  currencySybmol: object = {
+    bCurrency: '',
+    nCurrency: ''
+  }
+  billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
+  billPlanCurrencyData: BillPlanCurrency_Data;
   countryOperatorListData: Subject<[FormArray, number]> = new Subject<
     [FormArray, number]
   >();
   handleCountryDelete: Subject<[string, number]> = new Subject<
     [string, number]
   >();
+  handlecurrencyList: Subject<[object]> = new Subject<[object]>();
 
   constructor(private formBuilder: FormBuilder,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private billPlanservice: BillManagementService,) {
     this.initForm();
     this.billplan_id = +this.activeRoute.snapshot.params.bId
     this.billplan_currencyid = +this.activeRoute.snapshot.params.cId
     this.ratecard_name = this.activeRoute.snapshot.params.name
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getBillPlanCurrency();
+  }
 
   private initForm() {
     this.totalCountryOperatorForm = this.formBuilder.group({
@@ -44,8 +58,8 @@ export class CreateRatecardComponent implements OnInit {
       ratecard_type: ["country-operator", [Validators.required]],
       ratecard_name: this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
-      billing_rate_row: [null],
-      discount_rate: [null],
+      billing_rate_row: [''],
+      discount_rate: [''],
       discount_type: ["percentage"],
       description: [""],
       countries: this.formBuilder.array([this.countryArrayForm()]),
@@ -61,6 +75,52 @@ export class CreateRatecardComponent implements OnInit {
       mcc: [""],
       normalize_rate: [""],
     });
+  }
+
+  getBillPlanCurrency() {
+    this.billPlanservice.BillPlancurrency().subscribe(
+      (res: BillPlanCurrency_ApiResponse) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.billPlanCurrencyRes = res;
+          this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
+          let bcurrency = {}
+          let ncurrency = {}
+          this.billPlanCurrencyRes.data.filter((item) => {
+            if (item.currency_id == this.activeRoute.snapshot.params.cId) {
+              bcurrency = {
+                symbol: item.currency_symbol,
+                id: item.currency_id
+              }
+            }
+            if (item.currency_id == environment.currencyDefault) {
+              ncurrency = {
+                symbol: item.currency_symbol,
+                id: item.currency_id
+              }
+            }
+          })
+
+          this.currencySybmol = {
+            bCurrency: bcurrency,
+            nCurrency: ncurrency
+          }
+
+          this.handlecurrencyList.next([this.currencySybmol]);
+
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.responsestatus);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+      }
+    );
   }
 
   getcountryOperatorControl(): FormArray {

@@ -5,122 +5,129 @@
         <span> <a routerLink="/route-management/pool-route"> POOL ROUTE /</a> </span><span> CREATE ROUTE </span>
     </div>
 </div>
-<form [formGroup]="formOfCreateClone">
-    <div class="row btm-border second-row-det">
-        <div class="col-6">
-            <div class="w-50">
-                <input type="text" [minlength]="routeNameMin" [maxlength]="routeNameMax" formControlName="route_name"
-                    class="form-control" placeholder="Enter Route name here" />
-                <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('route_name').hasError('required')}" 
+<div *ngIf="authService.authorizationState.route_mgmt.poolroute_create_enabled 
+    && authService.authorizationState.route_mgmt.poolroute_clone_enabled">
+    <form [formGroup]="formOfCreateClone">
+        <div class="row btm-border second-row-det">
+            <div class="col-6">
+                <div class="w-50">
+                    <input type="text" [minlength]="routeNameMin" [maxlength]="routeNameMax"
+                        formControlName="route_name" class="form-control" placeholder="Enter Route name here" />
+                    <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('route_name').hasError('required')}" 
                     [readonly]="previewList.length" -->
-                <span class="text-danger pl-1 f-12" *ngIf="!formOfCreateClone.get('route_name').valid && submitted">
-                    Route Name is required
+                    <span class="text-danger pl-1 f-12" *ngIf="!formOfCreateClone.get('route_name').valid && submitted">
+                        Route Name is required
+                    </span>
+                </div>
+            </div>
+            <!-- {{formOfCreateClone.get('route_name').value | json}} -->
+            <div class="col-3 text-right">
+                <select formControlName="gw_type" class="dropdown-select w-100" (change)="loadGatewaysList('onChange')">
+                    <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('gw_type').hasError('required')}" [attr.disabled]="this.RouteMgmtService.previewList.length ? '' : null" -->
+                    <option value="" disabled>Select Route Type</option>
+                    <option value="direct" default>Direct</option>
+                    <option value="premium">Premium</option>
+                    <option value="wholesale">Wholesale</option>
+                </select>
+                <span class="text-danger pl-1 f-12"
+                    *ngIf="formOfCreateClone.get('gw_type').hasError('required') && submitted">
+                    Gateway Type is required
                 </span>
             </div>
-        </div>
-        <!-- {{formOfCreateClone.get('route_name').value | json}} -->
-        <div class="col-3 text-right">
-            <select formControlName="gw_type" class="dropdown-select w-100" (change)="loadGatewaysList('onChange')">
-                <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('gw_type').hasError('required')}" [attr.disabled]="this.RouteMgmtService.previewList.length ? '' : null" -->
-                <option value="" disabled>Select Route Type</option>
-                <option value="direct" default>Direct</option>
-                <option value="premium">Premium</option>
-                <option value="wholesale">Wholesale</option>
-            </select>
-            <span class="text-danger pl-1 f-12"
-                *ngIf="formOfCreateClone.get('gw_type').hasError('required') && submitted">
-                Gateway Type is required
-            </span>
-        </div>
-        <div class="col-3 text-right lcr-value" *ngIf="formOfCreateClone.get('gw_type').value !== ''">
-            <span>Fallback - <b>LCR ({{formOfCreateClone.get('gw_type').value}})</b></span>
-        </div>
-    </div>
-    <!-- {{formOfCreateClone.value| json}} -->
-    <div class="main-container p-4">
-        <app-route-stepper-form [isClone]="isClone" [parentForm]="formOfCreateClone" (isSubmitted)="submitState()"
-            (routesList)="previewListData($event)" [gatewaysList]="gatewaysList" [clonedData]="clonedRouteData">
-        </app-route-stepper-form>
-    </div>
-</form>
-<div class="row btm-border second-row-det" *ngIf="poolRouteService.previewList.length">
-    <div class="col-7">
-        <div class="row mt-1">
-            <div class="col-5">
-                <label class="mr-2"><b>Total Continents</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>{{continentsCount}}</b></span>
-            </div>
-            <div class="col-7">
-                <label class="mr-2"><b>Total Countries</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
+            <div class="col-3 text-right lcr-value" *ngIf="formOfCreateClone.get('gw_type').value !== ''">
+                <span>Fallback - <b>LCR ({{formOfCreateClone.get('gw_type').value}})</b></span>
             </div>
         </div>
+        <!-- {{formOfCreateClone.value| json}} -->
+        <div class="main-container p-4">
+            <app-route-stepper-form [isClone]="isClone" [parentForm]="formOfCreateClone" (isSubmitted)="submitState()"
+                (routesList)="previewListData($event)" [gatewaysList]="gatewaysList" [clonedData]="clonedRouteData">
+            </app-route-stepper-form>
+        </div>
+    </form>
+    <div class="row btm-border second-row-det" *ngIf="poolRouteService.previewList.length">
+        <div class="col-7">
+            <div class="row mt-1">
+                <div class="col-5">
+                    <label class="mr-2"><b>Total Continents</b></label>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="ml-3 badge badge-dark"><b>{{continentsCount}}</b></span>
+                </div>
+                <div class="col-7">
+                    <label class="mr-2"><b>Total Countries</b></label>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-5 text-right">
+
+            <input type="search" class="form-control" [(ngModel)]="searchText"
+                placeholder="&#xf002; Search by Continent, Country, Operator" />
+        </div>
+
     </div>
-
-    <div class="col-5 text-right">
-
-        <input type="search" class="form-control" [(ngModel)]="searchText"
-            placeholder="&#xf002; Search by Continent, Country, Operator" />
-    </div>
-
-</div>
-<div class="main-container table-responsive" *ngIf="poolRouteService.previewList.length">
-    <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-            <tr>
-                <th (click)="sort('continent')">Continent
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('country')">Country
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('operator')">Operator
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('mcc')">MCC + MNC
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
-                </th>
-                <th>Distributed Gateway and Ratio</th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr #tableRow *ngFor="let route of poolRouteService?.previewList
+    <div class="main-container table-responsive" *ngIf="poolRouteService.previewList.length">
+        <table class="table table-borderless erp-list-table row-hover-effect">
+            <thead>
+                <tr>
+                    <th (click)="sort('continent')">Continent
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('country')">Country
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('operator')">Operator
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('mcc')">MCC + MNC
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
+                    </th>
+                    <th>Distributed Gateway and Ratio</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr #tableRow *ngFor="let route of poolRouteService?.previewList
             | filter: { continent: searchText,  
                 country: searchText,
                 operator: searchText, 
                 mcc: searchText,
                 mnc: searchText }
             | sort: sortingName: isDesc; index as i">
-                <td class="font-weight-semi-bold">{{route.continent}}</td>
-                <td class="font-weight-semi-bold">{{route.country}}</td>
-                <td>{{route.operator}}</td>
-                <td>{{route.mcc}}-{{route.mnc}}</td>
-                <td>
-                    <span class="badge badge-success mx-1"
-                        *ngFor="let Gate of route.ratios">{{Gate.gw_id}}-{{Gate.ratio_in_percentage}}%</span>
-                </td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit" (click)="onEditPreview(route)" />
-                </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
-                        (click)="onDeleteRoute(route)" /></td>
-            </tr>
-            <tr *ngIf="!poolRouteService?.previewList.length  
+                    <td class="font-weight-semi-bold">{{route.continent}}</td>
+                    <td class="font-weight-semi-bold">{{route.country}}</td>
+                    <td>{{route.operator}}</td>
+                    <td>{{route.mcc}}-{{route.mnc}}</td>
+                    <td>
+                        <span class="badge badge-success mx-1"
+                            *ngFor="let Gate of route.ratios">{{Gate.gw_id}}-{{Gate.ratio_in_percentage}}%</span>
+                    </td>
+                    <td>
+                        <img src="assets/icons/edit-icon.svg" alt="edit" (click)="onEditPreview(route)" />
+                    </td>
+                    <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
+                            (click)="onDeleteRoute(route)" /></td>
+                </tr>
+                <tr *ngIf="!poolRouteService?.previewList.length  
             || (poolRouteService?.previewList  | filter: { continent: searchText,  
                 country: searchText,
                 operator: searchText, 
                 mcc: searchText,
                 mnc: searchText }).length === 0">
-                <td colspan="6" style="text-align: center;">No Records Found</td>
-            </tr>
-        </tbody>
-    </table>
+                    <td colspan="6" style="text-align: center;">No Records Found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div *ngIf="!authService.authorizationState.route_mgmt.poolroute_create_enabled && 
+!authService.authorizationState.route_mgmt.poolroute_clone_enabled">
+    <span>You are not <b>authorized</b> for this page</span>
 </div>

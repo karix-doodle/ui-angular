@@ -15,6 +15,7 @@ import {
   successAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-bl-mobile-route",
@@ -35,7 +36,8 @@ export class BlMobileRouteComponent implements OnInit {
     public mobileService: BlackListAddMobileService,
     public router: Router,
     public route: ActivatedRoute,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private authService: AuthorizationService
   ) {}
 
   ngOnInit() {
