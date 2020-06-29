@@ -209,6 +209,12 @@
     </form>
   </div>
 </div>
-<div class="second-row-det" *ngIf="!authService.authorizationState.route_mgmt.blacklist_mobilenumber_add_enabled">
-  <span>You are not <b>authorized</b> for this page</span>
+<div class="pt-3 center-block h-100"
+  *ngIf="!authService.authorizationState.route_mgmt.blacklist_mobilenumber_add_enabled">
+  <div class="d-block">
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
+  </div>
 </div>

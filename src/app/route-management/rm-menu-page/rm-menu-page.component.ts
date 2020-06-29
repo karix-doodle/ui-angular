@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { errorAlert } from '../../shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorizationService } from '../../service/auth/authorization.service';
 
 @Component({
   selector: 'app-rm-menu-page',
@@ -13,7 +14,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class RmMenuPageComponent implements OnInit {
   summary: SummaryData;
-  constructor(private routeManagementService: RouteManagementService) { }
+  constructor(
+    private routeManagementService: RouteManagementService,
+    private authorizationService: AuthorizationService) { }
 
   ngOnInit() {
     this.routeManagementService.getRouteMgmtSummary().subscribe(
