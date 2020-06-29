@@ -105,7 +105,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     return this.formBuilder.group({
       country_name: ["", Validators.required],
       operator_name: ["", Validators.required],
-      billing_rate: ["", [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+      billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
       mnc: [""],
       mcc: [""],
       normalize_rate: [""],
@@ -304,8 +304,14 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     callBackFunction();
   }
 
-  round(data) {
-    return data * this.conversionRate;
+  round(data, form: FormGroup) {
+    let NormalizedRate = (data * this.conversionRate).toFixed(6)
+    if (form != undefined) {
+       form.patchValue({
+          normalize_rate: NormalizedRate
+       })
+    }
+    return NormalizedRate
  }
  // ------------------- common ----------------------------------
 
@@ -360,7 +366,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
       (res: BillPlanCreateCountryOperator_ApiResponse) => {
          if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
             successAlert(res.message, res.responsestatus)
-            this.router.navigate(['billplan-management']);
+            this.router.navigate(['billplan-management-postpaid/' + data.billplan_id]);
          } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
             errorAlert(res.message, res.responsestatus)
          }

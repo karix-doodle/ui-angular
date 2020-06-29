@@ -16,7 +16,7 @@ import { BillManagementService } from 'src/app/billplan-management/services/Bill
 export class CreateRatecardComponent implements OnInit {
 Submitted = false
   fixedRateFrom: FormGroup
-  billplan_id
+  billplan_id: number;
   billplan_currencyid
   ratecard_name
   ratecard_type="flat-fixed"
@@ -43,7 +43,7 @@ Submitted = false
     billplan_currencyid:+this.activeRoute.snapshot.params.cId,
     ratecard_name:this.activeRoute.snapshot.params.name,
     ratecard_type:['flat-fixed'],
-    billing_rate:['',[Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+    billing_rate:['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
     normalize_rate:[''],
     discount_rate:[''],
     discount_type:['percentage'],
@@ -138,7 +138,7 @@ this.getBillPlanCurrency();
         (res: BillPlanCreateFlatFixed_ApiResponse) => {
            if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
               successAlert(res.message, res.responsestatus)
-              this.router.navigate(['billplan-management']);
+              this.router.navigate(['billplan-management-postpaid/' + this.billplan_id]);
            } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
               errorAlert(res.message, res.responsestatus)
            }
