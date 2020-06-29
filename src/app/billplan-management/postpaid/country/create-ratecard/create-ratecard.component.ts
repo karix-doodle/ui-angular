@@ -57,9 +57,9 @@ export class CreateRatecardComponent implements OnInit {
       ratecard_type: ["country"],
       ratecard_name:  this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
-      billing_rate_row: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
-      discount_rate: [null],
-      discount_type: ["percentage"],
+      billing_rate_row: ['', [Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
+      discount_rate: [''],
+      discount_type: [''],
       description: [""],
       countries: this._formBuilder.array([this.countryArrayForm()]),
     });

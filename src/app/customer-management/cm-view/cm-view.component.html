@@ -1,7 +1,7 @@
 <div class="row btm-border headings-div first-row">
     <div class="col-12">
         <label class="main-heading pl-2"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
-        <span> 70000 100000011</span>
+        <span> {{esmeaddr}}</span>
     </div>
 
 </div>
@@ -9,15 +9,15 @@
     <div class="col-5">
         <div class="row mb-2">
             <div class="col-5 border-right"><label>ESME Addr.</label></div>
-            <div class="col-7"><span><b>70000 100000011</b></span></div>
+            <div class="col-7"><span><b>{{esmeddrDetails.data.esmeaddr}}</b></span></div>
         </div>
         <div class="row mb-2">
             <div class="col-5 border-right"><label>Client Name</label></div>
-            <div class="col-7"><span><b>ABC HYIUO</b></span></div>
+            <div class="col-7"><span><b>{{esmeddrDetails.data.clientname}}</b></span></div>
         </div>
         <div class="row">
             <div class="col-5 border-right"><label>Customer Type</label></div>
-            <div class="col-7"><span><b>International</b></span></div>
+            <div class="col-7"><span><b>{{esmeddrDetails.data.customertype}}</b></span></div>
         </div>
         <div class="row">
             <div class="col-5 border-right"><label>Services</label></div>
@@ -30,49 +30,49 @@
        <div class="row mb-2 float-right">
            <div class="border-right ">
                 <label>Billing Contact Name</label>
-                <span class="badge badge-white mr-3">XYRJKV</span>
+                <span class="badge badge-white mr-3">{{esmeddrDetails.data.billingcontactname}}</span>
            </div>
            <div class="ml-3">
                 <label>Sales Manager</label>
-                <span class="badge badge-white">ABX XYZ HJK</span>
+                <span class="badge badge-white">{{esmeddrDetails.data.salesmanagername}}</span>
           </div>
        </div>
        <div class="row mb-2 float-right">
             <div class="border-right ">
                 <label>Message Type</label>
-                <span class="badge badge-white mr-3">Transactional</span>
+                <span class="badge badge-white mr-3">{{esmeddrDetails.data.messagetype}}</span>
             </div>
             <div class="ml-3">
                     <label>Billing Type</label>
-                    <span class="badge badge-white">Postpaid with Top Up</span>
+                    <span class="badge badge-white">{{esmeddrDetails.data.billingtype}}</span>
             </div>
         </div>
         <div class="row mb-2 float-right">
             <div class="border-right ">
                 <label>SMTP Bind Allowed</label>
-                <span class="badge badge-white mr-3">TX, RX, TRX</span>
+                <span class="badge badge-white mr-3">{{esmeddrDetails.data.smppbindallowed}}</span>
             </div>
             <div class="ml-3 border-right">
                     <label>No. Of Binds Allowed</label>
-                    <span class="badge badge-white mr-3">23</span>
+                    <span class="badge badge-white mr-3">{{esmeddrDetails.data.noofbindsallowed}}</span>
             </div>
             <div class="ml-3">
                     <label>Char. Set Encoding</label>
-                    <span class="badge badge-white">GSM</span>
+                    <span class="badge badge-white">{{esmeddrDetails.data.charsetencoding}}</span>
             </div>
         </div>
         <div class="row mb-2 float-right">
             <div class="border-right ">
                 <label>SLA Configuration</label>
-                <span class="badge badge-white mr-3">Same Day</span>
+                <span class="badge badge-white mr-3">{{esmeddrDetails?.data.salesmanagername}}</span>
             </div>
             <div class="ml-3 border-right">
                     <label>DLR Type</label>
-                    <span class="badge badge-white mr-3">SMSC DLR</span>
+                    <span class="badge badge-white mr-3">{{esmeddrDetails.data.dlrtype}}</span>
             </div>
             <div class="ml-3">
                     <label>DLR Configuration</label>
-                    <span class="badge badge-white">Call Back API</span>
+                    <span class="badge badge-white">{{esmeddrDetails.data.dlrconfiguration}}</span>
             </div>
         </div>
     </div>
@@ -86,24 +86,24 @@
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Sender ID Type</label>
-                            <p><b>Listing</b></p>
+                            <p><b>{{esmeddrDetails.data.validation.senderidtype}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Default Sender ID</label>
-                            <p><b>Alerts</b></p>
+                            <p><b>{{esmeddrDetails.data.validation.defaultsenderid}}</b></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Template Failed<br> Sender ID</label>
-                            <p><b>Notify</b></p>
+                            <p><b>{{esmeddrDetails.data.validation.templatefailedsenderid}}</b></p>
 
                         </div>
                         <div class="col-4 offset-1">
                             <label>Block SMS to India</label>
-                            <p><b>Allowed</b></p>
+                            <p><b>{{esmeddrDetails.data.validation.blocksmstoindia}}</b></p>
                         </div>
                     </div>
                     <hr>
@@ -124,37 +124,37 @@
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Routing Type</label>
-                            <p><b>Gateway</b></p>
+                            <p><b>{{esmeddrDetails.data.routing.routingtype}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Routing Name</label>
-                            <p><b>XYZ ABC TYU</b></p>
+                            <p><b>{{esmeddrDetails.data.routing.routingname}}</b></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Countries Allowed</label>
-                            <p class="mt-4"><b>120</b>(Active - 110 <br> inactive-10)</p>
+                            <p class="mt-4">{{esmeddrDetails.data.routing.countriesallowed}}</p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Countries Blocked @ Platform</label>
-                            <p><b>5</b></p>
+                            <p><b>{{esmeddrDetails.data.routing.countriesblockedplatform}}</b></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6">
                             <label>ROW Allowed</label>
-                            <p><b>Blocked</b></p>
+                            <p><b>{{esmeddrDetails.data.routing.rowallowed}}</b></p>
                         </div>
                     </div>
 
                 </section>
                 <div class="cm-view-btn-div">
-                    <a routerLink="/customer-management/allowed-country-operator-list" class="btn btn-basic w-100">Allowed Country & Operator List</a>
+                    <a [routerLink]="['/customer-management/allowed-country-operator-list', esmeaddr]" class="btn btn-basic w-100">Allowed Country & Operator List</a>
                 </div>
             </div>
         </div>
@@ -170,25 +170,25 @@
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Bill Plan Name</label>
-                            <p><b>XYZ ABC TYU</b></p>
+                            <p><b>{{esmeddrDetails.data.billinginfo.billplanname}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Rate Card Type</label>
-                            <p><b>Group</b></p>
-                            
+                            <p><b>{{esmeddrDetails.data.billinginfo.ratecardtype}}</b></p>
+
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Billing Currency</label>
-                            <p><b>€</b></p>
+                            <p><b>{{esmeddrDetails.data.billinginfo.billingcurrency}}</b></p>
 
                         </div>
                         <div class="col-6 offset-1">
                             <label>Applicable Taxation</label>
-                            <p><b>International Customer</b></p>
+                            <p><b>{{esmeddrDetails.data.billinginfo.applicabletaxation}}</b></p>
                         </div>
                     </div>
                     <hr>
@@ -198,7 +198,7 @@
                         </div>
                         <div class="col-4 text-right">
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" checked>
+                                <input type="checkbox" class="switch-btn" disabled [checked]="esmeddrDetails?.data.billinginfo.billplanchangenotificationtoclient === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -215,13 +215,13 @@
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Process ROW</label>
-                            <p><b>Allowed</b></p>
+                            <p><b>{{esmeddrDetails.data.settings.processrow}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Process @ Loss</label>
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" checked>
+                                <input type="checkbox" class="switch-btn" [checked]="esmeddrDetails?.data.settings.processloss === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -230,11 +230,11 @@
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Loss Threshold</label>
-                            <p><b>1000 €</b></p>
+                            <p><b>{{esmeddrDetails.data.settings.lossthreshold}}</b></p>
                         </div>
                         <div class="col-5 offset-1">
                             <label>Billing Timezone</label>
-                            <p><b>UTC</b></p>
+                            <p><b>{{esmeddrDetails.data.settings.billingtimezone}}</b></p>
                         </div>
                     </div>
                     <hr>
@@ -244,7 +244,7 @@
                         </div>
                         <div class="col-4 text-right">
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" checked>
+                                <input type="checkbox" class="switch-btn" disabled [checked]="esmeddrDetails?.data.settings.failurenotificationtosalesandinternationalteam === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -258,7 +258,7 @@
     <div class="row">
         <label class="gateway-section-heading col-6">ACCOUNT ACTIVITIES</label>
         <div class="col-6 text-right f-12">
-            <a routerLink="/customer-management/customer-management-view-log" class="font-weight-bold">
+            <a [routerLink]="['/customer-management/customer-management-view-log', esmeaddr,esmeddrDetails.data.clientname]" class="font-weight-bold">
                 View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>
             </a>
         </div>
@@ -271,7 +271,7 @@
                         <label class="col-12">Creation Date & Time</label>
                         <div class="row ml-1 font-weight-bold">
                             <div class="col-7 border-right">
-                                <span>23/10/2019</span>
+                                <span>{{esmeddrDetails.data.accountactivities.creationdatetime}}</span>
                             </div>
                             <div class="col-5">
                                 <span>14:30</span>
@@ -283,17 +283,14 @@
                         <label class="col-12">Last Modification Date & Time</label>
                         <div class="row font-weight-bold ml-1">
                             <div class="col-7 border-right">
-                                <span>23/10/2019</span>
-                            </div>
-                            <div class="col-5">
-                                <span>14:30</span>
+                                <span>{{esmeddrDetails.data.accountactivities.lastmodificationdatetime}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="form-group col-3 p-0">
                         <label class="col-12">Last Modified User</label>
                         <span class="col-12 font-weight-bold">
-                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> username</span>
+                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> {{esmeddrDetails.data.accountactivities.lastmodifieduser}}</span>
                     </div>
                 </div>
                 <div class="row">
@@ -301,10 +298,7 @@
                         <label class="col-12 pr-0">Rate Card Assign Date & Time</label>
                         <div class="row ml-1 font-weight-bold">
                             <div class="col-7 border-right">
-                                <span>23/10/2019</span>
-                            </div>
-                            <div class="col-5">
-                                <span>14:30</span>
+                                <span>{{esmeddrDetails.data.accountactivities.ratecardAssigndatetime}}</span>
                             </div>
                         </div>
                     </div>
@@ -313,45 +307,33 @@
                         <label class="col-12">Bill Plan Last Modification Date & Time</label>
                         <div class="row font-weight-bold ml-1">
                             <div class="col-7 border-right">
-                                <span>23/10/2019</span>
+                                <span>{{esmeddrDetails.data.accountactivities.billplanlastmodificationdatetime}}</span>
                             </div>
-                            <div class="col-5">
-                                <span>14:30</span>
-                            </div>
+
                         </div>
                     </div>
                     <div class="form-group col-3 p-0">
                         <label class="col-12">Bill Plan Modified By</label>
                         <span class="col-12 font-weight-bold">
-                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> username</span>
+                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> {{esmeddrDetails.data.accountactivities.billplanmodifiedby}}</span>
                     </div>
                 </div>
             </div>
             <div class="col-4 bg-grey">
-                <div class="row">
-                    <div class="col-5 pr-0">
-                        <label>RateCard Name</label>
-                    </div>
-                    <div class="col-7 pl-0">
-                        <label>Effective Date</label>
-                    </div>
-                </div>
-                <div class="row account-activity-data">
-                    <div class="col-5 px-0">
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                    </div>
-                    <div class="col-7 p-0">
-                        <p><b>02/01/2020 - Present</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                    </div>
-                </div>
+              <table class="table  table-borderless table-responsive">
+                <thead>
+                  <tr>
+                    <th scope="col">RateCard Name</th>
+                    <th scope="col">Effective Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of rateCardList.data.tabledata">
+                    <td>{{item.ratecardname}}</td>
+                    <td>{{item.effectivefrom}} - {{item.effectivefrom}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
         </div>
     </section>

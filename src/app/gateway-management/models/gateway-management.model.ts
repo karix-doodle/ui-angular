@@ -144,6 +144,7 @@ export class GtDetails_Data {
     description: boolean;
     createdby: number;
     modifiedby: number;
+    modifieduser: string;
     cdate: Date;
     ctime: Time;
     mdate: Date;

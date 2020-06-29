@@ -60,8 +60,8 @@ export class CreateRatecardComponent implements OnInit {
       ratetype_row: ["standard"],
       billing_rate_row: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
       discount_rate: [''],
-      discount_type: ["percentage"],
-      description: [""],
+      discount_type: [''],
+      description: [''],
       countries: this.formBuilder.array([this.countryArrayForm()]),
     });
   }

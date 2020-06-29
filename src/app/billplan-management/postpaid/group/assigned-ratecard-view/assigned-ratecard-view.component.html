@@ -11,7 +11,7 @@
   <div class="col-5 dropdown text-right pt-2 mb-2" ngbDropdown>
     <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-    <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" style="cursor: not-allowed;">
+    <button class="btn dropdown-basic " id="erp-dropdown" style="cursor: not-allowed;">
       Group </button>
 
 
@@ -67,7 +67,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of countryArray |  filter: { group_name: searchvalue ,operator: searchvalue, country: searchvalue }">
+      <tr *ngFor="let item of countryArray |  filter: { group_name: searchvalue , country: searchvalue,operator: searchvalue }">
         <td class="font-weight-semi-bold">{{item.group_name}}</td>
         <td>{{item.country}}</td>
         <td>{{item.operator}}</td>

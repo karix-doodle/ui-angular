@@ -16,7 +16,7 @@ export class AssignedRatecardViewComponent implements OnInit {
 
   billplan_id: number;
   billplan_name: string
-  currency: string;
+  currency;
   ratecardname: string;
   countryArray;
   description;
@@ -30,11 +30,13 @@ export class AssignedRatecardViewComponent implements OnInit {
     private Route: ActivatedRoute,
     private ratecardviewservice: BillplanRatecardViewService,
     private billPlanservice: BillManagementService
-  ) {}
+  ) {
+    this.getBillPlanCurrency();
+  }
 
   ngOnInit() {
     this.Route.params.subscribe((data: Params) => {
-      this.ratecardviewservice.getRatecardfFlatFixedView(data).subscribe((res: RateCardCountryView_ApiRResponse) => {
+      this.ratecardviewservice.getRatecardfFlatFixedView(data).subscribe((res) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
         this.currency = res.data.currency;
         this.ratecardname = res.data.ratecardname;
@@ -51,7 +53,7 @@ export class AssignedRatecardViewComponent implements OnInit {
     );
   });
 
-this.getBillPlanCurrency();
+
 
 }
 

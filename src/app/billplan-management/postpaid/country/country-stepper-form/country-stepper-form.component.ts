@@ -64,6 +64,8 @@ export class CountryStepperFormComponent implements OnInit {
     nCurrency: ''
  }
 
+ Psubmitted: boolean = false
+
   constructor(
     private _formBuilder: FormBuilder,
     config: NgbModalConfig,
@@ -289,6 +291,23 @@ initCurrencyConversion() {
     })
  }
 
+
+ handleDiscountType() {
+  if (this.parentForm.value.discount_type == 'percentage') {
+     this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+     this.parentForm.get('discount_rate').updateValueAndValidity();
+  } else if (this.parentForm.value.discount_type == 'unit') {
+     this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+     this.parentForm.get('discount_rate').updateValueAndValidity();
+  } else {
+     this.parentForm.patchValue({
+        discount_rate: ''
+     })
+     this.parentForm.get('discount_rate').clearValidators();
+     this.parentForm.get('discount_rate').updateValueAndValidity();
+  }
+}
+
   countryListData(value: FormArray, indexed: number) {
     const groupsControl = this.getcountryControl();
     groupsControl.at(0).patchValue(value);
@@ -299,8 +318,20 @@ initCurrencyConversion() {
   }
 
   onCountryFormSubmit(data) {
-    console.log(data);
+    this.Psubmitted = true
     data.billing_rate_row = data.ratetype_row == 'standard' ? '' : data.billing_rate_row;
+    if (data.ratetype_row == 'standard') {
+      this.parentForm.get('billing_rate_row').clearValidators();
+      this.parentForm.get('billing_rate_row').updateValueAndValidity();
+   } else if (data.ratetype_row == 'custom') {
+      this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+      this.parentForm.get('billing_rate_row').updateValueAndValidity();
+   }
+
+   if (this.parentForm.invalid) {
+    return
+ } else {
+   this.Psubmitted = false;
     this.billplancountryService.BillPlanCreateCountry(data).subscribe(
       (res: BillPlanCreateCountry_ApiResponse) => {
          if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
@@ -312,6 +343,6 @@ initCurrencyConversion() {
       }, (error: HttpErrorResponse) => {
          errorAlert(error.message, error.statusText)
       }
-   );
+   ); }
   }
 }

@@ -4,7 +4,7 @@
         <span class="border-right">&nbsp;</span>
         <span class="ml-3 badge badge-dark"><b>{{existingUserData?.totalexistingesmes}}</b></span>
     </div>
-  
+
     <div class="col-5 text-right">
         <input type="search" class="form-control" placeholder="&#xf002; Search by ESME Addr., Username" name="searchvalue"
         [(ngModel)]="searchvalue" />
@@ -36,7 +36,7 @@
                 <td>{{existinguser.ratecardname}}</td>
                 <td><span class="font-weight-bold">{{existinguser.routingtype | uppercase}}</span> - {{existinguser.intlaccttype}}</td>
                 <td><a routerLink="/customer-management/customer-management-edit/{{existinguser.esmeaddr}}"><img src="assets/icons/edit-icon.svg" alt="edit"/></a></td>
-            </tr>            
+            </tr>
         </tbody>
     </table>
 </div>

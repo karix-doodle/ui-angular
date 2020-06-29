@@ -34,7 +34,7 @@ export class GtDetailsViewLogComponent implements OnInit {
 
     let startDate = moment().subtract(9, 'days').utcOffset(environment.UTC);
     let todate = moment().utcOffset(environment.UTC);
-    let dayDiffer = todate.diff(startDate, 'days') + 1;
+    let dayDiffer = todate && todate.diff(startDate, 'days') + 1;
     this.params = {
       fromdate: startDate,
       todate: todate,
@@ -68,7 +68,7 @@ export class GtDetailsViewLogComponent implements OnInit {
   getDateSelection(e) {
     let startDate = e.startDate;
     let todate = e.endDate;
-    let dayDiffer = todate.diff(startDate, 'days') + 1;
+    let dayDiffer = todate && todate.diff(startDate, 'days') + 1;
     this.params = {
       fromdate: e.startDate,
       todate: e.endDate,

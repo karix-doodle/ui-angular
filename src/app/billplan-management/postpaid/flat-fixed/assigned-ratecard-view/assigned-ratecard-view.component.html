@@ -11,7 +11,7 @@
     <div class="col-5 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" style="cursor: not-allowed;" >
+        <button class="btn dropdown-basic" style="cursor: not-allowed;" >
           Flat / Fixed  </button>
 
 
@@ -29,12 +29,12 @@
   </div>
 
 </div>
-<div class="row btm-border second-row-det">
+<!-- <div class="row btm-border second-row-det">
     <div class="col-5 text-right">
         <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Continent, Country, Operator" />
     </div>
 
-</div>
+</div> -->
 <div class="main-container row">
     <div class="col-6 table-responsive px-0 mt-4">
         <table class="table table-borderless erp-list-table row-hover-effect">
@@ -47,9 +47,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{countryArray.billing_rate}}</td>
-                    <td>{{countryArray.normalizerate}}</td>
-                    <td>{{countryArray.discount_percentage}}%</td>
+                    <td>{{countryArray?.billing_rate}}</td>
+                    <td>{{countryArray?.normalizerate}}</td>
+                    <td>{{countryArray?.discount_percentage? countryArray?.discount.percentage : 0}}</td>
                 </tr>
 
             </tbody>

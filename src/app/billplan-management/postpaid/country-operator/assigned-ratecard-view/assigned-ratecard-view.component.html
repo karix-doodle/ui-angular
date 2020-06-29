@@ -11,7 +11,7 @@
     <div class="col-5 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" style="cursor: not-allowed;">
+        <button class="btn dropdown-basic " style="cursor: not-allowed;">
            Country + Operator </button>
 
 
@@ -63,7 +63,7 @@
             </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of countryArray |  filter: { operator: searchvalue, country: searchvalue }">
+          <tr *ngFor="let item of countryArray |  filter: { country: searchvalue,operator: searchvalue }">
             <td class="font-weight-semi-bold">{{item.country}}</td>
             <td>{{item.operator}}</td>
             <td>{{item.mcc}} + {{item.mnc}}</td>
@@ -90,7 +90,7 @@
               <tr *ngFor="let item of rowArray">
                 <td>{{item.billing_rate}}</td>
                  <td>{{item.normalizerate}}</td>
-                <td>{{item.discount_percentage}} %</td>
+                <td>{{item.discount_percentage}} </td>
             </tr>
             </tbody>
         </table>
