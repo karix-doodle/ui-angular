@@ -73,8 +73,7 @@
                 <th>&nbsp;</th>
             </tr>
         </thead>
-        <tbody
-            *ngFor="let items of row_groups | filter: { group_name: searchvalue, continent_name: searchvalue }; let gindex=index">
+        <tbody *ngFor="let items of row_groups | filter: { value: searchvalue } : 2; let gindex=index">
             <tr *ngFor="let item of items.countries; let cindex=index"
                 [ngClass]="{'border-bottom': items.countries.length - 1 == cindex}">
                 <td class="font-weight-semi-bold">{{items.group_name}}</td>
