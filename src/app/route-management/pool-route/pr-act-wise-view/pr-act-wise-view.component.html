@@ -89,6 +89,11 @@
         </div>
     </div>
 </div>
-<div *ngIf="!authService.authorizationState.route_mgmt.poolroute_view_enabled">
-    <span>You are not <b>authorized</b> for this page</span>
+<div class="pt-3 center-block h-100" *ngIf="!authService.authorizationState.route_mgmt.poolroute_view_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>
