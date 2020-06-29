@@ -46,7 +46,7 @@ Submitted = false
     billing_rate:['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
     normalize_rate:[''],
     discount_rate:[''],
-    discount_type:['percentage'],
+    discount_type:[''],
     description:['']
   })
 this.initCurrencyConversion();
@@ -128,12 +128,28 @@ this.getBillPlanCurrency();
        }
     );
  }
+ handleDiscountType() {
+  if (this.fixedRateFrom.value.discount_type == 'percentage') {
+     this.fixedRateFrom.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+     this.fixedRateFrom.get('discount_rate').updateValueAndValidity();
+  } else if (this.fixedRateFrom.value.discount_type == 'unit') {
+     this.fixedRateFrom.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+     this.fixedRateFrom.get('discount_rate').updateValueAndValidity();
+  } else {
+     this.fixedRateFrom.patchValue({
+        discount_rate: ''
+     })
+     this.fixedRateFrom.get('discount_rate').clearValidators();
+     this.fixedRateFrom.get('discount_rate').updateValueAndValidity();
+  }
+}
 
 
   onSubmit(){
     console.log(this.fixedRateFrom.value)
     this.Submitted = true
     if(this.fixedRateFrom.valid){
+      this.Submitted = false
       this.billplanflat.BillPlanCreate(this.fixedRateFrom.value).subscribe(
         (res: BillPlanCreateFlatFixed_ApiResponse) => {
            if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {

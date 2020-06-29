@@ -59,7 +59,7 @@ export class CreateRatecardComponent implements OnInit {
       ratetype_row: ["standard"],
       billing_rate_row: ['', [Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
       discount_rate: [''],
-      discount_type: ["percentage"],
+      discount_type: [''],
       description: [""],
       countries: this._formBuilder.array([this.countryArrayForm()]),
     });

@@ -64,21 +64,34 @@
 
         </div>
         <div class="col-6">
-            <label class="font-weight-bold col-12">Discount in % or Amount in €</label>
+          <label class="font-weight-bold col-12"
+          innerHTML="Discount in % or Amount in {{currencySybmol.bCurrency.symbol}}"></label>
             <div class="gt-ratio-div">
                 <div class="row">
                     <div class="col-6">
                         <label>Discount Amount</label>
                         <div class="form-group">
-                          <input type="search" class="form-control" id="" placeholder="Enter Discount"
+                          <input type="text" class="form-control" id="" placeholder="Enter Discount"
+                              formControlName="discount_type"
+                              [attr.disabled]="fixedRateFrom.get('discount_type').value == '' ? true : null"
                               formControlName="discount_rate" />
+                          <span class="text-danger pl-1 f-12"
+                              *ngIf="fixedRateFrom.get('discount_rate').hasError('pattern') && Submitted">
+                              Discount rate is not valid
+                          </span>
+                          <span class="text-danger pl-1 f-12"
+                              *ngIf="fixedRateFrom.get('discount_rate').hasError('required') && Submitted">
+                              Discount rate is required
+                          </span>
                       </div>
                     </div>
                     <div class="col-6 mt-31 discount-select">
-                      <select class="dropdown-select w-100" formControlName="discount_type">
-                        <option value="percentage" default>Percentage</option>
-                        <option value="amount">Amount</option>
-                    </select>
+                      <select class="dropdown-select w-100" (change)="handleDiscountType()"
+                      formControlName="discount_type">
+                      <option value="" default>Select discount type</option>
+                      <option value="percentage" default>Percentage</option>
+                      <option value="unit">Unit</option>
+                  </select>
                     </div>
 
 

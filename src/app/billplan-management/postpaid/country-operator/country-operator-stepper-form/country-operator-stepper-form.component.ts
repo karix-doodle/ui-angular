@@ -33,6 +33,7 @@ import Swal from "sweetalert2";
 import { OperatorsListRes } from "src/app/route-management/models/RouteManagement/Generic/generic";
 import { BillplanCountryOperatorService } from 'src/app/billplan-management/services/BillManagement/billplan-country-operator/billplan-country-operator.service';
 import { Router } from '@angular/router';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
   selector: "app-country-operator-stepper-form",
@@ -63,7 +64,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     bCurrency: '',
     nCurrency: ''
  }
-
+ Psubmitted: boolean = false
   conversionRate:number;
   constructor(
     private formBuilder: FormBuilder,
@@ -246,6 +247,22 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     }
   }
 
+  handleDiscountType() {
+    if (this.parentForm.value.discount_type == 'percentage') {
+       this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+       this.parentForm.get('discount_rate').updateValueAndValidity();
+    } else if (this.parentForm.value.discount_type == 'unit') {
+       this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+       this.parentForm.get('discount_rate').updateValueAndValidity();
+    } else {
+       this.parentForm.patchValue({
+          discount_rate: ''
+       })
+       this.parentForm.get('discount_rate').clearValidators();
+       this.parentForm.get('discount_rate').updateValueAndValidity();
+    }
+  }
+
   addToParentForm() {
     const countryCountrol = this.getcountryControl();
     this.Submitted = true;
@@ -361,18 +378,33 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   }
 
   onCountryOpertatorFormSubmit(data) {
+    this.Psubmitted = true
     data.billing_rate_row = data.ratetype_row == 'standard' ? '' : data.billing_rate_row;
-    this.billpancountryOptorService.BillPlanCreateCountryOperator(data).subscribe(
-      (res: BillPlanCreateCountryOperator_ApiResponse) => {
-         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-            successAlert(res.message, res.responsestatus)
-            this.router.navigate(['billplan-management-postpaid/' + data.billplan_id]);
-         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-            errorAlert(res.message, res.responsestatus)
-         }
-      }, (error: HttpErrorResponse) => {
-         errorAlert(error.message, error.statusText)
-      }
-   );
+    if (data.ratetype_row == 'standard') {
+      this.parentForm.get('billing_rate_row').clearValidators();
+      this.parentForm.get('billing_rate_row').updateValueAndValidity();
+   } else if (data.ratetype_row == 'custom') {
+      this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+      this.parentForm.get('billing_rate_row').updateValueAndValidity();
+   }
+
+   if (this.parentForm.invalid) {
+    return
+ } else {
+   this.Psubmitted = false
+  this.billpancountryOptorService.BillPlanCreateCountryOperator(data).subscribe(
+    (res: BillPlanCreateCountryOperator_ApiResponse) => {
+       if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+          successAlert(res.message, res.responsestatus)
+          this.router.navigate(['billplan-management-postpaid/' + data.billplan_id]);
+       } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          errorAlert(res.message, res.responsestatus)
+       }
+    }, (error: HttpErrorResponse) => {
+       errorAlert(error.message, error.statusText)
+    }
+ );
+ }
+
   }
 }

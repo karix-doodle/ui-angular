@@ -36,7 +36,7 @@ export class AssignedRatecardViewComponent implements OnInit {
 
   ngOnInit() {
     this.Route.params.subscribe((data: Params) => {
-      this.ratecardviewservice.getRatecardfFlatFixedView(data).subscribe((res: RateCardCountryView_ApiRResponse) => {
+      this.ratecardviewservice.getRatecardfFlatFixedView(data).subscribe((res) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
         this.currency = res.data.currency;
         this.ratecardname = res.data.ratecardname;
