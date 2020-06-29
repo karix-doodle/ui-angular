@@ -39,7 +39,6 @@ export class CreateGatewayComponent implements OnInit {
     private authorizationService: AuthorizationService
   ) {
     this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
-    console.log(this.GtMgmtAuthControls, 'adadasdas')
 
     let gw_name = '[0-9a-zA-Z-_.@$\' ]{4,200}';
     let gw_id = '[0-9a-zA-Z]{2,10}';

@@ -223,6 +223,11 @@
         </div>
     </form>
 </div>
-<div class="pt-3" *ngIf="!GtMgmtAuthControls.gw_edit_enabled">
-    Your are not <b>Authorized</b> to access this page
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_edit_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>
