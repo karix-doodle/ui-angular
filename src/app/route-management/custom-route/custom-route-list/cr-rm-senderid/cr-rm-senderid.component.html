@@ -1,196 +1,130 @@
-<div class="row btm-border second-row-pr">
-  <div class="col-6">
-    <div class="row">
-      <div class="col-12">
-        <label class="mr-2"><b>Total</b></label>
-        <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"
-          ><b>{{ senderidCustomData?.total }}</b></span
-        >
+<div *ngIf="authService.authorizationState.route_mgmt.customroute_senderidcontent_list_enabled">
+  <div class="row btm-border second-row-pr">
+    <div class="col-6">
+      <div class="row">
+        <div class="col-12">
+          <label class="mr-2"><b>Total</b></label>
+          <span class="border-right">&nbsp;</span>
+          <span class="ml-3 badge badge-dark"><b>{{ senderidCustomData?.total }}</b></span>
+        </div>
+      </div>
+      <div class="row gateway-count">
+        <div class="col-3">
+          <label>Country
+            <span class="badge badge-dark"><b>{{ senderidCustomData?.unique_country_count }}</b></span>
+          </label>
+        </div>
+        <div class="col-3 gateway-detail">
+          <label>Operator
+            <span class="badge badge-dark"><b>{{ senderidCustomData?.unique_operator_count }}</b></span></label>
+        </div>
       </div>
     </div>
-    <div class="row gateway-count">
-      <div class="col-3">
-        <label
-          >Country
-          <span class="badge badge-dark"
-            ><b>{{ senderidCustomData?.unique_country_count }}</b></span
-          >
-        </label>
-      </div>
-      <div class="col-3 gateway-detail">
-        <label
-          >Operator
-          <span class="badge badge-dark"
-            ><b>{{ senderidCustomData?.unique_operator_count }}</b></span
-          ></label
-        >
-      </div>
-    </div>
-  </div>
 
-  <div class="col-4 text-right mt-1">
-    <div class="form-group">
-      <input
-        type="search"
-        class="form-control"
-        placeholder="&#xf002; Search by Country, SenderID"
-        name="searchvalue"
-        [(ngModel)]="searchvalue"
-      />
+    <div class="col-4 text-right mt-1">
+      <div class="form-group">
+        <input type="search" class="form-control" placeholder="&#xf002; Search by Country, SenderID" name="searchvalue"
+          [(ngModel)]="searchvalue" />
+      </div>
+    </div>
+    <div class="col-2 text-right">
+      <a [ngClass]="{'isDisabled': !authService.authorizationState.route_mgmt.customroute_senderidcontent_add_route_enabled}"
+        [routerLink]="authService.authorizationState.route_mgmt.customroute_senderidcontent_add_route_enabled ? 
+      ['/route-management/custom-route/add-route/senderid-route'] : []" class="btn erp-intl-btn">Add Route</a>
     </div>
   </div>
-  <div class="col-2 text-right">
-    <a
-      routerLink="/route-management/custom-route/add-route/senderid-route"
-      class="btn erp-intl-btn"
-      >Add Route</a
-    >
-  </div>
-</div>
-<div class="main-container table-responsive">
-  <table class="table table-borderless erp-list-table row-hover-effect">
-    <thead>
-      <tr>
-        <th (click)="sort('senderid')">
-          SenderID
-          <i
-            *ngIf="sortingName === 'senderid' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'senderid' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('whitelist_type')">
-          Whitelist Type
-          <i
-            *ngIf="sortingName === 'whitelist_type' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'whitelist_type' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('country')">
-          Country
-          <i
-            *ngIf="sortingName === 'country' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'country' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('operator')">
-          Operator
-          <i
-            *ngIf="sortingName === 'operator' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'operator' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('mcc')">
-          MCC + MNC
-          <i
-            *ngIf="sortingName === 'mcc' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'mcc' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('primary_route.gw_id')">
-          Primary Route
-          <i
-            *ngIf="sortingName === 'primary_route.gw_id' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'primary_route.gw_id' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('fallback_route.gw_id')">
-          Fallback Route
-          <i
-            *ngIf="sortingName === 'fallback_route.gw_id' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'fallback_route.gw_id' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('priority')">
-          Priority
-          <i
-            *ngIf="sortingName === 'priority' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'priority' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th (click)="sort('cts')">
-          Creation Date & Time
-          <i
-            *ngIf="sortingName === 'cts' && isDesc"
-            class="fa fa-arrow-down sorticon m-1"
-          ></i>
-          <i
-            *ngIf="sortingName === 'cts' && !isDesc"
-            class="fa fa-arrow-up sorticon m-1"
-          ></i>
-        </th>
-        <th>&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="
+  <div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table row-hover-effect">
+      <thead>
+        <tr>
+          <th (click)="sort('senderid')">
+            SenderID
+            <i *ngIf="sortingName === 'senderid' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'senderid' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('whitelist_type')">
+            Whitelist Type
+            <i *ngIf="sortingName === 'whitelist_type' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'whitelist_type' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('country')">
+            Country
+            <i *ngIf="sortingName === 'country' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'country' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('operator')">
+            Operator
+            <i *ngIf="sortingName === 'operator' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'operator' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('mcc')">
+            MCC + MNC
+            <i *ngIf="sortingName === 'mcc' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'mcc' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('primary_route.gw_id')">
+            Primary Route
+            <i *ngIf="sortingName === 'primary_route.gw_id' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'primary_route.gw_id' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('fallback_route.gw_id')">
+            Fallback Route
+            <i *ngIf="sortingName === 'fallback_route.gw_id' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'fallback_route.gw_id' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('priority')">
+            Priority
+            <i *ngIf="sortingName === 'priority' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'priority' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('cts')">
+            Creation Date & Time
+            <i *ngIf="sortingName === 'cts' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'cts' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
           let senderroute of senderidCustomData?.senderid_template_list
             | filter: { senderid: searchvalue, country: searchvalue }
             | sort: sortingName:isDesc
-        "
-      >
-        <td class="font-weight-semi-bold">{{ senderroute.senderid }}</td>
-        <td>{{ senderroute.whitelist_type }}</td>
-        <td>{{ senderroute.country }}</td>
-        <td>{{ senderroute.operator }}</td>
-        <td>{{ senderroute.mcc }}-{{ senderroute.mnc }}</td>
-        <td>{{ senderroute.primary_route.gw_id }}</td>
-        <td>{{ senderroute.fallback_route.gw_id }}</td>
-        <td>{{ senderroute.priority }}</td>
-        <td>{{ senderroute.cts }}</td>
-        <td>
-          <img
-            src="assets/icons/delete-icon.svg"
-            class="img-fluid"
-            alt="delete icon"
-            (click)="deleteSenderCustom(senderroute)"
-          />
-        </td>
-      </tr>
-      <tr
-        *ngIf="
+        ">
+          <td class="font-weight-semi-bold">{{ senderroute.senderid }}</td>
+          <td>{{ senderroute.whitelist_type }}</td>
+          <td>{{ senderroute.country }}</td>
+          <td>{{ senderroute.operator }}</td>
+          <td>{{ senderroute.mcc }}-{{ senderroute.mnc }}</td>
+          <td>{{ senderroute.primary_route.gw_id }}</td>
+          <td>{{ senderroute.fallback_route.gw_id }}</td>
+          <td>{{ senderroute.priority }}</td>
+          <td>{{ senderroute.cts }}</td>
+          <td>
+            <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
+              [ngClass]="{'isDisabled': !authService.authorizationState.route_mgmt.customroute_senderidcontent_delete_route_enabled}"
+              (click)="authService.authorizationState.route_mgmt.customroute_senderidcontent_delete_route_enabled && deleteSenderCustom(senderroute)" />
+          </td>
+        </tr>
+        <tr *ngIf="
           !senderidCustomData?.senderid_template_list.length ||
           (
             senderidCustomData?.senderid_template_list
             | filter: { senderid: searchvalue, country: searchvalue }
           ).length == 0
-        "
-      >
-        <td colspan="10" style="text-align: center;">No Records Found</td>
-      </tr>
-    </tbody>
-  </table>
+        ">
+          <td colspan="10" style="text-align: center;">No Records Found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="pt-3 center-block h-100"
+  *ngIf="!authService.authorizationState.route_mgmt.customroute_senderidcontent_list_enabled">
+  <div class="d-block">
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
+  </div>
 </div>

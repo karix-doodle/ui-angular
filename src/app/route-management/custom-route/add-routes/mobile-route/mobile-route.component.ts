@@ -14,6 +14,7 @@ import {
   successAlert,
 } from "../../../../shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-mobile-route",
@@ -33,7 +34,8 @@ export class MobileRouteComponent implements OnInit {
     public customService: CustomService,
     public mobileCustomService: MobileCustomRouteService,
     public route: ActivatedRoute,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private authService: AuthorizationService
   ) {}
 
   ngOnInit() {

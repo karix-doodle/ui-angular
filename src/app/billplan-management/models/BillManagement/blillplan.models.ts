@@ -153,7 +153,10 @@ export class RateCardCountryView_ApiRResponse {
   data: {
     ratecardname: string;
     currency: string;
+    row_billplan: string;
+    billplan_id: number;
     totalcountry: number;
+    billplan_name: string
     countryratecard: RatecardViewCountry_Data[];
     row: RatecardViewCountryRow_Data[];
     description: string;
@@ -163,6 +166,9 @@ export class RatecardViewCountryRow_Data {
   billing_rate: string;
   normalizerate: string;
   discount_percentage: number;
+  country?: string;
+  mcc?: number;
+
 }
 
 export class RatecardViewCountry_Data {
@@ -178,6 +184,9 @@ export class RateCardCountryOperatorView_ApiRResponse {
   data: {
     ratecardname: string;
     currency: string;
+    row_billplan:string;
+    billplan_id: number;
+    billplan_name: string
     totalcountry: number;
     totaloperator: number;
     countryratecard: RatecardViewCountryOperator_Data[];
@@ -190,6 +199,11 @@ export class RatecardViewCountryOperatorRow_Data {
   billing_rate: string;
   normalizerate: string;
   discount_percentage: number;
+  country?: string;
+  mcc?: number;
+  operator?: string
+  mnc?: number
+
 }
 
 export class RatecardViewCountryOperator_Data {
@@ -209,6 +223,10 @@ export class RateCardGroupView_ApiRResponse {
   data: {
     ratecardname: string;
     currency: string;
+    roc_billplan:string;
+    billplan_id: number;
+    row_billplan: string;
+    billplan_name: string
     totalcountry: number;
     totalgroup: number;
     countryratecard: RatecardViewGroup_Data[];
@@ -221,7 +239,12 @@ export class RateCardGroupView_ApiRResponse {
 export class RatecardViewGroupRow_Data {
   billing_rate: string;
   normalizerate: string;
-  discount_percentage: number;
+  discount_percentage?: number;
+  country: string;
+  mcc: number;
+  operator: string
+  mnc: number;
+  continent?: string
 }
 
 export class RatecardViewGroup_Data {
@@ -243,9 +266,7 @@ export class RatecardViewRocGroup_Data {
   mnc: number
   billing_rate: string;
   normalizerate: string;
-
-
-
+  continent?: string
 }
 
 
@@ -254,7 +275,10 @@ export class RateCardSlabView_ApiRResponse {
   responsestatus: string;
   data: {
     ratecardname: string;
+    billplan_name: string
     currency: string;
+    billplan_id: number;
+    row_billplan: string
     totalcountry: number;
     totaloperator: number;
     slabratecard: RatecardViewSlabCountry_Data[];
@@ -268,6 +292,10 @@ export class RatecardViewSlabRow_Data {
   max: number
   billing_rate: string;
   normalizerate: string;
+  country?: string;
+  mcc?: number;
+  operator?: string
+  mnc?: number
   discount_percentage: number;
 }
 

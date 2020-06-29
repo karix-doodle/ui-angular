@@ -5,93 +5,116 @@
         <span> POOL ROUTE </span>
     </div>
     <div class="col-4 text-right">
-        <a routerLink="/route-management/pool-route/create-pool" class="btn erp-intl-btn">Create Route</a>
+        <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_create_enabled}"
+            [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_create_enabled 
+        ? ['/route-management/pool-route/create-pool']: []" class="btn erp-intl-btn">Create Route</a>
     </div>
 </div>
-<div class="row btm-border second-row-pr">
-    <div class="col-9 mt-2">
-        <label class="mr-2"><b>Total Routes</b></label>
-        <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>{{poolListRes?.data.routes_count}}</b></span>
-    </div>
+<div *ngIf="authorizationService.authorizationState.route_mgmt.poolroute_list_enabled">
+    <div class="row btm-border second-row-pr">
+        <div class="col-9 mt-2">
+            <label class="mr-2"><b>Total Routes</b></label>
+            <span class="border-right">&nbsp;</span>
+            <span class="ml-3 badge badge-dark"><b>{{poolListRes?.data.routes_count}}</b></span>
+        </div>
 
-    <div class="col-3 text-right">
-        <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="&#xf002; Search by Route Name"
-            title="Search By Route Name, No. Of Countries, No. Of Accounts Tagged, Created Date & Time, Created By" />
-    </div>
+        <div class="col-3 text-right">
+            <input type="search" [(ngModel)]="searchText" class="form-control"
+                placeholder="&#xf002; Search by Route Name"
+                title="Search By Route Name, No. Of Countries, No. Of Accounts Tagged, Created Date & Time, Created By" />
+        </div>
 
+    </div>
+    <div class="main-container table-responsive">
+        <table class="table table-borderless erp-list-table row-hover-effect">
+            <thead>
+                <tr>
+                    <th (click)="sort('route_name')">Route Name
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='route_name' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='route_name' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('countries_count')">No. Of Countries
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='countries_count' && isDesc}"></i>
+                        <i
+                            [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='countries_count' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('tagged_accounts_count')">No. Of Accounts Tagged
+                        <i
+                            [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='tagged_accounts_count' && isDesc}"></i>
+                        <i
+                            [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='tagged_accounts_count' && !isDesc}">
+                        </i>
+                    </th>
+                    <th (click)="sort('created_date')">Created Date & Time
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='created_date' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='created_date' && !isDesc}"></i>
+                    </th>
+                    <th (click)="sort('createdby')">Created By
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='createdby' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='createdby' && !isDesc}"></i>
+                    </th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of poolListRes?.data.routes_list 
+                | filter: { route_name: searchText,  
+                    countries_count: searchText,
+                    tagged_accounts_count: searchText, 
+                    created_date: searchText,
+                    created_time: searchText, 
+                    createdby: searchText }
+                | sort: sortingName: isDesc; index as i">
+                    <td class="font-weight-semi-bold">
+                        <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_view_enabled}"
+                            [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_view_enabled ? 
+                            ['/route-management/pool-route/account-wise-view', row.route_id] : []">{{row.route_name}}</a>
+                    </td>
+                    <td>{{row.countries_count}}</td>
+                    <td class="font-weight-semi-bold"><a class="cursor-pointer"
+                            [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_list_accounts_tagged_enabled}"
+                            (click)="row.tagged_accounts_count > 0
+                             && authorizationService.authorizationState.route_mgmt.poolroute_list_accounts_tagged_enabled 
+                             && open(acntsTagged, row.tagged_accounts_list, row.createdby, row.route_name)">
+                            {{row.tagged_accounts_count}}</a></td>
+                    <td>{{row.created_date}} | {{row.created_time}}</td>
+                    <td>{{row.createdby}}</td>
+                    <td>
+                        <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled}"
+                            [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled ? ['/route-management/pool-route/clone-pool', row.route_id] : []">
+                            <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon" />
+                        </a>
+                    </td>
+                    <td> <img *ngIf="row.tagged_accounts_count === 0" src="assets/icons/delete-icon.svg"
+                            class="img-fluid cursor-pointer" alt="delete icon"
+                            [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_delete_enabled}"
+                            (click)="authorizationService.authorizationState.route_mgmt.poolroute_delete_enabled 
+                            && onDelete(row.route_id, row.route_name)" />
+                    </td>
+                </tr>
+                <tr *ngIf="!poolListRes?.data.routes_list.length  
+                || (poolListRes?.data.routes_list  | filter: { route_name: searchText,  
+                    countries_count: searchText,
+                    tagged_accounts_count: searchText, 
+                    created_date: searchText,
+                    created_time: searchText, 
+                    createdby: searchText }).length === 0">
+                    <td colspan="7" style="text-align: center;">No Records Found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-            <tr>
-                <th (click)="sort('route_name')">Route Name
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='route_name' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='route_name' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('countries_count')">No. Of Countries
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='countries_count' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='countries_count' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('tagged_accounts_count')">No. Of Accounts Tagged
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='tagged_accounts_count' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='tagged_accounts_count' && !isDesc}">
-                    </i>
-                </th>
-                <th (click)="sort('created_date')">Created Date & Time
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='created_date' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='created_date' && !isDesc}"></i>
-                </th>
-                <th (click)="sort('createdby')">Created By
-                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='createdby' && isDesc}"></i>
-                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='createdby' && !isDesc}"></i>
-                </th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let row of poolListRes?.data.routes_list 
-            | filter: { route_name: searchText,  
-                countries_count: searchText,
-                tagged_accounts_count: searchText, 
-                created_date: searchText,
-                created_time: searchText, 
-                createdby: searchText }
-            | sort: sortingName: isDesc; index as i">
-                <td class="font-weight-semi-bold">
-                    <a
-                        [routerLink]="['/route-management/pool-route/account-wise-view', row.route_id]">{{row.route_name}}</a>
-                </td>
-                <td>{{row.countries_count}}</td>
-                <td><a [ngClass]="{'cursor-pointer': row.tagged_accounts_count > 0}"
-                        (click)="row.tagged_accounts_count > 0 && open(acntsTagged, row.tagged_accounts_list, row.createdby, row.route_name)">
-                        {{row.tagged_accounts_count}}</a></td>
-                <td>{{row.created_date}} | {{row.created_time}}</td>
-                <td>{{row.createdby}}</td>
-                <td>
-                    <a [ngClass]="{'disabled': !authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled}"
-                        [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled ? ['/route-management/pool-route/clone-pool', row.route_id] : []">
-                        <img src="assets/icons/copy.svg" class="img-fluid" alt="copy-icon" />
-                    </a>
-                </td>
-                <td> <img *ngIf="row.tagged_accounts_count === 0" src="assets/icons/delete-icon.svg"
-                        class="img-fluid cursor-pointer" alt="delete icon"
-                        (click)="onDelete(row.route_id, row.route_name)" />
-                </td>
-            </tr>
-            <tr *ngIf="!poolListRes?.data.routes_list.length  
-            || (poolListRes?.data.routes_list  | filter: { route_name: searchText,  
-                countries_count: searchText,
-                tagged_accounts_count: searchText, 
-                created_date: searchText,
-                created_time: searchText, 
-                createdby: searchText }).length === 0">
-                <td colspan="7" style="text-align: center;">No Records Found</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="pt-3 center-block h-100" *ngIf="!authorizationService.authorizationState.route_mgmt.poolroute_list_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>
+
 <!-- modal pop-up -->
 <ng-template #acntsTagged let-c="close" let-d="dismiss">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"

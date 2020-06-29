@@ -5,6 +5,10 @@ import { count } from "../../../../shared/helper/helperFunctions";
 import { Subject } from "rxjs";
 import Swal from "sweetalert2";
 import { ActivatedRoute } from '@angular/router';
+import { BillManagementService } from 'src/app/billplan-management/services/BillManagement/billplan-management.service';
+import { BillPlanCurrency_ApiResponse, BillPlanCurrency_Data } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
+import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: "app-create-ratecard",
   templateUrl: "./create-ratecard.component.html",
@@ -25,8 +29,16 @@ export class CreateRatecardComponent implements OnInit {
   handleCountryDelete: Subject< number> = new Subject<
      number
   >();
+  currencySybmol: object = {
+    bCurrency: '',
+    nCurrency: ''
+  }
+  billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
+  billPlanCurrencyData: BillPlanCurrency_Data;
+  handlecurrencyList: Subject<[object]> = new Subject<[object]>();
   constructor(private _formBuilder: FormBuilder,
-    private activeRoute: ActivatedRoute) {
+    private activeRoute: ActivatedRoute,
+    private billPlanservice: BillManagementService,) {
     this.initForm();
     this.billplan_id = +this.activeRoute.snapshot.params.bId
       this.billplan_currencyid = this.activeRoute.snapshot.params.cId
@@ -34,7 +46,9 @@ export class CreateRatecardComponent implements OnInit {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getBillPlanCurrency();
+  }
 
   private initForm() {
     this.totalCountryForm = this._formBuilder.group({
@@ -43,7 +57,7 @@ export class CreateRatecardComponent implements OnInit {
       ratecard_type: ["country"],
       ratecard_name:  this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
-      billing_rate_row: [null],
+      billing_rate_row: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
       discount_rate: [null],
       discount_type: ["percentage"],
       description: [""],
@@ -51,6 +65,51 @@ export class CreateRatecardComponent implements OnInit {
     });
   }
 
+  getBillPlanCurrency() {
+    this.billPlanservice.BillPlancurrency().subscribe(
+      (res: BillPlanCurrency_ApiResponse) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.billPlanCurrencyRes = res;
+          this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
+          let bcurrency = {}
+          let ncurrency = {}
+          this.billPlanCurrencyRes.data.filter((item) => {
+            if (item.currency_id == this.activeRoute.snapshot.params.cId) {
+              bcurrency = {
+                symbol: item.currency_symbol,
+                id: item.currency_id
+              }
+            }
+            if (item.currency_id == environment.currencyDefault) {
+              ncurrency = {
+                symbol: item.currency_symbol,
+                id: item.currency_id
+              }
+            }
+          })
+
+          this.currencySybmol = {
+            bCurrency: bcurrency,
+            nCurrency: ncurrency
+          }
+
+          this.handlecurrencyList.next([this.currencySybmol]);
+
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.responsestatus);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+      }
+    );
+  }
   countryArrayForm(): FormGroup {
     return this._formBuilder.group({
       country_name: [""],

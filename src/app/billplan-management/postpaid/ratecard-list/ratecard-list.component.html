@@ -29,7 +29,7 @@
 <form [formGroup]="rateCardSearchForm" (ngSubmit)="onrateCardSearchFormSubmit(rateCardSearchForm.value)">
     <!-- {{rateCardSearchForm.value | json}} -->
     <div class="row btm-border mt-2 second-row-det">
-        <div class="col-4">
+        <div class="col-3">
             <label>Rate Card Type</label>
             <select disabled formControlName="ratecardtype" class="dropdown-select w-100 dark-input">
                 <option value="" default disabled>Select Rate Card Type</option>
@@ -63,12 +63,16 @@
                         *ngIf="rateCardSearchForm.get('ratecardname').hasError('required') && rateCardValid">
                         Ratecard Name is required
                     </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="rateCardSearchForm.get('ratecardname').hasError('pattern') && rateCardValid">
+                        Ratecard Name is not valid input
+                    </span>
                 </section>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-5" *ngIf="rateCardSearchForm.get('ratecardid').value != ''">
             <div class="form-group date-div">
-                <label>Effective Date & Time from (IST)</label>
+                <label>Effective Date & Time from (IST) (HH:MM:SS => 00:00:00)</label>
                 <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)"></app-calendar-picker>
             </div>
         </div>

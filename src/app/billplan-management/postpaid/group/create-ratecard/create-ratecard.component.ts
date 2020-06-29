@@ -5,6 +5,8 @@ import { BillManagementService } from "src/app/billplan-management/services/Bill
 import { count } from '../../../../shared/helper/helperFunctions'
 import { Subject } from 'rxjs';
 
+
+
 import {
   BillPlanCurrency_ApiResponse,
   BillPlanCurrency_Data,
@@ -36,6 +38,7 @@ export class CreateRatecardComponent implements OnInit {
   countryCount = 0
   searchvalue: string = ''
   isEditMode: boolean = false
+  ratecard_name: string
 
   groupListData: Subject<[FormArray, number]> = new Subject<[FormArray, number]>();
   handleGroupsDelete: Subject<[string, number]> = new Subject<[string, number]>();
@@ -47,6 +50,7 @@ export class CreateRatecardComponent implements OnInit {
     private billPlanservice: BillManagementService,
   ) {
     this.createGroupForm();
+    this.ratecard_name = this.activeRoute.snapshot.params.name
   }
 
   ngOnInit() {
@@ -107,12 +111,12 @@ export class CreateRatecardComponent implements OnInit {
       ratecard_type: ['Group', [Validators.required]],
       ratecard_name: [this.activeRoute.snapshot.params.name, Validators.required],
       groups: this.formBuilder.array([this.createGroupsItem()]),
-      ratetype_roc: ['custom'],
+      ratetype_roc: ['standard'],
       roc: this.formBuilder.array([this.createRocItem()]),
       ratetype_row: ['standard'],
-      billing_rate_row: ['', [Validators.pattern('[0-9.]{6,6}')]],
+      billing_rate_row: [''],
       discount_rate: [''],
-      discount_type: ['percentage'],
+      discount_type: [''],
       description: ['']
     });
   }
@@ -133,6 +137,7 @@ export class CreateRatecardComponent implements OnInit {
       mcc: [''],
       mnc: [''],
       billing_rate: [''],
+      normalize_rate: [''],
     });
   }
 

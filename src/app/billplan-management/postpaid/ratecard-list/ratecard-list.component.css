@@ -75,7 +75,7 @@
     position: absolute;
     z-index: 45;
     box-shadow: 0px 2px 7px -2px #000;
-    top: 100%;
+    top: 34px;
     overflow-y: auto;
 }
 

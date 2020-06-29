@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SlabRouteService } from '../../../services/BillManagement/Slab/slab-route.service';
@@ -24,19 +24,23 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
    styleUrls: ['./slab-stepper-form.component.css']
 })
 export class SlabStepperFormComponent implements OnInit, OnDestroy {
+   @ViewChild('stepper', { static: true }) stepper: MatStepper;
+   isLinear = false;
+   @Input() parentForm: FormGroup;
+   @Input() editMode: Observable<[boolean, number, string]>;
+   @Input() handlecurrencyList: Observable<[object]>;
+   @Input() previewDeleteEvent: Observable<void>;
+   @Output() countriesListChildToParent = new EventEmitter();
+
+   SlabCreateRateCardInput: SlabCreateRateCardBody = new SlabCreateRateCardBody();
+   countrySlabInput: Countries = new Countries();
 
    firstFormGroup: FormGroup;
    secondFormGroup: FormGroup;
-   countrySlabInput: Countries = new Countries();
-   SlabCreateRateCardInput: SlabCreateRateCardBody = new SlabCreateRateCardBody();
    editModeState: boolean;
    editModeIndex: number;
    sub: Subscription;
    firstStepSubmitted: boolean;
-   @Input() parentForm: FormGroup;
-   @Input() editMode: Observable<[boolean, number, string]>;
-   @Input() handlecurrencyList: Observable<[object]>;
-   @Output() countriesListChildToParent = new EventEmitter();
    secondStepSubmitted: boolean;
    continentList: string[];
    countriesList: BillPlanCountries_Data[];
@@ -48,6 +52,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       bCurrency: '',
       nCurrency: ''
    };
+   // copiedSecondFormArray: FormArray;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -65,6 +70,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       // this.focusedFormArrayIndex = 0;
       this.initSecondForm();
       this.initEditModeSubscription();
+      this.initDeleteEventSubscription();
       this.initContinentSubscription();
       this.initCountrySubscription('');
       this.initCurrencyConversion();
@@ -74,6 +80,16 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    }
 
    // ------------------- common -------------------
+   private onScrollTop() {
+      const scrollToTop = window.setInterval(() => {
+         const posTop = window.pageYOffset;
+         if (posTop > 0) {
+            window.scrollTo(0, posTop - 10); // how far to scroll on each step
+         } else {
+            window.clearInterval(scrollToTop);
+         }
+      }, 16);
+   }
    initCurrencyListSubscription() {
       this.sub = this.handlecurrencyList.subscribe(([value]) => {
          this.handleCurrencyData(value);
@@ -89,7 +105,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          max: max === undefined ?
             [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
             : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
-         billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
          normalize_rate: ['']
       });
    }
@@ -126,8 +142,12 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    //    // console.log(index);
    //    this.focusedFormArrayIndex = undefined;
    // }
-   round(data) {
-      return data * this.conversionRate;
+   round(data, form: FormGroup) {
+      const NormalizedRate = (data * this.conversionRate).toFixed(6);
+      form.patchValue({
+         normalize_rate: NormalizedRate
+      });
+      return NormalizedRate;
    }
    // ------------------- common ----------------------------------
 
@@ -240,12 +260,25 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       });
    }
    initEditModeSubscription() {
+      // console.log(this.stepper.selectedIndex);
       this.editModeState = false;
       this.sub = this.editMode.subscribe(([value, index, editCountry]) => {
          this.editModeState = value; // value = true;
          this.editModeIndex = index;
          this.initOperatorSubscription(editCountry);
-         // console.log(this.editModeIndex);
+         this.onScrollTop();
+         if (this.stepper.selectedIndex === 1) {
+            this.stepper.previous();
+         }
+      });
+   }
+   initDeleteEventSubscription() {
+      this.sub = this.previewDeleteEvent.subscribe(() => {
+         if (!this.slabRouteService.previewList.length) {
+            if (this.stepper.selectedIndex === 1) {
+               this.stepper.previous();
+            }
+         }
       });
    }
    get firstFormArray(): FormArray {
@@ -380,6 +413,13 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          description: ['']
       });
    }
+   initCustomSlabFormArray() {
+      // this.secondFormGroup.patchValue({
+      //    row_custom: this.formBuilder.array([this.createSlabsItem()])
+      // });
+      const slabs = this.secondFormArray;
+      slabs.push(this.createSlabsItem());
+   }
    get secondFormArray(): FormArray {
       return this.slabRouteService.formArray(this.secondFormGroup, 'row_custom');
    }
@@ -414,6 +454,19 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          slabs.removeAt(index);
       }
    }
+   handleDiscountType() {
+      // console.log(this.secondFormGroup.value);
+      if (this.secondFormGroup.value.discount_type === 'percentage') {
+         this.secondFormGroup.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+         this.secondFormGroup.get('discount_rate').updateValueAndValidity();
+      } else if (this.secondFormGroup.value.discount_type === 'unit') {
+         this.secondFormGroup.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+         this.secondFormGroup.get('discount_rate').updateValueAndValidity();
+      } else {
+         this.secondFormGroup.get('discount_rate').clearValidators();
+         this.secondFormGroup.get('discount_rate').updateValueAndValidity();
+      }
+   }
    // initSecondFormArrayValueChangesSubscription() {
    //    const slabs = this.secondFormArray;
    //    this.sub = slabs.valueChanges
@@ -433,6 +486,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    // }
    onSecondStepSubmit() {
       this.secondStepSubmitted = true;
+      // console.log(this.secondFormGroup.valid);
       if (this.secondFormGroup.value.ratetype_row === 'custom') {
          if (this.secondFormGroup.valid) {
             const formArrayLength = this.secondFormArray.length;
@@ -446,9 +500,17 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             }
          }
       } else {
-         this.SlabCreateRateCardInput.row_custom = [];
-         this.secondStepSubmitted = false;
-         this.createSlabRateCard();
+         // this.secondFormGroup.get('row_custom').clearValidators();
+         // this.secondFormGroup.get('row_custom').updateValueAndValidity();
+         // this.copiedSecondFormArray = JSON.parse(JSON.stringify(this.secondFormArray));
+         const slabs = this.secondFormArray;
+         slabs.clear();
+         // console.log(this.secondFormGroup.valid);
+         if (this.secondFormGroup.valid) {
+            this.SlabCreateRateCardInput.row_custom = [];
+            this.secondStepSubmitted = false;
+            this.createSlabRateCard();
+         }
       }
    }
    createSlabRateCard() {
@@ -471,7 +533,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                res.responsecode > environment.APIStatus.success.code
             ) {
                successAlert(res.message, res.responsestatus);
-               this.router.navigate(['billplan-management/home']);
+               this.router.navigate(['billplan-management-postpaid/' + this.SlabCreateRateCardInput.billplan_id]);
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
                res.responsecode < environment.APIStatus.error.code

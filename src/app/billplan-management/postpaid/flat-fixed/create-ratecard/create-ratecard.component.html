@@ -7,27 +7,23 @@
     <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+        <button class="btn dropdown-basic px-4" style="cursor: not-allowed;" id="erp-dropdown" >
             Flat / Fixed</button>
-        <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country/create-ratecard">Country</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country-operator/create-ratecard">Country + Operator</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/group/create-ratecard">Group</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/slab/create-ratecard">Slab</a>
-        </div>
+
     </div>
 </div>
 <div class="btm-border second-row-pr mb_10">
     <div class="row">
         <div class="col-3 text-right">
             <div class="form-group">
-                <input type="search" class="form-control" readonly [placeholder]="ratecard_name" />
+              <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" [innerHTML]=" ratecard_name" ></button>
             </div>
         </div>
         <div class="col-3 offset-6 text-right">
             <div class="form-group">
-                <input type="search" class="form-control" readonly [placeholder]="billplan_currencyid"  />
-            </div>
+              <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})" >
+                Country + Operator </button>
+              </div>
         </div>
     </div>
 </div>
@@ -39,10 +35,11 @@
                 <div class="gt-ratio-div">
                 <div class="row">
                     <div class="col-6">
-                        <label>Billing Rate (€)</label>
+                      <label
+                      innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                         <div class="form-group">
                           <input type="text" class="form-control"
-                              formControlName="billing_rate" placeholder="Enter Rate" />
+                              formControlName="billing_rate" placeholder="Enter Rate" maxlength="10" />
                           <span class="text-danger pl-1 f-12"
                           *ngIf="fixedRateFrom.get('billing_rate').hasError('required') && Submitted">
                               Billing Rate is required
@@ -54,7 +51,8 @@
                       </div>
                     </div>
                     <div class="col-6">
-                        <label>Normalize Rate (€)</label>
+                      <label
+                      innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
                         <div class="form-group">
                           <input type="number" class="form-control" disabled
                               [value]="round(control.billing_rate.value)"
@@ -78,7 +76,7 @@
                     </div>
                     <div class="col-6 mt-31 discount-select">
                       <select class="dropdown-select w-100" formControlName="discount_type">
-                        <option value="percentage" default>percentage</option>
+                        <option value="percentage" default>Percentage</option>
                         <option value="amount">Amount</option>
                     </select>
                     </div>
@@ -100,7 +98,8 @@
 
     <div class="row mt-4 create-route-section">
         <div class="col-12 text-center">
-          <button type="reset" class="btn btn-basic mr-3" > Cancel</button>
+          <button type="reset" class="btn btn-basic mr-3"
+          [routerLink]="['/billplan-management-postpaid/', fixedRateFrom.get('billplan_id').value]"> Cancel</button>
           <button type="submit" class="btn erp-intl-btn" > Save</button>
 
         </div>

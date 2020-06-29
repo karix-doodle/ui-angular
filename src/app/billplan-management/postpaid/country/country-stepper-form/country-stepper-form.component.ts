@@ -20,6 +20,7 @@ import {
   BillPlanCountries_ApiRespone,
   BillPlanCountries_Data,
   BillPlanCreateCountry_ApiResponse,
+  CurrencyRateRes,
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
 import { errorAlert, successAlert } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -54,6 +55,14 @@ export class CountryStepperFormComponent implements OnInit {
   @ViewChild("stepper", { static: false }) stepper: MatStepper;
   Submitted: boolean = false;
   countryObj: object = {};
+  conversionRate: number;
+  private eventCurrencyList: Subscription;
+  @Input() handlecurrencyList: Observable<[object]>;
+  operatorObj: object = {};
+  currencySybmol: object = {
+    bCurrency: '',
+    nCurrency: ''
+ }
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -78,6 +87,11 @@ export class CountryStepperFormComponent implements OnInit {
     this.eventHandleCountryDelete = this.handleCountryDelete.subscribe((value) => {
       this.handleCountryListDelete(value, );
    });
+   this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
+    this.handleCurrencyData(value);
+ });
+
+   this.initCurrencyConversion();
   }
 
   get countryControl() {
@@ -118,6 +132,10 @@ export class CountryStepperFormComponent implements OnInit {
       );
 
   }
+  handleCurrencyData(value) {
+    this.currencySybmol = value
+    console.log(value, 'asdasd')
+ }
 
   handleCountryOperator(indexCountries, key, event, country) {
     console.log(country);
@@ -158,7 +176,7 @@ export class CountryStepperFormComponent implements OnInit {
   countryArrayForm(): FormGroup {
     return this._formBuilder.group({
       country_name: [null, Validators.required],
-      billing_rate: [null, [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+      billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
       mcc: [""],
       normalize_rate: [""],
     });
@@ -224,9 +242,37 @@ export class CountryStepperFormComponent implements OnInit {
     this.reActiveOperator();
     callBackFunction();
  }
+ round(data, form: FormGroup) {
+  let NormalizedRate = (data * this.conversionRate).toFixed(6)
+  if (form != undefined) {
+     form.patchValue({
+        normalize_rate: NormalizedRate
+     })
+  }
+  return NormalizedRate
+}
+// ------------------- common ----------------------------------
 
- round(data) {
-  return data * 0.785
+// ------------------- Parent(First) Form -------------------
+initCurrencyConversion() {
+  this.billPlanservice.getCurrencyRate(this.parentForm.value.billplan_currencyid).subscribe(
+     (res: CurrencyRateRes) => {
+        if (
+           res.responsestatus === environment.APIStatus.success.text &&
+           res.responsecode > environment.APIStatus.success.code
+        ) {
+           this.conversionRate = +res.data.conversion_rate;
+           // console.log(this.conversionRate);
+        } else if (
+           res.responsestatus === environment.APIStatus.error.text &&
+           res.responsecode < environment.APIStatus.error.code
+        ) {
+           errorAlert(res.message, res.responsestatus);
+        }
+     }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+     }
+  );
 }
 
 
@@ -259,7 +305,7 @@ export class CountryStepperFormComponent implements OnInit {
       (res: BillPlanCreateCountry_ApiResponse) => {
          if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
             successAlert(res.message, res.responsestatus)
-            this.router.navigate(['billplan-management']);
+            this.router.navigate(['billplan-management-postpaid/' + data.billplan_id]);
          } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
             errorAlert(res.message, res.responsestatus)
          }

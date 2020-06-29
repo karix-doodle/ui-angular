@@ -1,375 +1,274 @@
 <div class="row btm-border">
   <div class="col-8 pt-10">
-    <label class="main-heading"
-      ><a routerLink="/route-management">ROUTE MANAGEMENT /</a></label
-    >
-    <span
-      ><a routerLink="/route-management/blacklist/sender-id">
-        BLACKLISTED - SENDERID + TEMPLATE /</a
-      >
-      ADD NEW</span
-    >
+    <label class="main-heading"><a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
+    <span><a routerLink="/route-management/blacklist/sender-id">
+        BLACKLISTED - SENDERID + TEMPLATE /</a>
+      ADD NEW</span>
   </div>
   <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
-    <button
-      class="btn dropdown-basic dropdown-toggle"
-      id="erp-dropdown"
-      ngbDropdownToggle
-    >
+    <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
       SenderID + Template
     </button>
     <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-      <a
-        class="dropdown-item"
-        routerLink="/route-management/blacklist/add-route"
-        >Mobile Number</a
-      >
-      <a
-        class="dropdown-item"
-        routerLink="/route-management/blacklist/add-route/senderid-mobile-route"
-        >Mobile & SenderID</a
-      >
+      <a class="dropdown-item" routerLink="/route-management/blacklist/add-route">Mobile Number</a>
+      <a class="dropdown-item" routerLink="/route-management/blacklist/add-route/senderid-mobile-route">Mobile &
+        SenderID</a>
     </div>
   </div>
 </div>
-<div class="main-container p-4">
-  <form [formGroup]="blacklistSenderTemplateAddForm" (ngSubmit)="onSubmit()">
-    <mat-radio-group
-      class="mat-radio-group"
-      formControlName="blacklist_type"
-      (change)="cMobileUpload = null; fileData = null; onChange()"
-    >
-      <mat-radio-button
-        class="mat-radio-button"
-        *ngFor="let labelname of accounts"
-        [value]="labelname"
-      >
-        {{ labelname }}
-      </mat-radio-button>
-    </mat-radio-group>
+<div *ngIf="authService.authorizationState.route_mgmt.blacklist_senderidcontent_add_enabled">
+  <div class="main-container p-4">
+    <form [formGroup]="blacklistSenderTemplateAddForm" (ngSubmit)="onSubmit()">
+      <mat-radio-group class="mat-radio-group" formControlName="blacklist_type"
+        (change)="cMobileUpload = null; fileData = null; onChange()">
+        <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
+          {{ labelname }}
+        </mat-radio-button>
+      </mat-radio-group>
 
-    <div class="input-container">
-      <div *ngIf="control['blacklist_type'].value === 'Global'">
-        <div class="create-custom-route-div">
-          <div class="row">
-            <div class="form-group col-4">
-              <label>SenderId</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter SenderID"
-                formControlName="senderid"
-              />
-              <div
-                *ngIf="
+      <div class="input-container">
+        <div *ngIf="control['blacklist_type'].value === 'Global'">
+          <div class="create-custom-route-div">
+            <div class="row">
+              <div class="form-group col-4">
+                <label>SenderId</label>
+                <input type="text" class="form-control" placeholder="Enter SenderID" formControlName="senderid" />
+                <div *ngIf="
                   control.senderid.errors &&
                   (submitted ||
                     control.senderid.touched ||
                     control.senderid.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.senderid.errors.required">
-                  Sender Id is required
-                </div>
-                <div *ngIf="control.senderid.errors.pattern">
-                  Invalid Sender Id.
+                " class="text-danger">
+                  <div *ngIf="control.senderid.errors.required">
+                    Sender Id is required
+                  </div>
+                  <div *ngIf="control.senderid.errors.pattern">
+                    Invalid Sender Id.
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group col-4">
-              <label>Template</label>
-              <input
-                type="text"
-                formControlName="template"
-                class="form-control"
-                placeholder="Enter Template"
-              />
-              <div
-                *ngIf="
+              <div class="form-group col-4">
+                <label>Template</label>
+                <input type="text" formControlName="template" class="form-control" placeholder="Enter Template" />
+                <div *ngIf="
                   control.template.errors &&
                   (submitted ||
                     control.template.touched ||
                     control.template.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.template.errors.required">
-                  Template is required
-                </div>
-                <div *ngIf="control.template.errors.pattern">
-                  Invalid Template.
+                " class="text-danger">
+                  <div *ngIf="control.template.errors.required">
+                    Template is required
+                  </div>
+                  <div *ngIf="control.template.errors.pattern">
+                    Invalid Template.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row p-3">
-          <label class="w-100">Add File List</label>
-          <div class="form-group">
-            <div class="upload-btn-wrapper">
-              <button type="button" class="upload-btn">
-                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
-                Browse Excel file to upload
-                <input
-                  type="file"
-                  accept=".xlsx,.xls"
-                  (change)="fileUpload($event)"
-                />
-              </button>
-              <span class="m-2" *ngIf="blmobileUpload">
-                {{ blmobileUpload
-                }}<i
-                  class="fa fa-times m-1"
-                  (click)="blmobileUpload = null; fileData = null"
-                  style="cursor: pointer;"
-                  title="Remove File"
-                ></i>
-              </span>
+          <div class="row p-3">
+            <label class="w-100">Add File List</label>
+            <div class="form-group">
+              <div class="upload-btn-wrapper">
+                <button type="button" class="upload-btn">
+                  <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                  Browse Excel file to upload
+                  <input type="file" accept=".xlsx,.xls" (change)="fileUpload($event)" />
+                </button>
+                <span class="m-2" *ngIf="blmobileUpload">
+                  {{ blmobileUpload
+                }}<i class="fa fa-times m-1" (click)="blmobileUpload = null; fileData = null" style="cursor: pointer;"
+                    title="Remove File"></i>
+                </span>
+              </div>
             </div>
           </div>
+          <div class="col-12 text-center mt-4">
+            <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
+              Cancel
+            </button>
+            <button type="submit" class="btn erp-intl-btn save-btn">
+              Add Route
+            </button>
+          </div>
         </div>
-        <div class="col-12 text-center mt-4">
-          <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
-            Cancel
-          </button>
-          <button type="submit" class="btn erp-intl-btn save-btn">
-            Add Route
-          </button>
-        </div>
-      </div>
-      <div *ngIf="control['blacklist_type'].value === 'Gateway'">
-        <div class="create-custom-route-div">
-          <div class="row">
-            <div class="form-group col-4">
-              <label>Gateway</label>
-              <select class="dropdown-select w-100" formControlName="gw_id">
-                <option value="null" disabled>Select Gateway</option>
-                <option
-                  *ngFor="let gateway of gatewayList"
-                  [value]="gateway.gw_id"
-                >
-                  <span class="mr-1" style="font-weight: bolder;"
-                    >{{ gateway.gw_id }}&nbsp;-</span
-                  >
-                  {{ gateway.gw_name }}
-                </option>
-              </select>
+        <div *ngIf="control['blacklist_type'].value === 'Gateway'">
+          <div class="create-custom-route-div">
+            <div class="row">
+              <div class="form-group col-4">
+                <label>Gateway</label>
+                <select class="dropdown-select w-100" formControlName="gw_id">
+                  <option value="null" disabled>Select Gateway</option>
+                  <option *ngFor="let gateway of gatewayList" [value]="gateway.gw_id">
+                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
+                    {{ gateway.gw_name }}
+                  </option>
+                </select>
 
-              <div
-                *ngIf="
+                <div *ngIf="
                   control.gw_id.errors &&
                   (submitted || control.gw_id.touched || control.gw_id.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.gw_id.errors.required">
-                  Gateway is required
+                " class="text-danger">
+                  <div *ngIf="control.gw_id.errors.required">
+                    Gateway is required
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group col-4">
-              <label>SenderId</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter SenderID"
-                formControlName="senderid"
-              />
-              <div
-                *ngIf="
+              <div class="form-group col-4">
+                <label>SenderId</label>
+                <input type="text" class="form-control" placeholder="Enter SenderID" formControlName="senderid" />
+                <div *ngIf="
                   control.senderid.errors &&
                   (submitted ||
                     control.senderid.touched ||
                     control.senderid.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.senderid.errors.required">
-                  Sender Id is required
-                </div>
-                <div *ngIf="control.senderid.errors.pattern">
-                  Invalid Sender Id.
+                " class="text-danger">
+                  <div *ngIf="control.senderid.errors.required">
+                    Sender Id is required
+                  </div>
+                  <div *ngIf="control.senderid.errors.pattern">
+                    Invalid Sender Id.
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group col-4">
-              <label>Template</label>
-              <input
-                type="text"
-                formControlName="template"
-                class="form-control"
-                placeholder="Enter Template"
-              />
-              <div
-                *ngIf="
+              <div class="form-group col-4">
+                <label>Template</label>
+                <input type="text" formControlName="template" class="form-control" placeholder="Enter Template" />
+                <div *ngIf="
                   control.template.errors &&
                   (submitted ||
                     control.template.touched ||
                     control.template.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.template.errors.required">
-                  Template is required
-                </div>
-                <div *ngIf="control.template.errors.pattern">
-                  Invalid Template.
+                " class="text-danger">
+                  <div *ngIf="control.template.errors.required">
+                    Template is required
+                  </div>
+                  <div *ngIf="control.template.errors.pattern">
+                    Invalid Template.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row p-3">
-          <label class="w-100">Add File List</label>
-          <div class="form-group">
-            <div class="upload-btn-wrapper">
-              <button type="button" class="upload-btn">
-                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
-                Browse Excel file to upload
-                <input
-                  type="file"
-                  accept=".xlsx,.xls"
-                  (change)="fileUpload($event)"
-                />
-              </button>
-              <span class="m-2" *ngIf="blmobileUpload">
-                {{ blmobileUpload
-                }}<i
-                  class="fa fa-times m-1"
-                  (click)="blmobileUpload = null; fileData = null"
-                  style="cursor: pointer;"
-                  title="Remove File"
-                ></i>
-              </span>
+          <div class="row p-3">
+            <label class="w-100">Add File List</label>
+            <div class="form-group">
+              <div class="upload-btn-wrapper">
+                <button type="button" class="upload-btn">
+                  <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                  Browse Excel file to upload
+                  <input type="file" accept=".xlsx,.xls" (change)="fileUpload($event)" />
+                </button>
+                <span class="m-2" *ngIf="blmobileUpload">
+                  {{ blmobileUpload
+                }}<i class="fa fa-times m-1" (click)="blmobileUpload = null; fileData = null" style="cursor: pointer;"
+                    title="Remove File"></i>
+                </span>
+              </div>
             </div>
           </div>
+          <div class="col-12 text-center mt-4">
+            <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
+              Cancel
+            </button>
+            <button type="submit" class="btn erp-intl-btn save-btn">
+              Add Route
+            </button>
+          </div>
         </div>
-        <div class="col-12 text-center mt-4">
-          <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
-            Cancel
-          </button>
-          <button type="submit" class="btn erp-intl-btn save-btn">
-            Add Route
-          </button>
-        </div>
-      </div>
-      <div *ngIf="control['blacklist_type'].value === 'Account'">
-        <div class="create-custom-route-div">
-          <div class="row">
-            <div class="form-group col-4">
-              <label>ESME Address</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter ESME Addr."
-                formControlName="esmeaddr"
+        <div *ngIf="control['blacklist_type'].value === 'Account'">
+          <div class="create-custom-route-div">
+            <div class="row">
+              <div class="form-group col-4">
+                <label>ESME Address</label>
+                <input type="text" class="form-control" placeholder="Enter ESME Addr." formControlName="esmeaddr" />
 
-              />
-
-              <div
-                *ngIf="
+                <div *ngIf="
                   control.esmeaddr.errors &&
                   (submitted ||
                     control.esmeaddr.touched ||
                     control.esmeaddr.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.esmeaddr.errors.required">
-                  ESME Address is required
-                </div>
-                <div *ngIf="control.esmeaddr.errors.pattern">
-                  Invalid ESME Address.
+                " class="text-danger">
+                  <div *ngIf="control.esmeaddr.errors.required">
+                    ESME Address is required
+                  </div>
+                  <div *ngIf="control.esmeaddr.errors.pattern">
+                    Invalid ESME Address.
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group col-4">
-              <label>SenderId</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter SenderID"
-                formControlName="senderid"
-              />
-              <div
-                *ngIf="
+              <div class="form-group col-4">
+                <label>SenderId</label>
+                <input type="text" class="form-control" placeholder="Enter SenderID" formControlName="senderid" />
+                <div *ngIf="
                   control.senderid.errors &&
                   (submitted ||
                     control.senderid.touched ||
                     control.senderid.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.senderid.errors.required">
-                  Sender Id is required
-                </div>
-                <div *ngIf="control.senderid.errors.pattern">
-                  Invalid Sender Id.
+                " class="text-danger">
+                  <div *ngIf="control.senderid.errors.required">
+                    Sender Id is required
+                  </div>
+                  <div *ngIf="control.senderid.errors.pattern">
+                    Invalid Sender Id.
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="form-group col-4">
-              <label>Template</label>
-              <input
-                type="text"
-                formControlName="template"
-                class="form-control"
-                placeholder="Enter Template"
-              />
-              <div
-                *ngIf="
+              <div class="form-group col-4">
+                <label>Template</label>
+                <input type="text" formControlName="template" class="form-control" placeholder="Enter Template" />
+                <div *ngIf="
                   control.template.errors &&
                   (submitted ||
                     control.template.touched ||
                     control.template.dirty)
-                "
-                class="text-danger"
-              >
-                <div *ngIf="control.template.errors.required">
-                  Template is required
-                </div>
-                <div *ngIf="control.template.errors.pattern">
-                  Invalid Template.
+                " class="text-danger">
+                  <div *ngIf="control.template.errors.required">
+                    Template is required
+                  </div>
+                  <div *ngIf="control.template.errors.pattern">
+                    Invalid Template.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row p-3">
-          <label class="w-100">Add File List</label>
-          <div class="form-group">
-            <div class="upload-btn-wrapper">
-              <button type="button" class="upload-btn">
-                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
-                Browse Excel file to upload
-                <input
-                  type="file"
-                  accept=".xlsx,.xls"
-                  (change)="fileUpload($event)"
-                />
-              </button>
-              <span class="m-2" *ngIf="blmobileUpload">
-                {{ blmobileUpload
-                }}<i
-                  class="fa fa-times m-1"
-                  (click)="blmobileUpload = null; fileData = null"
-                  style="cursor: pointer;"
-                  title="Remove File"
-                ></i>
-              </span>
+          <div class="row p-3">
+            <label class="w-100">Add File List</label>
+            <div class="form-group">
+              <div class="upload-btn-wrapper">
+                <button type="button" class="upload-btn">
+                  <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                  Browse Excel file to upload
+                  <input type="file" accept=".xlsx,.xls" (change)="fileUpload($event)" />
+                </button>
+                <span class="m-2" *ngIf="blmobileUpload">
+                  {{ blmobileUpload
+                }}<i class="fa fa-times m-1" (click)="blmobileUpload = null; fileData = null" style="cursor: pointer;"
+                    title="Remove File"></i>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-12 text-center mt-4">
-          <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
-            Cancel
-          </button>
-          <button type="submit" class="btn erp-intl-btn save-btn">
-            Add Route
-          </button>
+          <div class="col-12 text-center mt-4">
+            <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
+              Cancel
+            </button>
+            <button type="submit" class="btn erp-intl-btn save-btn">
+              Add Route
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
+</div>
+<div class="pt-3 center-block h-100"
+  *ngIf="!authService.authorizationState.route_mgmt.blacklist_senderidcontent_add_enabled">
+  <div class="d-block">
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
+  </div>
 </div>

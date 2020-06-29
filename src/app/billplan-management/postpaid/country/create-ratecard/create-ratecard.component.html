@@ -7,14 +7,9 @@
     <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+        <button class="btn dropdown-basic px-4" style="cursor: not-allowed;" id="erp-dropdown" >
             Country</button>
-            <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-             <a class="dropdown-item" routerLink="/billplan-management/postpaid/country-operator/create-ratecard">Country + Operator</a>
-             <a class="dropdown-item" routerLink="/billplan-management/postpaid/flat-fixed/create-ratecard">Flat / Fixed</a>
-             <a class="dropdown-item" routerLink="/billplan-management/postpaid/group/create-ratecard">Group</a>
-             <a class="dropdown-item" routerLink="/billplan-management/postpaid/slab/create-ratecard">Slab</a>
-         </div>
+
 
     </div>
 </div>
@@ -22,12 +17,13 @@
     <div class="row">
         <div class="col-3 text-right">
             <div class="form-group">
-                <input type="search" class="form-control"readonly [placeholder]="ratecard_name" />
+              <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" [innerHTML]=" ratecard_name" ></button>
             </div>
         </div>
         <div class="col-3 offset-6 text-right">
             <div class="form-group">
-                <input type="search" class="form-control" readonly [placeholder]="billplan_currencyid" />
+              <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})" >
+              </button>
             </div>
         </div>
     </div>
@@ -37,7 +33,8 @@
     <app-country-stepper-form  [parentForm]="totalCountryForm"
     (countryList)="countryListData($event,index)"
       [countryListEvent]="countryLisData.asObservable()"
-      [handleCountryDelete]="handleCountryDelete.asObservable()"></app-country-stepper-form>
+      [handleCountryDelete]="handleCountryDelete.asObservable()"
+      [handlecurrencyList]="handlecurrencyList.asObservable()"></app-country-stepper-form>
 </div>
 <div class="row btm-border second-row-det">
     <div class="col-7">
@@ -66,8 +63,8 @@
             <tr>
                 <th>Country</th>
                 <th>MCC</th>
-                <th>Billing Rate (€)</th>
-                <th>Normalize Rate (€)</th>
+                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></th>
+                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>

@@ -9,6 +9,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-create-gateway',
@@ -26,6 +27,8 @@ export class CreateGatewayComponent implements OnInit {
   isCreateValid: boolean = false;
   currency_id = environment.currencyDefault;
 
+  GtMgmtAuthControls = null
+
   messageType = [{ item: "Transaction", value: 0 }, { item: "Promotion", value: 1 }, { item: "Transscrub", value: 3 }]
   charsetType = [{ item: "ASCII" }, { item: "ISO" }, { item: "GSM" }]
 
@@ -33,7 +36,10 @@ export class CreateGatewayComponent implements OnInit {
     private gatewayManagementService: GatewayManagementService,
     private router: Router,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+
     let gw_name = '[0-9a-zA-Z-_.@$\' ]{4,200}';
     let gw_id = '[0-9a-zA-Z]{2,10}';
     let tps = '[0-9]{1,100000}';

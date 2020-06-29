@@ -935,6 +935,28 @@ select {
   cursor: pointer;
   z-index: 2;
 }
-.disabled img {
+.disabled img,
+.disabled-func {
   cursor: not-allowed;
+}
+
+[type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled),
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.center-block {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  align-items: center;
 }

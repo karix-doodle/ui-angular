@@ -67,6 +67,8 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
    @Input() handlecurrencyList: Observable<[object]>;
 
    isEditMode: boolean = false
+   submitGroupValid: boolean = false
+   isupdateRoc: boolean = false
    isIndexed: number = null
    groupSubmitted: boolean = false
    isContinentCanceled: string = null
@@ -84,10 +86,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          //Xs = group
          groups: this.formBuilder.array([this.createGroupsItem()]), //init x
       });
-      this.secondFormGroup = this.formBuilder.group({
-         ratetype_roc: ['custom', Validators.required],
-         roc: this.formBuilder.array([this.createRocItem()]),
-      });
+      this.initSecondFormGroup();
 
       this.eventGroupsListEvent = this.groupsListEvent.subscribe(([value, indexed]) => {
          this.groupListData(value, indexed);
@@ -108,6 +107,13 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
 
    }
 
+   initSecondFormGroup() {
+      this.secondFormGroup = this.formBuilder.group({
+         ratetype_roc: ['standard', Validators.required],
+         roc: this.formBuilder.array([this.createRocItem()]),
+      });
+   }
+
    handleCurrencyData(value) {
       this.currencySybmol = value
    }
@@ -120,7 +126,9 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
             startWith(null),
             pairwise()
          ).subscribe(([prev, next]: [string, string]) => {
-            if (this.isContinentCanceled == null) {
+            const countriesControl = this.countriesFormArray(0);
+            console.log(countriesControl.controls[0].touched, 'asdasd')
+            if (this.isContinentCanceled == null && countriesControl.controls[0].touched != false) {
                Swal.fire({
                   title: 'Are you sure want to change continent?',
                   text: "If yes, entered data will get cleared",
@@ -226,8 +234,14 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
       );
    }
 
-   round(data) {
-      return (data * this.conversionRate).toFixed(6)
+   round(data, form: FormGroup) {
+      let NormalizedRate = (data * this.conversionRate).toFixed(6)
+      if (form != undefined) {
+         form.patchValue({
+            normalize_rate: NormalizedRate
+         })
+      }
+      return NormalizedRate
    }
 
    getOperatorList(value, name) {
@@ -263,7 +277,6 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
             }
          );
       }
-      console.log(this.operatorObj, 'asdasd')
    }
 
    ngOnDestroy() {
@@ -289,7 +302,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          operator_name: ['', [Validators.required]],
          mcc: ['', [Validators.required]],
          mnc: ['', [Validators.required]],
-         billing_rate: ['', [Validators.required, Validators.pattern('[0-9.]{6,6}')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
          normalize_rate: [''],
       });
    }
@@ -299,7 +312,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          continent_name: [''],
          groupName: [''],
          routedCountries: [''],
-         billing_rate: ['', [Validators.pattern('[0-9.]{6,6}')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
          normalize_rate: [''],
       });
    }
@@ -414,8 +427,26 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
    }
 
    updateRoc(stepper: MatStepper) {
-      this.parentRocData.emit([this.secondFormGroup.value]);
-      stepper.next()
+      if (this.secondFormGroup.value.ratetype_roc == "standard") {
+         const rocControl = this.rocFormArray();
+         this.secondFormGroup.value.roc.forEach((item, index) => {
+            rocControl.at(index).patchValue({
+               billing_rate: ''
+            })
+         })
+         this.isupdateRoc = false;
+         this.parentRocData.emit([this.secondFormGroup.value]);
+         stepper.next()
+      } else {
+         this.isupdateRoc = true;
+         if (this.secondFormGroup.invalid) {
+            return true
+         } else {
+            this.isupdateRoc = false;
+            this.parentRocData.emit([this.secondFormGroup.value]);
+            stepper.next()
+         }
+      }
    }
 
    groupListData(value: FormArray, indexed: number) {
@@ -493,10 +524,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
 
    populateROC() {
 
-      this.secondFormGroup = this.formBuilder.group({
-         ratetype_roc: ['custom', Validators.required],
-         roc: this.formBuilder.array([this.createRocItem()]),
-      });
+      this.initSecondFormGroup();
 
       let continentList = []
       this.rowGroups.forEach((element) => {
@@ -553,29 +581,64 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
 
    }
 
+   handleDiscountType() {
+      if (this.parentForm.value.discount_type == 'percentage') {
+         this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+         this.parentForm.get('discount_rate').updateValueAndValidity();
+      } else if (this.parentForm.value.discount_type == 'unit') {
+         this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+         this.parentForm.get('discount_rate').updateValueAndValidity();
+      } else {
+         this.parentForm.patchValue({
+            discount_rate: ''
+         })
+         this.parentForm.get('discount_rate').clearValidators();
+         this.parentForm.get('discount_rate').updateValueAndValidity();
+      }
+   }
+
    onSubmitGroupsData(data) {
 
       data.groups.forEach((item) => {
          delete item.continent_name
+         item.countries.forEach((items) => {
+            delete items.normalize_rate
+         })
       })
       data.roc.forEach((item) => {
          delete item.routedCountries
          delete item.groupName
       })
+      data.discount_rate = data.discount_type == '' ? '' : data.discount_rate;
       data.billing_rate_row = data.ratetype_row == 'standard' ? '' : data.billing_rate_row;
 
-      this.billPlanGroupservice.BillPlanCreateGroup(data).subscribe(
-         (res: BillPlanCreateGroup_ApiResponse) => {
-            if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-               successAlert(res.message, res.responsestatus)
-               this.router.navigate(['billplan-management']);
-            } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-               errorAlert(res.message, res.responsestatus)
+      if (data.ratetype_row == 'standard') {
+         this.parentForm.get('billing_rate_row').clearValidators();
+         this.parentForm.get('billing_rate_row').updateValueAndValidity();
+      } else if (data.ratetype_row == 'custom') {
+         this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+         this.parentForm.get('billing_rate_row').updateValueAndValidity();
+      }
+
+      this.submitGroupValid = true;
+
+      if (this.parentForm.invalid) {
+         return true
+      } else {
+         this.submitGroupValid = false;
+         this.billPlanGroupservice.BillPlanCreateGroup(data).subscribe(
+            (res: BillPlanCreateGroup_ApiResponse) => {
+               if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+                  successAlert(res.message, res.responsestatus)
+                  this.router.navigate(['billplan-management-postpaid/' + data.billplan_id]);
+               } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+                  errorAlert(res.message, res.responsestatus)
+               }
+            }, (error: HttpErrorResponse) => {
+               errorAlert(error.message, error.statusText)
             }
-         }, (error: HttpErrorResponse) => {
-            errorAlert(error.message, error.statusText)
-         }
-      );
+         );
+      }
 
    }
 
