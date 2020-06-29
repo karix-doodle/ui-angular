@@ -465,6 +465,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       } else {
          this.secondFormGroup.get('discount_rate').clearValidators();
          this.secondFormGroup.get('discount_rate').updateValueAndValidity();
+         this.secondFormGroup.get('discount_rate').patchValue('');
       }
    }
    // initSecondFormArrayValueChangesSubscription() {
@@ -525,7 +526,9 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       this.SlabCreateRateCardInput.discount_rate = this.secondFormGroup.value.discount_rate;
       this.SlabCreateRateCardInput.discount_type = this.secondFormGroup.value.discount_type;
       this.SlabCreateRateCardInput.description = this.secondFormGroup.value.description;
-      // console.log(this.SlabCreateRateCardInput);
+      if (this.secondFormGroup.value.discount_type === '') {
+         this.SlabCreateRateCardInput.discount_rate = '';
+      }
       this.slabRouteService.createSlabRateCard(this.SlabCreateRateCardInput)
          .subscribe((res: SlabCreateRateCardRes) => {
             if (

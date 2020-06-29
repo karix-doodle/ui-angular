@@ -132,6 +132,13 @@ export class ApiResponse_Generic{
     responsestatus: string;
     message: string;
     data: any;
+};
+
+export class PoolRouteSearchRes {
+    responsecode: number;
+    responsestatus: string;
+    data: Pool[];
+    message?: string;
 }
 
 

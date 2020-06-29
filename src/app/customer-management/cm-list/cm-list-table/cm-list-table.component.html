@@ -6,7 +6,7 @@
     </div>
   
     <div class="col-5 text-right">
-        <input type="search" class="form-control" placeholder="&#xf002; Search by ESME Addr., BillPlan, RateCard" name="searchvalue"
+        <input type="search" class="form-control" placeholder="&#xf002; Search by ESME Addr., Username" name="searchvalue"
         [(ngModel)]="searchvalue" />
     </div>
 </div>
@@ -26,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let existinguser of existingUsersList | filter: { esmeaddr: searchvalue, username: searchvalue } ">
+            <tr *ngFor="let existinguser of existingUsersList | filter: { esmeaddr: searchvalue, username: searchvalue} ">
                 <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">{{existinguser.esmeaddr}}</a></td>
                 <td>{{existinguser.username}}</td>
                 <td>{{existinguser.orgname}}</td>

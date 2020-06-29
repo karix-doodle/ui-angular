@@ -1,6 +1,6 @@
 <div class="row btm-border headings-div">
     <div class="col-12">
-        <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
+        <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT</a></label> /
         <!-- <span><a routerLink="/customer-management/customer-management-edit"> 70000 100000011 /</a> MARGIN</span> -->
         <span><a href="javascript:void(0)" (click)="onClick()"> {{pageData.esmeaddr}} /</a> MARGIN</span>
     </div>
@@ -8,27 +8,30 @@
 <div class="row btm-border second-row-det">
     <div class="col-9">
         <div class="row">
-            <div class="col-12">
+            <div class="col-5">
                 <label class="mr-2"><b>ESME Addr.</b></label>
                 <span class="border-right">&nbsp;</span>
                 <span class="ml-3 badge badge-dark esme-addr"><b>{{pageData.esmeaddr}}</b></span>
             </div>
+            <div class="col-7">
+                <label class="mr-2">Company Name</label>
+                <span class="border-right">&nbsp;</span>
+                <span class="badge badge-dark ml-2"><b>{{pageData.company_name}}</b></span>
+            </div>
         </div>
         <div class="row gateway-count">
-            <div class="col-5">
-                <label>Company Name <span class="badge badge-dark ml-2"><b>{{pageData.company_name}}</b></span>
-                </label>
+            <div class="col-4 gateway-detail">
+                <label>Intl. Cust Type <span class="badge badge-dark ml-2"><b>{{intl_acc_type}}</b></span></label>
             </div>
-            <div class="col-3 gateway-detail">
+            <div class="col-4 gateway-detail">
                 <label>Billing Type <span class="badge badge-dark ml-2"><b>{{pageData.billing_type}}</b></span></label>
             </div>
             <div class="col-4 gateway-detail">
-                <label>Intl. Route Type <span class="badge badge-dark ml-2"><b>{{intl_acc_type}}</b></span></label>
+                <label>Route Type <span class="badge badge-dark ml-2"><b>{{routetype}}</b></span></label>
             </div>
         </div>
 
     </div>
-    
     <div class="col-3 text-right mt-2">
         <div class="form-group">
             <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="&#xf002; Search By Country, Operator" />
@@ -37,7 +40,7 @@
 
 </div>
 <div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect" *ngIf="routetype === 'gateway'">
+    <table class="table table-borderless erp-list-table row-hover-effect" *ngIf="(routetype | lowercase) === 'gateway'">
         <thead>
             <tr>
                 <th>Country</th>
@@ -55,11 +58,18 @@
                 <td class="font-weight-semi-bold">{{data.country}}</td>
                 <td>{{data.operator}}</td>
                 <td>{{data.ratecard_rate}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
-                <td><span class="badge badge-success mr-1" title='{{data.primary_gateway.gw_id}}'>{{data.primary_gateway.gw_name}}</span>{{data.primary_gateway.rate}} <b [innerHTML]="(gwidWiseCurrency[data.primary_gateway.gw_id])"></b></td>
-                <td class="text-green">{{data.primary_gateway.difference}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
-                <td><span class="badge badge-success mr-1" title='{{data.fallback_gateway.gw_id}}'>{{data.fallback_gateway.gw_name}}</span>{{data.fallback_gateway.rate}} <b [innerHTML]="(gwidWiseCurrency[data.fallback_gateway.gw_id])"></b></td>
-                <td class="text-green">{{data.fallback_gateway.difference}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
+                <td *ngIf="data.pgwid_exist"><span class="badge badge-success mr-1" title='{{data.primary_gateway.gw_id}}'>{{data.primary_gateway.gw_name}}</span>{{data.primary_gateway.rate}} <b [innerHTML]="(gwidWiseCurrency[data.primary_gateway.gw_id])"></b></td>
+                <td *ngIf="!data.pgwid_exist"><span class="badge mr-1">NA</span></td>
+                <td *ngIf="data.pgwid_exist" [ngClass]="(data.primary_gateway.difference > 0)?'text-green':'text-red'">{{data.primary_gateway.difference}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
+                <td *ngIf="!data.pgwid_exist"><span class="badge mr-1">NA</span></td>
+                <td *ngIf="data.fgwid_exist"><span class="badge badge-success mr-1" title='{{data.fallback_gateway.gw_id}}'>{{data.fallback_gateway.gw_name}}</span>{{data.fallback_gateway.rate}} <b [innerHTML]="(gwidWiseCurrency[data.fallback_gateway.gw_id])"></b></td>
+                <td *ngIf="!data.fgwid_exist"><span class="badge mr-1">NA</span></td>
+                <td *ngIf="data.fgwid_exist" [ngClass]="(data.fallback_gateway.difference > 0)?'text-green':'text-red'">{{data.fallback_gateway.difference}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
+                <td *ngIf="!data.fgwid_exist"><span class="badge mr-1">NA</span></td>
                 <td>{{data.bill_on_submission}}</td>
+            </tr>
+            <tr *ngIf="tableData?.length == 0">
+                <td colspan="8" class="text-center py-3 main-heading">No data found</td>
             </tr>
         <!-- 
             <tr>
@@ -107,7 +117,7 @@
         </tbody>
     </table>
 
-    <table class="table table-borderless erp-list-table row-hover-effect" *ngIf="routetype === 'lcr'">
+    <table class="table table-borderless erp-list-table row-hover-effect" *ngIf="(routetype | lowercase) === 'lcr'">
         <thead>
             <tr>
                 <th>Country</th>
@@ -124,13 +134,16 @@
                 <td>{{data.operator}}</td>
                 <td>{{data.ratecard_rate}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
                 <td><span class="badge badge-success mr-1" title='{{data.gateway.gw_id}}'>{{data.gateway.gw_name}}</span>{{data.gateway.rate}} <b [innerHTML]="(gwidWiseCurrency[data.gateway.gw_id])"></b></td>
-                <td class="text-green">{{data.gateway.difference}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
+                <td [ngClass]="(data.gateway.difference > 0)?'text-green':'text-red'">{{data.gateway.difference}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
                 <td>{{data.bill_on_submission}}</td>
+            </tr>
+            <tr *ngIf="tableData?.length == 0">
+                <td colspan="6" class="text-center py-3 main-heading">No data found</td>
             </tr>
         </tbody>
     </table>
 
-    <table class="table table-borderless erp-list-table row-hover-effect" *ngIf="routetype === 'pool'">
+    <table class="table table-borderless erp-list-table row-hover-effect" *ngIf="(routetype | lowercase) === 'pool'">
         <thead>
             <tr>
                 <th>Country</th>
@@ -152,12 +165,14 @@
                     </div>
                 </td>
                 <td class="text-green">
-                    {{data.gateway.difference}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b>
                     <div class="row mb-2 ml-0" *ngFor="let gw of data.gateway">
-                        <span class="text-green">{{gw.difference}}</span> <b [innerHTML]="(gwidWiseCurrency[gw.gw_id])"></b>
+                        <span [ngClass]="(gw.difference > 0)?'text-green':'text-red'" class="mr-1">{{gw.difference}}</span> <b [innerHTML]="(pageData.billplan.currency_symbol)"></b>
                     </div>
                 </td>
                 <td>{{data.bill_on_submission}}</td>
+            </tr>
+            <tr *ngIf="tableData?.length == 0">
+                <td colspan="6" class="text-center py-3 main-heading">No data found</td>
             </tr>
         </tbody>
     </table>

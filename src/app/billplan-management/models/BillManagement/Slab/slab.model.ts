@@ -8,7 +8,7 @@ export class SlabCreateRateCardBody {
     countries: Countries[];
     ratetype_row: string;
     row_custom: Slabs[];
-    discount_rate: number;
+    discount_rate: number | string;
     discount_type: string;
     description: string;
 }

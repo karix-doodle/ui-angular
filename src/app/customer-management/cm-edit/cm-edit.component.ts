@@ -4,12 +4,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerManagementService } from '../services/customer-management.service';
-import { UserActivation_ApiResponse, UserRoutingConfig, TimeZonesApiResponse, Gateway, Pool, ApiResponse_Generic } from '../models/customer-management.model';
+import { UserActivation_ApiResponse, UserRoutingConfig, TimeZonesApiResponse, Gateway, Pool, ApiResponse_Generic, PoolRouteSearchRes } from '../models/customer-management.model';
 import { environment } from '../../../environments/environment';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import {
   errorAlert,
   successAlert,
+  confirmAlert
 } from "../../shared/sweet-alert/sweet-alert";
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -54,6 +56,10 @@ export class CmEditComponent implements OnInit {
   showMargin: boolean = false;
   showEditPage: boolean = true;
 
+  gwRadioEnabled:boolean = true;
+  lcrRadioEnabled:boolean = true;
+  prRadioEnabled:boolean = true;
+
   routeTypeUiMapping: any = {
     "lcr":"lcr", "gateway":"gt", "pool":"pr"
   };
@@ -63,7 +69,7 @@ export class CmEditComponent implements OnInit {
   };
 
   dateTimeFormat: string = 'YYYY-MM-DD HH:mm';
-  
+  showdropdown: boolean = false;
 
   updateAccountFormGroup: FormGroup;
 
@@ -80,23 +86,23 @@ export class CmEditComponent implements OnInit {
       primary_gwid: new FormControl(),
       fallback_gwid: new FormControl(),
       selectedPoolRouteId: new FormControl(),
-      selectedPoolRouteName: new FormControl(),
+      selectedPoolRouteName: new FormControl({value:''}),
       process_row: new FormControl(),
       process_at_loss: new FormControl(),
       max_loss_per_sms: new FormControl(),
-      selectedTzString: new FormControl('', [Validators.required]),
+      selectedTzString: new FormControl(),
       comments: new FormControl(),
       notifysales: new FormControl(),
       notifyclient: new FormControl(),
       effectiveTill: new FormControl(),
     });
-
+    /*
     let effectiveDate = moment().utcOffset(environment.UTC).format('DD:MM:YYYY');
     let effectiveTime = moment().utcOffset(environment.UTC).format('hh:mm am');
     this.params = {
       effectiveDate: effectiveDate,
       effectiveTime: effectiveTime
-    }
+    }*/
   }
 
   open(content) {
@@ -113,20 +119,62 @@ export class CmEditComponent implements OnInit {
     let esmeaddr = this.activeRoute.snapshot.params.esmeaddr;
     this.getPendingUserDetails(esmeaddr);
   }
-  private selectedLink: string="";        
+  private selectedLink: string="";  
+  
+  initialisePoolSearchSuggestion() {
+    const form = this.updateAccountFormGroup;
+    form.get('selectedPoolRouteName').valueChanges.pipe(
+      debounceTime(20),
+      distinctUntilChanged(),
+      switchMap(query => this.customerManagementService.getMatchingPoolRoutes(this.selectedCustomerType, this.usersData.msg_type, this.lcrOnly, form.value.selectedPoolRouteName))
+    ).subscribe((res: PoolRouteSearchRes) => {
+      if (this.selectedPoolRouteName != form.value.selectedPoolRouteName) {
+        this.updateAccountFormGroup.patchValue({
+          id: ''
+        })
+        this.showdropdown = true;
+      }
+      if (res.responsestatus === environment.APIStatus.success.text &&
+        res.responsecode > environment.APIStatus.success.code) {
+        this.poolRoutes = res.data;
+      } else if (
+        res.responsestatus === environment.APIStatus.error.text &&
+        res.responsecode < environment.APIStatus.error.code
+      ) {
+        this.poolRoutes = [];
+        errorAlert(res.message, res.responsestatus);
+      }
+    }, (error: HttpErrorResponse) => {
+      errorAlert(error.message, error.statusText);
+    });
+  };
+
+  onSelectPoolRoute(poolRoute: Pool) {
+    this.updateAccountFormGroup.patchValue({
+      selectedPoolRouteName: poolRoute.route_name
+    });
+    this.selectedPoolRouteName = poolRoute.route_name;
+    this.selectedPoolRouteId = poolRoute.id;
+    this.updateAccountFormGroup.get('selectedPoolRouteId').setValue(poolRoute.id);
+    this.updateAccountFormGroup.get('selectedPoolRouteName').setValue(poolRoute.route_name);
+    this.showdropdown = false;
+  }
   
   async setradio(e: string) {  
     this.selectedLink = e;
     this.selectedRouteType = e;
-    let response = null;
+    this.routeTypeError = '';
     if(_.isEqual(this.selectedLink,'gt')){
+      this.selectedPoolRouteName = null;
+      this.selectedPoolRouteId = null;
+      this.updateAccountFormGroup.get('selectedPoolRouteId').setValue(null);
+      this.updateAccountFormGroup.get('selectedPoolRouteName').setValue(null);
       await this.customerManagementService.getGateways(this.selectedCustomerType, this.usersData.msg_type, this.lcrOnly).then((response)=>{
         this.gateways = response['data'];
         this.setRoutingValues();
       });
     }else if(_.isEqual(this.selectedLink,'pr')){
-      response = await this.customerManagementService.getPoolRoutes(this.selectedCustomerType, this.usersData.msg_type, this.lcrOnly);
-      this.poolRoutes = response.data;
+      this.initialisePoolSearchSuggestion();
       this.setRoutingValues();
     }else{
       this.lcrRouteType = [this.selectedCustomerType];
@@ -136,7 +184,6 @@ export class CmEditComponent implements OnInit {
 
   onChangeCustomerType(event: any): void {  
     this.selectedCustomerType = event.target.value;
-    //console.log(`this.selectedCustomerType = ${this.selectedCustomerType}`);
     this.isSelected(this.selectedRouteType);
     this.setradio(this.selectedRouteType);
   };
@@ -144,11 +191,28 @@ export class CmEditComponent implements OnInit {
   onChangeLcrOnly(event: any): void {  
     if(event.target.checked){
       this.lcrOnly = 1;
+      this.lcrRadioEnabled = true;
+      this.gwRadioEnabled = true;
+      this.prRadioEnabled = true;
+      this.isSelected(this.selectedRouteType);
+      this.setradio(this.selectedRouteType);
     }else{
-      this.lcrOnly = 0;
+      confirmAlert('Unchecking LCR will disable Least cost & pool routings', 'Ok').then((result) => {
+        if (result.isConfirmed) {
+          this.lcrOnly = 0;
+          this.gwRadioEnabled = true;
+          this.lcrRadioEnabled = false;
+          this.prRadioEnabled = false;
+          this.selectedRouteType === 'gt';
+          this.isSelected('gt');
+          this.setradio('gt');
+          this.updateAccountFormGroup.controls['selectedRouteType'].setValue('gt');
+        }else{
+          this.updateAccountFormGroup.controls['lcrOnly'].setValue('1');
+          this.lcrOnly = 1;
+        }
+      });
     }
-    this.isSelected(this.selectedRouteType);
-    this.setradio(this.selectedRouteType);
   };
 
   setRoutingValues(): void {  
@@ -166,20 +230,22 @@ export class CmEditComponent implements OnInit {
       this.updateAccountFormGroup.controls['fallback_gwid'].setValue(this.fallback_gwid);
       this.updateAccountFormGroup.controls['selectedPoolRouteId'].setValue('');
       this.updateAccountFormGroup.controls['selectedPoolRouteName'].setValue('');
+      this.poolRoutes = [];
     }else if(_.isEqual(this.selectedRouteType,'pr')){
       this.updateAccountFormGroup.controls['selectedPoolRouteId'].setValue(this.selectedPoolRouteId);
       this.updateAccountFormGroup.controls['selectedPoolRouteName'].setValue(this.selectedPoolRouteName);
       this.updateAccountFormGroup.controls['primary_gwid'].setValue('');
       this.updateAccountFormGroup.controls['fallback_gwid'].setValue('');
+      this.gateways = [];
     }else{
       this.updateAccountFormGroup.controls['primary_gwid'].setValue('');
       this.updateAccountFormGroup.controls['fallback_gwid'].setValue('');
       this.updateAccountFormGroup.controls['selectedPoolRouteId'].setValue('');
       this.updateAccountFormGroup.controls['selectedPoolRouteName'].setValue('');
+      this.gateways = [];
+      this.poolRoutes = [];
     }
   };
-
-
 
   isSelected(name: string): boolean {  
     if (!this.selectedLink) { // if no radio button is selected, always return false so every nothing is shown  
@@ -241,33 +307,7 @@ export class CmEditComponent implements OnInit {
             this.selectedTimezone = _.trim(this.usersData.timezone);
             this.selectedTimezoneOffset = _.trim(this.usersData.timezone_offset);
           }
-
-          /*
-          // set form with default values
-          this.updateAccountFormGroup.patchValue({
-            selectedCharSetEncoding:this.usersData.charsetEncoding,
-            selectedDlrType : this.usersData.dlrType,
-            selectedCustomerType : this.usersData.intl_routetype,
-            lcrOnly : this.usersData.lcrOnly,
-            billplanName : this.usersData.billplan_name,
-            selectedRouteType: rtype,
-            process_row : this.usersData.process_row,
-            lcrRouteType : this.lcrRouteType,
-            primary_gwid : this.usersData.gwid_primary,
-            fallback_gwid : this.usersData.gwid_fallback,
-            selectedPoolRouteId : this.usersData.pool_route_id,
-            selectedPoolRouteName : this.usersData.pool_route_name,
-            selectedTz: this.usersData.timezone,
-            comments: this.usersData.comments,
-            notifysales: this.usersData.notifysales,
-            notifyclient: this.usersData.notifyclient
-          });
-          */
-          //this.updateAccountFormGroup.controls['selectedCustmorType'].setValue(this.usersData.intl_routetype,{onlySelf:false,emitEvent:true,emitModelToViewChange:true,emitViewToModelChange:true});
           this.selectedCustomerType = this.usersData.intl_routetype;
-          //this.isSelected(rtype);
-          //this.setradio(rtype);
-
           this.selectedLink = rtype;
           this.selectedRouteType = rtype;
 
@@ -285,9 +325,6 @@ export class CmEditComponent implements OnInit {
             this.lcrRouteType = [this.selectedCustomerType];
             this.setDefaultValues(rtype);
           }
-         
-          
-
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
@@ -311,7 +348,7 @@ export class CmEditComponent implements OnInit {
       primary_gwid : this.usersData.gwid_primary,
       fallback_gwid : this.usersData.gwid_fallback,
       selectedPoolRouteId : this.usersData.pool_route_id,
-      selectedPoolRouteName : this.usersData.pool_route_name,
+      selectedPoolRouteName : _.isUndefined(this.usersData.pool_route_name)?'':this.usersData.pool_route_name,
       selectedTzString: this.selectedTzString,
       comments: this.usersData.comments,
       notifysales: this.usersData.notifysales,
@@ -326,6 +363,7 @@ export class CmEditComponent implements OnInit {
       this.updateAccountFormGroup.controls['max_loss_per_sms'].setValue('');
       this.updateAccountFormGroup.controls['max_loss_per_sms'].disable({onlySelf:true});
     }
+    this.errorMessageProcessAtLoss = '';
   };
 
   getDateSelection(e) {
@@ -334,23 +372,52 @@ export class CmEditComponent implements OnInit {
     this.effectiveTill = selectedDateTime;
   };
 
+  setPoolRoute():void{
+    let pool_name = this.updateAccountFormGroup.value.selectedPoolRouteName;
+    console.log(`pool_name=${pool_name}`);
+    if(!_.isUndefined(pool_name) && !_.isNull(pool_name) && !_.isEmpty(_.trim(pool_name))){
+      if(_.size(this.poolRoutes) > 0){
+        _.forEach(this.poolRoutes,(route)=>{
+          if(_.isEqual(_.toLower(_.trim(route.route_name)),_.toLower(_.trim(pool_name)))){
+            this.selectedPoolRouteId = route.id;
+            this.selectedPoolRouteName = route.route_name;
+            this.updateAccountFormGroup.get('selectedPoolRouteId').setValue(route.id);
+            this.updateAccountFormGroup.get('selectedPoolRouteName').setValue(route.route_name);
+          }
+        });
+      }
+    }
+  };
+
   
-  set(changetype:number):void{
-    if(changetype == 0){
+  set(changetype:string):void{
+    if(_.isEqual(this.selectedRouteType,'pr')){
+      this.selectedPoolRouteId = null;
+      this.selectedPoolRouteName = null;
+      this.updateAccountFormGroup.get('selectedPoolRouteId').setValue(null);
+      this.setPoolRoute();
+    }
+    if(_.isEqual(_.toLower(changetype),'temp')){
       this.is_permanent = 0;
       this.updateAccountFormGroup.get('effectiveTill').setValue(this.effectiveTill);
-    }else{
+      this.onSubmit(true);
+    }else if(_.isEqual(_.toLower(changetype),'permanent')){
       this.is_permanent = 1;
       this.updateAccountFormGroup.get('effectiveTill').setValue('');
+      this.onSubmit(true);
+    }else if(_.isEqual(_.toLower(changetype),'showmargin')){
+      let payload = {};
+      let validationSuccess = this.validateAndconstructPayloadForSave(payload,false);
+      if(validationSuccess){
+        this.toggleShowMargin('showmargin');
+      }
     }
-    this.onSubmit();
+    
   }
 
-  onSubmit(){
-    console.log(`On submit = ${JSON.stringify(this.updateAccountFormGroup.value)}`);
-    //let obj = this.updateAccountFormGroup.get('selectedTz').value;
+  onSubmit(isFormSubmit){
     let payload = {};
-    let validationSuccess = this.validateAndconstructPayloadForSave(payload);
+    let validationSuccess = this.validateAndconstructPayloadForSave(payload,isFormSubmit);
     if(validationSuccess){
       this.modalService.dismissAll();
       //console.log(`payload = ${JSON.stringify(payload)}`);
@@ -378,12 +445,12 @@ export class CmEditComponent implements OnInit {
   errorMessage: string = '';
   routeTypeError: string = '';
   effectiveTillError: boolean = false;
-  validateAndconstructPayloadForSave(payload):boolean{
+  errorMessageProcessAtLoss: string = '';
+  validateAndconstructPayloadForSave(payload, isFormSubmit):boolean{
     let json = this.updateAccountFormGroup.value;
     let validationSuccess = true;
     this.effectiveTillError = false;
     this.routeTypeError = '';
-    let offset = environment.UTC;  //json.selectedTz.offset;
 
     payload['esmeaddr'] = this.esmeaddr;
     payload['loggedinempid'] = environment.loggedinempid;
@@ -443,13 +510,13 @@ export class CmEditComponent implements OnInit {
           };
         }
       }else if(_.isEqual(json.selectedRouteType,'pr')){
-        if(_.isUndefined(json.selectedPoolRouteId) || _.isNull(json.selectedPoolRouteId) || _.isEmpty(_.trim(json.selectedPoolRouteId))){
+        if(_.isUndefined(json.selectedPoolRouteName) || _.isNull(json.selectedPoolRouteName) || _.isEmpty(_.trim(json.selectedPoolRouteName))){
           validationSuccess = false;
           this.routeTypeError = 'Pool route is required';
-        }else if(_.isUndefined(json.selectedPoolRouteName) || _.isNull(json.selectedPoolRouteName) || _.isEmpty(_.trim(json.selectedPoolRouteName))){
+        }else if(_.isUndefined(json.selectedPoolRouteId) || _.isNull(json.selectedPoolRouteId) || _.isEmpty(_.trim(json.selectedPoolRouteId))){
           validationSuccess = false;
-          this.routeTypeError = 'Pool route is required';
-        }else{
+          this.routeTypeError = 'Pool route is not valid';
+        }else {
           payload['pool_routing'] = {
             "id": _.trim(json.selectedPoolRouteId), "name": _.trim(json.selectedPoolRouteName)
           };
@@ -480,9 +547,10 @@ export class CmEditComponent implements OnInit {
           payload['process_at_loss'] = 1;
           if(_.isUndefined(json.max_loss_per_sms) || _.isNull(json.max_loss_per_sms) || _.isEmpty(_.trim(json.max_loss_per_sms))){
             validationSuccess = false;
-            this.errorMessage = 'Max loss per sms is required';
+            this.errorMessageProcessAtLoss = 'Max loss per sms is required';
           }else{
             payload['max_loss_per_sms'] = json.max_loss_per_sms;
+            this.errorMessageProcessAtLoss = '';
           }
         }else{
           payload['process_at_loss'] = 0;
@@ -499,39 +567,39 @@ export class CmEditComponent implements OnInit {
       validationSuccess = false;
       this.updateAccountFormGroup.controls['selectedTzString'].setValue('');
     }else{
-      //let utcPortion = `(UTC${json.selectedTz.offset})`;
-      //let timezone = _.replace(json.selectedTz.timezone,utcPortion,'');
-      //payload['timezone'] = `${_.trim(json.selectedTz.country_name)}/${_.trim(timezone)}`;
       payload['timezone'] = this.selectedTimezone;
       payload['timezone_offset'] = this.selectedTimezoneOffset;
       payload['timezone_daylight'] = 0; // as of now DST not supported
     }
 
-    if(this.is_permanent == 0){
-      payload['is_permanent'] = 0;
-      if(_.isUndefined(json.effectiveTill) || _.isNull(json.effectiveTill) || _.isEmpty(_.trim(json.effectiveTill))){
-        validationSuccess = false;
-        this.errorMessage = 'Effective till is required';
-        this.effectiveTillError = true;
-      }else{
-        let effective_till = _.trim(json.effectiveTill);
-        let effectiveDate = moment(effective_till, this.dateTimeFormat, true);
-        if(effectiveDate.isValid()){
-          payload['effective_till'] = effectiveDate.format('YYYY-MM-DD HH:mm:ss');
-        }else{
+    if(isFormSubmit){
+      if(this.is_permanent == 0){
+        payload['is_permanent'] = 0;
+        if(_.isUndefined(json.effectiveTill) || _.isNull(json.effectiveTill) || _.isEmpty(_.trim(json.effectiveTill))){
           validationSuccess = false;
-          this.errorMessage = 'Effective till is invalid';
+          this.errorMessage = 'Effective till is required';
+          this.effectiveTillError = true;
+        }else{
+          let effective_till = _.trim(json.effectiveTill);
+          let effectiveDate = moment(effective_till, this.dateTimeFormat, true);
+          if(effectiveDate.isValid()){
+            payload['effective_till'] = effectiveDate.format('YYYY-MM-DD HH:mm:ss');
+          }else{
+            validationSuccess = false;
+            this.errorMessage = 'Effective till is invalid';
+          }
         }
+      }else{
+        payload['is_permanent'] = 1;
+        payload['effective_till'] = null;
       }
-    }else{
-      payload['is_permanent'] = 1;
-      payload['effective_till'] = null;
     }
-    
+     
     payload['notify_sales'] = json.notifysales;
     payload['notify_client'] = json.notifyclient;
     payload['comments'] = json.comments;
 
+    //console.log(`errorMessage = ${this.errorMessage}`);
 
     return validationSuccess;
   };
@@ -555,13 +623,28 @@ export class CmEditComponent implements OnInit {
             message = 'Please select primary & fallback gateways.';
           }
         }else if(_.isEqual(routingtype,'pool')){
-          let pool_id = this.updateAccountFormGroup.value.selectedPoolRouteId;
-          pool_id = 202;
+          let pool_id = this.selectedPoolRouteId;
           if(!_.isUndefined(pool_id) && !_.isNull(pool_id) && !_.isEmpty(_.trim(pool_id))){
             queryParams = `${queryParams}&pool_id=${pool_id}`;
           }else{
-            validationSuccess = false;
             message = 'Please select pool route.';
+            let pool_name = this.updateAccountFormGroup.value.selectedPoolRouteName;
+            if(!_.isUndefined(pool_name) && !_.isNull(pool_name) && !_.isEmpty(_.trim(pool_name))){
+              if(_.size(this.poolRoutes) > 0){
+                _.forEach(this.poolRoutes,(route)=>{
+                  if(_.isEqual(_.toLower(_.trim(route.route_name)),_.toLower(_.trim(pool_name)))){
+                    this.selectedPoolRouteId = route.id;
+                    this.selectedPoolRouteName = route.route_name;
+                    this.updateAccountFormGroup.get('selectedPoolRouteName').setValue(route.route_name);
+                    queryParams = `${queryParams}&pool_id=${route.id}`;
+                  }
+                });
+              }else{
+                validationSuccess = false;
+              }
+            }else{
+              validationSuccess = false;
+            }
           }
         }else if(_.isEqual(routingtype,'lcr')){
 
@@ -578,13 +661,11 @@ export class CmEditComponent implements OnInit {
         this.showMargin = true;
         this.showEditPage = false;
       }else{
-        errorAlert(message, 'failure');
+        errorAlert(message, 'Failure');
       }      
-      //console.log(`On showmargin = ${JSON.stringify(this.updateAccountFormGroup.value)}`);
     }else{
       this.showEditPage = true;
       this.showMargin = false;
-      //console.log(`On editpage = ${JSON.stringify(this.updateAccountFormGroup.value)}`);
     }
 
     
