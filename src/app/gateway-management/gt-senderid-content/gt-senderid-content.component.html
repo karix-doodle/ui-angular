@@ -72,7 +72,7 @@
         </thead>
         <tbody>
             <tr
-                *ngFor="let item of GtSenderidContentListData?.data.senderid_template_list | filter: { senderid: searchvalue, template: searchvalue } | sort: sortingName: isDesc">
+                *ngFor="let item of GtSenderidContentListData?.data.senderid_template_list | filter: { senderid: searchvalue, template: searchvalue } | sort: sortingName: !isDesc">
                 <td class="font-weight-semi-bold">{{item.senderid}}</td>
                 <td>{{item.blacklist_type}}</td>
                 <td>{{item.template}}</td>

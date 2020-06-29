@@ -84,7 +84,7 @@
         </thead>
         <tbody>
             <tr
-                *ngFor="let item of GtDetailsCountryList?.data.tabledata | filter: { country: searchvalue, operator: searchvalue } | sort: sortingName: isDesc">
+                *ngFor="let item of GtDetailsCountryList?.data.tabledata | filter: { country: searchvalue, operator: searchvalue } | sort: sortingName: !isDesc">
                 <td class="font-weight-semi-bold">{{item.country}}</td>
                 <td>{{item.operator}}</td>
                 <td>{{item.mcc}}-{{item.mnc}}</td>
