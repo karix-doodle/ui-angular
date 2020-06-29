@@ -7,14 +7,16 @@
     <div class="col-7 text-right">
         <div class="row">
             <div class="col-8 border-right">
-                <a routerLink="/gateway-management/country-list/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}"
+                <a [ngClass]="{'disabled': GtMgmtAuthControls.gw_countries_list_enabled ? null : true }"
+                    *ngIf="GtDetailsData"
+                    [routerLink]="GtMgmtAuthControls.gw_countries_list_enabled ? ['/gateway-management/country-list/', GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name] : ''"
                     class="btn btn-basic mr-2 ">Countries List</a>
                 <a [ngClass]="{'disabled': GtMgmtAuthControls.gw_rate_files_audit_logs_enabled ? null : true }"
                     *ngIf="GtDetailsData"
                     [routerLink]="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled ? ['/gateway-management/file-audit-log/',GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name]: []"
                     class="btn erp-intl-btn">File Audit</a>
             </div>
-            <div class="col-2 border-right text-center" *ngIf="GtDetailsData?.data">
+            <div class="col-2 border-right text-center" *ngIf="GtDetailsData">
                 <a [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_rateupload_enabled ? null : true }"
                     [routerLink]="GtMgmtAuthControls.gw_rateupload_enabled ? ['/gateway-management/update-gateway/', gwId,GtDetailsData?.data.gw_name,GtDetailsData?.data.currency_id] : []"
                     class="fa-2x icon-btn icons-div"><i class="fa fa-upload" aria-hidden="true"></i>
@@ -126,8 +128,8 @@
             </div>
             <div class="row validation-det mb-3">
                 <div class="col-3 text-center bg-grey">
-                    <a
-                        routerLink="/gateway-management/country-list/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}">
+                    <a *ngIf="GtDetailsData"
+                        routerLink="['/gateway-management/country-list/', GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name]">
                         <label class="box-heading">Supported Destination</label>
                         <div class="row">
                             <div class="col-6 box-data">
@@ -143,8 +145,8 @@
                     </a>
                 </div>
                 <div class="col-3 text-center bg-grey">
-                    <a
-                        routerLink="/gateway-management/sender-id-whitelist/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}">
+                    <a *ngIf="GtDetailsData"
+                        [routerLink]="GtMgmtAuthControls.gw_whitelisted_senderid_list_enabled ? ['/gateway-management/sender-id-whitelist/', GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name] : []">
                         <label class="box-heading">Sender IDs Whitelisted</label>
                         <div class="row">
                             <div class="col-6 box-data">
@@ -161,8 +163,8 @@
                 </div>
 
                 <div class="col-3 text-center bg-grey">
-                    <a
-                        routerLink="/gateway-management/senderid-content-block/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}">
+                    <a *ngIf="GtDetailsData"
+                        [routerLink]="GtMgmtAuthControls.gw_blacklisted_senderid_content_list_enabled ? ['/gateway-management/senderid-content-block/', GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name] : []">
                         <label class="box-heading">Sender ID + Content Blocked</label>
                         <div class="row">
                             <div class="col-12 text-center pt-4">
@@ -172,7 +174,7 @@
                     </a>
                 </div>
                 <div class="col-3 text-center bg-grey">
-                    <a
+                    <a *ngIf="GtDetailsData"
                         routerLink="/gateway-management/esme-addr-routed/{{GtDetailsData?.data.gw_id}}/{{GtDetailsData?.data.gw_name}}">
                         <label class="box-heading">No. of ESMEAddr routed
                             <br>(On Gateway directly)
@@ -417,6 +419,12 @@
         </form>
     </div>
 </ng-template>
-<div class="pt-3" *ngIf="!GtMgmtAuthControls.gw_view_enabled">
-    Your are not <b>Authorized</b> to access this page
+
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_view_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>

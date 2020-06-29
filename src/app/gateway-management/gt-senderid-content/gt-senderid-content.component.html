@@ -1,11 +1,11 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_blacklisted_senderid_content_list_enabled">
     <div class="col-8">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span><a routerLink="/gateway-management/gateway-details/{{gw_id}}"> {{gw_id}} - {{gw_name}} /</a> SENDERID’s
             Content Block</span>
     </div>
 </div>
-<div class="row btm-border second-row-pr">
+<div class="row btm-border second-row-pr" *ngIf="GtMgmtAuthControls.gw_blacklisted_senderid_content_list_enabled">
     <div class="col-8">
         <div class="row">
             <div class="col-12">
@@ -34,7 +34,7 @@
         </div>
     </div>
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive" *ngIf="GtMgmtAuthControls.gw_blacklisted_senderid_content_list_enabled">
     <table class="table table-borderless erp-list-table row-hover-effect mb-0">
         <thead>
             <tr>
@@ -84,4 +84,13 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_blacklisted_senderid_content_list_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>

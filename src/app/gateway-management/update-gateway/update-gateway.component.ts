@@ -113,7 +113,7 @@ export class UpdateGatewayComponent implements OnInit {
     private authorizationService: AuthorizationService
   ) {
     this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
-    console.log(this.GtMgmtAuthControls, 'adadasdas')
+
     this.priceListFormGroup = this.formBuilder.group({
       gw_id: [this.activeRoute.snapshot.params.id, [Validators.required]],
       filename: ['', [Validators.required]],
@@ -193,7 +193,6 @@ export class UpdateGatewayComponent implements OnInit {
   }
 
   checkboxToggle(value, field) {
-    console.log(value, 'asdasdasd')
     let obj = {}
     obj[field] = value == true ? 1 : '';
     this.priceListFormGroup.patchValue(obj)

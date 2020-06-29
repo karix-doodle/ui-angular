@@ -13,6 +13,7 @@ import {
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
 import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-countrylist',
@@ -43,12 +44,17 @@ export class GtCountrylistComponent implements OnInit {
   sortingName: string;
   isDesc: boolean;
 
+  GtMgmtAuthControls = null
+
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private gatewayManagementService: GatewayManagementService
+    private gatewayManagementService: GatewayManagementService,
+    private authorizationService: AuthorizationService
   ) {
+
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
 
     let default_senderid = '^.{6,8}$';
     this.addSenderIdConfigFormGroup = this.formBuilder.group({
