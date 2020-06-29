@@ -8,7 +8,7 @@ export class SortPipe implements PipeTransform {
     throw new Error('Method not implemented.');
   }
 
-  transform(values: number[] | string[] | object[], key?: string, reverse: boolean = true) {
+  transform(values: number[] | string[] | object[], key?: string, reverse?: boolean) {
     if (!Array.isArray(values) || values.length <= 0) {
       return null;
     }

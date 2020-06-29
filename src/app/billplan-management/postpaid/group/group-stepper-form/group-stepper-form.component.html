@@ -145,7 +145,7 @@
                     <div class="col-6">
                         <div class="row">
                             <div class=" form-group col-7 px-0">
-                                <input type="radio" name="ratetype_roc" id="default-roc" value="default"
+                                <input type="radio" name="ratetype_roc" id="default-roc" value="standard"
                                     formControlName="ratetype_roc">
                                 <label for="default-roc" class="radio-inline">Copy from Default Rate Card</label>
                                 <a target="_blank" routerLink="/settings/default-rate-card" class="ml-2"> <i
@@ -164,7 +164,8 @@
                     </div>
                 </div>
 
-                <div class="gt-ratio-div roc-div" formArrayName="roc"
+                <div class="gt-ratio-div roc-div position-relative" formArrayName="roc"
+                    [ngClass]="{'disable-wrapper' : secondFormGroup.get('ratetype_roc').value == 'standard' }"
                     *ngFor="let X of secondFormGroup['controls'].roc['controls']; let indexROC=index">
                     <div class="row" formGroupName="{{indexROC}}">
                         <div class="col-6">
@@ -188,6 +189,10 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="10"
                                     formControlName="billing_rate" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="X.get('billing_rate').hasError('required') && isupdateRoc">
+                                    Billing Rate is required
+                                </span>
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty">
                                     Please enter valid input
@@ -248,6 +253,10 @@
                                 <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="10"
                                     formControlName="billing_rate_row" />
                                 <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('billing_rate_row').hasError('required') && submitGroupValid">
+                                    Billing Rate Row is required
+                                </span>
+                                <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('billing_rate_row').hasError('pattern')">
                                     Please enter valid input
                                 </span>
@@ -273,10 +282,15 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Discount"
                                     formControlName="discount_rate" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('discount_rate').hasError('pattern') && submitGroupValid">
+                                    Discount rate is not valid
+                                </span>
                             </div>
                         </div>
                         <div class="col-6 discount-select">
-                            <select class="dropdown-select w-100" formControlName="discount_type">
+                            <select class="dropdown-select w-100" (change)="handleDiscountType()"
+                                formControlName="discount_type">
                                 <option value="percentage" default>Percentage</option>
                                 <option value="unit">Unit</option>
                             </select>
