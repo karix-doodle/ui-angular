@@ -55,11 +55,11 @@
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
                 <tr>
-                    <th (click)="sort('country')">Country
+                    <th class="cursor-pointer" (click)="sort('country')">Country
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('mcc')">MCC
+                    <th class="cursor-pointer" (click)="sort('mcc')">MCC
                         <!-- <i  [ngClass]="{'fa fa-caret-up': sortingName==='mcc' && isDesc}"></i>
                     <i  [ngClass]="{'fa fa-caret-down': sortingName==='mcc' && !isDesc}"></i> -->
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
@@ -74,7 +74,7 @@
             <!-- authorizationService.authorizationState.billplan_mgmt.billplan_create_ratecard_enabled -->
             <tbody>
                 <tr *ngFor="let gateway of LCRListRes?.data.gateways 
-            | filter : searchText : 1 | sort: sortingName: isDesc" (click)="onRow(gtModal, gateway)">
+            | filter : searchText : 1 | sort: sortingName: !isDesc" (click)="onRow(gtModal, gateway)">
                     <td>{{gateway.country}}</td>
                     <td>{{gateway.mcc}}</td>
                     <td>
