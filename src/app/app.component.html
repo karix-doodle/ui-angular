@@ -1,10 +1,8 @@
 <app-navbar></app-navbar>
 <button type="button" class="btn btn-light ml-4 sidenav-btn" (click)="toggleClass()">
-  <img src="assets/images/sidenav.png" alt="sidenav" />
+    <img src="assets/images/sidenav.png" alt="sidenav" />
 </button>
-
-<div class="container-fluid mt-100">
-
+<div class="container-fluid mt-100" *ngIf="stateBoolean">
     <div class="row">
         <div class="col-3 sidebar-div" [class.active]="classApplied">
             <app-sidenav></app-sidenav>

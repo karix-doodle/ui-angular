@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GtListingComponent } from './gt-listing.component';
+import { CommonModule } from '@angular/common';
+import { GatewayManagementService } from '../services/gateway-management.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('GtListingComponent', () => {
   let component: GtListingComponent;
@@ -8,9 +11,11 @@ describe('GtListingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GtListingComponent ]
+      declarations: [GtListingComponent],
+      imports: [CommonModule, HttpClientModule],
+      providers: [GatewayManagementService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

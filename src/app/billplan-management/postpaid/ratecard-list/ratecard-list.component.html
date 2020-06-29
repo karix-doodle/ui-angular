@@ -12,71 +12,118 @@
             <div class="col-12">
                 <label class="mr-2"><b>Bill Plan Name</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-2"><b>name123</b></span>
+                <span class="ml-2"><b>{{this.billPlanDetailsViewData?.data.billplanname}}</b></span>
             </div>
         </div>
         <div class="row gateway-count">
             <div class="col-12">
-                <label>Billplan Type <span class=" ml-2 badge badge-dark f-14"><b>Postpaid</b></span>
-                </label>
+                <label>Billplan Type</label>
+                <span class="border-right">&nbsp;</span>
+                <span class="ml-2 badge badge-dark f-14">
+                    <b>{{this.billPlanDetailsViewData?.data.billingtype}}</b>
+                </span>
             </div>
         </div>
     </div>
 </div>
-<div class="row btm-border mt-2 second-row-det">
-    <div class="col-4">
-        <label>Rate Card Type</label>
-        <select class="dropdown-select w-100 dark-input" [(ngModel)]="rateCardType" >
-            <option value="country" selected>Country</option>
-            <option value="country-operator">Country + Operator</option>
-            <option value="flat-fixed">Flat / Fixed</option>
-            <option value="group">Group</option>
-            <option value="slab">Slab</option>
-        </select>
-    </div>
-    <div class="col-4">
-        <div class="form-group">
-            <label>Ratecard Name</label>
-            <input type="search" class="form-control dark-input" placeholder="Enter Rate Card Name" />
+<form [formGroup]="rateCardSearchForm" (ngSubmit)="onrateCardSearchFormSubmit(rateCardSearchForm.value)">
+    <!-- {{rateCardSearchForm.value | json}} -->
+    <div class="row btm-border mt-2 second-row-det">
+        <div class="col-3">
+            <label>Rate Card Type</label>
+            <select disabled formControlName="ratecardtype" class="dropdown-select w-100 dark-input">
+                <option value="" default disabled>Select Rate Card Type</option>
+                <option value="country">Country</option>
+                <option value="country-operator">Country + Operator</option>
+                <option value="flat-fixed">Flat / Fixed</option>
+                <option value="group">Group</option>
+                <option value="slab">Slab</option>
+            </select>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label>Ratecard Name</label>
+                <section class="search-suggestion-wrapper">
+                    <input formControlName="ratecardname" type="search"
+                        class="form-control dark-input search-suggestion-input" placeholder="Enter Rate Card Name"
+                        autocomplete="off" />
+                    <div class="pad-r-3" *ngIf="rateCardNameList?.length && showdropdown == true">
+                        <span class="suggestion-select">
+                            <span *ngFor="let result of rateCardNameList" class="filter-select-list"
+                                (click)="onSelectRateCardName(result)">
+                                <span class="filter-product-wrapper">
+                                    <a class="rateCard-name">
+                                        {{ result.ratecard_name }}
+                                    </a>
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="rateCardSearchForm.get('ratecardname').hasError('required') && rateCardValid">
+                        Ratecard Name is required
+                    </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="rateCardSearchForm.get('ratecardname').hasError('pattern') && rateCardValid">
+                        Ratecard Name is not valid input
+                    </span>
+                </section>
+            </div>
+        </div>
+        <div class="col-5" *ngIf="rateCardSearchForm.get('ratecardid').value != ''">
+            <div class="form-group date-div">
+                <label>Effective Date & Time from (IST) (HH:MM:SS => 00:00:00)</label>
+                <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)"></app-calendar-picker>
+            </div>
+        </div>
+        <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'country'">
+            <div class="form-group">
+                <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''" class="btn erp-intl-btn">
+                    Assign RateCard</button>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''" class="btn erp-intl-btn">
+                    Create RateCard</button>
+            </div>
+        </div>
+        <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'country-operator'">
+            <div class="form-group">
+                <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''" class="btn erp-intl-btn">
+                    Assign RateCard</button>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''" class="btn erp-intl-btn">
+                    Create RateCard</button>
+            </div>
+        </div>
+        <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'flat-fixed'">
+            <div class="form-group">
+                <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''" class="btn erp-intl-btn">
+                    Assign RateCard</button>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''" class="btn erp-intl-btn">
+                    Create RateCard</button>
+            </div>
+        </div>
+        <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'group'">
+            <div class="form-group">
+                <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''" class="btn erp-intl-btn">
+                    Assign RateCard</button>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''" class="btn erp-intl-btn">
+                    Create RateCard</button>
+            </div>
+        </div>
+        <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'slab'">
+            <div class="form-group">
+                <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''" class="btn erp-intl-btn">
+                    Assign RateCard</button>
+                <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''" class="btn erp-intl-btn">
+                    Create RateCard</button>
+            </div>
         </div>
     </div>
-    <div class="col-4">
-        <div class="form-group dark-date-time-div">
-            <label>Effective Date & Time from</label>
-            <app-date-time-picker></app-date-time-picker>
-        </div>
-    </div>
-    <div class="col-12 text-center">
-        <div class="form-group" *ngIf="rateCardType === 'country'">
-            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
-            <a routerLink="/billplan-management/postpaid/country/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
-        </div>
-    </div>
-    <div class="col-12 text-center">
-        <div class="form-group" *ngIf="rateCardType === 'country-operator'">
-            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
-            <a routerLink="/billplan-management/postpaid/country-operator/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
-        </div>
-    </div>
-    <div class="col-12 text-center">
-        <div class="form-group" *ngIf="rateCardType === 'flat-fixed'">
-            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
-            <a routerLink="/billplan-management/postpaid/flat-fixed/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
-        </div>
-    </div>
-    <div class="col-12 text-center">
-        <div class="form-group" *ngIf="rateCardType === 'group'">
-            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
-            <a routerLink="/billplan-management/postpaid/group/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
-        </div>
-    </div>
-    <div class="col-12 text-center">
-        <div class="form-group" *ngIf="rateCardType === 'slab'">
-            <a routerLink="/billplan-management/home"  class="btn btn-basic mr-3">Cancel</a>
-            <a routerLink="/billplan-management/postpaid/slab/create-ratecard" class="btn erp-intl-btn">Assign RateCard</a>
-        </div>
-    </div>
-</div>
+</form>
+
 
 <div class="main-container table-responsive">
     <table class="table table-borderless erp-list-table">
@@ -91,48 +138,38 @@
             </tr>
         </thead>
         <tbody>
-            <tr>   
+            <tr *ngFor="let item of billPlanDetailsViewData?.data.tabledata">
                 <td class="font-weight-semi-bold">
-                    <a *ngIf="rateCardType === 'country'" routerLink="/billplan-management/postpaid/country/assigned-ratecard-view">Test Name123 country</a>
-                    <a *ngIf="rateCardType === 'country-operator'" routerLink="/billplan-management/postpaid/country/assigned-ratecard-view">Test Name123 country+operator</a>
-                    <a *ngIf="rateCardType === 'flat-fixed'" routerLink="/billplan-management/postpaid/flat-fixed/assigned-ratecard-view">Test Name123 flat+fixed</a>
-                    <a *ngIf="rateCardType === 'group'" routerLink="/billplan-management/postpaid/group/assigned-ratecard-view">Test Name123 group</a>
-                    <a *ngIf="rateCardType === 'slab'" routerLink="/billplan-management/postpaid/slab/assigned-ratecard-view">Test Name123 slab</a>
-                </td> 
-                <td>Group</td>
-                <td>28/10/2019 | Present</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid delete-icon" alt="delete icon" /></td>
-            </tr>
-            <tr class="scheduled-rate-card">
-                <td class="font-weight-semi-bold">
-                    <a *ngIf="rateCardType === 'country'" routerLink="/billplan-management/postpaid/country/assigned-ratecard-view">Test Name123 country</a>
-                    <a *ngIf="rateCardType === 'country-operator'" routerLink="/billplan-management/postpaid/country/assigned-ratecard-view">Test Name123 country+operator</a>
-                    <a *ngIf="rateCardType === 'flat-fixed'" routerLink="/billplan-management/postpaid/flat-fixed/assigned-ratecard-view">Test Name123 flat+fixed</a>
-                    <a *ngIf="rateCardType === 'group'" routerLink="/billplan-management/postpaid/group/assigned-ratecard-view">Test Name123 group</a>
-                    <a *ngIf="rateCardType === 'slab'" routerLink="/billplan-management/postpaid/slab/assigned-ratecard-view">Test Name123 slab</a>
-                </td> 
-                <td>Group</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
-                <td><img src="assets/icons/delete-icon.svg" class="img-fluid delete-icon" alt="delete icon" /></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">
-                    <a *ngIf="rateCardType === 'country'" routerLink="/billplan-management/postpaid/country/assigned-ratecard-view">Test Name123 country</a>
-                    <a *ngIf="rateCardType === 'country-operator'" routerLink="/billplan-management/postpaid/country/assigned-ratecard-view">Test Name123 country+operator</a>
-                    <a *ngIf="rateCardType === 'flat-fixed'" routerLink="/billplan-management/postpaid/flat-fixed/assigned-ratecard-view">Test Name123 flat+fixed</a>
-                    <a *ngIf="rateCardType === 'group'" routerLink="/billplan-management/postpaid/group/assigned-ratecard-view">Test Name123 group</a>
-                    <a *ngIf="rateCardType === 'slab'" routerLink="/billplan-management/postpaid/slab/assigned-ratecard-view">Test Name123 slab</a>
-                </td>  
-                <td>Group</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
+                    <a *ngIf="item.ratecardtype === 'country' || item.ratecardtype === 'Country'"
+                        [routerLink]="['/billplan-management/postpaid/country/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        {{item.ratecardname}}
+                    </a>
+                    <a *ngIf="item.ratecardtype === 'country-operator'"
+                        [routerLink]="['/billplan-management/postpaid/country-operator/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        {{item.ratecardname}}
+                    </a>
+                    <a *ngIf="item.ratecardtype === 'flat-fixed'"
+                        [routerLink]="['/billplan-management/postpaid/flat-fixed/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        {{item.ratecardname}}
+                    </a>
+                    <a *ngIf="item.ratecardtype === 'group' || item.ratecardtype === 'Group'"
+                        [routerLink]="['/billplan-management/postpaid/group/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        {{item.ratecardname}}
+                    </a>
+                    <a *ngIf="item.ratecardtype === 'slab' || item.ratecardtype === 'Slab'"
+                        [routerLink]="['/billplan-management/postpaid/slab/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        {{item.ratecardname}}
+                    </a>
+                </td>
+                <td>{{item.ratecardtype}}</td>
+                <td>{{item.fromeffectivedate}} | Present</td>
+                <td>{{item.uploaddate}} | {{item.uploadtime}}</td>
+                <td>{{item.uploaduser}}</td>
+                <td>
+                    <img *ngIf="item.deleteenabled" (click)="delete(item.billplanid, item.ratecardid)"
+                        src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon" />
+                </td>
             </tr>
         </tbody>
     </table>
 </div>
-

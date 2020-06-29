@@ -10,15 +10,15 @@ import { CountryOperatorListComponent } from './country-operator-list/country-op
 
 const CMroutes: Routes = [
     {
-      path: 'customer-management/customer-management-view',
+      path: 'customer-management/customer-management-view/:id',
       component: CmViewComponent
     },
     {
-      path: 'customer-management/customer-management-edit',
+      path: 'customer-management/customer-management-edit/:esmeaddr',
       component: CmEditComponent
     },
     {
-      path: 'customer-management/customer-management-view-log',
+      path: 'customer-management/customer-management-view-log/:id/:name',
       component: CmViewLogComponent
     },
     {
@@ -30,7 +30,7 @@ const CMroutes: Routes = [
       component: CmShowMarginComponent
     },
     {
-      path: 'customer-management/allowed-country-operator-list',
+      path: 'customer-management/allowed-country-operator-list/:id',
       component: CountryOperatorListComponent
     },
 

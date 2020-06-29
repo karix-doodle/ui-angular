@@ -11,10 +11,18 @@ import { SharedComponent } from './shared.component';
 import { CalendarPickerComponent } from './calendar-picker/calendar-picker.component';
 import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { SortPipe } from './pipes/sort.pipe';
+import { ServicesModule } from './services/services.module';
 
 
 @NgModule({
-  declarations: [SharedComponent, CalendarPickerComponent, DateTimePickerComponent, FilterPipe],
+  declarations: [
+    SharedComponent,
+    CalendarPickerComponent,
+    DateTimePickerComponent,
+    FilterPipe,
+    SortPipe
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,7 +33,13 @@ import { FilterPipe } from './pipes/filter.pipe';
       separator: ' - ',
       applyLabel: 'Apply',
     }),
+    ServicesModule
   ],
-  exports: [CalendarPickerComponent, DateTimePickerComponent, FilterPipe]
+  exports: [
+    CalendarPickerComponent,
+    DateTimePickerComponent,
+    FilterPipe,
+    SortPipe
+  ]
 })
 export class SharedModule { }

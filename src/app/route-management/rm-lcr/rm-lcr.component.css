@@ -1,16 +1,30 @@
     /*lcr route management*/
     .lcr-popup-card,
-    .lcr-popup-card .card-header{
-        background-color:#E9EDF4;
+    .lcr-popup-card .card-header {
+        background-color: #E9EDF4;
     }
-    .lcr-popup-card .card-header{
-        font-weight:bold;
-        text-align:center;
-        border-bottom-color:#fff;
+
+    .lcr-popup-card .card-header {
+        font-weight        : bold;
+        text-align         : center;
+        border-bottom-color: #fff;
     }
-    .gt-badges{
-        margin-right:5px;
-        border:none;
-        border-radius:5px;
+
+    .gt-badges {
+        margin-right : 5px;
+        border       : none;
+        border-radius: 5px;
     }
-    
+
+    td {
+        cursor: pointer;
+    }
+
+    /* .gt-preview-modal .modal-dialog {
+        width          : 100% !important;
+        min-width      : 1000px !important;
+        display        : flex !important;
+        align-items    : center !important;
+        justify-content: space-evenly !important;
+        height         : 100% !important;
+    } */

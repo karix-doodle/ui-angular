@@ -1,124 +1,266 @@
 <div class="row btm-border">
-    <div class="col-8 pt-10">
-        <label class="main-heading">
-        <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
-        <span><a routerLink="/route-management/custom-route/mobile"> CUSTOM ROUTE - MOBILE /</a> CREATE NEW</span>
+  <div class="col-8 pt-10">
+    <label class="main-heading">
+      <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
+    <span><a routerLink="/route-management/custom-route/mobile">
+        CUSTOM ROUTE - MOBILE /</a>
+      CREATE NEW</span>
+  </div>
+  <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
+    <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
+      Mobile Number
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
+      <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-route">SenderID +
+        Template</a>
+      <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-mobile-route">Mobile +
+        SenderID</a>
     </div>
-    <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
-        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
-            Mobile Number</button>
-        <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-            <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-route">SenderID + Template</a>
-            <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-mobile-route">Mobile + SenderID</a>
-        </div>
-
-    </div>
+  </div>
 </div>
-<div class="main-container p-4">
-
-    <mat-radio-group class="mat-radio-group" (change)="changeComboo($event)" [(ngModel)]="accountType">
+<div *ngIf="authService.authorizationState.route_mgmt.customroute_mobilenumber_add_route_enabled">
+  <div class="main-container p-4">
+    <form [formGroup]="mobileRouteForm" (ngSubmit)="addMobileRoute()">
+      <mat-radio-group class="mat-radio-group" formControlName="whitelist_type"
+        (change)="cMobileUpload = null; fileData = null; onChange()">
         <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
-            {{labelname}}
+          {{ labelname }}
         </mat-radio-button>
-    </mat-radio-group>
+      </mat-radio-group>
 
+      <div class="input-container">
+        <!-- Global -->
+        <div *ngIf="control['whitelist_type'].value == 'Global'">
+          <div class="create-custom-route-div">
+            <div class="row">
+              <div class="form-group col-4">
+                <label>Mobile Number</label>
+                <input type="text" formControlName="mobile" class="form-control" placeholder="Enter Mobile Number" />
 
-    <div class="input-container">
-        <div *ngIf="accountType=='Global'">
-            <div class="create-custom-route-div">
-                <div class="row">
-                    <div class=" form-group col-4">
-                        <label>Mobile Number</label>
-                        <input type="text" class="form-control" placeholder="Enter Mobile Number" />
-                    </div>
-
-                    <div class=" form-group col-4">
-                        <label>Primary Gateway</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>Select Primary Gateway</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Fallback Gateway</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>Select Fallback Gateway</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-
+                <div *ngIf="
+                  control.mobile.errors &&
+                  (submitted || control.mobile.touched || control.mobile.dirty)
+                " class="text-danger">
+                  <div *ngIf="control.mobile.errors.required">
+                    Mobile Number is required
+                  </div>
+                  <div *ngIf="control.mobile.errors.pattern">
+                    Invalid Mobile Number.
+                  </div>
                 </div>
-            </div>
-            <div class="row p-3">
-                <label class="w-100">Add File List</label>
-                <div class="form-group">
-                    <div class="upload-btn-wrapper">
-                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Excel file to upload</button>
-                        <input type="file" name="" />
-                    </div>
+              </div>
+
+              <div class="form-group col-4">
+                <label>Primary Gateway</label>
+                <select class="dropdown-select w-100" formControlName="primary_gw_id">
+                  <option value="null" disabled>Select Primary Gateway</option>
+                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
+                    control.fallback_gw_id.value &&
+                    gateway.gw_id === control.fallback_gw_id
+                  ">
+                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
+                    {{ gateway.gw_name }}
+                  </option>
+                </select>
+
+                <div *ngIf="
+                  control.primary_gw_id.errors &&
+                  (submitted ||
+                    control.primary_gw_id.touched ||
+                    control.primary_gw_id.dirty)
+                " class="text-danger">
+                  <div *ngIf="control.primary_gw_id.errors.required">
+                    Primary Gateway is required
+                  </div>
                 </div>
+              </div>
+              <div class="form-group col-4">
+                <label>Fallback Gateway</label>
+                <select class="dropdown-select w-100" formControlName="fallback_gw_id">
+                  <option value="null" disabled>Select Fallback Gateway</option>
+                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
+                    control.primary_gw_id.value &&
+                    gateway.gw_id === control.primary_gw_id.value
+                  ">
+                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
+                    {{ gateway.gw_name }}
+                  </option>
+                </select>
+
+                <div *ngIf="
+                  control.fallback_gw_id.errors &&
+                  (submitted ||
+                    control.fallback_gw_id.touched ||
+                    control.fallback_gw_id.dirty)
+                " class="text-danger">
+                  <div *ngIf="control.fallback_gw_id.errors.required">
+                    Fallback Gateway is required
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-12 text-center">
-                <input type="reset" class="btn btn-basic mr-3" value="Cancel">
-                <input type="submit" class="btn erp-intl-btn save-btn" value="Add Route">
+          </div>
+          <div class="row p-3">
+            <label class="w-100">Add File List</label>
+            <div class="form-group">
+              <div class="upload-btn-wrapper">
+                <button type="button" class="upload-btn">
+                  <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                  Browse Excel file to upload
+                  <input type="file" accept=".xlsx,.xls" (change)="fileUpload($event)" />
+                </button>
+                <span class="m-2" *ngIf="cMobileUpload">
+                  {{ cMobileUpload
+                }}<i class="fa fa-times m-1" (click)="cMobileUpload = null; fileData = null" style="cursor: pointer;"
+                    title="Remove File"></i>
+                </span>
+              </div>
             </div>
+          </div>
+          <div class="row">
+            <label class="col-12">Comments</label>
+            <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4" formControlName="comments"></textarea>
+          </div>
+          <div class="col-12 text-center mt-4">
+            <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
+              Cancel
+            </button>
+            <button type="submit" class="btn erp-intl-btn save-btn">
+              Add Route
+            </button>
+          </div>
         </div>
-        <div *ngIf="accountType=='Account'">
-            <div class="create-custom-route-div">
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label>Mobile Number</label>
-                        <input type="text" class="form-control" placeholder="Enter Mobile Number" />
-                    </div>
-                    <div class=" form-group col-4">
-                        <label>ESME Address</label>
-                        <input type="text" class="form-control" placeholder="Enter ESME Addr." />
-                    </div>
 
-                </div>
-                <div class="row">
-                    <div class=" form-group col-4">
-                        <label>Primary Gateway</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>Select Primary Gateway</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-4">
-                        <label>Fallback Gateway</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>Select Fallback Gateway</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
+        <!-- Account -->
+        <div *ngIf="control['whitelist_type'].value === 'Account'">
+          <div class="create-custom-route-div">
+            <div class="row">
+              <div class="form-group col-4">
+                <label>Mobile Number</label>
+                <input type="text" formControlName="mobile" class="form-control" placeholder="Enter Mobile Number" />
 
+                <div *ngIf="
+                  control.mobile.errors &&
+                  (submitted || control.mobile.touched || control.mobile.dirty)
+                " class="text-danger">
+                  <div *ngIf="control.mobile.errors.required">
+                    Mobile Number is required
+                  </div>
+                  <div *ngIf="control.mobile.errors.pattern">
+                    Invalid Mobile Number.
+                  </div>
                 </div>
-            </div>
-            <div class="row px-3 pt-2">
-                <label class="w-100">Add File List</label>
-                <div class="form-group">
-                    <div class="upload-btn-wrapper">
-                        <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Excel file to upload</button>
-                        <input type="file" name="" />
-                    </div>
+              </div>
+              <div class="form-group col-4">
+                <label>ESME Address</label>
+                <input type="text" class="form-control" placeholder="Enter ESME Addr." formControlName="esmeaddr" />
+
+                <div *ngIf="
+                  control.esmeaddr.errors &&
+                  (submitted ||
+                    control.esmeaddr.touched ||
+                    control.esmeaddr.dirty)
+                " class="text-danger">
+                  <div *ngIf="control.esmeaddr.errors.required">
+                    ESME Address is required
+                  </div>
+                  <div *ngIf="control.esmeaddr.errors.pattern">
+                    Invalid ESME Address.
+                  </div>
                 </div>
+              </div>
             </div>
             <div class="row">
-                <label class="col-12">Comments</label>
-                <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4"></textarea>
+              <div class="form-group col-4">
+                <label>Primary Gateway</label>
+                <select class="dropdown-select w-100" formControlName="primary_gw_id">
+                  <option value="null" disabled>Select Primary Gateway</option>
+                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
+                    control.fallback_gw_id &&
+                    gateway.gw_id === control.fallback_gw_id.value
+                  ">
+                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
+                    {{ gateway.gw_name }}
+                  </option>
+                </select>
+
+                <div *ngIf="
+                  control.primary_gw_id.errors &&
+                  (submitted ||
+                    control.primary_gw_id.touched ||
+                    control.primary_gw_id.dirty)
+                " class="text-danger">
+                  <div *ngIf="control.primary_gw_id.errors.required">
+                    Primary Gateway is required
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-4">
+                <label>Fallback Gateway</label>
+                <select class="dropdown-select w-100" formControlName="fallback_gw_id">
+                  <option value="null" disabled>Select Fallback Gateway</option>
+                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
+                    control.primary_gw_id.value &&
+                    gateway.gw_id === control.primary_gw_id.value
+                  ">
+                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
+                    {{ gateway.gw_name }}
+                  </option>
+                </select>
+
+                <div *ngIf="
+                  control.fallback_gw_id.errors &&
+                  (submitted ||
+                    control.fallback_gw_id.touched ||
+                    control.fallback_gw_id.dirty)
+                " class="text-danger">
+                  <div *ngIf="control.fallback_gw_id.errors.required">
+                    Fallback Gateway is required
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-12 text-center mt-4">
-                <input type="reset" class="btn btn-basic mr-3" value="Cancel">
-                <input type="submit" class="btn erp-intl-btn save-btn" value="Add Route">
+          </div>
+          <div class="row px-3 pt-2">
+            <label class="w-100">Add File List</label>
+            <div class="form-group">
+              <div class="upload-btn-wrapper">
+                <button type="button" class="upload-btn">
+                  <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                  Browse Excel file to upload
+                  <input type="file" accept=".xlsx,.xls" (change)="fileUpload($event)" />
+                </button>
+                <span class="m-2" *ngIf="cMobileUpload">
+                  {{ cMobileUpload
+                }}<i class="fa fa-times m-1" (click)="cMobileUpload = null; fileData = null" style="cursor: pointer;"
+                    title="Remove File"></i>
+                </span>
+              </div>
             </div>
+          </div>
+          <div class="row">
+            <label class="col-12">Comments</label>
+            <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4" formControlName="comments"></textarea>
+          </div>
+          <div class="col-12 text-center mt-4">
+            <button type="reset" class="btn btn-basic mr-3" (click)="cancel()">
+              Cancel
+            </button>
+            <button type="submit" class="btn erp-intl-btn save-btn">
+              Add Route
+            </button>
+          </div>
         </div>
-    </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="pt-3 center-block h-100"
+  *ngIf="!authService.authorizationState.route_mgmt.customroute_mobilenumber_add_route_enabled">
+  <div class="d-block">
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
+  </div>
 </div>

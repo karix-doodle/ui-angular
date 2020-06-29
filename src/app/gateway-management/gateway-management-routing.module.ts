@@ -13,63 +13,73 @@ import { GtFileAuditLogComponent } from './gt-file-audit-log/gt-file-audit-log.c
 import { GtFileAuditLogViewComponent } from './gt-file-audit-log-view/gt-file-audit-log-view.component';
 import { GtCountryListViewLogComponent } from './gt-country-list-view-log/gt-country-list-view-log.component';
 import { GtSenderIdWhiteListComponent } from './gt-sender-id-white-list/gt-sender-id-white-list.component';
+import { GtSenderidContentComponent } from './gt-senderid-content/gt-senderid-content.component';
+import { GtESMEAddrRoutedComponent } from './gt-esmeaddr-route/gt-esmeaddr-route.component';
 
 
-const GMroutes: Routes =   [ 
+const GMroutes: Routes = [
   {
     path: 'gateway-management',
     component: GtListingComponent
   },
   {
-  path: 'gateway-management',
-  component: GatewayManagementComponent,
-  children: [
-    {
-      path: 'gateway-list',
-      component: GtListingComponent
-    },
-    {
-      path: 'create-gateway',
-      component: CreateGatewayComponent
-    },
-    {
-      path: 'edit-gateway',
-      component: EditGatewayComponent
-    },
-    {
-      path: 'update-gateway',
-      component: UpdateGatewayComponent
-    },
-    {
-      path: 'gateway-details',
-      component: GatewayDetailsComponent
-    },
-    {
-      path: 'country-list',
-      component: GtCountrylistComponent
-    },
-    {
-      path: 'country-list-view',
-      component: GtCountryListViewLogComponent
-    },
-    {
-      path: 'details-view-log',
-      component: GtDetailsViewLogComponent
-    },
-    {
-      path: 'file-audit-log',
-      component: GtFileAuditLogComponent
-    },
-    {
-      path: 'file-audit-log-view',
-      component: GtFileAuditLogViewComponent
-    },
-    {
-      path: 'sender-id-whitelist',
-      component: GtSenderIdWhiteListComponent
-    },
-  ]
-}
+    path: 'gateway-management',
+    component: GatewayManagementComponent,
+    children: [
+      {
+        path: 'gateway-list',
+        component: GtListingComponent
+      },
+      {
+        path: 'create-gateway',
+        component: CreateGatewayComponent
+      },
+      {
+        path: 'edit-gateway/:id',
+        component: EditGatewayComponent
+      },
+      {
+        path: 'update-gateway/:id/:name/:currencyId',
+        component: UpdateGatewayComponent
+      },
+      {
+        path: 'gateway-details/:id',
+        component: GatewayDetailsComponent
+      },
+      {
+        path: 'country-list/:id/:name',
+        component: GtCountrylistComponent
+      },
+      {
+        path: 'country-list-view/:id/:name/:country/:operator',
+        component: GtCountryListViewLogComponent
+      },
+      {
+        path: 'details-view-log/:id/:name',
+        component: GtDetailsViewLogComponent
+      },
+      {
+        path: 'file-audit-log/:id/:name',
+        component: GtFileAuditLogComponent
+      },
+      {
+        path: 'file-audit-log-view/:id/:name/:uuid',
+        component: GtFileAuditLogViewComponent
+      },
+      {
+        path: 'sender-id-whitelist/:id/:name',
+        component: GtSenderIdWhiteListComponent
+      },
+      {
+        path: 'esme-addr-routed/:id/:name',
+        component: GtESMEAddrRoutedComponent
+      },
+      {
+        path: 'senderid-content-block/:id/:name',
+        component: GtSenderidContentComponent
+      },
+    ]
+  }
 
 ];
 

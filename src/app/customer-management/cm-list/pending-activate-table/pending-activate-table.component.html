@@ -1,3 +1,15 @@
+<div class="row btm-border second-row-pr">
+    <div class="col-7 mt-2">
+        <label class="mr-2"><b>Total ESME Addr.</b></label>
+        <span class="border-right">&nbsp;</span>
+        <span class="ml-3 badge badge-dark"><b>{{usersData?.data.pendingesmelists.length}}</b></span>
+    </div>
+  
+    <div class="col-5 text-right">
+        <input type="search" class="form-control" placeholder="&#xf002; Search by ESME Addr., Username" name="searchvalue"
+        [(ngModel)]="searchvalue" />
+    </div>
+</div>
 <div class="main-container table-responsive">
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
@@ -7,37 +19,26 @@
                 <th>Org. Name</th>
                 <th>Intl Route Type</th>
                 <th>Sales Person Name</th>
-                <th>Submission Date & Time<i class="fa fa-caret-down"></i></th>
+                <th class="cursor-pointer" (click)="sort('submissiondateandtime')">Submission Date & Time
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='submissiondateandtime' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='submissiondateandtime' && !isDesc}"></i>
+                </th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
-                <td>usrname</td>
-                <td>xxx xxx xxx</td>
-                <td>Direct</td>
-                <td>Nawal</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td><a routerLink="/customer-management/customer-management-edit"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+            <tr *ngFor="let user of usersData?.data.pendingesmelists | filter: { esmeaddr: searchvalue, username: searchvalue } | sort: sortingName: isDesc">
+                <td class="font-weight-semi-bold">{{user.esmeaddr}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.orgname}}</td>
+                <td>{{user.intl_routetype}}</td>
+                <td>{{user.salespersonname}}</td>
+                <td>{{user.submissiondateandtime}}</td>
+                <td><a routerLink="/customer-management/customer-management-edit/{{user.esmeaddr}}"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
-                <td>usrname</td>
-                <td>xxx xxx xxx</td>
-                <td>Direct</td>
-                <td>Nawal</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td><a routerLink="/customer-management/customer-management-edit"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">70000 100000011</a></td>
-                <td>usrname</td>
-                <td>xxx xxx xxx</td>
-                <td>Direct</td>
-                <td>Nawal</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td><a routerLink="/customer-management/customer-management-edit"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+            <tr *ngIf="usersData?.data.pendingesmelists.length == 0">
+                <td colspan="7" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
     </table>

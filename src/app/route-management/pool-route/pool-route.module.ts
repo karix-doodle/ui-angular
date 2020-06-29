@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatStepperModule, MatInputModule, MatButtonModule} from '@angular/material'
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatStepperModule, MatInputModule, MatButtonModule } from '@angular/material'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PoolRouteRoutingModule } from './pool-route-routing.module';
 import { PoolRouteComponent } from './pool-route.component';
@@ -12,20 +12,28 @@ import { CreatePoolComponent } from './create-pool/create-pool.component';
 import { PoolRouteListComponent } from './pool-route-list/pool-route-list.component';
 import { RouteStepperFormComponent } from './route-stepper-form/route-stepper-form.component';
 import { PrActWiseViewComponent } from './pr-act-wise-view/pr-act-wise-view.component';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
-  declarations: [PoolRouteComponent, CreatePoolComponent, PoolRouteListComponent, RouteStepperFormComponent, PrActWiseViewComponent],
+  declarations: [
+    PoolRouteComponent,
+    CreatePoolComponent,
+    PoolRouteListComponent,
+    RouteStepperFormComponent,
+    PrActWiseViewComponent
+  ],
   imports: [
     CommonModule,
     PoolRouteRoutingModule,
+    BrowserModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatStepperModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatStepperModule, MatInputModule, MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule
+    MatInputModule,
+    MatButtonModule
   ],
   exports: [RouteStepperFormComponent]
 

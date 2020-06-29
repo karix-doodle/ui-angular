@@ -1,109 +1,119 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_listing_enabled">
     <div class="col-8">
         <label class="main-heading">GATEWAY MANAGEMENT</label>
     </div>
     <div class="col-4 text-right">
-        <a routerLink="/gateway-management/create-gateway" routerLinkActive="active" class="btn erp-intl-btn">Create Gateway</a>
+        <a [routerLink]="GtMgmtAuthControls.gw_create_enabled ? ['create-gateway'] : []" class="btn erp-intl-btn">Create
+            Gateway</a>
     </div>
 </div>
-<div class="row btm-border second-row-det">
-    <div class="col-7">
+<div class="row btm-border second-row-det" *ngIf="GtMgmtAuthControls.gw_listing_enabled">
+    <div class="col-6">
         <div class="row">
             <div class="col-12">
                 <label class="mr-2"><b>Total</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{gatewayData?.data.total}}</b></span>
             </div>
         </div>
         <div class="row gateway-count">
             <div class="col-3">
-                <label>Premium <span class="badge badge-dark"><b>290</b></span>
+                <label>Premium <span class="badge badge-dark"><b>{{gatewayData?.data.premium}}</b></span>
                 </label>
             </div>
             <div class="col-3 gateway-detail">
-                <label>Direct <span class="badge badge-dark"><b>290</b></span></label>
+                <label>Direct <span class="badge badge-dark"><b>{{gatewayData?.data.direct}}</b></span></label>
             </div>
             <div class="col-3 gateway-detail">
-                <label>Wholesale <span class="badge badge-dark"><b>290</b></span></label>
+                <label>Wholesale <span class="badge badge-dark"><b>{{gatewayData?.data.wholesale}}</b></span></label>
             </div>
         </div>
     </div>
-    <div class="col-1 mt-1 w-100">
-        <select class="dropdown-select w-100 fa">
-            <option value="" default> &#xf1de;</option>
-            <option value="" default>option1 </option>
-            <option value="" default>option2 </option>
+    <div class="col-2 mt-1 w-100">
+        <select #type class="dropdown-select w-100 fa cursor-pointer" (change)="selectType(type.value)">
+            <option value="All" default>All</option>
+            <option value="Recently Modified">Recently Modified</option>
+            <option value="Direct">Direct</option>
+            <option value="premium">Premium</option>
+            <option value="Wholesale">Wholesale</option>
+            <option value="Only Active">Only Active</option>
+            <option value="Only InActive">Only InActive</option>
         </select>
     </div>
     <div class="col-3 text-right mt-1">
         <div class="form-group">
-            <input type="search" class="form-control" placeholder="&#xf002; Search by ID, Name" />
+            <input type="search" class="form-control" placeholder="&#xf002; Search by ID, Name" name="searchvalue"
+                [(ngModel)]="searchvalue" />
         </div>
     </div>
     <div class="col-1">
-        <button class="icon-btn" href="#"><i aria-hidden="true" class="fa fa-download"></i></button>
+        <span class="icon-btn" (click)="downloadGatewayFile()">
+            <i aria-hidden="true" class="fa fa-download cursor-pointer"></i>
+        </span>
     </div>
 
 </div>
-<div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
+<div class="main-container table-responsive" *ngIf="GtMgmtAuthControls.gw_listing_enabled">
+    <table class="table table-borderless erp-list-table row-hover-effect mb-0">
         <thead>
             <tr>
                 <th>Gateway ID</th>
                 <th>Name</th>
-                <th>Type<i class="fa fa-caret-down"></i></th>
-                <th>Last Modified Date & Time<i class="fa fa-caret-down"></i></th>
-                <th>Price Updated On<i class="fa fa-caret-down"></i></th>
+                <th class="cursor-pointer" (click)="sort('gw_type')">Type
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='gw_type' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='gw_type' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('lastdate')">Last Modified Date & Time
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='lastdate' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='lastdate' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('pricedate')">Price Updated On
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='pricedate' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='pricedate' && !isDesc}"></i>
+                </th>
                 <th>Status (Active/ Inactive)</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-bold"><a routerLink="/gateway-management/gateway-details/">NX</a></td>
-                <td>Nexmo</td>
-                <td>Premium</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>28/10/2019 | 23:25:00</td>
+            <tr
+                *ngFor="let item of gatewayData?.data.tabledata | filter: { gw_id: searchvalue, gw_name: searchvalue } | sort: sortingName: !isDesc">
+                <td class="font-weight-bold">
+                    <a [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_view_enabled ? null : true }"
+                        [routerLink]="GtMgmtAuthControls.gw_view_enabled ? ['/gateway-management/gateway-details/', item.gw_id] : []">
+                        {{item.gw_id}}
+                    </a>
+                </td>
+                <td>{{item.gw_name}}</td>
+                <td>{{item.gw_type}}</td>
+                <td>{{item.lastdate }} {{item.lastdate && item.lasttime ? '|' : '-'}} {{item.lasttime}}</td>
+                <td>{{item.pricedate }} {{item.pricedate && item.pricetime ? '|' : '-'}} {{item.pricetime}}</td>
                 <td>
                     <div class="form-group text-center">
                         <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
+                            <input type="checkbox" [(ngModel)]="item.status"
+                                [disabled]="!GtMgmtAuthControls.gw_change_status_enabled"
+                                (click)="GtMgmtAuthControls.gw_change_status_enabled ? handleStatus(item.gw_id, item.gw_name, item.status) : ''"
+                                class="switch-btn" [checked]="item.status === 1">
+                            <span class="slider round"
+                                [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_change_status_enabled ? null : true }"></span>
                         </label>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td class="font-weight-bold">NX</td>
-                <td>Message Bird</td>
-                <td>Wholesale</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>
-                    <div class="form-group text-center">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn" checked>
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="font-weight-bold">NX</td>
-                <td>Tanla</td>
-                <td>Direct</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>
-                    <div class="form-group text-center">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </td>
+            <tr *ngIf="gatewayData?.data.tabledata.length == 0">
+                <td colspan="6" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
     </table>
 </div>
-
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_listing_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
+</div>

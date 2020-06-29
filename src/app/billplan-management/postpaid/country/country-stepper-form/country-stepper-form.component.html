@@ -1,164 +1,177 @@
+
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-            <section class="mb-2">
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup" (ngSubmit)="addToParentForm()">
+      <section class="mb-2">
+        <div class="gt-ratio-div">
 
-                <div class="gt-ratio-div">
-                    <div class="row mb-2">
-                        <div class="col-10">
-                            <div class="row">
-                                <div class="col-4 mb-2">
-                                    <label>Country</label>
-                                    <select class="dropdown-select w-100">
-                                        <option value="" default>Select Country</option>
-                                        <option value="">option1</option>
-                                        <option value="">option2</option>
-                                        <option value="">option3</option>
-                                    </select>
-                                </div>
-                                <div class="col-4 mb-2">
-                                    <label>Billing Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="Enter Rate" />
-                                    </div>
-                                </div>
-                                <div class="col-4 mb-2">
-                                    <label>Normalize Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="0.0678" />
-                                    </div>
-                                </div>
+          <div class="row mb-2">
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-10">
-                            <div class="row">
-                                <div class="col-4 mb-2">
-                                    <label>Country</label>
-                                    <select class="dropdown-select w-100">
-                                        <option value="" default>Select Country</option>
-                                        <option value="">option1</option>
-                                        <option value="">option2</option>
-                                        <option value="">option3</option>
-                                    </select>
-                                </div>
-                                <div class="col-4 mb-2">
-                                    <label>Billing Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="Enter Rate" />
-                                    </div>
-                                </div>
-                                <div class="col-4 mb-2">
-                                    <label>Normalize Rate (€)</label>
-                                    <div class="form-group">
-                                        <input type="search" class="form-control" id="" placeholder="0.0678" />
-                                    </div>
-                                </div>
+            <div  class="col-12" formArrayName="countries" *ngFor="let count of countryControl; let i = index">
+              <div class="row" [formGroupName]="i">
+                <div class="col-4 mb-2">
+                  <label>Country</label>
 
-                            </div>
-                        </div>
-                        <div class="col-2 add-div-btn">
-                            <button type="button" class="btn btn-light">+</button>
-                        </div>
-                    </div>
-
+                  <select class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode" #country
+                  (click)="handleCountryOperator( i, 'mcc', $event , country.value)">
+                    <option value="null" disabled>Select country</option>
+                    <option *ngFor="let cnt of billPlanCountryList" [attr.data-value]="cnt.mcc" [value]="cnt.country"
+                    [disabled]="cnt.isSelected == true">
+                      {{ cnt.country }}
+                    </option>
+                  </select>
+                  <span class="text-danger pl-1 f-12"
+                  *ngIf="count.get('country_name').hasError('required') && Submitted">
+                  Country Name is required
+              </span>
                 </div>
-            </section>
-            <div>
-
-            </div>
-            <div class="row mt-4 create-route-section">
-                <div class="col-12 text-right save-form-div">
-                    <button class="btn btn-basic mr-3" mat-button>Cancel</button>
-                    <button class="btn erp-intl-btn" mat-button matStepperNext>Next</button>
+                <div class="col-4 mb-2">
+                  <label
+                  innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
+                  <div class="form-group">
+                    <input type="search" class="form-control"
+                        formControlName="billing_rate" maxlength="10" placeholder="Enter Rate" />
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="count.get('billing_rate').hasError('required') && Submitted">
+                        Billing Rate is required
+                    </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="count.get('billing_rate').hasError('pattern') && count.get('billing_rate').dirty">
+                        Please enter valid input
+                    </span>
                 </div>
+                </div>
+                <div class="col-4 mb-2">
+                  <label
+                innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
+                  <div class="form-group">
+                    <input type="number" class="form-control" disabled
+                        [value]="round(count.get('billing_rate').value, count)"
+                        formControlName="normalize_rate" placeholder="" />
+                </div>
+                </div>
+              </div>
             </div>
-        </form>
-    </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
-            <div class="main-container  second-form-div">
+          </div>
+        </div>
+
+      </section>
+
+      <div class="row mt-4 create-route-section">
+        <div class="col-6">
+          <button type="submit" class="btn btn-dark">
+            {{isEditMode ? 'UPDATE' : 'ADD NEW COUNTRY' }}
+          </button>
+        </div>
+        <div class="col-6 text-right save-form-div">
+          <button type="button"  class="btn btn-basic mr-3" mat-button  [routerLink]="['/billplan-management-postpaid/', parentForm.get('billplan_id').value]" >Cancel</button>
+          <button type="button"  class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
+            Next
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+   <mat-step [stepControl]="parentForm">
+    <form [formGroup]="parentForm" (ngSubmit)="onCountryFormSubmit(parentForm.value)">
+      <div class="main-container second-form-div">
+        <div class="row">
+            <label class="font-weight-bold col-12">REST OF THE WORLD (ROW)</label>
+            <div class="col-6 pr-0">
                 <div class="row">
-                    <label class="font-weight-bold col-12">REST OF THE WORLD (ROW)</label>
-                    <div class="col-6 pr-0">
-                        <div class="row">
-                            <div class=" form-group col-7 pr-0">
-                                <input type="radio" name="row" id="std-bp" checked>
-                                <label for="std-bp" class="radio-inline">Copy from Default Rate Card</label>
-                                <a routerLink="/settings/default-rate-card" class="ml-2"> <i class="fa fa-eye"></i></a>
-                            </div>
-                            <div class="form-group col-5 pr-0">
-                                <input type="radio" name="row" id="define-cr">
-                                <label for="define-cr" class="radio-inline">Define Custom Rate</label>
-                            </div>
-
-                        </div>
-
+                    <div class=" form-group col-7 pr-0">
+                        <input type="radio" name="ratetype_row" id="std-row" value="standard"
+                            formControlName="ratetype_row">
+                        <label for="std-row" class="radio-inline">Copy from Default Rate Card</label>
+                        <a target="_blank" routerLink="/settings/default-rate-card" class="ml-2"> <i
+                          class="fa fa-eye"></i></a>
                     </div>
-                    <div class="col-6 p-0 text-right f-14"><label class="font-weight-semi-bold">Note: If there is no specific ROW BillPlan, copy from Default Rate Card and Save</label></div>
-                </div>
-
-                <div class="gt-ratio-div">
-                    <div class="row mb-2">
-                        <div class="col-5 mb-2">
-                            <label>Billing Rate (€)</label>
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate" />
-                            </div>
-                        </div>
-                        <div class="col-5 mb-2">
-                            <label>Normalize Rate (€)</label>
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="0.0678" />
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row mt-3">
-                    <label class="font-weight-bold col-12">Discount in % or Amount in €</label>        
-                </div>
-                <div class="gt-ratio-div">
-                    <div class="row">
-                        <div class="col-6">
-                            <label>Discount Value</label>
-                            <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Discount" />
-                            </div>
-                        </div>
-                        <div class="col-2 discount-select">
-                            <select class="dropdown-select w-100">
-                                <option value="" default>%</option>
-                                <option value="">option1</option>
-                                <option value="">option2</option>
-                                <option value="">option3</option>
-                            </select>
-                        </div>
-  
-
-                    </div>
-
-                </div>
-
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <Label class="font-weight-bold">Description:</Label>
-                        <textarea rows="4" class="w-100" placeholder="Enter short Description here"></textarea>
-                    </div>
-                </div>
-
-                <div class="row mt-4 create-route-section">
-    
-                    <div class="col-12 text-center">
-                        <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
-                        <button class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
+                    <div class="form-group col-5 pr-0">
+                        <input type="radio" name="ratetype_row" id="custom-row" value="custom"
+                            formControlName="ratetype_row">
+                        <label for="custom-row" class="radio-inline">Define Custom Rate</label>
                     </div>
                 </div>
             </div>
+            <div class="col-6 p-0 text-right f-14"><label class="font-weight-semi-bold">Note: If there is no
+                    specific ROW BillPlan, copy from Default Rate Card and Save</label></div>
+        </div>
+        <div class="gt-ratio-div"  *ngIf="parentForm.get('ratetype_row').value === 'custom'">
+            <div class="row mb-2">
+                <div class="col-5 mb-2">
+                  <label
+                  innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
+                    <div class="form-group">
+                        <input type="search" class="form-control" id="" placeholder="Enter Rate"
+                            formControlName="billing_rate_row" maxlength="10" />
+                            <span class="text-danger pl-1 f-12"
+                    *ngIf="parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty">
+                    Please enter valid input
+                </span>
+                    </div>
 
-        </form>
-    </mat-step>
+                </div>
+                <div class="col-5 mb-2">
+                  <label
+                  innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
+                    <div class="form-group">
+                      <input type="number" class="form-control" disabled
+                      [value]="round(parentForm.get('billing_rate_row').value)"
+                      placeholder="0.0000" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+          <label class="font-weight-bold col-12"
+          innerHTML="Discount in % or Amount in {{currencySybmol.bCurrency.symbol}}"></label>
+        </div>
+        <div class="gt-ratio-div">
+          <div class="row">
+              <div class="col-6">
+                  <label>Discount Amount</label>
+                  <div class="form-group">
+                      <input type="text" class="form-control" id="" placeholder="Enter Discount"
+                          formControlName="discount_type"
+                          [attr.disabled]="parentForm.get('discount_type').value == '' ? true : null"
+                          formControlName="discount_rate" />
+                      <span class="text-danger pl-1 f-12"
+                          *ngIf="parentForm.get('discount_rate').hasError('pattern') && Psubmitted">
+                          Discount rate is not valid
+                      </span>
+                      <span class="text-danger pl-1 f-12"
+                          *ngIf="parentForm.get('discount_rate').hasError('required') && Psubmitted">
+                          Discount rate is required
+                      </span>
+                  </div>
+              </div>
+              <div class="col-6 discount-select">
+                  <select class="dropdown-select w-100" (change)="handleDiscountType()"
+                      formControlName="discount_type">
+                      <option value="" default>Select discount type</option>
+                      <option value="percentage" default>Percentage</option>
+                      <option value="unit">Unit</option>
+                  </select>
+              </div>
+          </div>
+      </div>
 
+        <div class="row mt-4">
+            <div class="col-12">
+                <Label class="font-weight-bold">Description:</Label>
+                <textarea rows="4" class="w-100" placeholder="Enter short Description here"
+                    formControlName="description"></textarea>
+            </div>
+        </div>
+
+        <div class="row mt-4 create-route-section">
+            <div class="col-12 text-center">
+                <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
+                <button type="submit" class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
+            </div>
+        </div>
+    </div>
+
+    </form>
+  </mat-step>
 </mat-horizontal-stepper>

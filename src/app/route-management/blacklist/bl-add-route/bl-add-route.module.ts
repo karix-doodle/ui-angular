@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule, MatRadioModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { BlAddRouteRoutingModule } from './bl-add-route-routing.module';
@@ -16,6 +16,7 @@ import { BlSenderidRouteComponent } from './bl-senderid-route/bl-senderid-route.
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatInputModule,
     MatRadioModule,
     NgbModule,

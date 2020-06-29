@@ -1,7 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,7 +17,7 @@ import { SettingsModule } from './settings/settings.module';
 import { RouteManagementModule } from './route-management/route-management.module';
 import { CustomerManagementModule } from './customer-management/customer-management.module';
 import { BillplanManagementModule } from './billplan-management/billplan-management.module';
-
+import { ServiceModule } from './service/service.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,16 +30,18 @@ import { BillplanManagementModule } from './billplan-management/billplan-managem
     AppRoutingModule,
     NgbModule,
     FormsModule,
+    HttpClientModule,
     NgxDaterangepickerMd.forRoot({
-      separator: ' - ', 
+      separator: ' - ',
       applyLabel: 'Apply',
-  }),
+    }),
     SharedModule,
     GatewayManagementModule,
     RouteManagementModule,
     CustomerManagementModule,
     BillplanManagementModule,
-    SettingsModule
+    SettingsModule,
+    ServiceModule,
   ],
   exports: [],
   providers: [],

@@ -2,318 +2,216 @@
     <div class="col-12">
         <label class="main-heading">
             <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
-        <span> LEAST COST ROUTING / </span>
+        <span> LEAST COST ROUTING </span>
     </div>
 
 </div>
-<div class="row second-row-det">
-    <div class="col-7">
-        <div class="row">
-            <div class="col-12">
-                <label class="mr-2"><b>Total Country</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+<div *ngIf="authorizationService.authorizationState.route_mgmt.lcr_list_enabled">
+    <div class="row second-row-det">
+        <div class="col-7">
+            <div class="row">
+                <div class="col-12">
+                    <label class="mr-2"><b>Total Country</b></label>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="ml-3 badge badge-dark"><b>{{LCRListRes?.data.countries_count}}</b></span>
+                </div>
             </div>
+            <div class="row gateway-count">
+                <div class="col-3">
+                    <label>Direct <span class="badge badge-dark"><b>{{LCRListRes?.data.direct}}</b></span>
+                    </label>
+                </div>
+                <div class="col-3 gateway-detail">
+                    <label>Premium <span class="badge badge-dark"><b>{{LCRListRes?.data.premium}}</b></span></label>
+                </div>
+                <div class="col-3 gateway-detail">
+                    <label>Wholesale <span class="badge badge-dark"><b>{{LCRListRes?.data.wholesale}}</b></span></label>
+                </div>
+                <div class="col-3 gateway-detail">
+                    <label>Non LCR <span class="badge badge-dark"><b>{{LCRListRes?.data.nonlcr}}</b></span></label>
+                </div>
+            </div>
+
         </div>
-        <div class="row gateway-count">
-            <div class="col-3">
-                <label>Direct <span class="badge badge-dark"><b>290</b></span>
-                </label>
-            </div>
-            <div class="col-3 gateway-detail">
-                <label>Premium <span class="badge badge-dark"><b>290</b></span></label>
-            </div>
-            <div class="col-3 gateway-detail">
-                <label>Wholesale <span class="badge badge-dark"><b>290</b></span></label>
-            </div>
-            <div class="col-3 gateway-detail">
-                <label>Non LCR <span class="badge badge-dark"><b>290</b></span></label>
+        <div class="col-5">
+            <div class="row mt-1">
+                <div class="col-4">
+                    <select #cd class="dropdown-select w-100" (change)="selectCountry(cd.value)">
+                        <option value=All default>All Country</option>
+                        <option [value]=country *ngFor="let country of LCRListRes?.data.countries"> {{country}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group col-8">
+                    <input type="search" [(ngModel)]="searchText" class="form-control"
+                        placeholder="&#xf002; Search by Country, Gateway Id, MCC"
+                        title="Search by Country, Gateway Id, MCC" />
+                </div>
             </div>
         </div>
 
     </div>
-    <div class="col-5">
-        <div class="row mt-1">
-            <div class="col-4">
-                <select class="dropdown-select w-100 ">
-                    <option value="" default>All Country</option>
-                    <option value="" default>option1 </option>
-                    <option value="" default>option2 </option>
-                </select>
-            </div>
-            <div class="form-group col-8">
-                <input type="search" class="form-control" placeholder="&#xf002; Search by Country, Gateway" />
-            </div>
-        </div>
+    <div class="main-container table-responsive table-body">
+        <table class="table table-borderless erp-list-table row-hover-effect">
+            <thead>
+                <tr>
+                    <th class="cursor-pointer" (click)="sort('country')">Country
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                    </th>
+                    <th class="cursor-pointer" (click)="sort('mcc')">MCC
+                        <!-- <i  [ngClass]="{'fa fa-caret-up': sortingName==='mcc' && isDesc}"></i>
+                    <i  [ngClass]="{'fa fa-caret-down': sortingName==='mcc' && !isDesc}"></i> -->
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
+                    </th>
+                    <th>Direct Gateway</th>
+                    <th>Premium Gateway</th>
+                    <th>Wholesale Gateway</th>
+                    <th>Non-LCR Gateway</th>
+                </tr>
+            </thead>
+            <!-- authorizationService.authorizationState.billplan_mgmt.billplan_create_ratecard_enabled -->
+            <tbody>
+                <tr *ngFor="let gateway of LCRListRes?.data.gateways 
+            | filter : searchText : 1 | sort: sortingName: !isDesc" (click)="onRow(gtModal, gateway)">
+                    <td>{{gateway.country}}</td>
+                    <td>{{gateway.mcc}}</td>
+                    <td>
+                        <span class="badge gt-badges" [ngClass]="direct.status === 1? 'badge-success':'badge-danger'"
+                            *ngFor="let direct of gateway.direct">{{direct.gw_id}}</span>
+                    </td>
+                    <td>
+                        <span class="badge gt-badges" [ngClass]="premium.status === 1? 'badge-success':'badge-danger'"
+                            *ngFor="let premium of gateway.premium">{{premium.gw_id}}</span>
+                    </td>
+                    <td>
+                        <span class="badge gt-badges" [ngClass]="wholesale.status === 1? 'badge-success':'badge-danger'"
+                            *ngFor="let wholesale of gateway.wholesale">{{wholesale.gw_id}}</span>
+                    </td>
+                    <td>
+                        <span class="badge gt-badges" [ngClass]="nonlcr.status === 1? 'badge-success':'badge-danger'"
+                            *ngFor="let nonlcr of gateway.nonlcr">{{nonlcr.gw_id}}</span>
+                    </td>
+                </tr>
+                <tr *ngIf="!LCRListRes?.data.gateways.length 
+                                || (LCRListRes?.data.gateways | filter : searchText : 1).length == 0">
+                    <td colspan="6" style="text-align: center;">No Records Found</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
 </div>
-<div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-            <tr>
-                <th>Country</th>
-                <th>MCC</th>
-                <th>Direct Gateway</th>
-                <th>Premium Gateway</th>
-                <th>Wholesale Gateway</th>
-                <th>Non-LCR Gateway</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Australia</td>
-                <td>345</td>
-                <td>
-                    <button class="badge badge-success gt-badges" (click)="open(gtModal)">G1</button>
-                    <button class="badge badge-success gt-badges" (click)="open(gtModal)">G2</button>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-                <td><span class="badge badge-success">G1</span>
-                    <span class="badge badge-success">G2</span>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-                <td><span class="badge badge-success">G1</span>
-                    <span class="badge badge-success">G2</span>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-                <td><span class="badge badge-success">G1</span>
-                    <span class="badge badge-success">G2</span>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Australia</td>
-                <td>345</td>
-                <td>
-                    <span class="badge badge-success">G1</span>
-                    <span class="badge badge-success">G2</span>
-
-                </td>
-                <td>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-                <td>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-                <td>
-                    <span class="badge badge-success">G1</span>
-                </td>
-            </tr>
-            <tr>
-                <td>Australia</td>
-                <td>345</td>
-                <td>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-                <td>
-                    <span class="badge badge-success">G1</span>
-                    <span class="badge badge-success">G2</span>
-                </td>
-                <td>
-                    <span class="badge badge-danger">G3</span>
-                    <span class="badge badge-success">G4</span>
-                    <span class="badge badge-danger">G5</span>
-                </td>
-                <td>
-                    <span class="badge badge-success">G1</span>
-                    <span class="badge badge-success">G2</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="pt-3 center-block h-100" *ngIf="!authorizationService.authorizationState.route_mgmt.lcr_list_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>
 <!-- modal pop-up -->
 <ng-template #gtModal let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body gt-det-modal">
-        <form action="">
+        <form>
 
             <div class="row">
                 <div class="col-4">
                     <label class="mr-2"><b>Country</b></label>
                     <span class="border-right">&nbsp;</span>
-                    <span class="ml-3"><b>Australia</b></span>
+                    <span class="ml-3"><b>{{Gateways.country}}</b></span>
                 </div>
                 <div class="col-4">
                     <label class="mr-2"><b>MCC</b></label>
                     <span class="border-right">&nbsp;</span>
-                    <span class="ml-3"><b>8900</b></span>
+                    <span class="ml-3"><b>{{Gateways.mcc}}</b></span>
                 </div>
             </div>
             <div class="row">
-                <div class="card lcr-popup-card">
-                    <div class="card-header">Direct Gateway</div>
+                <!-- *ngIf="Gateways?.direct.length" -->
+                <div class="card lcr-popup-card" *ngIf="Gateways?.direct.length">
+                    <div class="card-header">Direct</div>
                     <div class="card-body">
-                        <div class="row mt-2">
-                            <label class="col-9">NX123- Nexmo</label>
+                        <div *ngFor="let direct of Gateways?.direct; index as i" class="row"
+                            [ngClass]="{'mt-2':i === 0 || i === -1}">
+                            <label class="col-9">{{direct.gw_id}} - {{direct.gw_name}}</label>
                             <div class="form-group col-3">
                                 <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <label class="col-9">MB345- Message Bird</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-9">TN4354- Tanla</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-9">NX123- Nexmo</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <label class="col-9">MB345-Message Bird</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
+                                    <input type="checkbox" class="switch-btn" [checked]="direct.status === 1"
+                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
+                                        toggleStatus($event, Gateways.mcc , direct)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card lcr-popup-card">
-                    <div class="card-header">Premium Gateway</div>
+                <!-- *ngIf="Gateways?.premium.length" -->
+                <div class="card lcr-popup-card" *ngIf="Gateways?.premium.length">
+                    <div class="card-header">Premium</div>
                     <div class="card-body">
-                        <div class="row mt-2">
-                            <label class="col-9">NX123- Nexmo</label>
+                        <div *ngFor="let premium of Gateways?.premium; index as i" class="row"
+                            [ngClass]="{'mt-2':i === 0 || i === -1}">
+                            <label class="col-9">{{premium.gw_id}} - {{premium.gw_name}}</label>
                             <div class="form-group col-3">
                                 <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <label class="col-9">MB345- Message Bird</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-9">TN4354- Tanla</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-9">NX123- Nexmo</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <label class="col-9">MB345-Message Bird</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
+                                    <input type="checkbox" class="switch-btn" [checked]="premium.status === 1"
+                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled && 
+                                        toggleStatus($event, Gateways.mcc , premium)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card lcr-popup-card">
-                    <div class="card-header">Wholesale Gateway</div>
+                <!-- *ngIf="Gateways?.wholesale.length" -->
+                <div class="card lcr-popup-card" *ngIf="Gateways?.wholesale.length">
+                    <div class="card-header">Wholesale</div>
                     <div class="card-body">
-                        <div class="row mt-2">
-                            <label class="col-9">NX123- Nexmo</label>
+                        <div *ngFor="let wholesale of Gateways?.wholesale; index as i" class="row"
+                            [ngClass]="{'mt-2':i === 0 || i === -1}">
+                            <label class="col-9">{{wholesale.gw_id}} - {{wholesale.gw_name}}</label>
                             <div class="form-group col-3">
                                 <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <label class="col-9">MB345- Message Bird</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-9">TN4354- Tanla</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-9">NX123- Nexmo</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <label class="col-9">MB345-Message Bird</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn">
+                                    <input type="checkbox" class="switch-btn" [checked]="wholesale.status === 1"
+                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
+                                        toggleStatus($event, Gateways.mcc , wholesale)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- <div class="card lcr-popup-card" *ngIf="Gateways?.nonlcr.length">
+                    <div class="card-header">Non-LCR</div>
+                    <div class="card-body">
+                        <div *ngFor="let nonlcr of Gateways?.nonlcr; index as i" class="row"
+                            [ngClass]="{'mt-2':i === 0 || i === -1}">
+                            <label class="col-9">{{nonlcr.gw_id}} - {{nonlcr.gw_name}}</label>
+                            <div class="form-group col-3">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="switch-btn" [checked]="nonlcr.status === 1"
+                                        (change)="toggleStatus($event, Gateways.mcc , nonlcr)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
             </div>
             <div class="row">
                 <div class="col-12 text-center mt-3">
-                    <input type="reset" class="btn btn-basic mr-3" value="Cancel">
-                    <input type="submit" class="btn erp-intl-btn" value="Save">
+                    <input type="button" class="btn btn-basic mr-3" value="Cancel"
+                        (click)="onPopupCancel(Gateways.mcc)">
+                    <!-- <input type="reset" class="btn btn-basic mr-3" value="Cancel" (click)="onPopupCancel(Gateways.mcc)"> -->
+                    <input type="button" class="btn erp-intl-btn" value="Save" (click)="onSave()">
                 </div>
             </div>
         </form>
     </div>
-
 </ng-template>

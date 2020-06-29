@@ -11,14 +11,15 @@ const routes: Routes = [
   component: CountryOperatorComponent,
   children: [
     {
-      path: 'create-ratecard',
+      path: 'create-ratecard/:name/:cId/:bId',
       component: CreateRatecardComponent
     },
     {
-      path: 'assigned-ratecard-view',
+      path: 'assigned-ratecard-view/:id/:type',
       component: AssignedRatecardViewComponent
     },
   ]}
+
 ];
 
 @NgModule({

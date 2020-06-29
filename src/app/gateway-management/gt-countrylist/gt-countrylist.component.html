@@ -1,26 +1,28 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_countries_list_enabled">
     <div class="col-7">
-        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span><a routerLink="/gateway-management/gateway-details"> NX - NEXMO</a> / COUNTRY LIST</span>
+        <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span><a routerLink="/gateway-management/gateway-details/{{GtDetailsCountryList?.data.gw_id}}">
+                {{GtDetailsCountryList?.data.gw_id}} -
+                {{GtDetailsCountryList?.data.gw_name}}</a> / COUNTRY LIST</span>
     </div>
     <div class="col-5 text-right">
-        <button class="btn erp-intl-btn" (click)="open(senderidConfig)">SenderId Configuration</button>
+        <button class="btn erp-intl-btn cursor-pointer" (click)="open(senderidConfig)">SenderId Configuration</button>
     </div>
 </div>
-<div class="btm-border mt-2 mb_10">
+<div class="btm-border mt-2 mb_10" *ngIf="GtMgmtAuthControls.gw_countries_list_enabled">
     <div class="row">
         <div class="col-6 font-weight-bold">
             <div class="row mt-2">
                 <div class="col-6">
                     <div class="row">
                         <div class="col-7 border-right"><label>Total Countries</label></div>
-                        <div class="col-2"><span>210</span></div>
+                        <div class="col-2"><span>{{GtDetailsCountryList?.data.totalcountry}}</span></div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="row">
                         <div class="col-7 border-right"><label>Total Operators</label></div>
-                        <div class="col-2"><span>210</span></div>
+                        <div class="col-2"><span>{{GtDetailsCountryList?.data.totaloperator}}</span></div>
                     </div>
                 </div>
 
@@ -32,30 +34,46 @@
                     <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
                         Country List</button>
                     <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-                        <a class="dropdown-item" routerLink="/gateway-management/file-audit-log">File Audit Log</a>
+                        <a class="dropdown-item"
+                            routerLink="/gateway-management/file-audit-log/{{GtDetailsCountryList?.data.gw_id}}/{{GtDetailsCountryList?.data.gw_name}}">File
+                            Audit Log</a>
                     </div>
                 </div>
                 <div class="col-7">
                     <div class="form-group">
-                        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Country, Operator" />
+                        <input type="search" class="form-control" placeholder="&#xf002; Search by Country, Operator"
+                            name="searchvalue" [(ngModel)]="searchvalue" />
                     </div>
                 </div>
                 <div class="col-1 text-center">
-                    <a href="#" class="icon-btn"><i class="fa fa-download" aria-hidden="true"></i></a>
+                    <span
+                        [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_countries_list_country_operator_current_rate_download_enabled ? null : true }"
+                        (click)="GtMgmtAuthControls.gw_countries_list_country_operator_current_rate_download_enabled ?  downloadCountryListFile() : ''"
+                        href="#" class="icon-btn">
+                        <i class="fa fa-download"
+                            [ngClass]="{'cursor-pointer': !GtMgmtAuthControls.gw_countries_list_country_operator_current_rate_download_enabled ? null : true }"
+                            aria-hidden="true"></i>
+                    </span>
                 </div>
             </div>
 
         </div>
     </div>
-
-
 </div>
-<div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table">
+<div class="main-container table-responsive" *ngIf="GtMgmtAuthControls.gw_countries_list_enabled">
+    <table class="table table-borderless erp-list-table mb-0">
         <thead>
             <tr>
-                <th>Country <i class="fa fa-caret-down"></i></th>
-                <th>Operator <i class="fa fa-caret-down"></i></th>
+                <th class="cursor-pointer" (click)="sort('country')">Country
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
+                </th>
+                <th class="cursor-pointer" (click)="sort('operator')">Operator
+                    <i class="fa fa-caret-down"></i>
+                    <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
+                    <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
+                </th>
                 <th>MCC + MNC</th>
                 <th>SenderID Type</th>
                 <th>Default SenderID</th>
@@ -65,57 +83,47 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Dynamic</td>
-                <td>Bankalerts</td>
-                <td class="rate-change-td"><span>0.0050</span>
-                    <button type="button" class="rate-change-list-btn" [autoClose]="'outside'"  [ngbPopover]="recentRateChangeList" data-placement="right">
+            <tr
+                *ngFor="let item of GtDetailsCountryList?.data.tabledata | filter: { country: searchvalue, operator: searchvalue } | sort: sortingName: !isDesc">
+                <td class="font-weight-semi-bold">{{item.country}}</td>
+                <td>{{item.operator}}</td>
+                <td>{{item.mcc}}-{{item.mnc}}</td>
+                <td>{{item.senderid_type}}</td>
+                <td>{{item.default_senderid}}</td>
+                <td class="rate-change-td"><span>{{item.current_rate}}</span>
+                    <button *ngIf="item.ratehistory.length" type="button" class="rate-change-list-btn"
+                        [autoClose]="'outside'" #r="ngbPopover" triggers="manual" [ngbPopover]="recentRateChangeList"
+                        data-placement="right"
+                        (click)="GtMgmtAuthControls.gw_countries_list_country_operator_history_enabled ? toggleRateChange(r,item.ratehistory,item.country,item.operator) : ''">
                         <i class="fa fa-clock-o ml-4"></i>
                     </button>
                 </td>
                 <td class="send-test-msg-td">
-                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
+                    <button *ngIf="GtMgmtAuthControls.gw_countries_list_country_operator_test_message_enabled"
+                        type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'"
+                        [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
+                        Test</button>
+                    <button *ngIf="!GtMgmtAuthControls.gw_countries_list_country_operator_test_message_enabled"
+                        type="button" class="btn btn-default p-0" disabled>
                         Test</button>
                 </td>
                 <td>
                     <div class="form-group text-center">
                         <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
+                            <input type="checkbox" class="switch-btn"
+                                [disabled]="!GtMgmtAuthControls.gw_countries_list_country_operator_status_change_enabled"
+                                (click)="GtMgmtAuthControls.gw_countries_list_country_operator_status_change_enabled ? handleStatus(item.gw_id, item.status, item.id) : ''"
+                                [checked]="item.status === 1">
+                            <span class="slider round"
+                                [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_countries_list_country_operator_status_change_enabled ? null : true }"></span>
                         </label>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Static</td>
-                <td>Bankalerts</td>
-                <td class="rate-change-td"><span>0.0050</span>
-                    <button type="button" class="rate-change-list-btn" [autoClose]="'outside'"  [ngbPopover]="recentRateChangeList" data-placement="right">
-                        <i class="fa fa-clock-o ml-4"></i>
-                    </button>
-                </td>
-                <td class="send-test-msg-td">
-                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #e="ngbPopover">
-                        Test</button>
-                </td>
-                <td>
-                    <div class="form-group text-center">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </td>
+            <tr *ngIf="GtDetailsCountryList?.data.tabledata.length == 0">
+                <td colspan="8" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
-
-
     </table>
 </div>
 <!-- pop over divs -->
@@ -124,7 +132,7 @@
         <form action="">
             <div class="row">
                 <div class="col-12">
-                    <button type="button" class="close-btn float-right" (click)="close(p)">&times;</button>
+                    <button type="button" class="close-btn float-right" (click)="close(sendTestMsg)">&times;</button>
                 </div>
                 <div class="form-group col-6">
                     <input type="text" class="form-control" placeholder="Enter SenderID" />
@@ -145,27 +153,17 @@
         </form>
     </section>
 </ng-template>
-<ng-template #recentRateChangeList>
+<ng-template #recentRateChangeList let-rlist="rlist" let-country="country" let-operator="operator">
     <section id="recent-rate-change-list">
         <form action="">
             <div class="row">
-                <div class="col-12">
-                    <label class="font-weight-bold">0.0050</label> - <span>23/10/2019</span>
+                <div class="col-12" *ngFor="let item of rlist | slice:0:5; let i=index">
+                    <label class="font-weight-bold">{{item.rate}}</label> - <span>{{item.date}}</span>
                 </div>
-                <div class="col-12">
-                    <label class="font-weight-bold">0.0050</label> - <span>23/10/2019</span>
-                </div>
-                <div class="col-12">
-                    <label class="font-weight-bold">0.0050</label> - <span>23/10/2019</span>
-                </div>
-                <div class="col-12">
-                    <label class="font-weight-bold">0.0050</label> - <span>23/10/2019</span>
-                </div>
-                <div class="col-12">
-                    <label class="font-weight-bold">0.0050</label> - <span>23/10/2019</span>
-                </div>
-                <a routerLink="/gateway-management/country-list-view" class="col-12 font-weight-semi-bold float-right">Show More</a>
-
+                <a *ngIf="rlist.length > 5"
+                    routerLink="/gateway-management/country-list-view/{{GtDetailsCountryList?.data.gw_id}}/{{GtDetailsCountryList?.data.gw_name}}/{{country}}/{{operator}}"
+                    class="col-12 font-weight-semi-bold float-right">Show More
+                </a>
             </div>
         </form>
     </section>
@@ -173,53 +171,91 @@
 <!-- modal pop-up -->
 
 <ng-template #senderidConfig let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
-        <form action="">
+        <form class="my-form" [formGroup]="addSenderIdConfigFormGroup"
+            (ngSubmit)="onSubmitSenderIdConfig(addSenderIdConfigFormGroup.value)">
             <div class="row">
-               
+                <!-- <pre>Form values: {{addSenderIdConfigFormGroup.value | json}}</pre> -->
+            </div>
+            <div class="row">
                 <div class="col-6">
                     <label>Country</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100 cursor-pointer" #countrySelect
+                        (change)="countryOperatorSelect(countrySelect.value, operatorSelect.value, true)">
                         <option value="" default>Select Country</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option *ngFor="let item of GtSenderIdConfigCountryList?.data"
+                            value="{{item.mcc}}-{{item.country}}">
+                            {{item.country}}
+                        </option>
                     </select>
-
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderIdConfigFormGroup.get('mcc').hasError('required') && isAddsenderIdConfigValid">
+                        Country is required
+                    </span>
                 </div>
                 <div class="col-6">
                     <label>Operator</label>
-                    <select class="dropdown-select w-100">
+                    <select class="dropdown-select w-100 cursor-pointer" #operatorSelect
+                        (change)="countryOperatorSelect(countrySelect.value, operatorSelect.value, false)">
                         <option value="" default>Select Operator</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
+                        <option *ngFor="let item of GtSenderIdConfigOperatorList?.data"
+                            value="{{item.mnc}}-{{item.operator}}">
+                            {{item.operator}}
+                        </option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderIdConfigFormGroup.get('mnc').hasError('required') && isAddsenderIdConfigValid">
+                        Operator is required
+                    </span>
                 </div>
             </div>
             <div class="row my-3">
                 <div class="col-6">
                     <label>Sender ID Type</label>
-                    <select class="dropdown-select w-100">
+                    <select [attr.disabled]="GtExistingSenderIdData?.data.hasdata == true ? true : null"
+                        class="dropdown-select w-100" formControlName="senderid_type" name="senderid_type">
                         <option value="" default>Select Sender ID Type</option>
-                        <option value="" default>option1</option>
-                        <option value="">option1</option>
+                        <option value="Open">Open</option>
+                        <option value="List">List</option>
+                        <option value="Static">Static</option>
+                        <option value="Numeric">Numeric</option>
                     </select>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="addSenderIdConfigFormGroup.get('senderid_type').hasError('required') && isAddsenderIdConfigValid">
+                        Sender ID Type is required
+                    </span>
                 </div>
                 <div class="col-6">
                     <label>Default Sender ID</label>
                     <div class="route-edit-div">
-                        <input type="text" class="form-control" placeholder="Enter Default Sender ID" />
+                        <input type="text" class="form-control" formControlName="default_senderid"
+                            name="default_senderid" placeholder="Enter Default Sender ID" />
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="addSenderIdConfigFormGroup.get('default_senderid').hasError('required') && isAddsenderIdConfigValid">
+                            Default Sender ID is required
+                        </span>
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="addSenderIdConfigFormGroup.get('default_senderid').hasError('pattern') && addSenderIdConfigFormGroup.get('default_senderid').dirty">
+                            Please enter valid Sender Id
+                        </span>
                     </div>
-
                 </div>
- 
             </div>
             <div class="col-12 text-center mt-5">
-                <input type="submit" class="btn btn-basic mr-3" value="Cancel" />
+                <button class="btn btn-basic mr-3" (click)="resetSenderIdForm();" value="Cancel">Cancel</button>
                 <input type="submit" class="btn erp-intl-btn" value="Save" />
             </div>
         </form>
     </div>
 </ng-template>
+
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_countries_list_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
+</div>

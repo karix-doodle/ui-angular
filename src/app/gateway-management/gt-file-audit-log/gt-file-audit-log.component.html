@@ -1,40 +1,50 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
     <div class="col-12">
-        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span> <a routerLink="/gateway-management/gateway-details">NX - NEXMO</a> / FILE AUDIT LOG</span>
+        <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span>
+            <a routerLink="/gateway-management/gateway-details/{{gatewayFileAuditLogData?.data.gw_id}}">
+                {{gatewayFileAuditLogData?.data.gw_id}} -
+                {{gatewayFileAuditLogData?.data.gw_name}}</a> / FILE AUDIT LOG</span>
     </div>
 </div>
-<div class="row btm-border second-row-det">
+<div class="row btm-border second-row-det" *ngIf="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
     <div class="col-7">
         <div class="row">
             <div class="col-12">
                 <label class="mr-2"><b>Total</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{gatewayFileAuditLogData?.data.total}}</b></span>
             </div>
         </div>
         <div class="row gateway-count">
             <div class="col-3">
-                <label>Success <span class=" ml-3 badge badge-dark"><b>290</b></span>
+                <label>Success <span
+                        class=" ml-3 badge badge-dark"><b>{{gatewayFileAuditLogData?.data.success}}</b></span>
                 </label>
             </div>
             <div class="col-3 gateway-detail">
-                <label>Failure <span class="badge badge-dark ml-3"><b>290</b></span></label>
+                <label>Failure
+                    <span class="badge badge-dark ml-3"><b>{{gatewayFileAuditLogData?.data.failure}}</b></span>
+                </label>
             </div>
         </div>
     </div>
     <div class="col-5 text-right mt-1">
         <div class="row">
-            <div class="col-6 form-group dropdown" ngbDropdown >
-                <button class="btn dropdown-basic dropdown-toggle"  id="erp-dropdown" ngbDropdownToggle>
+            <div class="col-6 form-group dropdown" ngbDropdown>
+                <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
                     File Audit Log</button>
                 <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-                    <a class="dropdown-item" routerLink="/gateway-management/country-list">Country List</a>
+                    <a class="dropdown-item"
+                        routerLink="/gateway-management/country-list/{{gatewayFileAuditLogData?.data.gw_id}}/{{gatewayFileAuditLogData?.data.gw_name}}">
+                        Country List
+                    </a>
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group">
-                    <app-calendar-picker></app-calendar-picker>
+                    <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)">
+                    </app-calendar-picker>
                 </div>
             </div>
         </div>
@@ -42,8 +52,8 @@
     </div>
 
 </div>
-<div class="main-container table-responsive audit-log-list">
-    <table class="table table-borderless erp-list-table audit-log-list-table">
+<div class="main-container table-responsive audit-log-list" *ngIf="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
+    <table class="table table-borderless erp-list-table audit-log-list-table mb-0">
         <thead>
             <tr>
                 <th class="col-hover">File Name</th>
@@ -54,33 +64,33 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr *ngFor="let item of gatewayFileAuditLogData?.data.tabledata">
                 <td class="font-weight-semi-bold col-hover">
-                <a routerLink="/gateway-management/file-audit-log-view">Priceless.xlsx</a></td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
-                <td>Download | <a routerLink="/gateway-management/file-audit-log-view">View</a></td>
-                <td>Success</td>
+                    <a
+                        routerLink="/gateway-management/file-audit-log-view/{{gatewayFileAuditLogData?.data.gw_id}}/{{gatewayFileAuditLogData?.data.gw_name}}/{{item.uuid}}">{{item.uploaded_filename}}</a>
+                </td>
+                <td>{{item.date}} | {{item.time}}</td>
+                <td>{{item.processedby}}</td>
+                <td>
+                    <span class="cursor-pointer"
+                        (click)="GtMgmtAuthControls.gw_rate_file_view_or_download_enabled ? downloadFileAuditLogFile(item.uploaded_filename) : ''">Download</span>
+                    | <a *ngIf="gatewayFileAuditLogData"
+                        [routerLink]="GtMgmtAuthControls.gw_rate_file_view_or_download_enabled ? ['/gateway-management/file-audit-log-view/', gatewayFileAuditLogData?.data.gw_id,gatewayFileAuditLogData?.data.gw_name,item.uuid] : []">View
+                    </a>
+                </td>
+                <td>{{item.status == '1' ? 'Success' : 'Failed'}}</td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">
-                <a routerLink="/gateway-management/file-audit-log-view">Upload.xlsx</a></td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
-                <td>Download | <a routerLink="/gateway-management/file-audit-log-view">View</a></td>
-                <td>Failure</td>
+            <tr *ngIf="gatewayFileAuditLogData?.data.tabledata.length == 0">
+                <td colspan="5" class="text-center py-3 main-heading">No data Found</td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">
-                <a routerLink="/gateway-management/file-audit-log-view">Priceless.xlsx</a></td>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>Yousuff</td>
-                <td>Download | <a routerLink="/gateway-management/file-audit-log-view">View</a></td>
-                <td>Success</td>
-            </tr>
-
         </tbody>
-
-
     </table>
+</div>
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_rate_files_audit_logs_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>

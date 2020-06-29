@@ -1,49 +1,116 @@
-.ratio-text{
-    border:none;
-    background-color:#3E4B5B;
-    border-radius:0px 5px 5px 0px;;
-    padding:7px;
-    width:30%;
-    color:#fff;
+.ratio-text {
+    border          : none;
+    background-color: #3E4B5B;
+    border-radius   : 0px 5px 5px 0px;
+    ;
+    padding: 5px;
+    width  : 52%;
+    color  : #fff;
 }
-.gt-ratio-div ::placeholder{
-    color:#fff;
+
+.gt-ratio-div ::placeholder {
+    color: #fff;
 }
-.add-div-btn{
-    margin-top:55px;
+
+.add-div-btn {
+    margin-top: 55px;
     text-align: right;
 
 }
-.gt-ratio-div{
-    padding:15px;
-    border:1px solid #3E4B5B;
-    border-radius:5px;
-    margin:0;
+
+.gt-ratio-div {
+    padding      : 15px;
+    border       : 1px solid #3E4B5B;
+    border-radius: 5px;
+    margin       : 0;
 }
- .save-form-div .btn{
-    padding:0px 50px;
+
+.save-form-div .btn {
+    padding: 0px 50px;
 }
-.add-div-btn{
-    margin-top:55px;
+
+.add-div-btn {
+    margin-top: 55px;
     text-align: right;
 }
-.create-route-section .btn{
-    padding:0px 30px;   
+
+.create-route-section .btn {
+    padding: 0px 30px;
 }
-.create-route-section .btn-dark{
- padding:5px 30px;
+
+.create-route-section .btn-dark {
+    padding: 5px 30px;
 }
-.row-details{
-    font-size:14px;
-    padding:0px 10px;
-    background:#E9EDF4;
-    border-radius:5px;
-    max-width:fit-content;
+
+.row-details {
+    font-size    : 14px;
+    padding      : 0px 10px;
+    background   : #E9EDF4;
+    border-radius: 5px;
+    max-width    : fit-content;
 }
-.badge-white{
-    background:#fff;
-    margin:0 5px;
+
+.badge-white {
+    background: #fff;
+    margin    : 0 5px;
 }
-.modal-body .table-responsive tr{
-    cursor:default; 
+
+.modal-body .table-responsive tr {
+    cursor: default;
 }
+
+/* For gateway close button  */
+.gatewayRow {
+    position: relative;
+}
+
+.gatewayRow:hover>span {
+    opacity: 1;
+}
+
+.closeGateway {
+    position: absolute;
+    top     : 4px;
+    right   : 30px;
+    color   : #e94444;
+    opacity : 0;
+    cursor  : pointer;
+}
+
+/* For gateway close button */
+
+
+/* For form validation */
+/* input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+    border: 1px solid #dd4b39;
+} */
+
+/* .errorBorderClass {
+    height       : 38px;
+    border-radius: 4px;
+    border       : 1px solid #dd4b39;
+} */
+
+.submitError {
+    /* border-color      : #dd4b39; */
+    border               : 1.5px solid #dd4b39;
+    /* border-color      : 1px solid #dd4b39 !important; */
+    /* color             : #dd4b39; */
+}
+
+.submitErrorRatioBox {
+    border-bottom: 1px solid red;
+    border-top   : 1px solid red;
+    border-right : 1px solid red;
+    box-shadow   : 5px 3px #f5d7d7;
+}
+
+/* ::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+} */
+
+/* option:disabled {
+    color: #ed2b94 !important;
+} */

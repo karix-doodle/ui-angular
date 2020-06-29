@@ -7,55 +7,61 @@
     <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" id="erp-dropdown" ngbDropdownToggle>
-          Slab</button>
-           <div class="dropdown-menu" ngbDropdownMenu aria-labelledby="erp-dropdown">
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country/create-ratecard">Country</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/country-operator/create-ratecard">Country + Operator</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/flat-fixed/create-ratecard">Flat / Fixed</a>
-            <a class="dropdown-item" routerLink="/billplan-management/postpaid/group/create-ratecard">Group</a>
-        </div>
+        <button class="btn dropdown-basic px-4" id="erp-dropdown" disabled>
+            Slab
+        </button>
     </div>
 </div>
-<div class="btm-border second-row-pr mb_10">
-    <div class="row">
-        <div class="col-3 text-right">
-            <div class="form-group">
-                <input type="search" class="form-control" id="" placeholder="Lorem Ispum" />
+<form [formGroup]="SlabFormGroup">
+    <div class="btm-border second-row-pr mb_10">
+        <div class="row">
+            <div class="col-3 text-right">
+                <div class="form-group">
+                    <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
+                        [innerHTML]="SlabFormGroup.value.ratecard_name"></button>
+                </div>
             </div>
-        </div>
-        <div class="col-3 offset-6 text-right">
-            <div class="form-group">
-                <input type="search" class="form-control" id="" placeholder="Bill Plan Currency (€)" />
+            <div class="col-3 offset-6 text-right">
+                <div class="form-group">
+                    <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
+                        innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})">
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="main-container p-4">
-    <app-slab-stepper-form></app-slab-stepper-form>
-</div>
-<div class="row btm-border second-row-det">
+    <!-- <pre>{{SlabFormGroup.value | json}}</pre> -->
+    <div class="main-container p-4">
+        <app-slab-stepper-form [parentForm]="SlabFormGroup" (countriesListChildToParent)="listenAddNew($event)"
+            [editMode]="editMode.asObservable()" [previewDeleteEvent]="previewDeleteEvent.asObservable()"
+            [handlecurrencyList]="handlecurrencyList.asObservable()">
+        </app-slab-stepper-form>
+    </div>
+</form>
+<!-- {{previewList | json}} -->
+<div class="row btm-border second-row-det" *ngIf="slabRouteService.previewList.length">
     <div class="col-7">
         <div class="row mt-1">
             <div class="col-5">
                 <label class="mr-2"><b>Total Countries</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
             </div>
             <div class="col-7">
                 <label class="mr-2"><b>Total Operators</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>435</b></span>
+                <span class="ml-3 badge badge-dark"><b>{{operatorCount}}</b></span>
             </div>
         </div>
     </div>
 
     <div class="col-5 text-right">
-        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Continent, Country, Operator" />
+        <input type="search" [(ngModel)]="searchvalue" class="form-control"
+            placeholder="&#xf002; Search by Country, Operator" />
     </div>
 
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive" *ngIf="slabRouteService.previewList.length">
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
@@ -64,52 +70,57 @@
                 <th>MCC + MNC</th>
                 <th>Min Limit</th>
                 <th>Max Limit</th>
-                <th>Billing Rate (€)</th>
-                <th>Normalize Rate (€)</th>
+                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></th>
+                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-355</td>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
+        <tbody *ngFor="let items of slabRouteService.previewList| 
+        filter: { 
+             country_name: searchvalue,
+             operator_name: searchvalue,
+             mcc: searchvalue,
+             mnc: searchvalue
+            }; let cindex=index">
+            <tr #tableRow *ngFor="let item of items.slabs; let sindex=index"
+                [ngClass]="{'border-bottom': items.slabs.length - 1 == sindex}">
+                <td style="vertical-align: middle;" class="font-weight-semi-bold border-bottom"
+                    [attr.rowspan]="items.slabs.length" *ngIf="sindex==0">{{items.country_name}}</td>
+                <td style="vertical-align: middle;" class="border-bottom" [attr.rowspan]="items.slabs.length"
+                    *ngIf="sindex==0">{{items.operator_name}}</td>
+                <td style="vertical-align: middle;" class="border-bottom" [attr.rowspan]="items.slabs.length"
+                    *ngIf="sindex==0">{{items.mcc}} + {{items.mnc}}</td>
+                <td style="padding-left: 26px;">{{item.min}}</td>
+                <td>{{item.max}}</td>
+                <td>{{item.billing_rate}}</td>
+                <td>{{item.normalize_rate}}</td>
+                <td style="vertical-align: middle;padding: 0;" class="border-bottom" [attr.rowspan]="items.slabs.length"
+                    *ngIf="sindex==0">
+                    <img src="assets/icons/edit-icon.svg" alt="edit" class="cursor-pointer"
+                        (click)="editPreviewSlabs(cindex, items.country_name)" />
                 </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-355</td>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
+                <!-- <td>
+                    <img src="assets/icons/edit-icon.svg" alt="edit" />
+                </td> -->
+                <!-- <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td> -->
+                <td style="vertical-align: middle;padding: 0;" class="border-bottom" [attr.rowspan]="items.slabs.length"
+                    *ngIf="sindex==0">
+                    <img src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon"
+                        (click)="deletePreviewSlabs(cindex)" />
                 </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
             </tr>
-            <tr>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-355</td>
-                <td>45</td>
-                <td>80</td>
-                <td>0.0045</td>
-                <td>0.0080</td>
-                <td>
-                    <img src="assets/icons/edit-icon.svg" alt="edit"/>
-                </td>
-                <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td>
-            </tr>
+
+        </tbody>
+        <tbody *ngIf="!slabRouteService.previewList.length  
+                || (slabRouteService.previewList  |
+                 filter: { 
+                    country_name: searchvalue,
+                    operator_name: searchvalue,
+                    mcc: searchvalue,
+                    mnc: searchvalue 
+                }).length === 0">
+            <td colspan="9" style="text-align: center;">No Records Found</td>
         </tbody>
     </table>
 </div>

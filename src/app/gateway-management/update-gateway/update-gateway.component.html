@@ -1,166 +1,267 @@
-<div class="row btm-border headings-div first-row">
+<div class="row btm-border headings-div first-row" *ngIf="GtMgmtAuthControls.gw_rateupload_enabled">
     <div class="col-12 mt-1">
-        <label class="main-heading">  <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
-        <span><a routerLink="/gateway-management/gateway-details"> NX - NEXMO /</a> UPLOAD FILE</span>
+        <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
+        <span><a routerLink="/gateway-management/gateway-details/{{gt_id}}"> {{gt_id}} - {{gt_name}} /</a>
+            UPLOAD FILE</span>
     </div>
 </div>
-<div class="data-container mb-3">
-    <form action="">
+<div class="data-container mb-3" *ngIf="GtMgmtAuthControls.gw_rateupload_enabled">
+    <form [formGroup]="priceListFormGroup"
+        (ngSubmit)="GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? onSubmitUpdateGatewayPrice(priceListFormGroup.value) : ''">
         <section class="main-section">
+            <div class="row">
+                <!-- <pre>Form values: {{priceListFormGroup.value | json}}</pre> -->
+            </div>
             <div class="row">
                 <div class="col-9">
                     <label>Upload Gateway Price List File</label>
                     <div class="form-group row">
                         <div class="upload-btn-wrapper col-7">
-                            <button class="upload-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Drag and drop / Browse the file from Computer</button>
-                            <input type="file" name="" />
+                            <button class="upload-btn cursor-pointer position-relative" type="button">
+                                <i class="fa fa-upload mr-1" aria-hidden="true"></i>Drag and drop
+                                / Browse the file from Computer
+                                <input type="file" name="" class="w-100 h-100 cursor-pointer" #filenameInput
+                                    (change)="GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? fileUpload($event.target.files) : ''" />
+                            </button>
                         </div>
-                        <input type="submit" value="Upload" class="col-2 btn erp-intl-btn file-upload-btn"/>
+                        <button (click)="submitPriceFile()" type="button"
+                            class="col-2 btn erp-intl-btn file-upload-btn">Upload</button>
+                    </div>
+                    <span *ngIf="selectedFileName != ''">{{selectedFileName}}</span>
+                    <div class="text-danger pl-0 f-12"
+                        *ngIf="priceListFormGroup.get('filename').hasError('required') && isGtPriceUpdateValid">
+                        Uploading the Price File is required
                     </div>
                 </div>
                 <div class="col-3 text-center">
                     <label>Use default Template Rule to update price from File</label>
                     <label class="toggle-switch">
-                        <input type="checkbox" class="switch-btn" />
-                        <span class="slider round"></span>
+                        <input type="checkbox"
+                            (change)="GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? changeDefaultRule($event.target.checked) : ''"
+                            class="switch-btn" [disabled]="!GtDefaultTemplateData?.switch_enabled"
+                            [checked]="GtDefaultTemplateData?.switch_on == true" />
+                        <span class="slider round"
+                            [ngClass]="{'disabled-func': GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? null : true }"></span>
                     </label>
                 </div>
 
             </div>
         </section>
+        <div class="d-block">
+            <section class="main-section position-relative" [ngClass]="{'disable-wrapper' : disableWrapper}">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="gateway-section-heading">Price List Mapping</label>
+                    </div>
+                    <div class="col-4 text-center mt-3">
+                        <div class="d-block cursor-pointer" *ngFor="let item of draggableListLeft" [dndDraggable]="item"
+                            dndEffectAllowed="copy" [dndDisableIf]="false">
+                            <!-- (dndMoved)="onDragged(item, draggableListLeft, 'copy')" -->
+                            <div class="card price-list-map-card bg-grey mb-3 cursor-pointer">
+                                <label class="mb-0 pb-1 cursor-pointer">{{item.content}}</label>
+                            </div>
+                        </div>
+                        <div *ngIf="draggableListLeft.length == 0">No headers available</div>
+                    </div>
+                    <div class="col-5 text-center mt-3">
+                        <div class="card price-list-map-card mb-3" *ngFor="let item of draggableListRight" dndDropzone
+                            dndEffectAllowed="copy" (dndDrop)="onDrop($event, item.column)">
+                            <div class="card-body">
+                                <label class="mb-0 pb-1" *ngIf="priceListFormGroup.get(item.column).value == '' || 
+                                    priceListFormGroup.get(item.column).value == null">
+                                    {{item.content}}</label>
+                                <div class="w-100 font-weight-bold pb-1" *ngIf="priceListFormGroup.get(item.column).value != '' && 
+                                    priceListFormGroup.get(item.column).value != null">
+                                    {{item.text}} = "{{priceListFormGroup.get(item.column).value}}"
+                                    <img (click)="removeDroppedPriceList(item.column)" alt="delete icon"
+                                        class="img-fluid cursor-pointer" src="assets/icons/delete-icon.svg">
+                                </div>
+                            </div>
+                            {{item.column.errors| json}}
+                            <span class="text-danger pl-0 f-12"
+                                *ngIf="priceListFormGroup.get(item.column).hasError('required') && isGtPriceUpdateValid">
+                                Mapping is required
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-3 pl-0 time-date-div">
+                        <input type="text" class="px-3 py-2 w-100" name="effective_ts_format"
+                            placeholder="Effective ts format" formControlName="effective_ts_format" />
+                        <span class="text-danger pl-0 f-12"
+                            *ngIf="priceListFormGroup.get('effective_ts_format').hasError('required') && isGtPriceUpdateValid">
+                            Effective ts format is required
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <section class="main-section">
+                <div class="row update-gateway-drag-drop">
+                    <div class="col-4 text-center gateway-activity-detail">
+                        <label class="col-12 mb-4">Auto Compile</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="switch-btn" formControlName="is_autocompile"
+                                name="is_autocompile" [checked]="priceListFormGroup.get('is_autocompile').value == 1">
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="d-block position-relative col-12"
+                            [ngClass]="{'disable-wrapper' : priceListFormGroup.get('is_autocompile').value == false }">
+                            <input type="text" class="col-12 bg-grey form-control mt-4" formControlName="notify_email"
+                                name="notify_email" placeholder="Enter Notification Mail Id" />
+                            <div class="text-danger pl-0 f-12"
+                                *ngIf="priceListFormGroup.get('notify_email').hasError('required') && isGtPriceUpdateValid">
+                                Notify email is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6"
+                        [ngClass]="{'disable-wrapper' : priceListFormGroup.get('is_autocompile').value == false }">
+                        <div class="row">
+                            <div class="col-4 px-0 auto-compile-div">
+                                <label class="checkbox-label ml-15 mt-1" for="from-email">From E-Mail ID
+                                    <input type="checkbox" id="from-email"
+                                        (click)="emailsubjectCheck($event.target.checked,'isfrom_email', 'from_email')"
+                                        [checked]="isfrom_email">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('from_email').hasError('required') && isGtPriceUpdateValid">
+                                    E-mail ID is required
+                                </div>
+                                <label class="checkbox-label ml-15" for="from-subject">From Subject
+                                    <input type="checkbox" id="from-subject"
+                                        (click)="emailsubjectCheck($event.target.checked,'isfrom_subject', 'from_subject')"
+                                        [checked]="isfrom_subject">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('from_subject').hasError('required') && isGtPriceUpdateValid">
+                                    Subject is required
+                                </div>
+                                <label class="checkbox-label ml-15" for="from-body">From Body
+                                    <input type="checkbox" id="from-body" formControlName="read_body" disabled
+                                        name="read_body" [checked]="priceListFormGroup.get('read_body').value == 1">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('read_body').hasError('required') && isGtPriceUpdateValid">
+                                    Read body is required
+                                </div>
+                                <label class="checkbox-label ml-15" for="from-attachment">From Attachment
+                                    <input type="checkbox" id="from-attachment"
+                                        (click)="checkboxToggle($event.target.checked, 'read_attachment')"
+                                        [checked]="priceListFormGroup.get('read_attachment').value == 1">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('read_attachment').hasError('required') && isGtPriceUpdateValid">
+                                    Read attachment is required
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="col-12 bg-grey form-control mb-2"
+                                    [attr.readonly]="isfrom_email == false  ? true : null" formControlName="from_email"
+                                    name="from_email" placeholder="Enter Mail ID" />
+                                <input type="text" class="col-12 bg-grey form-control"
+                                    [attr.readonly]="isfrom_subject == false  ? true : null"
+                                    formControlName="from_subject" name="from_subject"
+                                    placeholder="Enter Subject Line" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <section class="main-section">
+            <section class="main-section">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="gateway-section-heading">Comment</label>
+                    </div>
+                    <div class="col-12">
+                        <textarea class="w-100" formControlName="comment" name="comment"
+                            placeholder="Enter Comment Here"></textarea>
+                    </div>
+                </div>
+
+            </section>
             <div class="row">
-                <div class="col-12">
-                    <label class="gateway-section-heading">Price List Mapping</label>
+                <div class="col-12 text-center">
+                    <a routerLink="/gateway-management/gateway-details/{{gt_id}}" class="btn btn-basic mr-3">Cancel</a>
+                    <input type="submit"
+                        [ngClass]="{'disabled': GtMgmtAuthControls.gw_upload_file_template_create_or_edit_enabled ? null : true }"
+                        class="btn erp-intl-btn save-btn" value="Save">
                 </div>
-
-                <div class="col-4 text-center">
-                    <div class="card price-list-map-card bg-grey mb-3">
-                        <div class=""><label>Country Name</label></div>
-                    </div>
-                    <div class="card price-list-map-card bg-grey mb-3">
-                        <div class=""><label>Operator Name</label></div>
-                    </div>
-                    <div class="card price-list-map-card bg-grey mb-3">
-                        <div class=""><label>MCC</label></div>
-                    </div>
-                    <div class="card price-list-map-card bg-grey mb-3">
-                        <div class=""><label>MNC</label></div>
-                    </div>
-                    <div class="card price-list-map-card bg-grey mb-3">
-                        <div class=""><label>Price</label></div>
-                    </div>
-                    <div class="card price-list-map-card bg-grey mb-3">
-                        <div class=""><label>Effective From</label></div>
-                    </div>
-                    <div class="card price-list-map-card bg-grey mb-3">
-                        <div class=""><label>Change Type</label></div>
-                    </div>
-                </div>
-                <div class="col-5 text-center">
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body"><label>Drop Country Name here</label></div>
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop Operator / Network Name Here</label>
-                        </div>
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop MCC Here</label>
-                        </div>
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop MNC Here</label>
-                        </div>
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop MCC + MNC Here (Optional)</label>
-                        </div>
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop Price / New Price Here</label>
-                        </div>
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop Effective From Here</label>
-                        </div>  
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop Change Type Here</label>
-                        </div>
-                    </div>
-                    <div class="card price-list-map-card mb-3">
-                        <div class="card-body">
-                            <label>Drop Old Price Here (Optional)</label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-3 pl-0 text-center time-date-div">
-                    <app-date-time-picker></app-date-time-picker>
-                </div>
-            </div>
-        </section>
-        <section class="main-section">
-            <div class="row update-gateway-drag-drop">
-                <div class="col-4 text-center gateway-activity-detail">
-                    <label class="col-12 mb-4">Auto Compile</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="switch-btn" checked>
-                        <span class="slider round"></span>
-                    </label>
-                    <input type="text" class="col-12 bg-grey form-control mt-4" placeholder="Enter Notification Mail Id" />
-                </div>
-                <div class="col-2 px-0 auto-compile-div">
-                    <label class="checkbox-label ml-15 mt-1" for="from-email">From E-Mail ID
-                        <input type="checkbox" checked="checked" id="from-email">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label ml-15" for="from-subject">From Subject
-                        <input type="checkbox" id="from-subject">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label ml-15" for="from-body">From Body
-                        <input type="checkbox" id="from-body">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label ml-15" for="from-attachment">From Attachment
-                        <input type="checkbox" id="from-attachment">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div class="col-4">
-                    <input type="text" class="col-12 bg-grey form-control mb-2" placeholder="Enter Mail ID" />
-                    <input type="text" class="col-12 bg-grey form-control" placeholder="Enter Subject Line" />
-                </div>
-            </div>
-        </section>
-
-        <section class="main-section">
-            <div class="row">
-                <div class="col-12">
-                    <label class="gateway-section-heading">Comment</label>
-                </div>
-                <div class="col-12">
-                    <textarea class="w-100" placeholder="Enter Comment Here"></textarea>
-                </div>
-            </div>
-
-        </section>
-        <div class="row">
-            <div class="col-12 text-center">
-                <input type="reset" class="btn btn-basic mr-3" value="Cancel" data-dismiss="modal">
-                <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
             </div>
         </div>
     </form>
 
+</div>
+
+<ng-template #priceListSubmitSuccess let-c="close" let-d="dismiss">
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
+    <div class="modal-body">
+        <div class="row" style="justify-content: center;">
+            <img style="width: 40px;" src="/assets/images/circle-green-tick-png" alt="" />
+        </div>
+        <div class="row font-weight-bold text-center">
+            <div class="col-12 border-right pt-3">
+                <h4>{{GtprocessPriceFileDataRes?.status}}</h4>
+            </div>
+            <div class="col-12 pt-2">
+                <p>{{GtprocessPriceFileDataRes?.response}}</p>
+            </div>
+        </div>
+        <div class="row my-4 f-14">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-3"><label>Valid:</label></div>
+                    <div class="col-9">
+                        <span class="badge badge-dark">{{GtprocessPriceFileDataRes?.valid}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-3"><label>InValid:</label></div>
+                    <div class="col-9">
+                        <span class="badge badge-dark">{{GtprocessPriceFileDataRes?.invalid}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h6 class="px-3">UnProcessed Records</h6>
+            <div class="table-responsive senderid-list-table">
+                <table class="table table-borderless erp-list-table">
+                    <thead>
+                        <tr>
+                            <td>S.No</td>
+                            <td>Row</td>
+                            <td>Reason</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of GtprocessPriceFileDataRes?.invalid_rows; index as i">
+                            <td>{{i + 1}}</td>
+                            <td>{{item.index}}</td>
+                            <td>
+                                <span placement="right" ngbTooltip="{{item.row | json}}">
+                                    {{item.reason}}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_rateupload_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>
