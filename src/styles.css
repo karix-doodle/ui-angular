@@ -953,3 +953,10 @@ button:not(:disabled) {
   opacity: 0.5;
   text-decoration: none;
 }
+.center-block {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  align-items: center;
+}
