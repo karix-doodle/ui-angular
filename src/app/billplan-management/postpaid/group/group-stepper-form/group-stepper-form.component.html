@@ -281,16 +281,23 @@
                             <label>Discount Amount</label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Discount"
+                                    formControlName="discount_type"
+                                    [attr.disabled]="parentForm.get('discount_type').value == '' ? true : null"
                                     formControlName="discount_rate" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('discount_rate').hasError('pattern') && submitGroupValid">
                                     Discount rate is not valid
+                                </span>
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('discount_rate').hasError('required') && submitGroupValid">
+                                    Discount rate is required
                                 </span>
                             </div>
                         </div>
                         <div class="col-6 discount-select">
                             <select class="dropdown-select w-100" (change)="handleDiscountType()"
                                 formControlName="discount_type">
+                                <option value="" default>Select discount type</option>
                                 <option value="percentage" default>Percentage</option>
                                 <option value="unit">Unit</option>
                             </select>

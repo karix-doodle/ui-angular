@@ -116,7 +116,7 @@ export class CreateRatecardComponent implements OnInit {
       ratetype_row: ['standard'],
       billing_rate_row: [''],
       discount_rate: [''],
-      discount_type: ['percentage'],
+      discount_type: [''],
       description: ['']
     });
   }
