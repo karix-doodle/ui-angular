@@ -583,10 +583,16 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
 
    handleDiscountType() {
       if (this.parentForm.value.discount_type == 'percentage') {
-         this.parentForm.get('discount_rate').setValidators([Validators.pattern('^[0-9]+$')]);
+         this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
          this.parentForm.get('discount_rate').updateValueAndValidity();
       } else if (this.parentForm.value.discount_type == 'unit') {
-         this.parentForm.get('discount_rate').setValidators([Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+         this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+         this.parentForm.get('discount_rate').updateValueAndValidity();
+      } else {
+         this.parentForm.patchValue({
+            discount_rate: ''
+         })
+         this.parentForm.get('discount_rate').clearValidators();
          this.parentForm.get('discount_rate').updateValueAndValidity();
       }
    }
@@ -603,6 +609,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          delete item.routedCountries
          delete item.groupName
       })
+      data.discount_rate = data.discount_type == '' ? '' : data.discount_rate;
       data.billing_rate_row = data.ratetype_row == 'standard' ? '' : data.billing_rate_row;
 
       if (data.ratetype_row == 'standard') {
