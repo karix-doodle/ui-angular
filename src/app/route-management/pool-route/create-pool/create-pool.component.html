@@ -72,19 +72,19 @@
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
                 <tr>
-                    <th (click)="sort('continent')">Continent
+                    <th class="cursor-pointer" (click)="sort('continent')">Continent
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('country')">Country
+                    <th class="cursor-pointer" (click)="sort('country')">Country
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('operator')">Operator
+                    <th class="cursor-pointer" (click)="sort('operator')">Operator
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('mcc')">MCC + MNC
+                    <th class="cursor-pointer" (click)="sort('mcc')">MCC + MNC
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
                     </th>
@@ -100,7 +100,7 @@
                 operator: searchText, 
                 mcc: searchText,
                 mnc: searchText }
-            | sort: sortingName: isDesc; index as i">
+            | sort: sortingName: !isDesc; index as i">
                     <td class="font-weight-semi-bold">{{route.continent}}</td>
                     <td class="font-weight-semi-bold">{{route.country}}</td>
                     <td>{{route.operator}}</td>
