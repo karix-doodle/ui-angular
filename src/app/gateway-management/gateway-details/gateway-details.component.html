@@ -129,7 +129,7 @@
             <div class="row validation-det mb-3">
                 <div class="col-3 text-center bg-grey">
                     <a *ngIf="GtDetailsData"
-                        routerLink="['/gateway-management/country-list/', GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name]">
+                        [routerLink]="['/gateway-management/country-list/', GtDetailsData?.data.gw_id, GtDetailsData?.data.gw_name]">
                         <label class="box-heading">Supported Destination</label>
                         <div class="row">
                             <div class="col-6 box-data">
