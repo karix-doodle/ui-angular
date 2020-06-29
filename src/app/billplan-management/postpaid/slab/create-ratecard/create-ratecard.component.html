@@ -97,7 +97,7 @@
                 <td>{{item.normalize_rate}}</td>
                 <td style="vertical-align: middle;padding: 0;" class="border-bottom" [attr.rowspan]="items.slabs.length"
                     *ngIf="sindex==0">
-                    <img src="assets/icons/edit-icon.svg" alt="edit"
+                    <img src="assets/icons/edit-icon.svg" alt="edit" class="cursor-pointer"
                         (click)="editPreviewSlabs(cindex, items.country_name)" />
                 </td>
                 <!-- <td>
@@ -106,7 +106,7 @@
                 <!-- <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon" /></td> -->
                 <td style="vertical-align: middle;padding: 0;" class="border-bottom" [attr.rowspan]="items.slabs.length"
                     *ngIf="sindex==0">
-                    <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
+                    <img src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon"
                         (click)="deletePreviewSlabs(cindex)" />
                 </td>
             </tr>
