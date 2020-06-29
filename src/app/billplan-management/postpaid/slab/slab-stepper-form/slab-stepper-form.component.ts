@@ -52,6 +52,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       bCurrency: '',
       nCurrency: ''
    };
+   // copiedSecondFormArray: FormArray;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -412,6 +413,13 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          description: ['']
       });
    }
+   initCustomSlabFormArray() {
+      // this.secondFormGroup.patchValue({
+      //    row_custom: this.formBuilder.array([this.createSlabsItem()])
+      // });
+      const slabs = this.secondFormArray;
+      slabs.push(this.createSlabsItem());
+   }
    get secondFormArray(): FormArray {
       return this.slabRouteService.formArray(this.secondFormGroup, 'row_custom');
    }
@@ -446,6 +454,19 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          slabs.removeAt(index);
       }
    }
+   handleDiscountType() {
+      // console.log(this.secondFormGroup.value);
+      if (this.secondFormGroup.value.discount_type === 'percentage') {
+         this.secondFormGroup.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+         this.secondFormGroup.get('discount_rate').updateValueAndValidity();
+      } else if (this.secondFormGroup.value.discount_type === 'unit') {
+         this.secondFormGroup.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+         this.secondFormGroup.get('discount_rate').updateValueAndValidity();
+      } else {
+         this.secondFormGroup.get('discount_rate').clearValidators();
+         this.secondFormGroup.get('discount_rate').updateValueAndValidity();
+      }
+   }
    // initSecondFormArrayValueChangesSubscription() {
    //    const slabs = this.secondFormArray;
    //    this.sub = slabs.valueChanges
@@ -465,6 +486,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    // }
    onSecondStepSubmit() {
       this.secondStepSubmitted = true;
+      // console.log(this.secondFormGroup.valid);
       if (this.secondFormGroup.value.ratetype_row === 'custom') {
          if (this.secondFormGroup.valid) {
             const formArrayLength = this.secondFormArray.length;
@@ -478,9 +500,17 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             }
          }
       } else {
-         this.SlabCreateRateCardInput.row_custom = [];
-         this.secondStepSubmitted = false;
-         this.createSlabRateCard();
+         // this.secondFormGroup.get('row_custom').clearValidators();
+         // this.secondFormGroup.get('row_custom').updateValueAndValidity();
+         // this.copiedSecondFormArray = JSON.parse(JSON.stringify(this.secondFormArray));
+         const slabs = this.secondFormArray;
+         slabs.clear();
+         // console.log(this.secondFormGroup.valid);
+         if (this.secondFormGroup.valid) {
+            this.SlabCreateRateCardInput.row_custom = [];
+            this.secondStepSubmitted = false;
+            this.createSlabRateCard();
+         }
       }
    }
    createSlabRateCard() {

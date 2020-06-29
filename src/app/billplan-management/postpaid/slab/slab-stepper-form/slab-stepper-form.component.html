@@ -145,7 +145,8 @@
                                         class="fa fa-eye"></i></a>
                             </div>
                             <div class="form-group col-5 pr-0">
-                                <input type="radio" id="define-cr" value="custom" formControlName="ratetype_row">
+                                <input type="radio" id="define-cr" value="custom" formControlName="ratetype_row"
+                                    (change)="!secondFormArray.length && initCustomSlabFormArray() ">
                                 <label for="define-cr" class="radio-inline">Define Custom Rate</label>
                             </div>
 
@@ -234,12 +235,21 @@
                         <div class="col-6">
                             <label>Discount Amount</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" placeholder="Enter Discount"
+                                <input type="text" class="form-control" placeholder="Enter Discount"
                                     formControlName="discount_rate" />
                             </div>
+                            <span class="text-danger pl-1 f-12"
+                                *ngIf="secondFormGroup.get('discount_rate').hasError('required') && secondStepSubmitted">
+                                Discount rate is required
+                            </span>
+                            <span class="text-danger pl-1 f-12"
+                                *ngIf="secondFormGroup.get('discount_rate').hasError('pattern') && secondStepSubmitted">
+                                Discount rate is not valid
+                            </span>
                         </div>
                         <div class="col-6 discount-select">
-                            <select class="dropdown-select w-100" formControlName="discount_type">
+                            <select class="dropdown-select w-100" (change)="handleDiscountType()"
+                                formControlName="discount_type">
                                 <option value="" default>Select discount type</option>
                                 <option value="unit">Unit</option>
                                 <option value="percentage">Percentage</option>
