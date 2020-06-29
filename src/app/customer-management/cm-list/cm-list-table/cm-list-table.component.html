@@ -26,8 +26,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let existinguser of existingUsersList | filter: { esmeaddr: searchvalue, username: searchvalue} ">
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">{{existinguser.esmeaddr}}</a></td>
+            <tr *ngFor="let existinguser of existingUsersList | filter: { esmeaddr: searchvalue, username: searchvalue } ">
+                <td class="font-weight-semi-bold"><a [routerLink]="['/customer-management/customer-management-view',existinguser.esmeaddr]">{{existinguser.esmeaddr}}</a></td>
                 <td>{{existinguser.username}}</td>
                 <td>{{existinguser.orgname}}</td>
                 <td>{{existinguser.billingtype}}</td>

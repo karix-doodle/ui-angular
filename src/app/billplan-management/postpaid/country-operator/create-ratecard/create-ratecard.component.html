@@ -51,7 +51,7 @@
     </div>
 
     <div class="col-5 text-right">
-        <input type="search" class="form-control" id="" placeholder="&#xf002; Search by Group, Continent, Country, Operator" />
+        <input type="search" class="form-control"  [(ngModel)]="searchvalue" placeholder="&#xf002; Search by Group, Continent, Country, Operator" />
     </div>
 
 </div>
@@ -69,7 +69,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of countryOperatorArray; let i= index;">
+            <tr *ngFor="let item of countryOperatorArray | filter: {country_name: searchvalue, operator_name: searchvalue}; let i= index;">
                 <td class="font-weight-semi-bold">{{item.country_name}}</td>
                 <td>{{item.operator_name}}</td>
                 <td>{{item.mcc}} + {{item.mnc}}</td>

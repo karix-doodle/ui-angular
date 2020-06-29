@@ -37,7 +37,7 @@ export class CreateRatecardComponent implements OnInit {
     [string, number]
   >();
   handlecurrencyList: Subject<[object]> = new Subject<[object]>();
-
+  searchvalue: string = ''
   constructor(private formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute,
     private billPlanservice: BillManagementService,) {

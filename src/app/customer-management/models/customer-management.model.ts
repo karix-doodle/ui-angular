@@ -283,3 +283,46 @@ export class AddSenderIdApi_Response {
     message: string
 
 }
+
+export class GetSenderisApi_Response{
+
+    responsecode: number
+    responsestatus: string
+    data: {
+      hasdata: boolean
+      senderids: {
+        senderid_type: string
+        default_senderid: string
+        alternate_senderid: string
+      }
+    }
+
+}
+
+export class SenderIdsApi_Response{
+
+  responsecode: number
+    responsestatus: string
+    data: {
+      senderidlists: SenderIdLists[]
+    }
+
+}
+
+export class SenderIdLists{
+  senderid: string
+}
+
+export class BlockedSenderIdsApi_Response{
+
+  responsecode: number
+    responsestatus: string
+    data: {
+      blockedsenderidlists: BlockedSenderIdLists[]
+    }
+
+}
+
+export class BlockedSenderIdLists{
+  senderid: string
+}
