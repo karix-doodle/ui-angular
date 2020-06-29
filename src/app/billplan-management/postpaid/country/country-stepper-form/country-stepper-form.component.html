@@ -104,7 +104,12 @@
                     <div class="form-group">
                         <input type="search" class="form-control" id="" placeholder="Enter Rate"
                             formControlName="billing_rate_row" maxlength="10" />
+                            <span class="text-danger pl-1 f-12"
+                    *ngIf="parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty">
+                    Please enter valid input
+                </span>
                     </div>
+
                 </div>
                 <div class="col-5 mb-2">
                   <label

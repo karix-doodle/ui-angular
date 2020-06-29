@@ -718,12 +718,13 @@ box-shadow: 4px 6px 6px #00000029;
 }
 
 .modal-dialog {
-  width: 100%;
-  min-width: 1000px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: 80%;
+  height: 90%;
+  width: 100%;
+  min-width: 1000px;
+
 }
 
 .gt-det-modal {

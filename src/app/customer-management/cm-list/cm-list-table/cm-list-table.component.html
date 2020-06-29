@@ -4,7 +4,7 @@
         <span class="border-right">&nbsp;</span>
         <span class="ml-3 badge badge-dark"><b>{{existingUserData?.totalexistingesmes}}</b></span>
     </div>
-  
+
     <div class="col-5 text-right">
         <input type="search" class="form-control" placeholder="&#xf002; Search by ESME Addr., BillPlan, RateCard" name="searchvalue"
         [(ngModel)]="searchvalue" />
@@ -27,7 +27,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let existinguser of existingUsersList | filter: { esmeaddr: searchvalue, username: searchvalue } ">
-                <td class="font-weight-semi-bold"><a routerLink="/customer-management/customer-management-view">{{existinguser.esmeaddr}}</a></td>
+                <td class="font-weight-semi-bold"><a [routerLink]="['/customer-management/customer-management-view',existinguser.esmeaddr]">{{existinguser.esmeaddr}}</a></td>
                 <td>{{existinguser.username}}</td>
                 <td>{{existinguser.orgname}}</td>
                 <td>{{existinguser.billingtype}}</td>
@@ -36,7 +36,7 @@
                 <td>{{existinguser.ratecardname}}</td>
                 <td><span class="font-weight-bold">{{existinguser.routingtype | uppercase}}</span> - {{existinguser.intlaccttype}}</td>
                 <td><a routerLink="/customer-management/customer-management-edit/{{existinguser.esmeaddr}}"><img src="assets/icons/edit-icon.svg" alt="edit"/></a></td>
-            </tr>            
+            </tr>
         </tbody>
     </table>
 </div>

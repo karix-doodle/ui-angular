@@ -12,7 +12,7 @@
     <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic dropdown-toggle" style="cursor: not-allowed;" >
+        <button class="btn dropdown-basic " style="cursor: not-allowed;" >
            Country</button>
 
     </div>
@@ -68,7 +68,7 @@
         </tbody>
     </table>
 </div>
-<div ngIf="row_billplan === 'custom'">
+<div *ngIf="row_billplan === 'custom'">
   <div class="main-container row">
     <div class="col-6 table-responsive px-0 mt-4">
         <label class="sub-heading mx-4">ROW (custom)</label>
@@ -98,7 +98,7 @@
 
 </div>
 
-<div ngIf="row_billplan === 'standard'">
+<div *ngIf="row_billplan === 'standard'">
   <div class="main-container row">
     <div class="col-6 table-responsive px-0 mt-4">
         <label class="sub-heading mx-4">ROW (standard)</label>
