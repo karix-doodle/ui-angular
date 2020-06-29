@@ -36,11 +36,11 @@ export class CmShowMarginComponent implements OnInit {
     }
 
     if(inputs.includes('route_type=gateway')){
-      this.routetype = 'gateway';
+      this.routetype = 'Gateway';
     }else if(inputs.includes('route_type=pool')){
-      this.routetype = 'pool';
+      this.routetype = 'Pool';
     }else{
-      this.routetype = 'lcr';
+      this.routetype = 'Lcr';
     }
 
     this.calculateMargins(this.marginPageInputs);
@@ -54,10 +54,10 @@ export class CmShowMarginComponent implements OnInit {
             this.pageData = res.data;
             this.tableData = res.data.data;
             if(!_.isUndefined(res.data.data_row) && !_.isNull(res.data.data_row) && _.size(res.data.data_row) > 0){
-              this.tableData.push(res.data.data_row);
+              this.tableData = _.concat(this.tableData,res.data.data_row);
             }
             this.gwidWiseCurrency = res.data.currencies;
-            console.log(`Show margin page data = ${JSON.stringify(this.pageData)}`);
+            //console.log(`Show margin page data = ${JSON.stringify(this.pageData)}`);
         }else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus);
         }

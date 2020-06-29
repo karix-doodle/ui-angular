@@ -3,7 +3,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PendingUsers_ApiResponse, UserActivation_ApiResponse, TimeZonesApiResponse, ApiResponse_Generic } from '../models/customer-management.model';
+import { PendingUsers_ApiResponse, UserActivation_ApiResponse, TimeZonesApiResponse, ApiResponse_Generic, PoolRouteSearchRes } from '../models/customer-management.model';
 import * as _ from 'lodash';
 
 @Injectable({
@@ -61,6 +61,12 @@ export class CustomerManagementService {
     async getPoolRoutes(gw_type,msg_type,lcr_only) {
       return await this.http.get(this.baseUrl + '/poolroutes?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid+ '&gw_type=' + gw_type+ '&msg_type=' + msg_type+ '&lcr_only=' + lcr_only, this.httpOptions)
         .toPromise();
+    };
+
+    getMatchingPoolRoutes(gw_type,msg_type,lcr_only,searchtext) {
+      return this.http
+      .get(this.baseUrl + '/poolroutes?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid+ '&gw_type=' + gw_type+ '&msg_type=' + msg_type+ '&lcr_only=' + lcr_only+ '&searchtext=' + searchtext, this.httpOptions)
+      .pipe(map((data) => data as PoolRouteSearchRes));
     };
 
   /**
