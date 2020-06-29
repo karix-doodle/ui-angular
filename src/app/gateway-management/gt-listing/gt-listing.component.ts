@@ -85,7 +85,7 @@ export class GtListingComponent implements OnInit {
         let val2Format = formatdate2 + ' ' + val2.lasttime + '.0'
         return <any>new Date(val1Format) - <any>new Date(val2Format);
       });
-      this.gatewayData.data.tabledata = this.selectedType;
+      this.gatewayData.data.tabledata = this.selectedType.reverse();
     } else {
       this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type === type);
       this.gatewayData.data.tabledata = this.selectedType;

@@ -216,30 +216,22 @@ export class CountryOperatorListComponent implements OnInit {
     );
   }
 
+
   GetCountryList() {
     let data = {
       esmeaddr: this.route.snapshot.params.id,
-      load: "country",
-    };
+      load: 'country',
+    }
     this.service.getAllowedCOuntylist(data).subscribe(
       (res: AllowedCountryApi_Response) => {
-        if (
-          res.responsestatus === environment.APIStatus.success.text &&
-          res.responsecode > environment.APIStatus.success.code
-        ) {
+        if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.getcountryListApiResponse = res;
-          this.countryList = JSON.parse(
-            JSON.stringify(this.getcountryListApiResponse)
-          );
-        } else if (
-          res.responsestatus === environment.APIStatus.error.text &&
-          res.responsecode < environment.APIStatus.error.code
-        ) {
-          errorAlert(res.responsestatus);
+          this.countryList = JSON.parse(JSON.stringify(this.getcountryListApiResponse));
+        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          errorAlert(res.responsestatus)
         }
-      },
-      (error: HttpErrorResponse) => {
-        errorAlert(error.message, error.statusText);
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText)
       }
     );
   }
