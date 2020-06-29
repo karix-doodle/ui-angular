@@ -128,7 +128,6 @@ export class RmLcrComponent implements OnInit {
    *               body for updateGatewayStatus api.
    */
   toggleStatus(e, mcc: number, gateway: LCRStatusUpdateList) {
-    console.log('in');
     gateway.status = (e.target.checked) ? 1 : 0;
     if (!this.LCRUpdateStatusInputs.list.find(({ id }) => id === gateway.id)) {
       this.LCRUpdateStatusInputs.list.push({ mcc, ...gateway });

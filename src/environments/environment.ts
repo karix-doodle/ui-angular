@@ -37,11 +37,11 @@ export const environment = {
       max: 1000
     }
   },
-  charsetEncode: ['GSM', 'ISO-8859-1', 'ASCII'],
-  defaultCharsetEncode: 'GSM',
-  dlrType: ['No DLR', 'Handset DLR', 'SMSC DLR'],
-  customerTypes: ['Direct', 'Premium', 'Wholesale'],
-  dateTimePickerTimeDifference: 10
+  charsetEncode: ['GSM','ISO-8859-1','ASCII'],
+  defaultCharsetEncode : 'GSM',
+  dlrType: ['No DLR','Handset DLR','SMSC DLR'],
+  customerTypes : ['Direct','Premium','Wholesale'],
+  dateTimePickerTimeDifference : 10
 };
 
 /*

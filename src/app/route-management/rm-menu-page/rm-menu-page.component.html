@@ -4,87 +4,97 @@
     </div>
 
 </div>
-<section class="rm-dashboard">
-    <div class="row">
-        <div class="col-4">
-            <a routerLink="/route-management/least-cost-route">
-                <div class="card rm-card">
-                    <div class="card-header">LEAST COST ROUTING</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <label class="col-9">DIRECT GATEWAY</label>
-                            <span class="col-2 rm-badge">{{summary?.lcr.direct}}</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">PREMIUM GATEWAY</label>
-                            <span class="col-2 rm-badge">{{summary?.lcr.premium}}</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">WHOLESALE GATEWAY</label>
-                            <span class="col-2 rm-badge">{{summary?.lcr.wholesale}}</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-4">
-            <a routerLink="/route-management/pool-route">
-                <div class="card rm-card">
-                    <div class="card-header">POOL ROUTING</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <label class="col-9">ACCOUNT WISE</label>
-                            <span class="col-2 rm-badge">{{summary?.pool}}</span>
+<div *ngIf="authorizationService.authorizationState.main_panel.route_mgmt_enabled">
+    <section class="rm-dashboard">
+        <div class="row">
+            <div class="col-4">
+                <a routerLink="/route-management/least-cost-route">
+                    <div class="card rm-card">
+                        <div class="card-header">LEAST COST ROUTING</div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <label class="col-9">DIRECT GATEWAY</label>
+                                <span class="col-2 rm-badge">{{summary?.lcr.direct}}</span>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-9">PREMIUM GATEWAY</label>
+                                <span class="col-2 rm-badge">{{summary?.lcr.premium}}</span>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-9">WHOLESALE GATEWAY</label>
+                                <span class="col-2 rm-badge">{{summary?.lcr.wholesale}}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-4">
-            <a routerLink="/route-management/custom-route">
-                <div class="card rm-card">
-                    <div class="card-header">CUSTOM ROUTING</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <label class="col-9">MOBILE ROUTE</label>
-                            <span class="col-2 rm-badge">{{summary?.custom.mobile}}</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">MOBILE + SENDERID</label>
-                            <span class="col-2 rm-badge">{{summary?.custom.mobile_senderid}}</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">SENDERID + TEMPLATE</label>
-                            <span class="col-2 rm-badge">{{summary?.custom.senderid_template}}</span>
+                </a>
+            </div>
+            <div class="col-4">
+                <a routerLink="/route-management/pool-route">
+                    <div class="card rm-card">
+                        <div class="card-header">POOL ROUTING</div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <label class="col-9">ACCOUNT WISE</label>
+                                <span class="col-2 rm-badge">{{summary?.pool}}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
+            <div class="col-4">
+                <a routerLink="/route-management/custom-route">
+                    <div class="card rm-card">
+                        <div class="card-header">CUSTOM ROUTING</div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <label class="col-9">MOBILE ROUTE</label>
+                                <span class="col-2 rm-badge">{{summary?.custom.mobile}}</span>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-9">MOBILE + SENDERID</label>
+                                <span class="col-2 rm-badge">{{summary?.custom.mobile_senderid}}</span>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-9">SENDERID + TEMPLATE</label>
+                                <span class="col-2 rm-badge">{{summary?.custom.senderid_template}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="row mt-4">
+        <div class="row mt-4">
 
-        <div class="col-4">
-            <a routerLink="/route-management/blacklist">
-                <div class="card rm-card">
-                    <div class="card-header">BLACKLIST</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <label class="col-9">MOBILE NUMBER</label>
-                            <span class="col-2 rm-badge">{{summary?.blacklist.mobile}}</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">SENDERID + CONTENT</label>
-                            <span class="col-2 rm-badge">{{summary?.blacklist.mobile_senderid}}</span>
-                        </div>
-                        <div class="row mb-2">
-                            <label class="col-9">MOBILE + SENDERID</label>
-                            <span class="col-2 rm-badge">{{summary?.blacklist.senderid_template}}</span>
+            <div class="col-4">
+                <a routerLink="/route-management/blacklist">
+                    <div class="card rm-card">
+                        <div class="card-header">BLACKLIST</div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <label class="col-9">MOBILE NUMBER</label>
+                                <span class="col-2 rm-badge">{{summary?.blacklist.mobile}}</span>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-9">SENDERID + CONTENT</label>
+                                <span class="col-2 rm-badge">{{summary?.blacklist.mobile_senderid}}</span>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-9">MOBILE + SENDERID</label>
+                                <span class="col-2 rm-badge">{{summary?.blacklist.senderid_template}}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
 
+        </div>
+    </section>
+</div>
+<div class="pt-3 center-block h-100" *ngIf="!authorizationService.authorizationState.main_panel.route_mgmt_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
     </div>
-</section>
+</div>

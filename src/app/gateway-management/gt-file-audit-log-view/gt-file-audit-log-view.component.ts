@@ -37,7 +37,6 @@ export class GtFileAuditLogViewComponent implements OnInit {
     private authorizationService: AuthorizationService
   ) {
     this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
-    console.log(this.GtMgmtAuthControls, 'adadasdas')
   }
 
   ngOnInit() {

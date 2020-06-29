@@ -29,27 +29,27 @@
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
                 <tr>
-                    <th (click)="sort('route_name')">Route Name
+                    <th class="cursor-pointer" (click)="sort('route_name')">Route Name
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='route_name' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='route_name' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('countries_count')">No. Of Countries
+                    <th class="cursor-pointer" (click)="sort('countries_count')">No. Of Countries
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='countries_count' && isDesc}"></i>
                         <i
                             [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='countries_count' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('tagged_accounts_count')">No. Of Accounts Tagged
+                    <th class="cursor-pointer" (click)="sort('tagged_accounts_count')">No. Of Accounts Tagged
                         <i
                             [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='tagged_accounts_count' && isDesc}"></i>
                         <i
                             [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='tagged_accounts_count' && !isDesc}">
                         </i>
                     </th>
-                    <th (click)="sort('created_date')">Created Date & Time
+                    <th class="cursor-pointer" (click)="sort('created_date')">Created Date & Time
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='created_date' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='created_date' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('createdby')">Created By
+                    <th class="cursor-pointer" (click)="sort('createdby')">Created By
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='createdby' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='createdby' && !isDesc}"></i>
                     </th>
@@ -65,7 +65,7 @@
                     created_date: searchText,
                     created_time: searchText, 
                     createdby: searchText }
-                | sort: sortingName: isDesc; index as i">
+                | sort: sortingName: !isDesc; index as i">
                     <td class="font-weight-semi-bold">
                         <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_view_enabled}"
                             [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_view_enabled ? 
@@ -106,8 +106,13 @@
         </table>
     </div>
 </div>
-<div *ngIf="!authorizationService.authorizationState.route_mgmt.poolroute_list_enabled ">
-    <span>You are not <b>authorized</b> for this page</span>
+<div class="pt-3 center-block h-100" *ngIf="!authorizationService.authorizationState.route_mgmt.poolroute_list_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>
 
 <!-- modal pop-up -->
@@ -140,20 +145,20 @@
             <table class="table table-borderless erp-list-table row-hover-effect">
                 <thead>
                     <tr>
-                        <th (click)="sort('esmeaddr', true)">ESME ADDR.
+                        <th class="cursor-pointer" (click)="sort('esmeaddr', true)">ESME ADDR.
                             <i [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='esmeaddr' && isDeselect}"></i>
                             <i
                                 [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='esmeaddr' && !isDeselect}"></i>
 
                         </th>
-                        <th (click)="sort('tagged_date', true)">Tagged Date
+                        <th class="cursor-pointer" (click)="sort('tagged_date', true)">Tagged Date
                             <i
                                 [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='tagged_date' && isDeselect}"></i>
                             <i
                                 [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='tagged_date' && !isDeselect}"></i>
 
                         </th>
-                        <th (click)="sort('tagged_by', true)">Tagged By
+                        <th class="cursor-pointer" (click)="sort('tagged_by', true)">Tagged By
                             <i [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='tagged_by' && isDeselect}"></i>
                             <i
                                 [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='tagged_by' && !isDeselect}"></i>
@@ -164,7 +169,7 @@
                 <tbody>
                     <tr *ngFor="let account of taggedAccountsList
                     | filter: { tagged_by: popupSearchText, esmeaddr: popupSearchText,
-                         tagged_date: popupSearchText } | sort: headerName: isDeselect">
+                         tagged_date: popupSearchText } | sort: headerName: !isDeselect">
                         <td class="font-weight-semi-bold">{{account.esmeaddr}}</td>
                         <td>{{account.tagged_date}}</td>
                         <td>{{account.tagged_by}}</td>

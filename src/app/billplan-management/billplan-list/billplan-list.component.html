@@ -51,7 +51,7 @@
         <th>
           Billing Currency
         </th>
-        <th >
+        <th>
           Created Date & Time
         </th>
         <th>
@@ -65,7 +65,8 @@
               | filter: { billplanname: searchvalue }
               | sort: sortingName:!isDesc
           ">
-        <td class="font-weight-bold"> <a routerLink="/billplan-management-postpaid/{{tableData.id}}">{{tableData.billplanname}}</a></td>
+        <td class="font-weight-bold"> <a
+            routerLink="/billplan-management-postpaid/{{tableData.id}}">{{tableData.billplanname}}</a></td>
         <td>{{tableData.ratecardname}}</td>
         <td>
           {{tableData.billingtype}}
@@ -73,7 +74,7 @@
         <td class="text-center">{{tableData.noofesmetag}}</td>
         <td class="text-left" [innerHTML]="tableData.billingcurrency "> </td>
         <td>{{tableData.date}} | {{tableData.time}}</td>
-        <td>{{tableData.createby}}</td>
+        <td>{{tableData.createduser}}</td>
       </tr>
       <tr *ngIf="
           !billplanTableListData.length ||

@@ -72,19 +72,19 @@
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
                 <tr>
-                    <th (click)="sort('continent')">Continent
+                    <th class="cursor-pointer" (click)="sort('continent')">Continent
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('country')">Country
+                    <th class="cursor-pointer" (click)="sort('country')">Country
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('operator')">Operator
+                    <th class="cursor-pointer" (click)="sort('operator')">Operator
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
                     </th>
-                    <th (click)="sort('mcc')">MCC + MNC
+                    <th class="cursor-pointer" (click)="sort('mcc')">MCC + MNC
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
                     </th>
@@ -100,7 +100,7 @@
                 operator: searchText, 
                 mcc: searchText,
                 mnc: searchText }
-            | sort: sortingName: isDesc; index as i">
+            | sort: sortingName: !isDesc; index as i">
                     <td class="font-weight-semi-bold">{{route.continent}}</td>
                     <td class="font-weight-semi-bold">{{route.country}}</td>
                     <td>{{route.operator}}</td>
@@ -127,7 +127,12 @@
         </table>
     </div>
 </div>
-<div *ngIf="!authService.authorizationState.route_mgmt.poolroute_create_enabled && 
+<div class="pt-3 center-block h-100" *ngIf="!authService.authorizationState.route_mgmt.poolroute_create_enabled && 
 !authService.authorizationState.route_mgmt.poolroute_clone_enabled">
-    <span>You are not <b>authorized</b> for this page</span>
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>

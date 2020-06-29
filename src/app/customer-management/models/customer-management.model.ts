@@ -125,12 +125,6 @@ export class Pool {
   route_name: string;
 }
 
-export class ApiResponse_Generic {
-  responsecode: number;
-  responsestatus: string;
-  message: string;
-  data: any;
-}
 
 export class EsmeaddrApi_Response {
   responsecode: number;
@@ -186,12 +180,18 @@ export class EsmeaddrApi_Response {
   };
 }
 
-export class EssmeddrRateCardList_ApiResponse {
-  responsecode: number;
-  responsestatus: string;
-  data: {
-    tabledata: EssmmdrTabledata[];
-  };
+export class ApiResponse_Generic{
+    responsecode: number;
+    responsestatus: string;
+    message: string;
+    data: any;
+};
+
+export class PoolRouteSearchRes {
+    responsecode: number;
+    responsestatus: string;
+    data: Pool[];
+    message?: string;
 }
 
 export class EssmmdrTabledata {

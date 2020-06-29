@@ -59,8 +59,8 @@ export class CalendarPickerComponent implements OnInit {
   }
 
   change(e): void {
-    if (this.params["type"] == undefined && this.params["type"] != "dateOnly") {
-      this.selectDate.emit(e);
+    if (this.params['type'] == undefined && this.params['type'] != 'dateOnly') {
+      this.selectDate.emit(e)
     }
   }
 

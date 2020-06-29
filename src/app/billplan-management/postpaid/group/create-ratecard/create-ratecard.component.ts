@@ -111,12 +111,12 @@ export class CreateRatecardComponent implements OnInit {
       ratecard_type: ['Group', [Validators.required]],
       ratecard_name: [this.activeRoute.snapshot.params.name, Validators.required],
       groups: this.formBuilder.array([this.createGroupsItem()]),
-      ratetype_roc: ['custom'],
+      ratetype_roc: ['standard'],
       roc: this.formBuilder.array([this.createRocItem()]),
       ratetype_row: ['standard'],
-      billing_rate_row: ['', [Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
+      billing_rate_row: [''],
       discount_rate: [''],
-      discount_type: ['percentage'],
+      discount_type: [''],
       description: ['']
     });
   }

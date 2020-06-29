@@ -12,6 +12,7 @@ import {
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
 import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-sender-id-white-list',
@@ -31,12 +32,17 @@ export class GtSenderIdWhiteListComponent implements OnInit {
 
   fileData: FormData = null;
 
+  GtMgmtAuthControls = null
+
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
     private gatewayManagementService: GatewayManagementService,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
 
     this.addSenderidFormGroup = this.formBuilder.group({
       country: ['', [Validators.required]],

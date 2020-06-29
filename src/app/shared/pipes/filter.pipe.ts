@@ -21,6 +21,20 @@ export class FilterPipe implements PipeTransform {
           || it.wholesale.find(({ gw_id }) => gw_id.toLowerCase().includes(searchText))
           || it.nonlcr.find(({ gw_id }) => gw_id.toLowerCase().includes(searchText));
       });
+    } else if (filterId === 2) { // Bill plan management -> postpaid -> group
+      return items.filter(item => {
+        const value = field['value'];
+        let searchText = '';
+        if (value !== undefined) { searchText = value.toLowerCase(); }
+        return item.group_name.toLowerCase().includes(searchText)
+          || item.continent_name.toLowerCase().includes(searchText) ||
+          item['countries'].some((key) => {
+            return key.continent_name.toLowerCase().includes(searchText) ||
+              key.country_name.toLowerCase().includes(searchText) ||
+              key.operator_name.toLowerCase().includes(searchText)
+          })
+
+      });
     } else {
       const filterKeys = Object.keys(field);
       return items.filter(item => {
