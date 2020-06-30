@@ -197,8 +197,8 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             errorAlert(error.message, error.statusText);
          });
    }
-   initCountrySubscription(countryName?: string) {
-      this.billMgmtService.getCountryList({ continent: countryName })
+   initCountrySubscription(continentName?: string) {
+      this.billMgmtService.getCountryList({ continent: continentName })
          .subscribe((res: BillPlanCountries_ApiRespone) => {
             if (
                res.responsestatus === environment.APIStatus.success.text &&
@@ -206,13 +206,13 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             ) {
                this.countriesList = res.data;
                // this.continentListCopy = JSON.parse(JSON.stringify(res.data));
-               if (countryName !== '') {
-                  this.operatorsList = [];
-                  this.parentForm.patchValue({
-                     country_name: '',
-                     operator_name: ''
-                  });
-               }
+               // if (countryName !== '') {
+               this.operatorsList = [];
+               this.parentForm.patchValue({
+                  country_name: '',
+                  operator_name: ''
+               });
+               // }
 
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
@@ -251,13 +251,15 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             errorAlert(error.message, error.statusText);
          });
    }
-   operatorDropOnChange(operatorName: string) {
-      // console.log(operatorName);
-      this.operatorsList.forEach(element => {
-         if (element.operator === operatorName) {
-            this.parentForm.patchValue({ mnc: element.mnc }); // add mnc
-         }
-      });
+   operatorDropOnChange(operatorName: string, event) {
+      const selectedIndex: number = event.target.selectedIndex;
+      const selectedMnc = +event.target.options[selectedIndex].getAttribute('data-mnc');
+      this.parentForm.patchValue({ mnc: selectedMnc }); // add mnc
+      // this.operatorsList.forEach(element => {
+      //    if (element.operator === operatorName) {
+      //       this.parentForm.patchValue({ mnc: element.mnc }); // add mnc
+      //    }
+      // });
    }
    initEditModeSubscription() {
       // console.log(this.stepper.selectedIndex);
