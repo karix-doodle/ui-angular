@@ -49,9 +49,9 @@
                         <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='created_date' && isDesc}"></i>
                         <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='created_date' && !isDesc}"></i>
                     </th>
-                    <th class="cursor-pointer" (click)="sort('createdby')">Created By
-                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='createdby' && isDesc}"></i>
-                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='createdby' && !isDesc}"></i>
+                    <th class="cursor-pointer" (click)="sort('createduser')">Created By
+                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='createduser' && isDesc}"></i>
+                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='createduser' && !isDesc}"></i>
                     </th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
@@ -64,7 +64,7 @@
                     tagged_accounts_count: searchText, 
                     created_date: searchText,
                     created_time: searchText, 
-                    createdby: searchText }
+                    createduser: searchText }
                 | sort: sortingName: !isDesc; index as i">
                     <td class="font-weight-semi-bold">
                         <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_view_enabled}"
@@ -79,7 +79,7 @@
                              && open(acntsTagged, row.tagged_accounts_list, row.createdby, row.route_name)">
                             {{row.tagged_accounts_count}}</a></td>
                     <td>{{row.created_date}} | {{row.created_time}}</td>
-                    <td>{{row.createdby}}</td>
+                    <td>{{row.createduser}}</td>
                     <td>
                         <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled}"
                             [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled ? ['/route-management/pool-route/clone-pool', row.route_id] : []">
@@ -99,7 +99,7 @@
                     tagged_accounts_count: searchText, 
                     created_date: searchText,
                     created_time: searchText, 
-                    createdby: searchText }).length === 0">
+                    createduser: searchText }).length === 0">
                     <td colspan="7" style="text-align: center;">No Records Found</td>
                 </tr>
             </tbody>

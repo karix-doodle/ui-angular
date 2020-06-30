@@ -40,7 +40,7 @@ export class RatecardListComponent implements OnInit {
 
   rateCardValid: boolean = false
   showdropdown: boolean = false
-  ratecardName: string = ''
+  ratecardName: string = '';
 
   constructor(
     private formBuilder: FormBuilder,

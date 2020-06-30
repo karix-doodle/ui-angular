@@ -16,6 +16,7 @@ export class RoutesRowlist {
     route_name: string;
     countries_count: number;
     createdby: string;
+    createduser: string;
     created_date: string;
     created_time: string;
     tagged_accounts_list: TaggedAccountsList[];
