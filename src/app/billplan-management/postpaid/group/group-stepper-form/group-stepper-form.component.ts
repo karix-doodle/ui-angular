@@ -302,7 +302,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          operator_name: ['', [Validators.required]],
          mcc: ['', [Validators.required]],
          mnc: ['', [Validators.required]],
-         billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
          normalize_rate: [''],
       });
    }
@@ -312,7 +312,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          continent_name: [''],
          groupName: [''],
          routedCountries: [''],
-         billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
          normalize_rate: [''],
       });
    }
@@ -616,7 +616,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          this.parentForm.get('billing_rate_row').clearValidators();
          this.parentForm.get('billing_rate_row').updateValueAndValidity();
       } else if (data.ratetype_row == 'custom') {
-         this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]);
+         this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]);
          this.parentForm.get('billing_rate_row').updateValueAndValidity();
       }
 
