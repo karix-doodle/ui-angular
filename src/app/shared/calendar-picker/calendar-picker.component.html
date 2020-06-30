@@ -1,4 +1,4 @@
 <input style="width: 100%;" type="text" class="form-control date-select-div" ngxDaterangepickerMd [minDate]="minDate"
   [singleDatePicker]="singleDatePicker" [ngClass]="{'single-picker': singleDatePicker == true}" [(ngModel)]="selected"
-  [showCustomRangeLabel]="showCustomRangeLabel" [ranges]="ranges" [linkedCalendars]="linkedCalendars"
+  readonly [showCustomRangeLabel]="showCustomRangeLabel" [ranges]="ranges" [linkedCalendars]="linkedCalendars"
   [autoApply]="autoApply" placeholder="&#xf073;" (change)="change($event)" (startDateChanged)="eventClicked($event)" />

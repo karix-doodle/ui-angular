@@ -40,7 +40,7 @@
                                                 <div class="col-3 mb-2">
                                                     <label>Country</label>
                                                     <select class="dropdown-select w-100" #grpCountry
-                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mcc', $event, grpCountry.value)"
+                                                        (change)="handleCountryOperator(indexGroup, indexCountries, 'mcc', $event, grpCountry.value)"
                                                         formControlName="country_name">
                                                         <option value="" default disabled>Select Country</option>
                                                         <option *ngFor="let clist of billPlanCountryList"
@@ -58,7 +58,7 @@
                                                 <div class="col-3 mb-2">
                                                     <label>Operator</label>
                                                     <select class="dropdown-select w-100"
-                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mnc', $event, grpCountry.value)"
+                                                        (change)="handleCountryOperator(indexGroup, indexCountries, 'mnc', $event, grpCountry.value)"
                                                         formControlName="operator_name">
                                                         <option value="" default disabled>Select Operator</option>
                                                         <option
@@ -77,7 +77,7 @@
                                                     <label
                                                         innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control" maxlength="10"
+                                                        <input type="text" class="form-control" maxlength="11"
                                                             formControlName="billing_rate" placeholder="Enter Rate" />
                                                         <span class="text-danger pl-1 f-12"
                                                             *ngIf="Y.get('billing_rate').hasError('required') && groupSubmitted">
