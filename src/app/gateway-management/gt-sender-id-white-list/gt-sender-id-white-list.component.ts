@@ -29,6 +29,8 @@ export class GtSenderIdWhiteListComponent implements OnInit {
 
   addSenderidFormGroup: FormGroup;
   isAddSenderidValid: boolean = false;
+  sortingName: string;
+  isDesc: boolean;
 
   fileData: FormData = null;
 
@@ -225,6 +227,20 @@ export class GtSenderIdWhiteListComponent implements OnInit {
       senderid: '',
       file: ''
     });
+  }
+
+  /**
+   *
+   * @param tableHeaderName consists of table header
+   * @description sorts the table based upon the table Header Name
+   */
+  sort(tableHeaderName: string): void {
+    if (tableHeaderName && this.sortingName !== tableHeaderName) {
+      this.isDesc = false;
+    } else {
+      this.isDesc = !this.isDesc;
+    }
+    this.sortingName = tableHeaderName;
   }
 
 
