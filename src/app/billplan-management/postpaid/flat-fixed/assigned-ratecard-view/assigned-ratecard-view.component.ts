@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BillplanRatecardViewService } from 'src/app/billplan-management/services/billplan-ratecard-view/billplan-ratecard-view.service';
-import { RateCardCountryView_ApiRResponse, BillPlanCurrency_ApiResponse, BillPlanCurrency_Data } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
+import { RateCardCountryView_ApiRResponse, BillPlanCurrency_ApiResponse, BillPlanCurrency_Data, RateCardViewFlatFixedApi_Response } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
 import { environment } from 'src/environments/environment';
 import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,10 +16,12 @@ export class AssignedRatecardViewComponent implements OnInit {
 
   billplan_id: number;
   billplan_name: string
-  currency;
+  currency: string
   ratecardname: string;
-  countryArray;
-  description;
+  billing_rate: string
+  normalizerate: number
+  description: string
+  discount_percentage: number
   currencySybmol: object = {
     bCurrency: '',
     nCurrency: ''
@@ -36,14 +38,17 @@ export class AssignedRatecardViewComponent implements OnInit {
 
   ngOnInit() {
     this.Route.params.subscribe((data: Params) => {
-      this.ratecardviewservice.getRatecardfFlatFixedView(data).subscribe((res) => {
+      this.ratecardviewservice.getRatecardfFlatFixedView(data).subscribe((res: RateCardViewFlatFixedApi_Response) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
         this.currency = res.data.currency;
         this.ratecardname = res.data.ratecardname;
-        this.countryArray = res.data
-        this.description = res.data.description
+        this.billing_rate = res.data.billing_rate
+        this.normalizerate = res.data.normalizerate;
+        this.discount_percentage = res.data.discount_percentage
+        this.description = res.data.description;
         this.billplan_id = +res.data.billplan_id
         this.billplan_name = res.data.billplan_name
+
        } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.responsestatus)
        }

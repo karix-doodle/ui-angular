@@ -221,7 +221,7 @@
                         <div class="col-5 offset-1">
                             <label>Process @ Loss</label>
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" [checked]="esmeddrDetails?.data.settings.processloss === 1">
+                                <input type="checkbox" class="switch-btn" disabled [checked]="esmeddrDetails?.data.settings.processloss === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -346,7 +346,7 @@
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-3"><label>Sender IDs</label></div>
@@ -356,36 +356,10 @@
                 <div class="table-responsive senderid-list-table">
                     <table class="table table-borderless erp-list-table">
                         <tbody>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngFor="let item of senderidLis">
+                                <td>{{item.senderid}}</td>
                             </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -400,7 +374,7 @@
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-4 "><label>Blocked Sender IDs</label></div>
@@ -410,36 +384,10 @@
                 <div class="table-responsive senderid-list-table">
                     <table class="table table-borderless erp-list-table">
                         <tbody>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngFor="let item of blockedSenderidList">
+                                <td>{{item.senderid}}</td>
                             </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -454,7 +402,7 @@
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-4"><label>Blacklisted Templates</label></div>
@@ -508,7 +456,7 @@
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-2"><label>Templates</label></div>

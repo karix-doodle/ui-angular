@@ -12,6 +12,9 @@ import {
   AllowedCountryApi_Response,
   AllowedOperatorApi_Response,
   AddSenderIdApi_Response,
+  GetSenderisApi_Response,
+  SenderIdsApi_Response,
+  BlockedSenderIdsApi_Response,
 } from "../models/customer-management.model";
 
 @Injectable({
@@ -60,6 +63,27 @@ export class CustomerManagementService {
         this.httpOptions
       )
       .pipe(map((data) => data as EssmeddrRateCardList_ApiResponse));
+  }
+
+  getSenderidList(
+    data: number
+  ): Observable<SenderIdsApi_Response> {
+    return this.http
+      .get(
+        `${this.baseUrl}/getsenderidsofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        this.httpOptions
+      )
+      .pipe(map((data) => data as SenderIdsApi_Response));
+  }
+  getBlockedSenderidList(
+    data: number
+  ): Observable<BlockedSenderIdsApi_Response> {
+    return this.http
+      .get(
+        `${this.baseUrl}/getblockedsenderidsofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        this.httpOptions
+      )
+      .pipe(map((data) => data as BlockedSenderIdsApi_Response));
   }
 
   getviewLogDetails(data): Observable<viewLogApi_Response>{
@@ -118,5 +142,16 @@ export class CustomerManagementService {
         this.httpOptions
       )
       .pipe(map((data) => data as AddSenderIdApi_Response));
+  }
+
+  getSenderidsList(
+    data
+  ): Observable<GetSenderisApi_Response> {
+    return this.http
+      .get(
+        `${this.baseUrl}/getsenderids?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data.esmeaddr}&mcc=${data.mcc}&mnc=${data.mnc}`,
+        this.httpOptions
+      )
+      .pipe(map((data) => data as GetSenderisApi_Response));
   }
 }

@@ -33,6 +33,7 @@ export class CreateRatecardComponent implements OnInit {
     bCurrency: '',
     nCurrency: ''
   }
+  searchValue:string = ''
   billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
   billPlanCurrencyData: BillPlanCurrency_Data;
   handlecurrencyList: Subject<[object]> = new Subject<[object]>();

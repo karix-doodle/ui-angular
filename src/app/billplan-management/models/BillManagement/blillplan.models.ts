@@ -312,4 +312,23 @@ export class RatecardViewSlabCountry_Data {
 }
 
 
+export class RateCardViewFlatFixedApi_Response{
+
+   responsecode: number
+    responsestatus: string
+    data: {
+    billplan_id: number
+    billplan_name: string,
+    ratecardname: string,
+    currency: string,
+    ratecard_type: string,
+    discount_type: string,
+    billing_rate: string,
+    normalizerate: number
+    discount_percentage: number
+    description: string
+    }
+
+}
+
 
