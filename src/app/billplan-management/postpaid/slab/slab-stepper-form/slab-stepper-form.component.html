@@ -20,10 +20,10 @@
                     <div class="col-3  mb-2">
                         <label>Operator</label>
                         <select #oper class="dropdown-select w-100" formControlName="operator_name"
-                            (change)="operatorDropOnChange(oper.value)">
+                            (change)="operatorDropOnChange(oper.value, $event)">
                             <option value="" disabled>Select Operator</option>
                             <!-- <ng-container *ngIf="operatorsList !== null"> -->
-                            <option *ngFor="let obj of operatorsList" [value]="obj.operator">
+                            <option *ngFor="let obj of operatorsList" [attr.data-mnc]="obj.mnc" [value]="obj.operator">
                                 {{ obj.operator }}</option>
                             <!-- </ng-container> -->
                         </select>
@@ -36,7 +36,7 @@
                         <label>Continent(Optional)</label>
                         <select #conti class="dropdown-select w-100" formControlName="continent_name"
                             (change)="initCountrySubscription(conti.value)">
-                            <option value="" disabled>Select Continent</option>
+                            <option value="">No Continent</option>
                             <option [value]=continent *ngFor="let continent of continentList">{{continent}}</option>
                         </select>
                     </div>
