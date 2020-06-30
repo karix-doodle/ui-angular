@@ -87,7 +87,7 @@ export class GtListingComponent implements OnInit {
       });
       this.gatewayData.data.tabledata = this.selectedType.reverse();
     } else {
-      this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type === type);
+      this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type.toLowerCase() === type.toLowerCase());
       this.gatewayData.data.tabledata = this.selectedType;
     }
   }
