@@ -127,7 +127,6 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
             pairwise()
          ).subscribe(([prev, next]: [string, string]) => {
             const countriesControl = this.countriesFormArray(0);
-            console.log(countriesControl.controls[0].touched, 'asdasd')
             if (this.isContinentCanceled == null && countriesControl.controls[0].touched != false) {
                Swal.fire({
                   title: 'Are you sure want to change continent?',
@@ -151,6 +150,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
                   }
                })
             } else {
+               this.getCountryList(next);
                this.isContinentCanceled = null
             }
          });
@@ -235,7 +235,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
    }
 
    round(data, form: FormGroup) {
-      let NormalizedRate = (data * this.conversionRate).toFixed(6)
+      let NormalizedRate = data == 0 ? 0 : (data * this.conversionRate).toFixed(6)
       if (form != undefined) {
          form.patchValue({
             normalize_rate: NormalizedRate
@@ -302,7 +302,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          operator_name: ['', [Validators.required]],
          mcc: ['', [Validators.required]],
          mnc: ['', [Validators.required]],
-         billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]],
          normalize_rate: [''],
       });
    }
@@ -312,7 +312,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          continent_name: [''],
          groupName: [''],
          routedCountries: [''],
-         billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
+         billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]],
          normalize_rate: [''],
       });
    }
@@ -616,7 +616,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          this.parentForm.get('billing_rate_row').clearValidators();
          this.parentForm.get('billing_rate_row').updateValueAndValidity();
       } else if (data.ratetype_row == 'custom') {
-         this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+         this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]);
          this.parentForm.get('billing_rate_row').updateValueAndValidity();
       }
 
