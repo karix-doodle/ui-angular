@@ -15,6 +15,8 @@ import { successAlert, errorAlert, infoAlert } from 'src/app/shared/sweet-alert/
 import { HttpErrorResponse } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { BillManagementService } from '../services/BillManagement/billplan-management.service';
+import { AuthorizationService } from '../../service/auth/authorization.service';
+import { BillplanMgmt } from '../../model/authorization.model';
 
 @Component({
   selector: 'app-billplan-list',
@@ -53,17 +55,20 @@ export class BillplanListComponent implements OnInit {
   prepaidType = [{ item: "Country", value: 'country' },
   { item: "Country + operator", value: 'country-operator' },
   { item: "Flat / Fixed", value: 'flat-fixed' }];
+  billPlanMgmtAuthControls: BillplanMgmt;
 
   constructor(
     private modalService: NgbModal,
     private router: Router,
     private billplanListService: BillManagementService,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
     this.cardTypeObj['Postpaid'] = this.postpaidType
     this.cardTypeObj['Prepaid'] = this.prepaidType
 
     this.initialBillPlanGroup();
+    this.billPlanMgmtAuthControls = authorizationService.authorizationState.billplan_mgmt;
   }
 
   initialBillPlanGroup() {

@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BillManagementService } from '../services/BillManagement/billplan-management.service';
+import { AuthorizationService } from '../../service/auth/authorization.service';
+import { BillplanMgmt } from '../../model/authorization.model';
 
 @Component({
   selector: 'app-billplan-home',
@@ -11,9 +13,15 @@ import { BillManagementService } from '../services/BillManagement/billplan-manag
   styleUrls: ['./billplan-home.component.css']
 })
 export class BillplanHomeComponent implements OnInit {
-  billpLanSummaryApiRespone: BlillPlanSumary_ApiResponse
-  billPlanSummaryData: BillPlanSummary_Data
-  constructor(private BillplanService: BillManagementService) { }
+  billpLanSummaryApiRespone: BlillPlanSumary_ApiResponse;
+  billPlanSummaryData: BillPlanSummary_Data;
+  billPlanMgmtAuthControls: BillplanMgmt;
+  constructor(
+    private BillplanService: BillManagementService,
+    private authorizationService: AuthorizationService
+  ) {
+    this.billPlanMgmtAuthControls = authorizationService.authorizationState.billplan_mgmt;
+  }
 
   ngOnInit() {
 
@@ -21,7 +29,7 @@ export class BillplanHomeComponent implements OnInit {
   }
 
 
-  getBillPalnSummary(){
+  getBillPalnSummary() {
     this.BillplanService.getBillPlanMgmtSummary().subscribe(
       (res: BlillPlanSumary_ApiResponse) => {
         console.log(res);

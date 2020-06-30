@@ -4,75 +4,86 @@
     </div>
 
 </div>
-<section class="rm-dashboard">
-    <div class="row">
-        <div class="col-4">
-            <a routerLink="/billplan-management/home">
+<div *ngIf="billPlanMgmtAuthControls.billplan_dashboard_enabled">
+    <section class="rm-dashboard">
+        <div class="row">
+            <div class="col-4">
+                <a routerLink="/billplan-management/home">
+                    <div class="card rm-card">
+                        <div class="card-header">BILLPLAN</div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <label class="col-9">PREPAID</label>
+                                <span class="col-2 rm-badge">{{billPlanSummaryData?.billplan_prepaid_count}}</span>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-9">POSTPAID</label>
+                                <span class="col-2 rm-badge">{{billPlanSummaryData?.billplan_postpaid_count}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+        <div class="row mt-4">
+            <label class="main-heading col-12 mt-3 mb-5">RATECARD INFO</label>
+            <div class="col-4">
                 <div class="card rm-card">
-                    <div class="card-header">BILLPLAN</div>
+                    <div class="card-header">POSTPAID</div>
                     <div class="card-body">
                         <div class="row mb-2">
-                            <label class="col-9">PREPAID</label>
-                            <span class="col-2 rm-badge">{{billPlanSummaryData?.billplan_prepaid_count}}</span>
+                            <label class="col-9">GROUP</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_group_count}}</span>
                         </div>
                         <div class="row mb-2">
-                            <label class="col-9">POSTPAID</label>
-                            <span class="col-2 rm-badge">{{billPlanSummaryData?.billplan_postpaid_count}}</span>
+                            <label class="col-9">COUNTRY</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_country_count}}</span>
+                        </div>
+                        <div class="row mb-2">
+                            <label class="col-9">FLAT / FIXED</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_flatfix_count}}</span>
+                        </div>
+                        <div class="row mb-2">
+                            <label class="col-9">COUNTRY + OPERATOR</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_countryoperator_count}}</span>
+                        </div>
+                        <div class="row mb-2">
+                            <label class="col-9">SLAB</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_slab_count}}</span>
                         </div>
                     </div>
                 </div>
-            </a>
-        </div>
-
-    </div>
-    <div class="row mt-4">
-    <label class="main-heading col-12 mt-3 mb-5">RATECARD INFO</label>
-        <div class="col-4">
-            <div class="card rm-card">
-                <div class="card-header">POSTPAID</div>
-                <div class="card-body">
-                    <div class="row mb-2">
-                        <label class="col-9">GROUP</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_group_count}}</span>
-                    </div>
-                    <div class="row mb-2">
-                        <label class="col-9">COUNTRY</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_country_count}}</span>
-                    </div>
-                    <div class="row mb-2">
-                        <label class="col-9">FLAT / FIXED</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_flatfix_count}}</span>
-                    </div>
-                    <div class="row mb-2">
-                        <label class="col-9">COUNTRY + OPERATOR</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_countryoperator_count}}</span>
-                    </div>
-                    <div class="row mb-2">
-                        <label class="col-9">SLAB</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.postpaid_slab_count}}</span>
+            </div>
+            <div class="col-4">
+                <div class="card rm-card">
+                    <div class="card-header">PREPAID</div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <label class="col-9">COUNTRY</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_country_count}}</span>
+                        </div>
+                        <div class="row mb-2">
+                            <label class="col-9">COUNTRY + OPERATOR</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_countryoperator_count}}</span>
+                        </div>
+                        <div class="row mb-2">
+                            <label class="col-9">FLAT / FIXED</label>
+                            <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_flatfix_count}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="card rm-card">
-                <div class="card-header">PREPAID</div>
-                <div class="card-body">
-                    <div class="row mb-2">
-                        <label class="col-9">COUNTRY</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_country_count}}</span>
-                    </div>
-                    <div class="row mb-2">
-                        <label class="col-9">COUNTRY + OPERATOR</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_countryoperator_count}}</span>
-                    </div>
-                    <div class="row mb-2">
-                        <label class="col-9">FLAT / FIXED</label>
-                        <span class="col-2 rm-badge">{{billPlanSummaryData?.prepaid_flatfix_count}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
 
+        </div>
+    </section>
+</div>
+
+<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_dashboard_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
     </div>
-</section>
+</div>

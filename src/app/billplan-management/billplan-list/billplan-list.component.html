@@ -7,85 +7,99 @@
     </span>
   </div>
   <div class="col-4 text-right">
-    <button class="btn erp-intl-btn" (click)="open(createBillplan)">Create Bill Plan</button>
+    <button class="btn erp-intl-btn" [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_create_enabled}"
+      (click)="billPlanMgmtAuthControls.billplan_create_enabled && open(createBillplan)">Create Bill Plan</button>
   </div>
 </div>
-<div class="row btm-border second-row-pr">
-  <div class="col-8 mt-2">
-    <label class="mr-2"><b>Total Bill</b></label>
-    <span class="border-right">&nbsp;</span>
-    <span class="ml-3 badge badge-dark"><b>{{billplanTbaleListApiResponse?.data.totalbillplan}}</b></span>
-  </div>
+<div *ngIf="billPlanMgmtAuthControls.billplan_list_enabled">
+  <div class="row btm-border second-row-pr">
+    <div class="col-8 mt-2">
+      <label class="mr-2"><b>Total Bill</b></label>
+      <span class="border-right">&nbsp;</span>
+      <span class="ml-3 badge badge-dark"><b>{{billplanTbaleListApiResponse?.data.totalbillplan}}</b></span>
+    </div>
 
-  <div class="col-3 text-right">
-    <input type="search" class="form-control" placeholder="&#xf002; Search by BillPlan Name" name="searchvalue"
-      [(ngModel)]="searchvalue" />
+    <div class="col-3 text-right">
+      <input type="search" class="form-control" placeholder="&#xf002; Search by BillPlan Name" name="searchvalue"
+        [(ngModel)]="searchvalue" />
+    </div>
+    <div class="col-1">
+      <button class="icon-btn" (click)="BillPlanListDownload()"><i aria-hidden="true"
+          class="fa fa-download"></i></button>
+    </div>
   </div>
-  <div class="col-1">
-    <button class="icon-btn" (click)="BillPlanListDownload()"><i aria-hidden="true" class="fa fa-download"></i></button>
-  </div>
-</div>
-<div class="main-container table-responsive">
-  <table class="table table-borderless erp-list-table row-hover-effect">
-    <thead>
-      <tr>
-        <th (click)="sort('billplanname')">
-          Bill Plan Name
-          <i *ngIf="sortingName === 'billplanname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
-          <i *ngIf="sortingName === 'billplanname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
-        </th>
+  <div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table row-hover-effect">
+      <thead>
+        <tr>
+          <th (click)="sort('billplanname')">
+            Bill Plan Name
+            <i *ngIf="sortingName === 'billplanname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'billplanname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
 
-        <th (click)="sort('ratecardname')">
-          Rate Card Name
-          <i *ngIf="sortingName === 'ratecardname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
-          <i *ngIf="sortingName === 'ratecardname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
-        </th>
-        <th (click)="sort('billingtype')">
-          Billing type
-          <i *ngIf="sortingName === 'billingtype' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
-          <i *ngIf="sortingName === 'billingtype' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
-        </th>
-        <th>
-          No. Of Accounts Tagged
-        </th>
-        <th>
-          Billing Currency
-        </th>
-        <th>
-          Created Date & Time
-        </th>
-        <th>
-          Created By
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="
+          <th (click)="sort('ratecardname')">
+            Rate Card Name
+            <i *ngIf="sortingName === 'ratecardname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'ratecardname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th (click)="sort('billingtype')">
+            Billing type
+            <i *ngIf="sortingName === 'billingtype' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+            <i *ngIf="sortingName === 'billingtype' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+          </th>
+          <th>
+            No. Of Accounts Tagged
+          </th>
+          <th>
+            Billing Currency
+          </th>
+          <th>
+            Created Date & Time
+          </th>
+          <th>
+            Created By
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
             let tableData of billplanTableListData
               | filter: { billplanname: searchvalue }
               | sort: sortingName:!isDesc
           ">
-        <td class="font-weight-bold"> <a
-            routerLink="/billplan-management-postpaid/{{tableData.id}}">{{tableData.billplanname}}</a></td>
-        <td>{{tableData.ratecardname}}</td>
-        <td>
-          {{tableData.billingtype}}
-        </td>
-        <td class="text-center">{{tableData.noofesmetag}}</td>
-        <td class="text-left" [innerHTML]="tableData.billingcurrency "> </td>
-        <td>{{tableData.date}} | {{tableData.time}}</td>
-        <td>{{tableData.createduser}}</td>
-      </tr>
-      <tr *ngIf="
+          <td class="font-weight-bold"> <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_enabled}"
+              [routerLink]="billPlanMgmtAuthControls.billplan_view_enabled 
+              ? ['/billplan-management-postpaid', tableData.id] : []">{{tableData.billplanname}}</a>
+          </td>
+          <td>{{tableData.ratecardname}}</td>
+          <td>
+            {{tableData.billingtype}}
+          </td>
+          <td class="text-center">{{tableData.noofesmetag}}</td>
+          <td class="text-left" [innerHTML]="tableData.billingcurrency "> </td>
+          <td>{{tableData.date}} | {{tableData.time}}</td>
+          <td>{{tableData.createduser}}</td>
+        </tr>
+        <tr *ngIf="
           !billplanTableListData.length ||
           (billplanTableListData | filter: { billplanname: searchvalue })
             .length == 0
         ">
-        <td colspan="5" style="text-align: center;">No Records Found</td>
-      </tr>
+          <td colspan="5" style="text-align: center;">No Records Found</td>
+        </tr>
 
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_list_enabled">
+  <div class="d-block">
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
+  </div>
 </div>
 
 <!-- modal pop-up -->

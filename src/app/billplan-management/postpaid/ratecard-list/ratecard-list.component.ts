@@ -19,6 +19,8 @@ import { addValidators, removeValidators } from '../../../shared/helper/helperFu
 import * as moment from 'moment';
 import { BillManagementService } from '../../services/BillManagement/billplan-management.service';
 import { GetNameCheck_ApiResponse } from '../../models/BillManagement/blillplan.models';
+import { AuthorizationService } from '../../../service/auth/authorization.service';
+import { BillplanMgmt } from '../../../model/authorization.model';
 
 @Component({
   selector: 'app-ratecard-list',
@@ -37,7 +39,8 @@ export class RatecardListComponent implements OnInit {
 
   rateCardValid: boolean = false
   showdropdown: boolean = false
-  ratecardName: string = ''
+  ratecardName: string = '';
+  billPlanMgmtAuthControls: BillplanMgmt;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,11 +48,13 @@ export class RatecardListComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private createAssignRateCardService: CreateAssignRateCardService,
     private billplanListService: BillManagementService,
+    private authorizationService: AuthorizationService
   ) {
     this.params = {
       type: 'dateOnly',
       startdate: moment().utcOffset(environment.UTC)
     }
+    this.billPlanMgmtAuthControls = authorizationService.authorizationState.billplan_mgmt;
   }
 
   ngOnInit() {
