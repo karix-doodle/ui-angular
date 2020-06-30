@@ -1,11 +1,11 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.billplan_view_enabled">
     <div class="col-12">
         <label class="main-heading">
             <a routerLink="/billplan-management">BILLPLAN MANAGEMENT /</a></label>
         <span><a routerLink="/billplan-management/home"> BILLPLAN /</a> CREATE-ASSIGN RATECARD</span>
     </div>
 </div>
-<div *ngIf="billPlanMgmtAuthControls.billplan_view_enabled">
+<div *ngIf="GtMgmtAuthControls.billplan_view_enabled">
     <div class="row second-row-det">
         <div class="col-7">
             <div class="row">
@@ -77,60 +77,17 @@
                     </app-calendar-picker>
                 </div>
             </div>
-            <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'country'">
-                <div class="form-group">
-                    <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''"
-                        class="btn erp-intl-btn">
-                        Assign RateCard</button>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''"
-                        class="btn erp-intl-btn">
-                        Create RateCard</button>
-                </div>
-            </div>
-            <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'country-operator'">
-                <div class="form-group">
-                    <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''"
-                        class="btn erp-intl-btn">
-                        Assign RateCard</button>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''"
-                        class="btn erp-intl-btn">
-                        Create RateCard</button>
-                </div>
-            </div>
-            <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'flat-fixed'">
-                <div class="form-group">
-                    <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''"
-                        class="btn erp-intl-btn">
-                        Assign RateCard</button>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''"
-                        class="btn erp-intl-btn">
-                        Create RateCard</button>
-                </div>
-            </div>
-            <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'group'">
-                <div class="form-group">
-                    <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''"
-                        class="btn erp-intl-btn">
-                        Assign RateCard</button>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''"
-                        class="btn erp-intl-btn">
-                        Create RateCard</button>
-                </div>
-            </div>
-            <div class="col-12 text-center" *ngIf="rateCardSearchForm.get('ratecardtype').value === 'slab'">
-                <div class="form-group">
-                    <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value != ''"
-                        class="btn erp-intl-btn">
-                        Assign RateCard</button>
-                    <button type="submit" *ngIf="rateCardSearchForm.get('ratecardid').value == ''"
-                        class="btn erp-intl-btn">
-                        Create RateCard</button>
-                </div>
+        </div>
+        <div class="col-12 text-center"
+            *ngIf="rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'country' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'country-operator' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'flat-fixed' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'group' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'slab'">
+            <div class="form-group">
+                <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
+                <button [disabled]="!GtMgmtAuthControls.billplan_assign_ratecard_enabled" type="submit"
+                    *ngIf="rateCardSearchForm.get('ratecardid').value != ''" class="btn erp-intl-btn">
+                    Assign RateCard</button>
+                <button [disabled]="!GtMgmtAuthControls.billplan_create_ratecard_enabled" type="submit"
+                    *ngIf="rateCardSearchForm.get('ratecardid').value == ''" class="btn erp-intl-btn">
+                    Create RateCard</button>
             </div>
         </div>
     </form>
@@ -183,7 +140,8 @@
         </table>
     </div>
 </div>
-<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_view_enabled">
+
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.billplan_view_enabled">
     <div class="d-block">
         <img style="width: 150px;" src="assets/icons/icon-lock.png" />
         <span class="w-100 d-block">

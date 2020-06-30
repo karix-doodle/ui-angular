@@ -19,8 +19,7 @@ import { addValidators, removeValidators } from '../../../shared/helper/helperFu
 import * as moment from 'moment';
 import { BillManagementService } from '../../services/BillManagement/billplan-management.service';
 import { GetNameCheck_ApiResponse } from '../../models/BillManagement/blillplan.models';
-import { AuthorizationService } from '../../../service/auth/authorization.service';
-import { BillplanMgmt } from '../../../model/authorization.model';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-ratecard-list',
@@ -37,10 +36,11 @@ export class RatecardListComponent implements OnInit {
 
   public params: any;
 
+  GtMgmtAuthControls = null
+
   rateCardValid: boolean = false
   showdropdown: boolean = false
   ratecardName: string = '';
-  billPlanMgmtAuthControls: BillplanMgmt;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,11 +50,12 @@ export class RatecardListComponent implements OnInit {
     private billplanListService: BillManagementService,
     private authorizationService: AuthorizationService
   ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.billplan_mgmt
+
     this.params = {
       type: 'dateOnly',
       startdate: moment().utcOffset(environment.UTC)
     }
-    this.billPlanMgmtAuthControls = authorizationService.authorizationState.billplan_mgmt;
   }
 
   ngOnInit() {
@@ -164,9 +165,13 @@ export class RatecardListComponent implements OnInit {
 
   onrateCardSearchFormSubmit(data) {
     if (data.ratecardid == '') {
-      this.nameCheck(data);
+      if (this.GtMgmtAuthControls.billplan_create_ratecard_enabled) {
+        this.nameCheck(data);
+      }
     } else {
-      this.assignRatecard(data)
+      if (this.GtMgmtAuthControls.billplan_assign_ratecard_enabled) {
+        this.assignRatecard(data)
+      }
     }
   }
 

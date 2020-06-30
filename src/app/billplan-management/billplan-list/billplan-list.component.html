@@ -1,4 +1,4 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="billPlanMgmtAuthControls.billplan_list_enabled">
   <div class="col-8">
     <label class="main-heading">
       <a routerLink="/billplan-management">BILLPLAN MANAGEMENT /</a></label>
@@ -28,71 +28,73 @@
           class="fa fa-download"></i></button>
     </div>
   </div>
-  <div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
-      <thead>
-        <tr>
-          <th (click)="sort('billplanname')">
-            Bill Plan Name
-            <i *ngIf="sortingName === 'billplanname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
-            <i *ngIf="sortingName === 'billplanname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
-          </th>
-
-          <th (click)="sort('ratecardname')">
-            Rate Card Name
-            <i *ngIf="sortingName === 'ratecardname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
-            <i *ngIf="sortingName === 'ratecardname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
-          </th>
-          <th (click)="sort('billingtype')">
-            Billing type
-            <i *ngIf="sortingName === 'billingtype' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
-            <i *ngIf="sortingName === 'billingtype' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
-          </th>
-          <th>
-            No. Of Accounts Tagged
-          </th>
-          <th>
-            Billing Currency
-          </th>
-          <th>
-            Created Date & Time
-          </th>
-          <th>
-            Created By
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="
+</div>
+<div class="main-container table-responsive" *ngIf="billPlanMgmtAuthControls.billplan_list_enabled">
+  <table class="table table-borderless erp-list-table row-hover-effect">
+    <thead>
+      <tr>
+        <th (click)="sort('billplanname')">
+          Bill Plan Name
+          <i class="fa fa-caret-down"></i>
+          <i *ngIf="sortingName === 'billplanname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+          <i *ngIf="sortingName === 'billplanname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+        </th>
+        <th (click)="sort('ratecardname')">
+          Rate Card Name
+          <i class="fa fa-caret-down"></i>
+          <i *ngIf="sortingName === 'ratecardname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+          <i *ngIf="sortingName === 'ratecardname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+        </th>
+        <th (click)="sort('billingtype')">
+          Billing type
+          <i class="fa fa-caret-down"></i>
+          <i *ngIf="sortingName === 'billingtype' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+          <i *ngIf="sortingName === 'billingtype' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+        </th>
+        <th>
+          No. Of Accounts Tagged
+        </th>
+        <th>
+          Billing Currency
+        </th>
+        <th>
+          Created Date & Time
+        </th>
+        <th>
+          Created By
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="
             let tableData of billplanTableListData
               | filter: { billplanname: searchvalue }
               | sort: sortingName:!isDesc
           ">
-          <td class="font-weight-bold"> <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_enabled}"
-              [routerLink]="billPlanMgmtAuthControls.billplan_view_enabled 
+        <td class="font-weight-bold"> <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_enabled}"
+            [routerLink]="billPlanMgmtAuthControls.billplan_view_enabled 
               ? ['/billplan-management-postpaid', tableData.id] : []">{{tableData.billplanname}}</a>
-          </td>
-          <td>{{tableData.ratecardname}}</td>
-          <td>
-            {{tableData.billingtype}}
-          </td>
-          <td class="text-center">{{tableData.noofesmetag}}</td>
-          <td class="text-left" [innerHTML]="tableData.billingcurrency "> </td>
-          <td>{{tableData.date}} | {{tableData.time}}</td>
-          <td>{{tableData.createduser}}</td>
-        </tr>
-        <tr *ngIf="
+        </td>
+        <td>{{tableData.ratecardname}}</td>
+        <td>
+          {{tableData.billingtype}}
+        </td>
+        <td class="text-center">{{tableData.noofesmetag}}</td>
+        <td class="text-left" [innerHTML]="tableData.billingcurrency "> </td>
+        <td>{{tableData.date}} | {{tableData.time}}</td>
+        <td>{{tableData.createduser}}</td>
+      </tr>
+      <tr *ngIf="
           !billplanTableListData.length ||
           (billplanTableListData | filter: { billplanname: searchvalue })
             .length == 0
         ">
-          <td colspan="5" style="text-align: center;">No Records Found</td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
+        <td colspan="5" style="text-align: center;">No Records Found</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
 <div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_list_enabled">
   <div class="d-block">
     <img style="width: 150px;" src="assets/icons/icon-lock.png" />
