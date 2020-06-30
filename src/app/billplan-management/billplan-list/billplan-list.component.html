@@ -31,17 +31,19 @@
       <tr>
         <th (click)="sort('billplanname')">
           Bill Plan Name
+          <i class="fa fa-caret-down"></i>
           <i *ngIf="sortingName === 'billplanname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
           <i *ngIf="sortingName === 'billplanname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
         </th>
-
         <th (click)="sort('ratecardname')">
           Rate Card Name
+          <i class="fa fa-caret-down"></i>
           <i *ngIf="sortingName === 'ratecardname' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
           <i *ngIf="sortingName === 'ratecardname' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
         </th>
         <th (click)="sort('billingtype')">
           Billing type
+          <i class="fa fa-caret-down"></i>
           <i *ngIf="sortingName === 'billingtype' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
           <i *ngIf="sortingName === 'billingtype' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
         </th>
