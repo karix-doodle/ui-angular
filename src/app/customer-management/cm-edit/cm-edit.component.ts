@@ -326,6 +326,9 @@ export class CmEditComponent implements OnInit {
             this.lcrRouteType = [this.selectedCustomerType];
             this.setDefaultValues(rtype);
           }
+          this.params = {
+            'effective_till': this.usersData.effective_till
+          }
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
