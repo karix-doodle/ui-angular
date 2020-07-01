@@ -52,6 +52,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   @Input() countryOperatorListEvent: Observable<[FormArray, number]>;
   @Input() parentForm: FormGroup;
   @Input() patchForm: FormGroup;
+  @Input() countryOperatorArray :[]
   @Output() countryOperatorList = new EventEmitter<[FormArray, number]>();
   @ViewChild("stepper", { static: false }) stepper: MatStepper;
   private eventHandleCountryDelete: Subscription;

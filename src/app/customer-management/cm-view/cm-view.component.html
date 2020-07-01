@@ -516,13 +516,13 @@
                     <div class="row">
                         <div class="col-2">
                             <label class="checkbox-label col-4 ml-15" for="sms">SMS
-                                <input type="checkbox" checked="checked" id="sms">
+                                <input type="checkbox" disabled [checked]="asignedService.data.channel.includes('sms')" >
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="col-3">
                             <label class="checkbox-label col-4 ml-15" for="voice">Voice
-                                <input type="checkbox" checked="checked" id="voice">
+                                <input type="checkbox" disabled [checked]="asignedService.data.channel.includes('voice')" >
                                 <span class="checkmark"></span>
                             </label>
                         </div>
@@ -530,25 +530,26 @@
                 </div>
             </div>
             <section class="main-section mt-2">
-                <div class="row">
-                    <label class="checkbox-label col-4 ml-15" for="globalOne">GlobalOne
-                        <input type="checkbox" checked="checked" id="globalOne">
+                <div class="row" >
+                  <div class="col-3" >
+                    <div class="col-12" *ngFor="let item of asignedService.data.mediaandservicelists.sms">
+                      <label class="checkbox-label col-4 ml-15" for="globalOne">{{item}}
+                        <input type="checkbox" checked="checked" disabled id="globalOne">
                         <span class="checkmark"></span>
                     </label>
-                    <label class="checkbox-label col-12 ml-15 my-2" for="powerApi">Power API
-                        <input type="checkbox" checked="checked" id="powerApi">
+                  </div>
+                  </div>
+                  <div class="col-3" >
+                    <div class="col-12" *ngFor="let item of asignedService.data.mediaandservicelists.sms">
+                      <label class="checkbox-label col-4 ml-15" for="globalOne">{{item}}
+                        <input type="checkbox" checked="checked" disabled id="globalOne">
                         <span class="checkmark"></span>
                     </label>
+                    </div>
+                  </div>
 
-                    <label class="checkbox-label col-12 ml-15 mt-2" for="smpp">SMPP
-                        <input type="checkbox" checked="checked" id="smpp">
-                        <span class="checkmark"></span>
-                    </label>
 
-                    <label class="checkbox-label col-12 ml-15 my-2" for="intl-msg">International Messages
-                        <input type="checkbox" id="intl-msg">
-                        <span class="checkmark"></span>
-                    </label>
+
 
                 </div>
                 <div class="col-12 text-center mt-3">

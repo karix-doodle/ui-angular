@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerManagementService } from '../services/customer-management-view.service';
-import { EsmeaddrApi_Response, EssmeddrRateCardList_ApiResponse, SenderIdsApi_Response, SenderIdLists, BlockedSenderIdsApi_Response, BlockedSenderIdLists } from '../models/customer-management.model';
-import { environment } from 'src/environments/environment';
-import { successAlert, errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
+import { EsmeaddrApi_Response, EssmeddrRateCardList_ApiResponse, SenderIdsApi_Response, SenderIdLists, BlockedSenderIdsApi_Response, BlockedSenderIdLists, AssignedServiceApi_Response } from '../models/customer-management.model';
+import { environment } from '../../../environments/environment';
+import { successAlert, errorAlert } from '../../shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -18,6 +18,10 @@ export class CmViewComponent implements OnInit {
   rateCardList:EssmeddrRateCardList_ApiResponse;
   senderidLis:SenderIdLists[] = []
   blockedSenderidList:BlockedSenderIdLists[]= []
+  asignedService:AssignedServiceApi_Response
+  samplearray: any = []
+
+
   constructor(config: NgbModalConfig, private modalService: NgbModal,
     private route: ActivatedRoute,
     private service: CustomerManagementService)
@@ -30,12 +34,43 @@ export class CmViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.samplearray = [
+      {
+        media: 'sms',
+        svc:'global'
+      },
+      {
+       media: 'voice',
+       svc:'global2'
+     },
+     {
+       media: 'voice',
+       svc:'global1'
+     },
+     {
+       media: 'sms',
+       svc:'global'
+     }
+    ]
 this.getEssdmrAddres();
 this.getEssdmrRateCardlist();
 this.getSenderidList();
+this.getAssignedMediaList();
+console.log(this.samplearray)
   }
 
+  getAssignedMediaList(){
+    this.service.getAssignedServiceDetails(this.esmeaddr).subscribe( (res: AssignedServiceApi_Response) => {
+      if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+         this.asignedService = res
 
+      } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+         errorAlert( res.responsestatus)
+      }
+    }, (error: HttpErrorResponse) => {
+      errorAlert(error.message, error.statusText)
+    })
+  }
 
 
 

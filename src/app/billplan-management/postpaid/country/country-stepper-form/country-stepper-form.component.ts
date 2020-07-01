@@ -49,6 +49,7 @@ export class CountryStepperFormComponent implements OnInit {
   @Input() countryListEvent: Observable<[FormArray, number]>;
   @Input() parentForm: FormGroup;
   @Input() patchForm: FormGroup;
+  @Input() countriesArray: []
   @Input() handleCountryDelete: Observable< number>;
   private eventHandleCountryDelete: Subscription;
   @Output() countryList = new EventEmitter<[FormArray, number]>();
