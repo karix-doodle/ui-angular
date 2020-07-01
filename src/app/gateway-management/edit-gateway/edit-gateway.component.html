@@ -177,15 +177,19 @@
                 <div class="col-3 text-center form-group">
                     <label class="col-12 px-0 text-left">Sender ID Whitelisting Required</label>
                     <label class="toggle-switch mt-3">
-                        <input type="checkbox" class="switch-btn" formControlName="senderid_whitelist_required">
+                        <input type="checkbox" class="switch-btn"
+                            (click)="handleSenderIdWhitelist($event.target.checked)"
+                            formControlName="senderid_whitelist_required">
                         <span class="slider round"></span>
                     </label>
                 </div>
 
                 <div class="col-4 offset-1 form-group">
                     <label>Sender ID Type</label>
-                    <select class="dropdown-select w-100" formControlName="senderid_type" name="senderid_type">
-                        <option value="" default>Select Sender ID Type</option>
+                    <select class="dropdown-select w-100"
+                        [attr.disabled]="updateGatewayFormGroup.get('senderid_whitelist_required').value ? null : true"
+                        formControlName="senderid_type" name="senderid_type">
+                        <option value="" default disabled>Select Sender ID Type</option>
                         <option value="0">Open</option>
                         <option value="1">List</option>
                         <option value="2">Static</option>

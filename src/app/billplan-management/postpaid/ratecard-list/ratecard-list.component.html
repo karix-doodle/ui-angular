@@ -29,7 +29,7 @@
     <form [formGroup]="rateCardSearchForm" (ngSubmit)="onrateCardSearchFormSubmit(rateCardSearchForm.value)">
         <!-- {{rateCardSearchForm.value | json}} -->
         <div class="row btm-border mt-2 second-row-det">
-            <div class="col-3">
+            <div class="col-4">
                 <label>Rate Card Type</label>
                 <select disabled formControlName="ratecardtype" class="dropdown-select w-100 dark-input">
                     <option value="" default disabled>Select Rate Card Type</option>
@@ -44,7 +44,7 @@
                 <div class="form-group">
                     <label>Ratecard Name</label>
                     <section class="search-suggestion-wrapper">
-                        <input formControlName="ratecardname" type="search"
+                        <input formControlName="ratecardname" type="search" maxlength="20"
                             class="form-control dark-input search-suggestion-input" placeholder="Enter Rate Card Name"
                             autocomplete="off" />
                         <div class="pad-r-3" *ngIf="rateCardNameList?.length && showdropdown == true">
@@ -70,12 +70,22 @@
                     </section>
                 </div>
             </div>
-            <div class="col-5" *ngIf="rateCardSearchForm.get('ratecardid').value != ''">
+            <div class="col-4" *ngIf="rateCardSearchForm.get('ratecardid').value != ''">
                 <div class="form-group date-div">
-                    <label>Effective Date & Time from (IST) | <b class="cursor-pointer"
-                            ngbTooltip="(DD/MM/YYYY 00:00:00)">Format</b></label>
-                    <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)">
-                    </app-calendar-picker>
+                    <label>Effective Date & Time from</label>
+                    <div class="d-flex align-items-center date-wrapper">
+                        <div class="col-5">
+                            <div class="row">
+                                <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)">
+                                </app-calendar-picker>
+                            </div>
+                        </div>
+                        <div class="col-7" style="border-left: 1px solid;">
+                            <span>
+                                00:00:00 AM (IST)
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

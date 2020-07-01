@@ -5,7 +5,7 @@
     </div>
 </div>
 <div class="row btm-border second-row-det">
-    <div class="col-9">
+    <div class="col-8">
         <div class="row mb-2">
             <div class="col-2 border-right "><label>ESME Addr.</label></div>
             <div class="col-9"><span><b>{{viewLogData.data.esmeaddr}}</b></span></div>
@@ -15,7 +15,7 @@
             <div class="col-9"><span><b>{{viewLogData.data.clientname}}</b></span></div>
         </div>
     </div>
-    <div class="col-2 mt-2 form-group">
+    <div class="col-3 mt-2 form-group">
         <app-calendar-picker  [params]="params" (selectDate)="getDateSelection($event)"></app-calendar-picker>
     </div>
     <div class="col-1 mt-2 text-right"><a class="icon-btn" style="cursor: pointer;" (click)="viewlistDownload()" ><i aria-hidden="true" class="fa fa-download"></i></a></div>
@@ -33,7 +33,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let item of viewLogData.data.tabledata">
-                <td>{{item.date}} | {{item.time}}</td>
+                <td>{{item.date}} </td>
                 <td> {{item.time}}</td>
                 <td class="font-weight-semi-bold"> {{item.user}}</td>
                 <td> {{item.activity}}</td>
