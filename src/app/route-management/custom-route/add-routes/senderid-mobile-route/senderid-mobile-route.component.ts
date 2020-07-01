@@ -158,7 +158,7 @@ export class SenderidMobileRouteComponent implements OnInit {
       : "";
     this.senderIdFrom.value.req_type = "single_req";
     this.senderIdFrom.value.createdby = "1234";
-    this.senderIdFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+    this.senderIdFrom.value.whitelist_type = this.senderIdFrom.value.whitelist_type
     this.onAddRoute({ ...this.senderIdFrom.value });
     }
 

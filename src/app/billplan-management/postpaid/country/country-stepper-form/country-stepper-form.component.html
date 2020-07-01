@@ -13,7 +13,7 @@
                   <label>Country</label>
 
                   <select class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode" #country
-                  (click)="handleCountryOperator( i, 'mcc', $event , country.value)">
+                  (change)="handleCountryOperator( i, 'mcc', $event , country.value)">
                     <option value="null" disabled>Select country</option>
                     <option *ngFor="let cnt of billPlanCountryList" [attr.data-value]="cnt.mcc" [value]="cnt.country"
                     [disabled]="cnt.isSelected == true">
@@ -65,9 +65,10 @@
         </div>
         <div class="col-6 text-right save-form-div">
           <button type="button"  class="btn btn-basic mr-3" mat-button  [routerLink]="['/billplan-management-postpaid/', parentForm.get('billplan_id').value]" >Cancel</button>
-          <button type="button"  class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
-            Next
-          </button>
+          <button
+                        [disabled]="(isEditMode && this.firstFormGroup.untouched) ? true : countriesArray.length == 0 ? true : false"
+                        type="button" class="btn erp-intl-btn"
+                        (click)="countriesArray.length != 0 ? stepperView(stepper, 0, 1) : ''" mat-button>Next</button>
         </div>
       </div>
     </form>

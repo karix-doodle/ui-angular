@@ -19,6 +19,10 @@
     </button>
   </div>
 </div>
+
+<pre>{{billSubmissionForm.value |json}}</pre>
+
+<pre>{{senderidForm.value |json}}</pre>
 <div class="row btm-border second-row-det">
   <div class="col-8">
     <div class="row">
@@ -98,7 +102,7 @@
         <div class="col-6 form-group">
           <label>Country</label>
           <select class="dropdown-select w-100" formControlName="country"
-            (click)="handleCountryOperator('mcc', $event)">
+            (change)="handleCountryOperator('mcc', $event)">
             <option value='' disabled>Select Country</option>
             <option *ngFor="let item of getcountryListApiResponse.data" [attr.data-value]="item.mcc">{{ item.country }}
             </option>
@@ -110,7 +114,7 @@
         <div class="form-group col-6">
           <label>Operator</label>
           <select class="dropdown-select w-100" formControlName="operator"
-            (click)="handleCountryOperator('mnc', $event)">
+            (change)="handleCountryOperator('mnc', $event)">
             <option value='' disabled>Select Operator</option>
             <option *ngFor="let item of operatorList" [attr.data-value]="item.mnc">{{ item.operator }}
             </option>
@@ -170,26 +174,29 @@
     &times;
   </button>
   <div class="modal-body">
-    <form action="">
+    <form [formGroup] ="billSubmissionForm" (ngSubmit)="onBillSubmit()">
       <div class="row">
         <div class="col-6 form-group">
           <label>Country</label>
-          <select class="dropdown-select w-100">
-            <option value="" default>Select Country</option>
-            <option value="">option1</option>
-            <option value="">option2</option>
-            <option value="">option3</option>
-          </select>
+          <select class="dropdown-select w-100" formControlName="country"
+          (change)="handleCountry('mcc', $event)">
+          <option value='' disabled>Select Country</option>
+          <option *ngFor="let item of billSubCountryList" [attr.data-value]="item.mcc" [attr.sub-value]="item.billOnSub">{{ item.country }}
+          </option>
+        </select>
+        <span class="text-danger pl-1 f-12" *ngIf="billSubmissionForm.get('mcc').hasError('required') && billSubmitted">
+          Country is required
+        </span>
         </div>
         <div class="form-group col-6">
           <label>Bill On Submission</label>
-          <select class="dropdown-select w-100">
-            <option value="" default>Yes</option>
-            <option value="">No</option>
+          <select class="dropdown-select w-100" formControlName="billonsub">
+            <option value="Yes" default>Yes</option>
+            <option value="No">No</option>
           </select>
         </div>
         <div class="col-12 text-center mt-2">
-          <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="d('Cross click')" />
+          <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="resetBillForm()" />
           <input type="submit" class="btn erp-intl-btn save-btn" value="Save" />
         </div>
       </div>

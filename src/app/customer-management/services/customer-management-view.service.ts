@@ -15,6 +15,8 @@ import {
   GetSenderisApi_Response,
   SenderIdsApi_Response,
   BlockedSenderIdsApi_Response,
+  BillOnSubmissionCountryListApi_Response,
+  AssignedServiceApi_Response,
 } from "../models/customer-management.model";
 
 @Injectable({
@@ -52,6 +54,15 @@ export class CustomerManagementService {
         this.httpOptions
       )
       .pipe(map((data) => data as EsmeaddrApi_Response));
+  }
+
+  getAssignedServiceDetails(data: number): Observable<AssignedServiceApi_Response> {
+    return this.http
+      .get(
+        `${this.baseUrl}/getmediaandserviceofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        this.httpOptions
+      )
+      .pipe(map((data) => data as AssignedServiceApi_Response));
   }
 
   getEsmeaddrRateCardDetails(
@@ -123,6 +134,16 @@ export class CustomerManagementService {
       .pipe(map((data) => data as AllowedCountryApi_Response));
   }
 
+  getBillSubmissionCountylist(
+    data: number
+  ): Observable<BillOnSubmissionCountryListApi_Response> {
+    return this.http
+      .get(
+        `${this.baseUrl}/countrieslistforbillonsubmission?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        this.httpOptions
+      )
+      .pipe(map((data) => data as BillOnSubmissionCountryListApi_Response));
+  }
   getAllowedOperatorlist(
     data
   ): Observable<AllowedOperatorApi_Response> {
@@ -139,6 +160,17 @@ export class CustomerManagementService {
     return this.http
       .post(
         `${this.baseUrl}/addsenderids`, {...data , ...this.user},
+        this.httpOptions
+      )
+      .pipe(map((data) => data as AddSenderIdApi_Response));
+  }
+
+  addBillOnubmit(
+    data
+  ): Observable<AddSenderIdApi_Response> {
+    return this.http
+      .post(
+        `${this.baseUrl}/setbillonsubmission`, {...data , ...this.user},
         this.httpOptions
       )
       .pipe(map((data) => data as AddSenderIdApi_Response));

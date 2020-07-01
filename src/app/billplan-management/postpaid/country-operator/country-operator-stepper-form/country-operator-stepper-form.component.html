@@ -9,7 +9,7 @@
                 <div class="col-3 mb-2">
                   <label>Country</label>
                   <select #country class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode"
-                    (click)="handleCountryOperator(i, 'mcc', $event, country.value)"  >
+                    (change)="handleCountryOperator(i, 'mcc', $event, country.value)"  >
                     <option value="" disabled>Select country</option>
                     <option *ngFor="let cnt of billPlanCountryList"  [attr.data-code]="cnt.country_code"  [attr.data-value]="cnt.mcc" [value]="cnt.country">
                       {{ cnt.country}}
@@ -25,7 +25,7 @@
                 <div class="col-3 mb-2">
                   <label>Operator</label>
                   <select class="dropdown-select w-100" formControlName="operator_name"
-                  (click)="handleCountryOperator( i, 'mnc', $event, country.value)">
+                  (change)="handleCountryOperator( i, 'mnc', $event, country.value)">
                     <option value="" disabled>Select Operator</option>
                     <option *ngFor="let cnt of operatorObj[count.get('country_name').value]"
                    [attr.data-value]="cnt.mnc" [value]="cnt.operator"
@@ -73,14 +73,15 @@
       <div class="row mt-4 create-route-section">
         <div class="col-6">
           <button type="submit" class="btn btn-dark">
-            {{isEditMode ? 'UPDATE' : 'ADD NEW COUNTRY && OPERATOR' }}
+            {{isEditMode ? 'UPDATE' : 'ADD NEW COUNTRY & OPERATOR' }}
           </button>
         </div>
         <div class="col-6 text-right save-form-div">
           <button type="button" class="btn btn-basic mr-3" mat-button  [routerLink]="['/billplan-management-postpaid/', parentForm.get('billplan_id').value]" >Cancel</button>
-          <button type="button"  class="btn erp-intl-btn" mat-button (click)="stepperView(stepper,0, 1)">
-            Next
-          </button>
+          <button
+          [disabled]="(isEditMode && this.firstFormGroup.untouched) ? true : countryOperatorArray.length == 0 ? true : false"
+          type="button" class="btn erp-intl-btn"
+          (click)="countryOperatorArray.length != 0 ? stepperView(stepper, 0, 1) : ''" mat-button>Next</button>
         </div>
       </div>
     </form>

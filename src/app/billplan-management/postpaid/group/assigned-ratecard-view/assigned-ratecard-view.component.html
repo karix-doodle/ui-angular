@@ -2,7 +2,7 @@
   <div class="col-7 pt-10">
     <label class="main-heading">BILL PLAN MANAGEMENT /</label>
     <span
-    > BILLPLAN / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
+    > <a [routerLink]="['/billplan-management/home']"  > BILLPLAN</a> / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
       {{billplan_name}}/</a
     >
     VIEW</span
@@ -71,7 +71,8 @@
         <td class="font-weight-semi-bold">{{item.group_name}}</td>
         <td>{{item.country}}</td>
         <td>{{item.operator}}</td>
-        <td>{{item.mcc}} + {{item.mnc}}</td>
+        <td *ngIf="item.mnc === 0">{{item.mcc}}</td>
+        <td *ngIf="item.mnc !== 0">{{item.mcc}} + {{item.mnc}}</td>
         <td>{{item.billing_rate}}</td>
         <td>{{item.normalizerate}}</td>
 
@@ -119,7 +120,8 @@
             <td class="font-weight-semi-bold">{{item.continent}}</td>
             <td>{{item.country}}</td>
             <td>{{item.operator}}</td>
-            <td>{{item.mcc}} + {{item.mnc}}</td>
+            <td *ngIf="item.mnc === null">{{item.mcc}}</td>
+            <td *ngIf="item.mnc !== null">{{item.mcc}} + {{item.mnc}}</td>
             <td>{{item.billing_rate}}</td>
             <td>{{item.normalizerate}}</td>
 
@@ -154,7 +156,7 @@
       </table>
       <div class="col-12 my-4">
         <label class="sub-heading">Description</label>
-        <textarea rows="4" class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
+        <textarea rows="4" class="w-100" readonly [value]="description" placeholder="Enter short Description here"></textarea>
       </div>
     </div>
     <div *ngIf="row_billplan === 'standard'">
@@ -176,7 +178,8 @@
             <td class="font-weight-semi-bold">{{item.continent}}</td>
             <td>{{item.country}}</td>
             <td>{{item.operator}}</td>
-            <td>{{item.mcc}} + {{item.mnc}}</td>
+            <td *ngIf="item.mnc === null">{{item.mcc}}</td>
+            <td *ngIf="item.mnc !== null">{{item.mcc}} + {{item.mnc}}</td>
             <td>{{item.billing_rate}}</td>
             <td>{{item.normalizerate}}</td>
 
@@ -185,7 +188,7 @@
       </table>
       <div class="col-12 my-4">
         <label class="sub-heading">Description</label>
-        <textarea rows="4" class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
+        <textarea rows="4" class="w-100" readonly [value]="description" placeholder="Enter short Description here"></textarea>
       </div>
     </div>
   </div>
