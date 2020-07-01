@@ -969,9 +969,11 @@ button:not(:disabled) {
   color: #fff;
   font-size: 15px;
   border-radius: 5px;
+  text-align: center;
 }
 .date-wrapper input {
   cursor: pointer;
   width: 100% !important;
   border: 0;
+  text-align: center;
 }

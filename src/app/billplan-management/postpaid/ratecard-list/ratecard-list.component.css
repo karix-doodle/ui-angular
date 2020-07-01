@@ -48,6 +48,10 @@
     position: relative;
 }
 
+.search-suggestion-input:focus + .pad-r-3 {
+    display: block !important;
+}
+
 .search-suggestion-input:hover + .pad-r-3 {
     display: block !important;
 }

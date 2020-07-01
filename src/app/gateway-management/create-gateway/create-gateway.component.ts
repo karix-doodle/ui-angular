@@ -119,6 +119,19 @@ export class CreateGatewayComponent implements OnInit {
     }
   }
 
+  handleSenderIdWhitelist(isChecked: boolean) {
+    if (isChecked) {
+      this.createGatewayFormGroup.get('senderid_type').setValidators([Validators.required]);
+      this.createGatewayFormGroup.get('senderid_type').updateValueAndValidity();
+    } else {
+      this.createGatewayFormGroup.patchValue({
+        senderid_type: ''
+      })
+      this.createGatewayFormGroup.get('senderid_type').clearValidators();
+      this.createGatewayFormGroup.get('senderid_type').updateValueAndValidity();
+    }
+  }
+
   onSubmitCreateGateway(data) {
     this.isCreateValid = true;
     // for (let el in this.createGatewayFormGroup.controls) {
@@ -136,7 +149,11 @@ export class CreateGatewayComponent implements OnInit {
       data.is_bill_on_submission = data.is_bill_on_submission ? 1 : 0;
       data.exclude_lcr = data.exclude_lcr ? "1" : "0";
       data.senderid_whitelist_required = data.senderid_whitelist_required ? "1" : "0";
-      data.senderid_type = (Number)(data.senderid_type);
+      if (data.senderid_whitelist_required == "1") {
+        data.senderid_type = data.senderid_type ? (Number)(data.senderid_type) : '';
+      } else {
+        delete data.senderid_type
+      }
       data.msg_type = (data.msg_type.toString());
       data.charset_enc = (data.charset_enc.toString());
       this.gatewayManagementService.Gateway_create(data).subscribe(
