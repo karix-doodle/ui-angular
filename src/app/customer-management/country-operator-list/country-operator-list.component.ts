@@ -82,7 +82,7 @@ export class CountryOperatorListComponent implements OnInit {
     this.billSubmissionForm = this.fb.group({
       country: ['' ,[Validators.required]],
       mcc: ['',[Validators.required]],
-      billonsub: ''
+      billonsub: ['',[Validators.required]]
     })
   }
   getcountryControl() {
@@ -99,6 +99,7 @@ export class CountryOperatorListComponent implements OnInit {
     if (key === "mcc") {
       this.senderidForm.patchValue({
         operator: '',
+        mnc:''
       })
       this.getOperatorlist(value);
 
@@ -130,9 +131,9 @@ export class CountryOperatorListComponent implements OnInit {
 
   getSenderidDetails(){
     let data = {
-      esmeaddr: 70066200000000,
-      mnc:0,
-      mcc: 276
+      esmeaddr: +this.route.snapshot.params.id,
+      mnc: this.senderidForm.get("mnc").value,
+      mcc:this.senderidForm.get("mcc").value
     }
     this.service.getSenderidsList(data).subscribe((res: GetSenderisApi_Response ) =>{
       if (
@@ -147,6 +148,13 @@ export class CountryOperatorListComponent implements OnInit {
              default_senderid: res.data.senderids.default_senderid,
              alternate_senderid: res.data.senderids.alternate_senderid,
               })
+            } else{
+              this.hasdata = res.data.hasdata
+              this.senderidForm.patchValue({
+                senderid_type:'',
+              default_senderid: '',
+              alternate_senderid: '',
+               })
             }
 
       } else if (
@@ -341,7 +349,7 @@ export class CountryOperatorListComponent implements OnInit {
     this.billSubmissionForm.patchValue({
       country: '',
       mcc: '',
-      billonsub: 'yes'
+      billonsub: ''
     });
   }
 }

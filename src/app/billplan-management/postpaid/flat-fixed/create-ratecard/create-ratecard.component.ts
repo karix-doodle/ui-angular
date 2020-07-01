@@ -43,7 +43,7 @@ Submitted = false
     billplan_currencyid:+this.activeRoute.snapshot.params.cId,
     ratecard_name:this.activeRoute.snapshot.params.name,
     ratecard_type:['flat-fixed'],
-    billing_rate:['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
+    billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
     normalize_rate:[''],
     discount_rate:[''],
     discount_type:[''],

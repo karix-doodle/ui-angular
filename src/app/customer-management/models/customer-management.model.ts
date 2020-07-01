@@ -292,6 +292,7 @@ export class SenderIdsApi_Response {
   responsecode: number;
   responsestatus: string;
   data: {
+    total: number,
     senderidlists: SenderIdLists[];
   };
 }
@@ -304,6 +305,7 @@ export class BlockedSenderIdsApi_Response {
   responsecode: number;
   responsestatus: string;
   data: {
+    total: number,
     blockedsenderidlists: BlockedSenderIdLists[];
   };
 }
@@ -332,8 +334,38 @@ export class AssignedServiceApi_Response{
       channel: string[],
       mediaandservicelists: {
         sms:[],
+        voice:[]
       }
     }
 
+}
+
+export class BlacklistTemplateApi_Response{
+    responsecode: number
+    responsestatus: string
+    data: {
+      total: number,
+      whitelistedtemplatelists: whitelistedtemplatelists[]
+
+}
+}
+
+export class whitelistedtemplatelists{
+  pattern: string
+}
+
+export class BlockedTemplateListApi_Response{
+
+    responsecode: number
+    responsestatus: string
+    data: {
+      total: number
+      blockedtemplatelists: BlockedTemplateList[]
+
+  }
+}
+
+export class BlockedTemplateList{
+  template: string
 }
 

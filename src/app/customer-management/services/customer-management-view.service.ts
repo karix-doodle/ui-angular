@@ -17,6 +17,8 @@ import {
   BlockedSenderIdsApi_Response,
   BillOnSubmissionCountryListApi_Response,
   AssignedServiceApi_Response,
+  BlacklistTemplateApi_Response,
+  BlockedTemplateListApi_Response,
 } from "../models/customer-management.model";
 
 @Injectable({
@@ -85,6 +87,28 @@ export class CustomerManagementService {
         this.httpOptions
       )
       .pipe(map((data) => data as SenderIdsApi_Response));
+  }
+
+  getBlacklistTemplateList(
+    data: number
+  ): Observable<BlacklistTemplateApi_Response> {
+    return this.http
+      .get(
+        `${this.baseUrl}/getwhitelistedtemplatesofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        this.httpOptions
+      )
+      .pipe(map((data) => data as BlacklistTemplateApi_Response));
+  }
+
+  getBlockedtemplateTpeList(
+    data: number
+  ): Observable<BlockedTemplateListApi_Response> {
+    return this.http
+      .get(
+        `${this.baseUrl}/getblockedtemplatesofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        this.httpOptions
+      )
+      .pipe(map((data) => data as BlockedTemplateListApi_Response));
   }
   getBlockedSenderidList(
     data: number

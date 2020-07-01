@@ -77,9 +77,9 @@
                 <td>{{item.billing_rate}}</td>
                 <td>{{item.normalize_rate}}</td>
                 <td [ngClass]="{'disabled': editMode == true}">
-                    <img src="assets/icons/edit-icon.svg"  (click)="editGroups(i)"alt="edit"/>
+                    <img src="assets/icons/edit-icon.svg"  class=" cursor-pointer" (click)="editGroups(i)"alt="edit"/>
                 </td>
-                <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg" class="img-fluid" (click)="deleteGroups(i,item)"  alt="delete icon" /></td>
+                <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg" class="img-fluid  cursor-pointer" (click)="deleteGroups(i,item)"  alt="delete icon" /></td>
             </tr>
             <tr *ngIf="countriesArray.length == 0">
               <td colspan="9" class="text-center py-3 main-heading">
