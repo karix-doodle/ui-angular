@@ -80,6 +80,9 @@ export class UserRoutingConfig {
   billing_currency: string;
   billplan_id: number;
   billplan_name: string;
+  ratecard_id: number;
+  ratecard_name: string;
+  ratecard_type: string;
   routetype: string;
   lcr_route: string;
   gwid_primary: string;
