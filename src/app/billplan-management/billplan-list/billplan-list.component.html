@@ -117,7 +117,7 @@
             <label>Bill Plan Name</label>
             <div class="route-edit-div">
               <input type="text" class="form-control" placeholder="Enter Billplan Name" formControlName="billplan_name"
-                (blur)="nameCheck(createBillPlanFormGroup.get('billplan_name').value)" />
+                (blur)="nameCheck(createBillPlanFormGroup.get('billplan_name').value)" maxlength="20" />
               <span class="text-danger pl-1 f-12"
                 *ngIf="createBillPlanFormGroup.get('billplan_name').hasError('required') && isCreateValid">
                 Bill Plan Name is required
