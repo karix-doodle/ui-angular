@@ -226,7 +226,7 @@ export class CountryStepperFormComponent implements OnInit {
     if (prevIndex == 0 && index == 1) {
       Swal.fire({
         title: "Are you sure want to Proceed Next?",
-        text: "Your unsaved data will get erassed",
+        text: "Your unsaved data will get erased",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

@@ -245,6 +245,10 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          } else {
             BillingRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
          }
+      } else if (hasDot.length == 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            BillingRate = '0'
+         }
       }
 
       let dotIndex = BillingRate.indexOf('.')
@@ -252,6 +256,8 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
       if (dotIndex == 0) {
          BillingRate = '0' + BillingRate
       }
+
+      BillingRate = BillingRate != '' ? BillingRate : '0'
 
       if (form != undefined) {
          let obj = {}
@@ -271,6 +277,10 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
             NormalizedRate = Number('0' + '.' + hasDot[0]).toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
          } else {
             NormalizedRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         }
+      } else if (hasDot.length == 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            NormalizedRate = '0'
          }
       }
 

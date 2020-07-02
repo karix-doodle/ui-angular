@@ -26,7 +26,7 @@ import { BillplanMgmt } from '../../model/authorization.model';
 
 export class BillplanListComponent implements OnInit {
   billingType = "Postpaid";
-  searchvalue: "";
+  searchvalue: string = "";
   sortingName: string;
   isDesc: boolean;
   isCreateValid: boolean = false;
