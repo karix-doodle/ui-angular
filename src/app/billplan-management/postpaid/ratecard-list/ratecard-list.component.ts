@@ -14,7 +14,7 @@ import {
 } from '../../models/CreateAssignRateCard/createAssignRateCard.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { errorAlert, confirmAlert, successAlert } from '../../../shared/sweet-alert/sweet-alert';
-import { addValidators, removeValidators } from '../../../shared/helper/helperFunctions';
+import { Subject } from 'rxjs';
 
 import * as moment from 'moment';
 import { BillManagementService } from '../../services/BillManagement/billplan-management.service';
@@ -35,6 +35,7 @@ export class RatecardListComponent implements OnInit {
   billPlanDetailsViewData: BillPlanDetailsView_Data;
 
   public params: any;
+  handleDateParams: Subject<[any]> = new Subject<[any]>();
 
   GtMgmtAuthControls = null
 
@@ -54,7 +55,7 @@ export class RatecardListComponent implements OnInit {
 
     this.params = {
       type: 'dateOnly',
-      startdate: moment().utcOffset(environment.UTC)
+      startdate: moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(1, "days"),
     }
   }
 
@@ -70,7 +71,7 @@ export class RatecardListComponent implements OnInit {
       billplanid: ['', Validators.required],
       ratecardid: [''],
       currencyid: [''],
-      effectdate: [moment().utcOffset(environment.UTC), Validators.required],
+      effectdate: [moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(1, "days"), Validators.required],
       ratecardtype: ['slab', Validators.required],
       ratecardname: ['', [Validators.required, Validators.pattern(ratecardname)]],
     });
@@ -215,7 +216,7 @@ export class RatecardListComponent implements OnInit {
       return;
     } else {
       this.rateCardValid = false;
-      data.effectdate = moment(data.effectdate).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).format('DD/MM/YYYY HH:mm:ss')
+      data.effectdate = moment(data.effectdate).format('DD/MM/YYYY HH:mm:ss')
       this.createAssignRateCardService.assigendRateCard(data).subscribe(
         (res: AssigendRateCard_ApiResponse) => {
           if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
@@ -261,10 +262,11 @@ export class RatecardListComponent implements OnInit {
   }
 
   resetForm() {
+    this.handleDateParams.next([this.params]);
     this.initRateCardSearchForm()
     this.initSearchSuggestion();
     this.rateCardSearchForm.patchValue({
-      effectdate: moment().utcOffset(environment.UTC)
+      effectdate: moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(1, "days")
     })
   }
 

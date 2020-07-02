@@ -25,6 +25,7 @@
                             </button>
                         </div>
                         <button (click)="submitPriceFile()" type="button"
+                            [attr.disabled]="selectedFileName == '' ? true : null"
                             class="col-2 btn erp-intl-btn file-upload-btn">Upload</button>
                     </div>
                     <span *ngIf="selectedFileName != ''">{{selectedFileName}}</span>

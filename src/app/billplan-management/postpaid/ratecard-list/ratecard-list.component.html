@@ -70,13 +70,14 @@
                     </section>
                 </div>
             </div>
-            <div class="col-4" *ngIf="rateCardSearchForm.get('ratecardid').value != ''">
+            <div class="col-4" [ngClass]="{'disable-wrapper' : rateCardSearchForm.get('ratecardid').value == '' }">
                 <div class="form-group date-div">
                     <label>Effective Date & Time from</label>
                     <div class="d-flex align-items-center date-wrapper">
                         <div class="col-5">
-                            <div class="row">
-                                <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)">
+                            <div class="row single-date">
+                                <app-calendar-picker [handleDateParams]="handleDateParams.asObservable()"
+                                    [params]="params" (selectDate)="getDateSelection($event)">
                                 </app-calendar-picker>
                             </div>
                         </div>
