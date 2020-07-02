@@ -1,47 +1,53 @@
 <div class="row btm-border headings-div">
     <div class="col-12">
         <label class="main-heading">
-            <a routerLink="/route-management">ROUTE MANAGEMENT /</a></label>
-        <span> <a routerLink="/route-management/pool-route"> POOL ROUTE /</a> </span><span> CREATE ROUTE </span>
+            <a routerLink="/route-management">ROUTE MANAGEMENT /</a>
+        </label>
+        <span>
+            <a routerLink="/route-management/pool-route"> POOL ROUTE /</a>
+        </span>
+        <span> CREATE ROUTE </span>
     </div>
 </div>
-<div *ngIf="authService.authorizationState.route_mgmt.poolroute_create_enabled 
-    && authService.authorizationState.route_mgmt.poolroute_clone_enabled">
-    <form [formGroup]="formOfCreateClone">
+<div *ngIf="authService.authorizationState?.route_mgmt.poolroute_create_enabled 
+    && authService.authorizationState?.route_mgmt.poolroute_clone_enabled">
+    <form [formGroup]="parentFormGroup">
         <div class="row btm-border second-row-det">
             <div class="col-6">
                 <div class="w-50">
-                    <input type="text" [minlength]="routeNameMin" [maxlength]="routeNameMax"
-                        formControlName="route_name" class="form-control" placeholder="Enter Route name here" />
-                    <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('route_name').hasError('required')}" 
-                    [readonly]="previewList.length" -->
-                    <span class="text-danger pl-1 f-12" *ngIf="!formOfCreateClone.get('route_name').valid && submitted">
-                        Route Name is required
+                    <input type="text" [minlength]="routeNameMin" [maxlength]="routeNameMax" class="form-control"
+                        placeholder="Enter Route name here" formControlName="route_name" />
+                    <span class="text-danger pl-1 f-12" *ngIf="!parentFormGroup.get('route_name').valid && submitted">
+                        Route Name is invalid
                     </span>
+                    <!-- <span class="text-danger pl-1 f-12" *ngIf="parentFormGroup.get('route_name').hasError('required') && submitted">
+                    Gateway Type is required
+                </span> -->
                 </div>
             </div>
-            <!-- {{formOfCreateClone.get('route_name').value | json}} -->
             <div class="col-3 text-right">
-                <select formControlName="gw_type" class="dropdown-select w-100" (change)="loadGatewaysList('onChange')">
-                    <!-- [ngClass]="{submitError:submitted && formOfCreateClone.get('gw_type').hasError('required')}" [attr.disabled]="this.RouteMgmtService.previewList.length ? '' : null" -->
+                <select class="dropdown-select w-100" formControlName="gw_type" (change)="loadGatewaysList('onChange')">
                     <option value="" disabled>Select Route Type</option>
                     <option value="direct" default>Direct</option>
                     <option value="premium">Premium</option>
                     <option value="wholesale">Wholesale</option>
                 </select>
                 <span class="text-danger pl-1 f-12"
-                    *ngIf="formOfCreateClone.get('gw_type').hasError('required') && submitted">
+                    *ngIf="parentFormGroup.get('gw_type').hasError('required') && submitted">
                     Gateway Type is required
                 </span>
             </div>
-            <div class="col-3 text-right lcr-value" *ngIf="formOfCreateClone.get('gw_type').value !== ''">
-                <span>Fallback - <b>LCR ({{formOfCreateClone.get('gw_type').value}})</b></span>
+            <div class="col-3 text-right lcr-value" *ngIf="parentFormGroup.get('gw_type').value !== ''">
+                <span>Fallback - <b>LCR ({{parentFormGroup.get('gw_type').value}})</b></span>
             </div>
         </div>
-        <!-- {{formOfCreateClone.value| json}} -->
+        <!-- <pre> {{parentFormGroup.value | json}}</pre> -->
         <div class="main-container p-4">
-            <app-route-stepper-form [isClone]="isClone" [parentForm]="formOfCreateClone" (isSubmitted)="submitState()"
-                (routesList)="previewListData($event)" [gatewaysList]="gatewaysList" [clonedData]="clonedRouteData">
+            <app-route-stepper-form [parentFormGroup]="parentFormGroup" [gatewaysListObs]="gatewaysList.asObservable()"
+                [previewEditObs]="previewEditClick.asObservable()" (isSubmitted)="submitState()"
+                (passAddNewRouteEventToParent)="listenAddedNewRouteChildEvent()"
+                [clonedDataObs]="clonedData.asObservable()" [childDataResetObs]="childDataReset.asObservable()"
+                [previewDeleteClickObs]="previewDeleteClick.asObservable()">
             </app-route-stepper-form>
         </div>
     </form>
@@ -65,6 +71,7 @@
 
             <input type="search" class="form-control" [(ngModel)]="searchText"
                 placeholder="&#xf002; Search by Continent, Country, Operator" />
+
         </div>
 
     </div>
@@ -72,22 +79,10 @@
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
                 <tr>
-                    <th class="cursor-pointer" (click)="sort('continent')">Continent
-                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='continent' && isDesc}"></i>
-                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='continent' && !isDesc}"></i>
-                    </th>
-                    <th class="cursor-pointer" (click)="sort('country')">Country
-                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='country' && isDesc}"></i>
-                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='country' && !isDesc}"></i>
-                    </th>
-                    <th class="cursor-pointer" (click)="sort('operator')">Operator
-                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='operator' && isDesc}"></i>
-                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='operator' && !isDesc}"></i>
-                    </th>
-                    <th class="cursor-pointer" (click)="sort('mcc')">MCC + MNC
-                        <i [ngClass]="{'fa fa-arrow-up sorticon m-1': sortingName==='mcc' && isDesc}"></i>
-                        <i [ngClass]="{'fa fa-arrow-down sorticon m-1': sortingName==='mcc' && !isDesc}"></i>
-                    </th>
+                    <th>Continent</th>
+                    <th>Country</th>
+                    <th>Operator</th>
+                    <th>MCC + MNC</th>
                     <th>Distributed Gateway and Ratio</th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
@@ -99,21 +94,21 @@
                 country: searchText,
                 operator: searchText, 
                 mcc: searchText,
-                mnc: searchText }
-            | sort: sortingName: !isDesc; index as i">
+                mnc: searchText }; let i = index">
                     <td class="font-weight-semi-bold">{{route.continent}}</td>
                     <td class="font-weight-semi-bold">{{route.country}}</td>
                     <td>{{route.operator}}</td>
-                    <td>{{route.mcc}}-{{route.mnc}}</td>
+                    <td>{{route.mcc}} + {{route.mnc}}</td>
                     <td>
                         <span class="badge badge-success mx-1"
                             *ngFor="let Gate of route.ratios">{{Gate.gw_id}}-{{Gate.ratio_in_percentage}}%</span>
                     </td>
                     <td>
-                        <img src="assets/icons/edit-icon.svg" alt="edit" (click)="onEditPreview(route)" />
+                        <img class="cursor-pointer" src="assets/icons/edit-icon.svg" alt="edit"
+                            (click)="onEditPreview(route, i)" />
                     </td>
-                    <td> <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
-                            (click)="onDeleteRoute(route)" /></td>
+                    <td> <img src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon"
+                            (click)="onDeleteRoute(i)" /></td>
                 </tr>
                 <tr *ngIf="!poolRouteService?.previewList.length  
             || (poolRouteService?.previewList  | filter: { continent: searchText,  
@@ -127,8 +122,8 @@
         </table>
     </div>
 </div>
-<div class="pt-3 center-block h-100" *ngIf="!authService.authorizationState.route_mgmt.poolroute_create_enabled && 
-!authService.authorizationState.route_mgmt.poolroute_clone_enabled">
+<div class="pt-3 center-block h-100" *ngIf="!authService.authorizationState?.route_mgmt.poolroute_create_enabled && 
+!authService.authorizationState?.route_mgmt.poolroute_clone_enabled">
     <div class="d-block">
         <img style="width: 150px;" src="assets/icons/icon-lock.png" />
         <span class="w-100 d-block">

@@ -106,7 +106,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
             : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
          billing_rate: ['',
-            [Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]],
+            [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
          normalize_rate: ['']
       });
    }

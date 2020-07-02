@@ -134,7 +134,7 @@ export class CreateRatecardComponent implements OnInit {
       min: [1],
       max: [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]],
       billing_rate: ['', [Validators.required,
-      Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]],
+      Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
       normalize_rate: ['']
     });
   }
@@ -187,6 +187,8 @@ export class CreateRatecardComponent implements OnInit {
         if (result.isConfirmed) {
           this.slabRouteService.previewList.splice(listIndex, 1);
           this.previewDeleteEvent.next();
+          this.countryCount = this.slabRouteService.count('country_name');
+          this.operatorCount = this.slabRouteService.count('operator_name');
         }
       });
     } else {
