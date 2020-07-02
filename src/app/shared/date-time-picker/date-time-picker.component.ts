@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DateTimePicker } from '@syncfusion/ej2-calendars';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-date-time-picker',
@@ -27,8 +28,19 @@ export class DateTimePickerComponent implements OnInit {
   ngOnInit() {
     let effectiveDate = moment().utcOffset(environment.UTC).format(this.dateFormat);
     let effectiveTime = moment().utcOffset(environment.UTC).format(this.timeFormat);
-    
-    this.selected = `${effectiveDate} | ${effectiveTime}`;
+
+    if(!_.isUndefined(this.params.effective_till) && !_.isNull(_.isUndefined(this.params.effective_till))  && !_.isEmpty(_.trim(this.params.effective_till))){
+      let effective_till = moment(this.params.effective_till, 'DD-MM-YYYY HH:mm:ss').isValid();
+      if(!effective_till){
+        this.selected = `${effectiveDate} | ${effectiveTime}`;
+      }else{
+        effectiveDate = moment(this.params.effective_till, 'DD-MM-YYYY HH:mm:ss').format(this.dateFormat);
+        effectiveTime = moment(this.params.effective_till, 'DD-MM-YYYY HH:mm:ss').format(this.timeFormat);
+        this.selected = `${effectiveDate} | ${effectiveTime}`;
+      }
+    }else{
+      this.selected = `${effectiveDate} | ${effectiveTime}`;
+    }
     this.interval = environment.dateTimePickerTimeDifference;
   };
 

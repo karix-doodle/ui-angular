@@ -107,7 +107,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     return this.formBuilder.group({
       country_name: ["", Validators.required],
       operator_name: ["", Validators.required],
-      billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
+      billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
       mnc: [""],
       mcc: [""],
       normalize_rate: [""],

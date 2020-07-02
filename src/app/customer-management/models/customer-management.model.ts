@@ -80,6 +80,9 @@ export class UserRoutingConfig {
   billing_currency: string;
   billplan_id: number;
   billplan_name: string;
+  ratecard_id: number;
+  ratecard_name: string;
+  ratecard_type: string;
   routetype: string;
   lcr_route: string;
   gwid_primary: string;
@@ -292,6 +295,7 @@ export class SenderIdsApi_Response {
   responsecode: number;
   responsestatus: string;
   data: {
+    total: number,
     senderidlists: SenderIdLists[];
   };
 }
@@ -304,6 +308,7 @@ export class BlockedSenderIdsApi_Response {
   responsecode: number;
   responsestatus: string;
   data: {
+    total: number,
     blockedsenderidlists: BlockedSenderIdLists[];
   };
 }
@@ -332,8 +337,38 @@ export class AssignedServiceApi_Response{
       channel: string[],
       mediaandservicelists: {
         sms:[],
+        voice:[]
       }
     }
 
+}
+
+export class BlacklistTemplateApi_Response{
+    responsecode: number
+    responsestatus: string
+    data: {
+      total: number,
+      whitelistedtemplatelists: whitelistedtemplatelists[]
+
+}
+}
+
+export class whitelistedtemplatelists{
+  pattern: string
+}
+
+export class BlockedTemplateListApi_Response{
+
+    responsecode: number
+    responsestatus: string
+    data: {
+      total: number
+      blockedtemplatelists: BlockedTemplateList[]
+
+  }
+}
+
+export class BlockedTemplateList{
+  template: string
 }
 

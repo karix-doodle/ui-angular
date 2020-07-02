@@ -179,7 +179,7 @@ export class CountryStepperFormComponent implements OnInit {
   countryArrayForm(): FormGroup {
     return this._formBuilder.group({
       country_name: [null, Validators.required],
-      billing_rate: ['', [Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]],
+      billing_rate: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
       mcc: [""],
       normalize_rate: [""],
     });
