@@ -114,6 +114,10 @@ this.getBillPlanCurrency();
        } else {
           BillingRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
        }
+    } else if (hasDot.length == 1) {
+       if (RegExp('^[0]+$').test(hasDot[0])) {
+          BillingRate = '0'
+       }
     }
 
     let dotIndex = BillingRate.indexOf('.')
@@ -121,6 +125,8 @@ this.getBillPlanCurrency();
     if (dotIndex == 0) {
        BillingRate = '0' + BillingRate
     }
+
+    BillingRate = BillingRate != '' ? BillingRate : '0'
 
     if (form != undefined) {
        let obj = {}
@@ -141,6 +147,10 @@ this.getBillPlanCurrency();
        } else {
           NormalizedRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
        }
+    } else if (hasDot.length == 1) {
+       if (RegExp('^[0]+$').test(hasDot[0])) {
+          NormalizedRate = '0'
+       }
     }
 
     let dotIndex = NormalizedRate.toString().indexOf('.')
@@ -156,6 +166,7 @@ this.getBillPlanCurrency();
     }
     return NormalizedRate
  }
+
  // ------------------- common ----------------------------------
 
  // ------------------- Parent(First) Form -------------------

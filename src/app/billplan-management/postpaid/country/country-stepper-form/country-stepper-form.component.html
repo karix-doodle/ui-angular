@@ -37,9 +37,9 @@
                         Billing Rate is required
                     </span>
                     <span class="text-danger pl-1 f-12"
-                        *ngIf="count.get('billing_rate').hasError('pattern') && count.get('billing_rate').dirty">
-                        Please enter valid input
-                    </span>
+                    *ngIf="(count.get('billing_rate').hasError('pattern') && count.get('billing_rate').dirty) || (count.get('billing_rate').hasError('pattern') && Submitted && !count.get('billing_rate').dirty)">
+                    Please enter valid input
+                </span>
                 </div>
                 </div>
                 <div class="col-4 mb-2">
@@ -103,19 +103,19 @@
                 <div class="col-5 mb-2">
                   <label
                   innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
-                    <div class="form-group">
-                      <input type="text" class="form-control" maxlength="11"
-                      (blur)="checkRate(parentForm.get('billing_rate_row').value, parentForm, 'billing_rate')"
-                      formControlName="billing_rate_row" placeholder="Enter Rate" />
-                      <span class="text-danger pl-1 f-12"
-                      *ngIf="parentForm.get('billing_rate_row').hasError('required') && Psubmitted">
-                      Billing Rate Row is required
-                  </span>
-                            <span class="text-danger pl-1 f-12"
-                    *ngIf="parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty">
-                    Please enter valid input
-                </span>
-                    </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="11"
+                        (blur)="checkRate(parentForm.get('billing_rate_row').value, parentForm, 'billing_rate_row')"
+                        formControlName="billing_rate_row" />
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="parentForm.get('billing_rate_row').hasError('required') && Psubmitted">
+                        Billing Rate is required
+                    </span>
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="(parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty) || (parentForm.get('billing_rate_row').hasError('pattern') && Psubmitted && !parentForm.get('billing_rate_row').dirty)">
+                        Please enter valid input
+                    </span>
+                </div>
 
                 </div>
                 <div class="col-5 mb-2">
@@ -147,9 +147,9 @@
                           Discount rate is not valid
                       </span>
                       <span class="text-danger pl-1 f-12"
-                          *ngIf="parentForm.get('discount_rate').hasError('required') && Psubmitted">
-                          Discount rate is required
-                      </span>
+                      *ngIf="(parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty) || (parentForm.get('billing_rate_row').hasError('pattern') && Psubmitted && !parentForm.get('billing_rate_row').dirty)">
+                      Please enter valid input
+                  </span>
                   </div>
               </div>
               <div class="col-6 discount-select">

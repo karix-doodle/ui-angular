@@ -46,9 +46,9 @@
                               Billing Rate is required
                           </span>
                           <span class="text-danger pl-1 f-12"
-                          *ngIf="fixedRateFrom.get('billing_rate').hasError('pattern') && fixedRateFrom.get('billing_rate').dirty">
-                              Please enter valid input
-                          </span>
+                          *ngIf="(fixedRateFrom.get('billing_rate').hasError('pattern') && fixedRateFrom.get('billing_rate').dirty) || (fixedRateFrom.get('billing_rate').hasError('pattern') && Submitted && !fixedRateFrom.get('billing_rate').dirty)">
+                          Please enter valid input
+                      </span>
                       </div>
                     </div>
                     <div class="col-6">
