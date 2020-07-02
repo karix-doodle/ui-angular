@@ -23,8 +23,12 @@ export class GtCountryListViewLogComponent implements OnInit {
   GtCountryListViewLogData: GtCountryListViewLog_Data;
 
   public params: any;
+  searchvalue: string = ''
 
   GtMgmtAuthControls = null
+
+  gw_id: number = null
+  gw_name: string = null
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -32,6 +36,9 @@ export class GtCountryListViewLogComponent implements OnInit {
     private authorizationService: AuthorizationService
   ) {
     this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+
+    this.gw_id = this.activeRoute.snapshot.params.id
+    this.gw_name = this.activeRoute.snapshot.params.name
 
     let startDate = moment().subtract(9, 'days').utcOffset(environment.UTC);
     let todate = moment().utcOffset(environment.UTC);
@@ -71,8 +78,6 @@ export class GtCountryListViewLogComponent implements OnInit {
       (res: GtCountryListViewLog_ApiResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.GtCountryListViewLogDataRes = res;
-          this.GtCountryListViewLogDataRes.data.gw_id = this.activeRoute.snapshot.params.id
-          this.GtCountryListViewLogDataRes.data.gw_name = this.activeRoute.snapshot.params.name
           this.GtCountryListViewLogData = JSON.parse(JSON.stringify(this.GtCountryListViewLogDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)

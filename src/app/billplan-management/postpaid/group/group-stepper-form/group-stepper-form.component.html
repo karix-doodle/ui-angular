@@ -85,7 +85,7 @@
                                                             Billing Rate is required
                                                         </span>
                                                         <span class="text-danger pl-1 f-12"
-                                                            *ngIf="Y.get('billing_rate').hasError('pattern') && Y.get('billing_rate').dirty">
+                                                            *ngIf="(Y.get('billing_rate').hasError('pattern') && Y.get('billing_rate').dirty) || (Y.get('billing_rate').hasError('pattern') && groupSubmitted && !Y.get('billing_rate').dirty)">
                                                             Please enter valid input
                                                         </span>
                                                     </div>
@@ -196,7 +196,7 @@
                                     Billing Rate is required
                                 </span>
                                 <span class="text-danger pl-1 f-12"
-                                    *ngIf="X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty">
+                                    *ngIf="(X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty) || (X.get('billing_rate').hasError('pattern') && isupdateRoc && !X.get('billing_rate').dirty)">
                                     Please enter valid input
                                 </span>
                             </div>
@@ -257,10 +257,10 @@
                                     formControlName="billing_rate_row" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('billing_rate_row').hasError('required') && submitGroupValid">
-                                    Billing Rate Row is required
+                                    Billing Rate is required
                                 </span>
                                 <span class="text-danger pl-1 f-12"
-                                    *ngIf="parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty">
+                                    *ngIf="(parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty) || (parentForm.get('billing_rate_row').hasError('pattern') && submitGroupValid && !parentForm.get('billing_rate_row').dirty)">
                                     Please enter valid input
                                 </span>
                             </div>

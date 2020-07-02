@@ -52,7 +52,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   @Input() countryOperatorListEvent: Observable<[FormArray, number]>;
   @Input() parentForm: FormGroup;
   @Input() patchForm: FormGroup;
-  @Input() countryOperatorArray :[]
+  @Input() countryOperatorArray: []
   @Output() countryOperatorList = new EventEmitter<[FormArray, number]>();
   @ViewChild("stepper", { static: false }) stepper: MatStepper;
   private eventHandleCountryDelete: Subscription;
@@ -64,16 +64,16 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   currencySybmol: object = {
     bCurrency: '',
     nCurrency: ''
- }
- Psubmitted: boolean = false
-  conversionRate:number;
+  }
+  Psubmitted: boolean = false
+  conversionRate: number;
   constructor(
     private formBuilder: FormBuilder,
     config: NgbModalConfig,
     private billPlanservice: BillManagementService,
     private billpancountryOptorService: BillplanCountryOperatorService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.firstFormGroup = this.formBuilder.group({
@@ -94,14 +94,14 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     );
     this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
       this.handleCurrencyData(value);
-   });
+    });
     this.initCurrencyConversion();
   }
 
   handleCurrencyData(value) {
     this.currencySybmol = value
     console.log(value, 'asdasd')
- }
+  }
 
   countryArrayForm(): FormGroup {
     return this.formBuilder.group({
@@ -250,17 +250,17 @@ export class CountryOperatorStepperFormComponent implements OnInit {
 
   handleDiscountType() {
     if (this.parentForm.value.discount_type == 'percentage') {
-       this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
-       this.parentForm.get('discount_rate').updateValueAndValidity();
+      this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+      this.parentForm.get('discount_rate').updateValueAndValidity();
     } else if (this.parentForm.value.discount_type == 'unit') {
-       this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
-       this.parentForm.get('discount_rate').updateValueAndValidity();
+      this.parentForm.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
+      this.parentForm.get('discount_rate').updateValueAndValidity();
     } else {
-       this.parentForm.patchValue({
-          discount_rate: ''
-       })
-       this.parentForm.get('discount_rate').clearValidators();
-       this.parentForm.get('discount_rate').updateValueAndValidity();
+      this.parentForm.patchValue({
+        discount_rate: ''
+      })
+      this.parentForm.get('discount_rate').clearValidators();
+      this.parentForm.get('discount_rate').updateValueAndValidity();
     }
   }
 
@@ -295,7 +295,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     if (prevIndex == 0 && index == 1) {
       Swal.fire({
         title: "Are you sure want to Proceed Next?",
-        text: "Your unsaved data will get erassed",
+        text: "Your unsaved data will get erased",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -325,35 +325,35 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   round(data, form: FormGroup) {
     let NormalizedRate = (data * this.conversionRate).toFixed(6)
     if (form != undefined) {
-       form.patchValue({
-          normalize_rate: NormalizedRate
-       })
+      form.patchValue({
+        normalize_rate: NormalizedRate
+      })
     }
     return NormalizedRate
- }
- // ------------------- common ----------------------------------
+  }
+  // ------------------- common ----------------------------------
 
- // ------------------- Parent(First) Form -------------------
- initCurrencyConversion() {
+  // ------------------- Parent(First) Form -------------------
+  initCurrencyConversion() {
     this.billPlanservice.getCurrencyRate(this.parentForm.value.billplan_currencyid).subscribe(
-       (res: CurrencyRateRes) => {
-          if (
-             res.responsestatus === environment.APIStatus.success.text &&
-             res.responsecode > environment.APIStatus.success.code
-          ) {
-             this.conversionRate = +res.data.conversion_rate;
-             // console.log(this.conversionRate);
-          } else if (
-             res.responsestatus === environment.APIStatus.error.text &&
-             res.responsecode < environment.APIStatus.error.code
-          ) {
-             errorAlert(res.message, res.responsestatus);
-          }
-       }, (error: HttpErrorResponse) => {
-          errorAlert(error.message, error.statusText);
-       }
+      (res: CurrencyRateRes) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.conversionRate = +res.data.conversion_rate;
+          // console.log(this.conversionRate);
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.message, res.responsestatus);
+        }
+      }, (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+      }
     );
- }
+  }
 
   reActiveOperator() {
     const countriesControl = this.getcountryControl();
@@ -384,28 +384,28 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     if (data.ratetype_row == 'standard') {
       this.parentForm.get('billing_rate_row').clearValidators();
       this.parentForm.get('billing_rate_row').updateValueAndValidity();
-   } else if (data.ratetype_row == 'custom') {
+    } else if (data.ratetype_row == 'custom') {
       this.parentForm.get('billing_rate_row').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);
       this.parentForm.get('billing_rate_row').updateValueAndValidity();
-   }
-
-   if (this.parentForm.invalid) {
-    return
- } else {
-   this.Psubmitted = false
-  this.billpancountryOptorService.BillPlanCreateCountryOperator(data).subscribe(
-    (res: BillPlanCreateCountryOperator_ApiResponse) => {
-       if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-          successAlert(res.message, res.responsestatus)
-          this.router.navigate(['billplan-management-postpaid/' + data.billplan_id]);
-       } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          errorAlert(res.message, res.responsestatus)
-       }
-    }, (error: HttpErrorResponse) => {
-       errorAlert(error.message, error.statusText)
     }
- );
- }
+
+    if (this.parentForm.invalid) {
+      return
+    } else {
+      this.Psubmitted = false
+      this.billpancountryOptorService.BillPlanCreateCountryOperator(data).subscribe(
+        (res: BillPlanCreateCountryOperator_ApiResponse) => {
+          if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
+            successAlert(res.message, res.responsestatus)
+            this.router.navigate(['billplan-management-postpaid/' + data.billplan_id]);
+          } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+            errorAlert(res.message, res.responsestatus)
+          }
+        }, (error: HttpErrorResponse) => {
+          errorAlert(error.message, error.statusText)
+        }
+      );
+    }
 
   }
 }

@@ -80,7 +80,7 @@
                 <td>{{item.continent_name }}</td>
                 <td>{{item.country_name}}</td>
                 <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
-                <td>{{item.mcc}} + {{item.mnc}}</td>
+                <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
                 <td>{{item.billing_rate}}</td>
                 <td>{{item.normalize_rate}}</td>
                 <td style="vertical-align: middle;padding: 0;" class="border-bottom"
