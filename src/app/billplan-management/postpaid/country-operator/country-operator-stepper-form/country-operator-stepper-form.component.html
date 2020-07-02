@@ -10,7 +10,7 @@
                   <label>Country</label>
                   <select #country class="dropdown-select w-100" formControlName="country_name" [disabled]="isEditMode"
                     (change)="handleCountryOperator(i, 'mcc', $event, country.value)"  >
-                    <option value="" disabled>Select country</option>
+                    <option value="" disabled>Select Country</option>
                     <option *ngFor="let cnt of billPlanCountryList"  [attr.data-code]="cnt.country_code"  [attr.data-value]="cnt.mcc" [value]="cnt.country">
                       {{ cnt.country}}
                     </option>
@@ -42,8 +42,9 @@
                   <label
                   innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                   <div class="form-group">
-                      <input type="search" class="form-control"
-                          formControlName="billing_rate" maxlength="10" placeholder="Enter Rate" />
+                    <input type="text" class="form-control" maxlength="11"
+                    (blur)="checkRate(count.get('billing_rate').value, count, 'billing_rate')"
+                    formControlName="billing_rate" placeholder="Enter Rate" />
                       <span class="text-danger pl-1 f-12"
                           *ngIf="count.get('billing_rate').hasError('required') && Submitted">
                           Billing Rate is required
@@ -116,8 +117,13 @@
                   <label
                   innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                     <div class="form-group">
-                        <input type="search" class="form-control" id="" placeholder="Enter Rate" maxlength="10"
-                            formControlName="billing_rate_row" />
+                            <input type="text" class="form-control" maxlength="11"
+                                                            (blur)="checkRate(parentForm.get('billing_rate_row').value, parentForm, 'billing_rate')"
+                                                            formControlName="billing_rate_row" placeholder="Enter Rate" />
+                                                            <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('billing_rate_row').hasError('required') && Psubmitted">
+                                    Billing Rate Row is required
+                                </span>
                             <span class="text-danger pl-1 f-12"
                     *ngIf="parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty">
                     Please enter valid input

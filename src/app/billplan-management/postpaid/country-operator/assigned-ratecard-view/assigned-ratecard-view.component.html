@@ -67,8 +67,8 @@
           <tr *ngFor="let item of countryArray |  filter: { country: searchvalue,operator: searchvalue }">
             <td class="font-weight-semi-bold">{{item.country}}</td>
             <td>{{item.operator}}</td>
-            <td *ngIf="item.mnc === null || 0">{{item.mcc}}</td>
-            <td *ngIf="item.mnc !== null || 0">{{item.mcc}} + {{item.mnc}}</td>
+            <td *ngIf="item.mnc === 0">{{item.mcc}}</td>
+            <td *ngIf="item.mnc !== 0">{{item.mcc}} + {{item.mnc}}</td>
             <td>{{item.billing_rate}}</td>
             <td>{{item.normalizerate}}</td>
         </tr>

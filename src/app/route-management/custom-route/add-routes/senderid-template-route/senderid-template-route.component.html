@@ -22,7 +22,7 @@
   <div class="main-container p-4">
     <form [formGroup]="senderContentFrom" (ngSubmit)="onSubmit()">
       <mat-radio-group class="mat-radio-group" formControlName="whitelist_type"
-        (change)="cmobilesenderUpload = null; fileData = null; onChange()">
+        (change)="cmobilesenderUpload = null; selectedFile = null; onChange()">
         <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
           {{ labelname }}
         </mat-radio-button>
@@ -75,7 +75,7 @@
             <div class="row">
               <div class="form-group col-4">
                 <label>Type Template</label>
-                <input type="text" class="form-control" formControlName="template" placeholder="Type Template" />
+                <input type="text" class="form-control"  maxlength="500"  formControlName="template" placeholder="Type Template" />
               </div>
               <div class="form-group col-4">
                 <label>SenderId</label>
@@ -258,7 +258,7 @@
             <div class="row">
               <div class="form-group col-4">
                 <label>Template</label>
-                <input type="text" class="form-control" formControlName="template" placeholder="Type Template" />
+                <input type="text" class="form-control"  maxlength="500" formControlName="template" placeholder="Type Template" />
               </div>
               <div class="form-group col-4">
                 <label>SenderID</label>
