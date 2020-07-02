@@ -80,6 +80,9 @@ export class UserRoutingConfig {
   billing_currency: string;
   billplan_id: number;
   billplan_name: string;
+  ratecard_id: number;
+  ratecard_name: string;
+  ratecard_type: string;
   routetype: string;
   lcr_route: string;
   gwid_primary: string;
@@ -195,10 +198,10 @@ export class EssmeddrRateCardList_ApiResponse {
 }
 
 export class PoolRouteSearchRes {
-    responsecode: number;
-    responsestatus: string;
-    data: Pool[];
-    message?: string;
+  responsecode: number;
+  responsestatus: string;
+  data: Pool[];
+  message?: string;
 }
 
 export class EssmmdrTabledata {
@@ -225,104 +228,147 @@ export class viewLogTableData {
   user: string;
 }
 
-
 export class AllowedCountryOperatorList {
-
-    responsecode: number
-    responsestatus: string
-    data: {
-      esmeaddr: string
-      active: number
-      inactive: number
-      list: AllowedCountryOperTable[]
-    }
-
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    esmeaddr: string;
+    active: number;
+    inactive: number;
+    list: AllowedCountryOperTable[];
+  };
 }
 
 export class AllowedCountryOperTable {
-  country: string
-          mcc: number
-          operator: string
-          mnc: number
-          status: string
-          senderid_type: string
-          default_senderid: string
-          alternate_senderid: string
+  country: string;
+  mcc: number;
+  operator: string;
+  mnc: number;
+  status: string;
+  senderid_type: string;
+  default_senderid: string;
+  alternate_senderid: string;
 }
 
 export class AllowedCountryApi_Response {
-
-    responsecode: number
-    responsestatus: string
-    data:AllowedCountry_Data[]
+  responsecode: number;
+  responsestatus: string;
+  data: AllowedCountry_Data[];
 }
 
-export class AllowedCountry_Data{
-  country: string
-  mcc: number
+export class AllowedCountry_Data {
+  country: string;
+  mcc: number;
 }
-
 
 export class AllowedOperatorApi_Response {
-
-  responsecode: number
-  responsestatus: string
-  data:AllowedOperator_Data[]
+  responsecode: number;
+  responsestatus: string;
+  data: AllowedOperator_Data[];
 }
 
-export class AllowedOperator_Data{
-operator: string
-mnc: number
+export class AllowedOperator_Data {
+  operator: string;
+  mnc: number;
 }
-
 
 export class AddSenderIdApi_Response {
-
-    responsecode: number
-    responsestatus: string
-    message: string
-
+  responsecode: number;
+  responsestatus: string;
+  message: string;
 }
 
-export class GetSenderisApi_Response{
+export class GetSenderisApi_Response {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    hasdata: boolean;
+    senderids: {
+      senderid_type: string;
+      default_senderid: string;
+      alternate_senderid: string;
+    };
+  };
+}
+
+export class SenderIdsApi_Response {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    total: number,
+    senderidlists: SenderIdLists[];
+  };
+}
+
+export class SenderIdLists {
+  senderid: string;
+}
+
+export class BlockedSenderIdsApi_Response {
+  responsecode: number;
+  responsestatus: string;
+  data: {
+    total: number,
+    blockedsenderidlists: BlockedSenderIdLists[];
+  };
+}
+
+export class BlockedSenderIdLists {
+  senderid: string;
+}
+
+export class BillOnSubmissionCountryListApi_Response {
+  responsecode: number;
+  responsestatus: string;
+  data: BillOnSubmissionCountryList_Data[];
+}
+export class BillOnSubmissionCountryList_Data {
+  country: string;
+  mcc: number;
+  billOnSub: string;
+}
+
+
+export class AssignedServiceApi_Response{
 
     responsecode: number
     responsestatus: string
     data: {
-      hasdata: boolean
-      senderids: {
-        senderid_type: string
-        default_senderid: string
-        alternate_senderid: string
+      channel: string[],
+      mediaandservicelists: {
+        sms:[],
+        voice:[]
       }
     }
 
 }
 
-export class SenderIdsApi_Response{
-
-  responsecode: number
+export class BlacklistTemplateApi_Response{
+    responsecode: number
     responsestatus: string
     data: {
-      senderidlists: SenderIdLists[]
-    }
+      total: number,
+      whitelistedtemplatelists: whitelistedtemplatelists[]
 
 }
-
-export class SenderIdLists{
-  senderid: string
 }
 
-export class BlockedSenderIdsApi_Response{
+export class whitelistedtemplatelists{
+  pattern: string
+}
 
-  responsecode: number
+export class BlockedTemplateListApi_Response{
+
+    responsecode: number
     responsestatus: string
     data: {
-      blockedsenderidlists: BlockedSenderIdLists[]
-    }
+      total: number
+      blockedtemplatelists: BlockedTemplateList[]
 
+  }
 }
 
-export class BlockedSenderIdLists{
-  senderid: string
+export class BlockedTemplateList{
+  template: string
 }
+

@@ -41,7 +41,7 @@
             <input type="search" class="form-control" formControlName="billplanName"/>
         </div>
         <div class="col-1 billplan-view mr-4">
-            <a routerLink="/billplan-management/postpaid/country/assigned-ratecard-view"> <i class="fa fa-eye"></i></a>
+            <a target="_blank"  [routerLink]="['/billplan-management/postpaid/country/assigned-ratecard-view',usersData.ratecard_id,usersData.ratecard_type]"> <i class="fa fa-eye"></i></a>
         </div>
         <div class="col-3 border-left pl-4">
             <label>Char.Set Encoding</label>
@@ -152,7 +152,7 @@
                 <div class="col-8"><label>Process @ Loss</label></div>
                 <div class="col-4">
                     <label class="toggle-switch">
-                        <input type="checkbox" class="switch-btn" formControlName="process_at_loss" 
+                        <input type="checkbox" class="switch-btn" formControlName="process_at_loss"
                             [checked]="process_at_loss === 1"
                             (change)="handleStatus($event)">
                         <span class="slider round"></span>
@@ -283,18 +283,18 @@
                 </div>
             </div>
             <div class="col-12 px-0" *ngIf="effectiveTillError">
-                <p>{{errorMessage}}</p> 
+                <p>{{errorMessage}}</p>
             </div>
             <div class="col-12 px-0">
                 <p><b>Permanent: </b>The route change you have selected will be a permanent change and
-                 will be effective from now on.</p> 
+                 will be effective from now on.</p>
             </div>
             <div class="col-12 px-0">
                 <p><b>Effective Period:</b> The route change you have selected will be effective based on the duration
-                selected and will rollback to the current route after the effective period.</p> 
+                selected and will rollback to the current route after the effective period.</p>
             </div>
         <!-- </form> -->
-    </div> 
+    </div>
 </ng-template>
 
 <app-cm-show-margin *ngIf="showMargin" [marginPageInput]="marginPageInput" (notify)='onNotify($event)'></app-cm-show-margin>

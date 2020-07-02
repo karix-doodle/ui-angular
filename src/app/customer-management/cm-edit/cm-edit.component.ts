@@ -23,7 +23,6 @@ import * as moment from 'moment';
 })
 export class CmEditComponent implements OnInit {
   public params: any;
-
   apiResponse : UserActivation_ApiResponse;
   usersData: UserRoutingConfig;
   esmeaddr: string;
@@ -74,7 +73,7 @@ export class CmEditComponent implements OnInit {
   updateAccountFormGroup: FormGroup;
 
   constructor(config: NgbModalConfig, private modalService: NgbModal,private customerManagementService: CustomerManagementService,
-    private router: Router, private activeRoute: ActivatedRoute, private formBuilder: FormBuilder) 
+    private router: Router, private activeRoute: ActivatedRoute, private formBuilder: FormBuilder)
   {
     this.updateAccountFormGroup = this.formBuilder.group({
       billplanName: new FormControl({value: this.billplanName, disabled: true}),
@@ -119,8 +118,8 @@ export class CmEditComponent implements OnInit {
     let esmeaddr = this.activeRoute.snapshot.params.esmeaddr;
     this.getPendingUserDetails(esmeaddr);
   }
-  private selectedLink: string="";  
-  
+  private selectedLink: string="";
+
   initialisePoolSearchSuggestion() {
     const form = this.updateAccountFormGroup;
     form.get('selectedPoolRouteName').valueChanges.pipe(
@@ -159,8 +158,8 @@ export class CmEditComponent implements OnInit {
     this.updateAccountFormGroup.get('selectedPoolRouteName').setValue(poolRoute.route_name);
     this.showdropdown = false;
   }
-  
-  async setradio(e: string) {  
+
+  async setradio(e: string) {
     this.selectedLink = e;
     this.selectedRouteType = e;
     this.routeTypeError = '';
@@ -182,13 +181,13 @@ export class CmEditComponent implements OnInit {
     }
   };
 
-  onChangeCustomerType(event: any): void {  
+  onChangeCustomerType(event: any): void {
     this.selectedCustomerType = event.target.value;
     this.isSelected(this.selectedRouteType);
     this.setradio(this.selectedRouteType);
   };
 
-  onChangeLcrOnly(event: any): void {  
+  onChangeLcrOnly(event: any): void {
     if(event.target.checked){
       this.lcrOnly = 1;
       this.lcrRadioEnabled = true;
@@ -215,7 +214,7 @@ export class CmEditComponent implements OnInit {
     }
   };
 
-  setRoutingValues(): void {  
+  setRoutingValues(): void {
     this.updateAccountFormGroup.controls['selectedRouteType'].setValue(this.selectedRouteType);
     if(_.isEqual(this.selectedRouteType,'gt')){
       if(_.size(this.gateways) > 0){
@@ -247,11 +246,11 @@ export class CmEditComponent implements OnInit {
     }
   };
 
-  isSelected(name: string): boolean {  
-    if (!this.selectedLink) { // if no radio button is selected, always return false so every nothing is shown  
-        return false;  
-    }  
-    return (this.selectedLink === name); // if current radio button is selected, return true, else return false  
+  isSelected(name: string): boolean {
+    if (!this.selectedLink) { // if no radio button is selected, always return false so every nothing is shown
+        return false;
+    }
+    return (this.selectedLink === name); // if current radio button is selected, return true, else return false
 };
 
 
@@ -274,7 +273,7 @@ export class CmEditComponent implements OnInit {
     );
   };
 
-  onChangeTimezone(event: any): void { 
+  onChangeTimezone(event: any): void {
     let key = event.target.value;
     let timeZone = this.timeZonesMap[key];
     let utcPortion = `(UTC${timeZone.offset})`;
@@ -324,6 +323,9 @@ export class CmEditComponent implements OnInit {
           }else{
             this.lcrRouteType = [this.selectedCustomerType];
             this.setDefaultValues(rtype);
+          }
+          this.params = {
+            'effective_till': this.usersData.effective_till
           }
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
@@ -389,7 +391,7 @@ export class CmEditComponent implements OnInit {
     }
   };
 
-  
+
   set(changetype:string):void{
     if(_.isEqual(this.selectedRouteType,'pr')){
       this.selectedPoolRouteId = null;
@@ -412,7 +414,7 @@ export class CmEditComponent implements OnInit {
         this.toggleShowMargin('showmargin');
       }
     }
-    
+
   }
 
   onSubmit(isFormSubmit){
@@ -469,7 +471,7 @@ export class CmEditComponent implements OnInit {
     }else{
       payload['dlr_type'] = json.selectedDlrType;
     }
-    
+
     if(_.isUndefined(json.selectedCustomerType) || _.isNull(json.selectedCustomerType) || _.isEmpty(_.trim(json.selectedCustomerType))){
       validationSuccess = false;
       this.errorMessage = 'Intl. Customer Type is required';
@@ -562,7 +564,7 @@ export class CmEditComponent implements OnInit {
       }
     }
 
-    
+
     if(_.isUndefined(this.selectedTimezone) || _.isNull(this.selectedTimezone) || _.isEmpty(_.trim(this.selectedTimezone))){
       validationSuccess = false;
       this.updateAccountFormGroup.controls['selectedTzString'].setValue('');
@@ -594,7 +596,7 @@ export class CmEditComponent implements OnInit {
         payload['effective_till'] = null;
       }
     }
-     
+
     payload['notify_sales'] = json.notifysales;
     payload['notify_client'] = json.notifyclient;
     payload['comments'] = json.comments;
@@ -662,13 +664,13 @@ export class CmEditComponent implements OnInit {
         this.showEditPage = false;
       }else{
         errorAlert(message, 'Failure');
-      }      
+      }
     }else{
       this.showEditPage = true;
       this.showMargin = false;
     }
 
-    
+
     if(this.updateAccountFormGroup.value.process_row || this.updateAccountFormGroup.value.process_row == 1){
       this.process_row = 1;
     }else{

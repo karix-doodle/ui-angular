@@ -32,7 +32,8 @@
     (countryOperatorList)="countryListData($event,index)"
      [countryOperatorListEvent]="countryOperatorListData.asObservable()"
      [handleCountryDelete]="handleCountryDelete.asObservable()"
-     [handlecurrencyList]="handlecurrencyList.asObservable()"></app-country-operator-stepper-form>
+     [handlecurrencyList]="handlecurrencyList.asObservable()"
+     [countryOperatorArray]="countryOperatorArray"></app-country-operator-stepper-form>
 </div>
 <div class="row btm-border second-row-det">
     <div class="col-7">
@@ -51,7 +52,7 @@
     </div>
 
     <div class="col-5 text-right">
-        <input type="search" class="form-control"  [(ngModel)]="searchvalue" placeholder="&#xf002; Search by Group, Continent, Country, Operator" />
+        <input type="search" class="form-control"  [(ngModel)]="searchvalue" placeholder="&#xf002; Search by  Country, Operator" />
     </div>
 
 </div>
@@ -71,14 +72,14 @@
         <tbody>
             <tr *ngFor="let item of countryOperatorArray | filter: {country_name: searchvalue, operator_name: searchvalue}; let i= index;">
                 <td class="font-weight-semi-bold">{{item.country_name}}</td>
-                <td>{{item.operator_name}}</td>
-                <td>{{item.mcc}} + {{item.mnc}}</td>
+                <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+                <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
                 <td>{{item.billing_rate}}</td>
                 <td>{{item.normalize_rate}}</td>
                 <td [ngClass]="{'disabled': editMode == true}">
-                    <img src="assets/icons/edit-icon.svg"    (click)="editGroups(i)" alt="edit"/>
+                    <img src="assets/icons/edit-icon.svg" class=" cursor-pointer"   (click)="editGroups(i)" alt="edit"/>
                 </td>
-                <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg"   class="img-fluid" (click)="deleteGroups(i, item)"  alt="delete icon" /></td>
+                <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg"   class="img-fluid  cursor-pointer" (click)="deleteGroups(i, item)"  alt="delete icon" /></td>
             </tr>
             <tr *ngIf="countryOperatorArray.length == 0">
               <td colspan="9" class="text-center py-3 main-heading">

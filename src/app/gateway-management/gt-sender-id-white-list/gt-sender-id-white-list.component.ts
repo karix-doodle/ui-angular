@@ -31,6 +31,7 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   isAddSenderidValid: boolean = false;
   sortingName: string;
   isDesc: boolean;
+  searchvalue: string = ''
 
   fileData: FormData = null;
 

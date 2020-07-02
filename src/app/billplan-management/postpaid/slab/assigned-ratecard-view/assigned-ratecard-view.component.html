@@ -2,7 +2,7 @@
     <div class="col-7 pt-10">
         <label class="main-heading">BILL PLAN MANAGEMENT /</label>
         <span
-        > BILLPLAN / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
+        > <a [routerLink]="['/billplan-management/home']" > BILLPLAN</a> / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
           {{billplan_name}}/</a
         >
         VIEW</span
@@ -67,8 +67,8 @@
         <tbody>
             <tr *ngFor="let item of slabratecard   | filter: {  country: searchvalue, operator: searchvalue }">
                 <td class="font-weight-semi-bold">{{item.country}}</td>
-                <td>{{item.operator}}</td>
-                <td>{{item.mcc}} + {{item.mnc}}</td>
+                <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+                <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
                 <td>{{item.min}}</td>
                 <td>{{item.max}}</td>
                 <td>{{item.billing_rate}}</td>
@@ -106,7 +106,7 @@
     </table>
     <div class="col-12 my-4">
         <label class="sub-heading">Description</label>
-        <textarea rows="4" class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
+        <textarea rows="4" class="w-100"  readonly [value]="description" placeholder="Enter short Description here"></textarea>
     </div>
 
 </div>
@@ -129,8 +129,8 @@
       <tbody>
           <tr *ngFor="let item of rowArray">
               <td class="font-weight-semi-bold">{{item.country}}</td>
-              <td>{{item.operator}}</td>
-              <td>{{item.mcc}} + {{item.mnc}}</td>
+              <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+                <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
               <td>{{item.billing_rate}}</td>
               <td>{{item.normalizerate}}</td>
 
@@ -140,7 +140,7 @@
   </table>
     <div class="col-12 my-4">
         <label class="sub-heading">Description</label>
-        <textarea rows="4" class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
+        <textarea rows="4" class="w-100" readonly [value]="description" placeholder="Enter short Description here"></textarea>
     </div>
 
 </div>

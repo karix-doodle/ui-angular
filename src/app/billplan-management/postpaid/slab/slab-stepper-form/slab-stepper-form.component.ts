@@ -115,7 +115,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       if (!this.editModeState) {
          if (this.slabRouteService.previewList.length) {
             if (this.parentForm.touched || this.parentForm.dirty) {
-               confirmAlert('Your unsaved data will get erassed', 'Yes, delete it!')
+               confirmAlert('Your unsaved data will get erased', 'Yes, delete it!')
                   .then((result) => {
                      if (result.isConfirmed) {
                         stepper.next();

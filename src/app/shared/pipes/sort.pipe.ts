@@ -13,6 +13,10 @@ export class SortPipe implements PipeTransform {
       return null;
     }
 
+    if (key == undefined) {
+      return values.sort()
+    }
+
     return this.sort(values, key, reverse);
   }
 

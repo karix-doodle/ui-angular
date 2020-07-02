@@ -2,7 +2,7 @@
     <div class="col-8 pt-10">
         <label class="main-heading">BILL PLAN MANAGEMENT /</label>
         <span
-        >BILLPLAN / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
+        > <a [routerLink]="['/billplan-management/home']"  > BILLPLAN</a> / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
           {{billplan_name}}/</a
         >
         VIEW</span
@@ -31,20 +31,21 @@
 </div>
 
 <div class="row btm-border second-row-det">
-    <div class="col-7">
+    <div class="col-12">
         <div class="row mt-1">
 
-            <div class="col-8">
+            <div class="col-6">
                 <label class="mr-2"><b>Total Countries</b></label>
                 <span class="border-right">&nbsp;</span>
                 <span class="ml-3 badge badge-dark"><b>{{totalCountries}}</b></span>
             </div>
+
+    <div class="col-6 text-right">
+      <input type="search" class="form-control" [(ngModel)]="searchvalue" placeholder="&#xf002; Search by  Country" />
+  </div>
         </div>
     </div>
 
-    <div class="col-5 text-right">
-        <input type="search" class="form-control" [(ngModel)]="searchvalue" placeholder="&#xf002; Search by  Country" />
-    </div>
 
 </div>
 <div class="main-container table-responsive">
@@ -69,7 +70,7 @@
 </div>
 <div *ngIf="row_billplan === 'custom'">
   <div class="main-container row">
-    <div class="col-6 table-responsive px-0 mt-4">
+    <div class="col-12 table-responsive px-0 mt-4">
         <label class="sub-heading mx-4">ROW (custom)</label>
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
@@ -90,7 +91,7 @@
         </table>
         <div class="col-12 my-4">
             <label class="sub-heading">Description</label>
-            <textarea rows="4" [value]="description" class="w-100" placeholder="Enter short Description here"></textarea>
+            <textarea rows="4" readonly [value]="description" class="w-100" placeholder="Enter short Description here"></textarea>
         </div>
     </div>
 </div>
@@ -99,7 +100,7 @@
 
 <div *ngIf="row_billplan === 'standard'">
   <div class="main-container row">
-    <div class="col-6 table-responsive px-0 mt-4">
+    <div class="col-12 table-responsive px-0 mt-4">
         <label class="sub-heading mx-4">ROW (standard)</label>
         <table class="table table-borderless erp-list-table row-hover-effect">
           <thead>
@@ -121,7 +122,7 @@
       </table>
         <div class="col-12 my-4">
             <label class="sub-heading">Description</label>
-            <textarea rows="4" class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
+            <textarea rows="4" readonly class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
         </div>
     </div>
 </div>

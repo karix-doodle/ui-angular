@@ -234,8 +234,62 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
       );
    }
 
+   checkRate(data: Number, form: FormGroup, key: string) {
+
+      let hasDot = data.toString().split('.')
+      let BillingRate = data.toString();
+
+      if (hasDot.length == 2) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            BillingRate = Number('0' + '.' + hasDot[0]).toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         } else {
+            BillingRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         }
+      } else if (hasDot.length == 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            BillingRate = '0'
+         }
+      }
+
+      let dotIndex = BillingRate.indexOf('.')
+
+      if (dotIndex == 0) {
+         BillingRate = '0' + BillingRate
+      }
+
+      BillingRate = BillingRate != '' ? BillingRate : '0'
+
+      if (form != undefined) {
+         let obj = {}
+         obj[key] = BillingRate
+         form.patchValue(obj)
+      }
+
+      return BillingRate;
+   }
+
    round(data, form: FormGroup) {
       let NormalizedRate = data == 0 ? 0 : (data * this.conversionRate).toFixed(6)
+      let hasDot = NormalizedRate.toString().split('.')
+
+      if (hasDot.length == 2) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            NormalizedRate = Number('0' + '.' + hasDot[0]).toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         } else {
+            NormalizedRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         }
+      } else if (hasDot.length == 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            NormalizedRate = '0'
+         }
+      }
+
+      let dotIndex = NormalizedRate.toString().indexOf('.')
+
+      if (dotIndex == 0) {
+         NormalizedRate = '0' + NormalizedRate
+      }
+
       if (form != undefined) {
          form.patchValue({
             normalize_rate: NormalizedRate

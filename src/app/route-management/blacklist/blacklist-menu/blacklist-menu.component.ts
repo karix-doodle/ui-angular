@@ -15,7 +15,7 @@ blackListSummaryApiResponse: BlackListSummary_ApiResponse;
 blacklistSummary: BlackListSummary_Data;
   constructor(
     public blackListService: BlackListService,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
     ) { }
 
   ngOnInit() {

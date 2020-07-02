@@ -11,12 +11,14 @@ import {
   AllowedOperator_Data,
   AddSenderIdApi_Response,
   GetSenderisApi_Response,
+  BillOnSubmissionCountryListApi_Response,
+  BillOnSubmissionCountryList_Data,
 } from "../models/customer-management.model";
-import { environment } from "src/environments/environment";
+import { environment } from "../../../environments/environment";
 import {
   errorAlert,
   successAlert,
-} from "src/app/shared/sweet-alert/sweet-alert";
+} from "../../shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 @Component({
@@ -27,15 +29,18 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 export class CountryOperatorListComponent implements OnInit {
   searchValue: string = ""
   senderidForm: FormGroup;
+  billSubmissionForm: FormGroup;
   esmeaddr: number;
   getcountryListApiResponse: AllowedCountryApi_Response;
   countryList: AllowedCountry_Data[] = [];
   getOperatorListApiaResponse: AllowedOperatorApi_Response;
   operatorList: AllowedOperator_Data[] = [];
+  billSubCountryList:BillOnSubmissionCountryList_Data[] = []
   allowedCountyrOperatorList: AllowedCountryOperTable[];
   allowedCoutryOpertorDetails;
   isSubmitted = false;
   hasdata: boolean = false
+  billSubmitted:boolean = false
   constructor(
     config: NgbModalConfig,
     private modalService: NgbModal,
@@ -54,6 +59,8 @@ export class CountryOperatorListComponent implements OnInit {
     this.getCountryOperatorlist();
     this.GetCountryList();
     this.initForm();
+    this.initialForm()
+    this.getBillSubCountrylist()
   }
 
   private initForm() {
@@ -70,6 +77,14 @@ export class CountryOperatorListComponent implements OnInit {
       alternate_senderid: ["", [Validators.pattern("^.{6,8}$")]],
     });
   }
+
+  private initialForm (){
+    this.billSubmissionForm = this.fb.group({
+      country: ['' ,[Validators.required]],
+      mcc: ['',[Validators.required]],
+      billonsub: ['',[Validators.required]]
+    })
+  }
   getcountryControl() {
     return this.senderidForm.controls;
   }
@@ -84,6 +99,7 @@ export class CountryOperatorListComponent implements OnInit {
     if (key === "mcc") {
       this.senderidForm.patchValue({
         operator: '',
+        mnc:''
       })
       this.getOperatorlist(value);
 
@@ -97,11 +113,27 @@ export class CountryOperatorListComponent implements OnInit {
     }
   }
 
+
+  handleCountry(key, event) {
+    let mcc = event.target.options[
+      event.target["selectedIndex"]
+    ].getAttribute("data-value");
+    let billonSub = event.target.options[
+      event.target["selectedIndex"]
+    ].getAttribute("sub-value");
+    let obj = {};
+    obj[key] = mcc;
+    this.billSubmissionForm.patchValue({
+      billonsub : billonSub
+    })
+    this.billSubmissionForm.patchValue(obj);
+  }
+
   getSenderidDetails(){
     let data = {
-      esmeaddr: 70066200000000,
-      mnc:0,
-      mcc: 276
+      esmeaddr: +this.route.snapshot.params.id,
+      mnc: this.senderidForm.get("mnc").value,
+      mcc:this.senderidForm.get("mcc").value
     }
     this.service.getSenderidsList(data).subscribe((res: GetSenderisApi_Response ) =>{
       if (
@@ -116,6 +148,13 @@ export class CountryOperatorListComponent implements OnInit {
              default_senderid: res.data.senderids.default_senderid,
              alternate_senderid: res.data.senderids.alternate_senderid,
               })
+            } else{
+              this.hasdata = res.data.hasdata
+              this.senderidForm.patchValue({
+                senderid_type:'',
+              default_senderid: '',
+              alternate_senderid: '',
+               })
             }
 
       } else if (
@@ -186,6 +225,28 @@ export class CountryOperatorListComponent implements OnInit {
     );
   }
 
+  getBillSubCountrylist() {
+    this.service.getBillSubmissionCountylist(+this.route.snapshot.params.id).subscribe(
+      (res: BillOnSubmissionCountryListApi_Response) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.billSubCountryList = res.data
+
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.responsestatus);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+      }
+    );
+  }
+
   getOperatorlist(mcc: number) {
     let data = {
       esmeaddr: this.route.snapshot.params.id,
@@ -236,6 +297,37 @@ export class CountryOperatorListComponent implements OnInit {
     );
   }
 
+  onBillSubmit(){
+    let data = {
+      ...this.billSubmissionForm.value,
+      esmeaddr: this.esmeaddr,
+    };
+    this.billSubmitted = true;
+    if (!this.billSubmissionForm.valid) {
+      return;
+    }
+    this.service.addBillOnubmit(data).subscribe(
+      (res: AddSenderIdApi_Response) => {
+        if (
+          res.responsestatus === environment.APIStatus.success.text &&
+          res.responsecode > environment.APIStatus.success.code
+        ) {
+          this.resetBillForm();
+          successAlert(res.message, res.responsestatus);
+
+        } else if (
+          res.responsestatus === environment.APIStatus.error.text &&
+          res.responsecode < environment.APIStatus.error.code
+        ) {
+          errorAlert(res.message, res.responsestatus);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+      }
+    );
+  }
+
   resetForm() {
     this.isSubmitted = false
     this.hasdata = false
@@ -248,6 +340,16 @@ export class CountryOperatorListComponent implements OnInit {
       senderid_type: '',
       default_senderid: '',
       alternate_senderid: '',
+    });
+  }
+
+  resetBillForm() {
+    this.billSubmitted = false
+    this.modalService.dismissAll("billOnSubmit");
+    this.billSubmissionForm.patchValue({
+      country: '',
+      mcc: '',
+      billonsub: ''
     });
   }
 }

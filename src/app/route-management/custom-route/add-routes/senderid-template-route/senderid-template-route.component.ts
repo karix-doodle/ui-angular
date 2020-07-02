@@ -178,6 +178,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
     if (!this.senderContentFrom.valid) {
       this.submitted = true;
     } else {
+
       this.senderContentFrom.value.template = this.senderContentFrom.value
         .template
         ? this.senderContentFrom.value.template
@@ -201,8 +202,10 @@ export class SenderidTemplateRouteComponent implements OnInit {
       this.senderContentFrom.value.default_senderid = true;
       this.senderContentFrom.value.priority = +this.senderContentFrom.value
         .priority;
-      this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
-      this.onAddRoute({ ...this.senderContentFrom.value });
+        this.senderContentFrom.value.whitelist_type = this.senderContentFrom.value.whitelist_type
+      // this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+      console.log(this.senderContentFrom.value)
+      // this.onAddRoute({ ...this.senderContentFrom.value });
     }
   }
 

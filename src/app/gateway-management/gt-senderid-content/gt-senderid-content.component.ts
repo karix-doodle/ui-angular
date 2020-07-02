@@ -25,6 +25,7 @@ export class GtSenderidContentComponent implements OnInit {
   gw_id: string = null
   gw_name: string = null
 
+  searchvalue: string = ''
   GtMgmtAuthControls = null
 
   constructor(

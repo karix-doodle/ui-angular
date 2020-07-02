@@ -2,7 +2,7 @@
     <div class="col-7 pt-10">
         <label class="main-heading">BILL PLAN MANAGEMENT /</label>
         <span
-        > BILLPLAN / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
+        > <a [routerLink]="['/billplan-management/home']"   > BILLPLAN</a> / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
           {{billplan_name}}/</a
         >
         VIEW</span
@@ -56,7 +56,7 @@
         </table>
         <div class="col-12 my-4">
             <label class="sub-heading">Description</label>
-            <textarea rows="4" class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
+            <textarea rows="4"  readonly class="w-100" [value]="description" placeholder="Enter short Description here"></textarea>
         </div>
     </div>
 </div>

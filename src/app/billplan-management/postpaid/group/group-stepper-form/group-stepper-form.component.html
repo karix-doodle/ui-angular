@@ -78,13 +78,14 @@
                                                         innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" maxlength="11"
+                                                            (blur)="checkRate(Y.get('billing_rate').value, Y, 'billing_rate')"
                                                             formControlName="billing_rate" placeholder="Enter Rate" />
                                                         <span class="text-danger pl-1 f-12"
                                                             *ngIf="Y.get('billing_rate').hasError('required') && groupSubmitted">
                                                             Billing Rate is required
                                                         </span>
                                                         <span class="text-danger pl-1 f-12"
-                                                            *ngIf="Y.get('billing_rate').hasError('pattern') && Y.get('billing_rate').dirty">
+                                                            *ngIf="(Y.get('billing_rate').hasError('pattern') && Y.get('billing_rate').dirty) || (Y.get('billing_rate').hasError('pattern') && groupSubmitted && !Y.get('billing_rate').dirty)">
                                                             Please enter valid input
                                                         </span>
                                                     </div>
@@ -187,14 +188,15 @@
                         <div class="col-3">
                             <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="10"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="11"
+                                    (blur)="checkRate(X.get('billing_rate').value, X, 'billing_rate')"
                                     formControlName="billing_rate" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="X.get('billing_rate').hasError('required') && isupdateRoc">
                                     Billing Rate is required
                                 </span>
                                 <span class="text-danger pl-1 f-12"
-                                    *ngIf="X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty">
+                                    *ngIf="(X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty) || (X.get('billing_rate').hasError('pattern') && isupdateRoc && !X.get('billing_rate').dirty)">
                                     Please enter valid input
                                 </span>
                             </div>
@@ -250,14 +252,15 @@
                         <div class="col-5 mb-2">
                             <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="10"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="11"
+                                    (blur)="checkRate(parentForm.get('billing_rate_row').value, parentForm, 'billing_rate_row')"
                                     formControlName="billing_rate_row" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('billing_rate_row').hasError('required') && submitGroupValid">
-                                    Billing Rate Row is required
+                                    Billing Rate is required
                                 </span>
                                 <span class="text-danger pl-1 f-12"
-                                    *ngIf="parentForm.get('billing_rate_row').hasError('pattern')">
+                                    *ngIf="(parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty) || (parentForm.get('billing_rate_row').hasError('pattern') && submitGroupValid && !parentForm.get('billing_rate_row').dirty)">
                                     Please enter valid input
                                 </span>
                             </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { environment } from "../../../environments/environment";
+import { Subscription, Observable } from 'rxjs';
 
 import * as moment from "moment";
 
@@ -10,6 +11,10 @@ import * as moment from "moment";
 })
 export class CalendarPickerComponent implements OnInit {
   @Input() params: any;
+
+  private eventDateParams: Subscription;
+  @Input() handleDateParams: Observable<[any]>;
+
   @Output() selectDate = new EventEmitter();
   public date: any;
 
@@ -36,10 +41,21 @@ export class CalendarPickerComponent implements OnInit {
   };
 
   minDate: any = null;
+  maxDate: any = null;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
+    this.initiateDateSelection();
+    if (this.handleDateParams != undefined) {
+      this.eventDateParams = this.handleDateParams.subscribe(([value]) => {
+        this.params = value;
+        this.initiateDateSelection()
+      });
+    }
+  }
+
+  initiateDateSelection() {
     if (this.params["type"] && this.params["type"] == "dateOnly") {
       this.ranges = {};
       this.autoApply = true;
@@ -47,7 +63,8 @@ export class CalendarPickerComponent implements OnInit {
       this.showCustomRangeLabel = false;
       this.linkedCalendars = false;
       this.selected = {
-        startDate: this.params.startdate.add(1, "days"),
+        startDate: this.params.startdate,
+        endDate: this.params.startdate,
       };
       this.minDate = this.params.startdate;
     } else {
@@ -55,6 +72,13 @@ export class CalendarPickerComponent implements OnInit {
         startDate: this.params.fromdate,
         endDate: this.params.todate,
       };
+      this.maxDate = moment();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.handleDateParams != undefined) {
+      this.eventDateParams.unsubscribe();
     }
   }
 
