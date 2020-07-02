@@ -143,11 +143,71 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    //    // console.log(index);
    //    this.focusedFormArrayIndex = undefined;
    // }
+   checkRate(data: number, form: FormGroup, key: string) {
+
+      const hasDot = data.toString().split('.');
+      let BillingRate = data.toString();
+
+      if (hasDot.length === 2) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            BillingRate = Number('0' + '.' + hasDot[0])
+               .toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1])
+                  .toString().replace(/^0+/, '');
+         } else {
+            BillingRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         }
+      } else if (hasDot.length === 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            BillingRate = '0';
+         }
+      }
+
+      const dotIndex = BillingRate.indexOf('.');
+
+      if (dotIndex === 0) {
+         BillingRate = '0' + BillingRate;
+      }
+
+      BillingRate = BillingRate !== '' ? BillingRate : '0';
+
+      if (form !== undefined) {
+         const obj = {};
+         obj[key] = BillingRate;
+         form.patchValue(obj);
+      }
+
+      return BillingRate;
+   }
+
    round(data, form: FormGroup) {
-      const NormalizedRate = (data * this.conversionRate).toFixed(6);
-      form.patchValue({
-         normalize_rate: NormalizedRate
-      });
+      let NormalizedRate = data === 0 ? 0 : (data * this.conversionRate).toFixed(6);
+      const hasDot = NormalizedRate.toString().split('.');
+
+      if (hasDot.length === 2) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            NormalizedRate = Number('0' + '.' + hasDot[0])
+               .toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1])
+                  .toString().replace(/^0+/, '');
+         } else {
+            NormalizedRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         }
+      } else if (hasDot.length === 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            NormalizedRate = '0';
+         }
+      }
+
+      const dotIndex = NormalizedRate.toString().indexOf('.')
+
+      if (dotIndex === 0) {
+         NormalizedRate = '0' + NormalizedRate;
+      }
+
+      if (form !== undefined) {
+         form.patchValue({
+            normalize_rate: NormalizedRate
+         })
+      }
       return NormalizedRate;
    }
    // ------------------- common ----------------------------------

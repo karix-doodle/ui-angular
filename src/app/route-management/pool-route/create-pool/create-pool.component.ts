@@ -287,7 +287,7 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   onScrollDown(): void {
     setTimeout(() => {
       this.tableRow.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
+    }, 250);
   }
   /**
    * @description to clear all observable subscriptions.

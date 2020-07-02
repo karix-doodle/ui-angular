@@ -24,7 +24,7 @@
                             <option value="" disabled>Select Operator</option>
                             <!-- <ng-container *ngIf="operatorsList !== null"> -->
                             <option *ngFor="let obj of operatorsList" [attr.data-mnc]="obj.mnc" [value]="obj.operator">
-                                {{ obj.operator }}</option>
+                                {{obj.operator == 'All' ? 'All Operator' : obj.operator}}</option>
                             <!-- </ng-container> -->
                         </select>
                         <span class="text-danger pl-1 f-12"
@@ -75,16 +75,18 @@
                                                     innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control" placeholder="Enter Rate"
-                                                        formControlName="billing_rate" maxlength="10" />
+                                                        formControlName="billing_rate" maxlength="11"
+                                                        (blur)="checkRate(slab.get('billing_rate').value, slab, 'billing_rate')" />
                                                     <!-- (focus)="setIndex(i)"
                                                         (blur)="onBlur()" -->
                                                 </div>
                                                 <span class="text-danger pl-1 f-12"
-                                                    *ngIf="slab.get('billing_rate').hasError('required') && firstStepSubmitted ">
+                                                    *ngIf="slab.get('billing_rate').hasError('required') && firstStepSubmitted">
                                                     Billing Rate is required
                                                 </span>
-                                                <span class="text-danger pl-1 f-12"
-                                                    *ngIf="slab.get('billing_rate').hasError('pattern') && slab.get('billing_rate').dirty">
+                                                <span class="text-danger pl-1 f-12" *ngIf="(slab.get('billing_rate').hasError('pattern') && slab.get('billing_rate').dirty)
+                                                     || (slab.get('billing_rate').hasError('pattern') && firstStepSubmitted 
+                                                     && !slab.get('billing_rate').dirty)">
                                                     Please enter valid input
                                                 </span>
                                             </div>
@@ -192,7 +194,8 @@
                                                     innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control" placeholder="Enter Rate"
-                                                        formControlName="billing_rate" maxlength="10" />
+                                                        formControlName="billing_rate" maxlength="11"
+                                                        (blur)="checkRate(slab.get('billing_rate').value, slab, 'billing_rate')" />
                                                     <!-- (focus)="setIndex(i)"
                                                         (blur)="onBlur()" -->
                                                 </div>
@@ -200,8 +203,9 @@
                                                     *ngIf="slab.get('billing_rate').hasError('required') && secondStepSubmitted">
                                                     Billing Rate is required
                                                 </span>
-                                                <span class="text-danger pl-1 f-12"
-                                                    *ngIf="slab.get('billing_rate').hasError('pattern') && slab.get('billing_rate').dirty">
+                                                <span class="text-danger pl-1 f-12" *ngIf="(slab.get('billing_rate').hasError('pattern') && slab.get('billing_rate').dirty)
+                                                     || (slab.get('billing_rate').hasError('pattern') && secondStepSubmitted 
+                                                     && !slab.get('billing_rate').dirty)">
                                                     Please enter valid input
                                                 </span>
                                             </div>

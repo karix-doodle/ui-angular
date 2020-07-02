@@ -39,7 +39,7 @@
     </div>
 </form>
 <!-- {{previewList | json}} -->
-<div class="row btm-border second-row-det" *ngIf="slabRouteService.previewList.length">
+<div class="row btm-border second-row-det">
     <div class="col-7">
         <div class="row mt-1">
             <div class="col-5">
@@ -61,7 +61,7 @@
     </div>
 
 </div>
-<div class="main-container table-responsive" *ngIf="slabRouteService.previewList.length">
+<div class="main-container table-responsive">
     <table class="table table-borderless erp-list-table row-hover-effect">
         <thead>
             <tr>
@@ -88,9 +88,9 @@
                 <td style="vertical-align: middle;" class="font-weight-semi-bold border-bottom"
                     [attr.rowspan]="items.slabs.length" *ngIf="sindex==0">{{items.country_name}}</td>
                 <td style="vertical-align: middle;" class="border-bottom" [attr.rowspan]="items.slabs.length"
-                    *ngIf="sindex==0">{{items.operator_name}}</td>
+                    *ngIf="sindex==0">{{items.operator_name === 'All' ? 'All Operator' : items.operator_name}}</td>
                 <td style="vertical-align: middle;" class="border-bottom" [attr.rowspan]="items.slabs.length"
-                    *ngIf="sindex==0">{{items.mcc}} + {{items.mnc}}</td>
+                    *ngIf="sindex==0">{{items.mcc}} {{items.mnc !== 0 ? '+ ' + items.mnc : ''}}</td>
                 <td style="padding-left: 26px;">{{item.min}}</td>
                 <td>{{item.max}}</td>
                 <td>{{item.billing_rate}}</td>
@@ -120,7 +120,11 @@
                     mcc: searchvalue,
                     mnc: searchvalue 
                 }).length === 0">
-            <td colspan="9" style="text-align: center;">No Records Found</td>
+            <tr>
+                <td colspan="9" class="text-center py-3 main-heading">
+                    No Data Available
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

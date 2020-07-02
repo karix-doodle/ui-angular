@@ -51,7 +51,7 @@
             </app-route-stepper-form>
         </div>
     </form>
-    <div class="row btm-border second-row-det" *ngIf="poolRouteService.previewList.length">
+    <div class="row btm-border second-row-det">
         <div class="col-7">
             <div class="row mt-1">
                 <div class="col-5">
@@ -75,7 +75,7 @@
         </div>
 
     </div>
-    <div class="main-container table-responsive" *ngIf="poolRouteService.previewList.length">
+    <div class="main-container table-responsive">
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
                 <tr>
@@ -97,8 +97,8 @@
                 mnc: searchText }; let i = index">
                     <td class="font-weight-semi-bold">{{route.continent}}</td>
                     <td class="font-weight-semi-bold">{{route.country}}</td>
-                    <td>{{route.operator}}</td>
-                    <td>{{route.mcc}} + {{route.mnc}}</td>
+                    <td>{{route.operator === 'All' ? 'All Operator' : route.operator}}</td>
+                    <td>{{route.mcc}} {{route.mnc !== 0 ? '+ ' + route.mnc : ''}}</td>
                     <td>
                         <span class="badge badge-success mx-1"
                             *ngFor="let Gate of route.ratios">{{Gate.gw_id}}-{{Gate.ratio_in_percentage}}%</span>
@@ -110,13 +110,18 @@
                     <td> <img src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon"
                             (click)="onDeleteRoute(i)" /></td>
                 </tr>
-                <tr *ngIf="!poolRouteService?.previewList.length  
+
+            </tbody>
+            <tbody *ngIf="!poolRouteService?.previewList.length  
             || (poolRouteService?.previewList  | filter: { continent: searchText,  
                 country: searchText,
                 operator: searchText, 
                 mcc: searchText,
                 mnc: searchText }).length === 0">
-                    <td colspan="6" style="text-align: center;">No Records Found</td>
+                <tr>
+                    <td colspan="6" class="text-center py-3 main-heading">
+                        No Data Available
+                    </td>
                 </tr>
             </tbody>
         </table>

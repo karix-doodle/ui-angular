@@ -107,20 +107,16 @@ export class CreateRatecardComponent implements OnInit {
         ratecard_name: data.name,
       });
       this.getBillPlanCurrency();
-    }, error => {
-
-    }, () => {
-
     });
   }
   private createSlabForm() {
     this.SlabFormGroup = this.formBuilder.group({
       loggedinusername: [environment.loggedinusername],
       loggedinempid: [environment.loggedinempid],
-      billplan_id: ['2'],
-      billplan_currencyid: [13],
+      billplan_id: [''],
+      billplan_currencyid: [''],
       ratecard_type: ['slab'],
-      ratecard_name: ['slabTest10'],
+      ratecard_name: [''],
       continent_name: [''],
       country_name: ['', [Validators.required]],
       operator_name: ['', [Validators.required]],
@@ -152,7 +148,7 @@ export class CreateRatecardComponent implements OnInit {
   onScrollDown(): void {
     setTimeout(() => {
       this.tableRow.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }, 200);
+    }, 250);
   }
   editPreviewSlabs(listIndex, countryName) {
     // console.log(listIndex);

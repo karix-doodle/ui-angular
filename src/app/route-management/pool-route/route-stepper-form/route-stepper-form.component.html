@@ -25,7 +25,7 @@
                             <option value="" disabled>Select Operator</option>
                             <option *ngFor="let operatorObj of operatorsList" [value]="operatorObj.operator"
                                 [attr.data-mnc]="operatorObj.mnc">
-                                {{ operatorObj.operator }}</option>
+                                {{operatorObj.operator == 'All' ? 'All Operator' : operatorObj.operator}}</option>
                         </select>
                         <span class="text-danger pl-1 f-12"
                             *ngIf="parentFormGroup.get('operator').hasError('required') && submitted">
