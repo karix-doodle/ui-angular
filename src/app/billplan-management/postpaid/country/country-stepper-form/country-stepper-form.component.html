@@ -147,9 +147,9 @@
                           Discount rate is not valid
                       </span>
                       <span class="text-danger pl-1 f-12"
-                      *ngIf="(parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty) || (parentForm.get('billing_rate_row').hasError('pattern') && Psubmitted && !parentForm.get('billing_rate_row').dirty)">
-                      Please enter valid input
-                  </span>
+                      *ngIf="parentForm.get('discount_rate').hasError('required') && Psubmitted">
+                      Discount rate is required
+                      </span>
                   </div>
               </div>
               <div class="col-6 discount-select">
