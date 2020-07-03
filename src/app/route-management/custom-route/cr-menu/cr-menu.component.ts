@@ -20,7 +20,7 @@ export class CrMenuComponent implements OnInit {
 
   constructor(
     public customService: CustomService,
-    private AuthService: AuthorizationService
+    public AuthService: AuthorizationService
   ) { }
 
   ngOnInit() {

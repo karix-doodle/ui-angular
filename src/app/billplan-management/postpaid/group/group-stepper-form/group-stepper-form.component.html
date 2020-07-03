@@ -128,7 +128,7 @@
                 </div>
                 <div class="col-6 text-right save-form-div">
                     <button type="button" class="btn btn-basic mr-3" mat-button
-                        [routerLink]="['/billplan-management-postpaid/', parentForm.get('billplan_id').value]">Cancel</button>
+                        [routerLink]="['/billplan-management/postpaid/', parentForm.get('billplan_id').value]">Cancel</button>
                     <button
                         [disabled]="(isEditMode && this.firstFormGroup.untouched == 0) ? true : rowGroups.length == 0 ? true : false"
                         type="button" class="btn erp-intl-btn"

@@ -193,7 +193,7 @@ export class BillplanListComponent implements OnInit {
             successAlert(res.message, res.responsestatus)
             this.closeCBP()
             if (data.billing_type == 'Postpaid') {
-              this.router.navigate(['billplan-management-postpaid/', res.data.billplan_id]);
+              this.router.navigate(['billplan-management/postpaid/', res.data.billplan_id]);
             } else {
               this.router.navigate(['billplan-management-prepaid/', res.data.billplan_id]);
             }

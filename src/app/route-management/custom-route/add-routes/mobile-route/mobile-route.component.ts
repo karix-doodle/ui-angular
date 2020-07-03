@@ -35,7 +35,7 @@ export class MobileRouteComponent implements OnInit {
     public mobileCustomService: MobileCustomRouteService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {

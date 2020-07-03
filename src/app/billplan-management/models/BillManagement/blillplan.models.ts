@@ -51,6 +51,15 @@ export class BillPlanCurrency_Data {
   currency_symbol: string;
 }
 
+export class CurrencySybmol {
+  bCurrency: Currency;
+  nCurrency: Currency;
+}
+export class Currency {
+  symbol: string;
+  id: number;
+}
+
 export class BillPlanContinent_ApiRespone {
   responsecode: number;
   responsestatus: string;
@@ -184,7 +193,7 @@ export class RateCardCountryOperatorView_ApiRResponse {
   data: {
     ratecardname: string;
     currency: string;
-    row_billplan:string;
+    row_billplan: string;
     billplan_id: number;
     billplan_name: string
     totalcountry: number;
@@ -223,7 +232,7 @@ export class RateCardGroupView_ApiRResponse {
   data: {
     ratecardname: string;
     currency: string;
-    roc_billplan:string;
+    roc_billplan: string;
     billplan_id: number;
     row_billplan: string;
     billplan_name: string
@@ -312,11 +321,11 @@ export class RatecardViewSlabCountry_Data {
 }
 
 
-export class RateCardViewFlatFixedApi_Response{
+export class RateCardViewFlatFixedApi_Response {
 
-   responsecode: number
-    responsestatus: string
-    data: {
+  responsecode: number
+  responsestatus: string
+  data: {
     billplan_id: number
     billplan_name: string,
     ratecardname: string,
@@ -327,7 +336,7 @@ export class RateCardViewFlatFixedApi_Response{
     normalizerate: number
     discount_percentage: number
     description: string
-    }
+  }
 
 }
 

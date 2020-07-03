@@ -24,7 +24,7 @@ import { AuthorizationService } from '../../../../service/auth/authorization.ser
 export class CrRmMobileComponent implements OnInit {
   constructor(
     public mobileCustomRoute: MobileCustomRouteService,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
   searchvalue: "";
   sortingName: string;

@@ -21,7 +21,7 @@ import { AuthorizationService } from '../../../../service/auth/authorization.ser
 export class BlMobileSenderidComponent implements OnInit {
   constructor(
     public blMobileService: BlackListAddSenderidService,
-    private authService: AuthorizationService) {}
+    public authService: AuthorizationService) {}
 
   searchvalue: any;
   sortingName: any;

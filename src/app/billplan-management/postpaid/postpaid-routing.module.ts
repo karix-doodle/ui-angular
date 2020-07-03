@@ -6,7 +6,7 @@ import { RatecardListComponent } from './ratecard-list/ratecard-list.component';
 
 const postpaidRoutes: Routes = [
   {
-    path: 'billplan-management-postpaid/:id',
+    path: 'billplan-management/postpaid/:id',
     component: RatecardListComponent
   },
 ]

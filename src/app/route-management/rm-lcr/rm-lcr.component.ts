@@ -30,7 +30,7 @@ export class RmLcrComponent implements OnInit {
     config: NgbModalConfig,
     private modalService: NgbModal,
     private lcrService: LcrService,
-    private authorizationService: AuthorizationService
+    public authorizationService: AuthorizationService
   ) { }
 
   ngOnInit() {
