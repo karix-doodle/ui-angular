@@ -23,7 +23,7 @@ import { AuthorizationService } from '../../../../service/auth/authorization.ser
 export class BlMobileComponent implements OnInit {
   constructor(
     public blMobileService: BlackListAddMobileService,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
     ) {}
 
   searchvalue: any = "";

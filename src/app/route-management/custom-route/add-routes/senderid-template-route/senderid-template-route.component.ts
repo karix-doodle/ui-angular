@@ -44,7 +44,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
     public mobileSenderTemplateService: SenderCustomService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {
