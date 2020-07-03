@@ -416,7 +416,7 @@ export class CountryStepperFormComponent implements OnInit {
           ) {
             successAlert(res.message, res.responsestatus);
             this.router.navigate([
-              "billplan-management-postpaid/" + data.billplan_id,
+              "billplan-management/postpaid/" + data.billplan_id,
             ]);
           } else if (
             res.responsestatus === environment.APIStatus.error.text &&

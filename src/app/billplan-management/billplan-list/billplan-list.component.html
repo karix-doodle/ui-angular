@@ -73,7 +73,7 @@
           ">
         <td class="font-weight-bold"> <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_enabled}"
             [routerLink]="billPlanMgmtAuthControls.billplan_view_enabled 
-              ? ['/billplan-management-postpaid', tableData.id] : []">{{tableData.billplanname}}</a>
+              ? ['/billplan-management/postpaid', tableData.id] : []">{{tableData.billplanname}}</a>
         </td>
         <td>{{tableData.ratecardname}}</td>
         <td>
