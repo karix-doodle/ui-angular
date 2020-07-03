@@ -7,13 +7,14 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./global-country-operator-list.component.css']
 })
 export class GlobalCountryOperatorListComponent implements OnInit {
-    constructor(config: NgbModalConfig, private modalService: NgbModal) 
-    {}
-    open(content)
-    {
-        this.modalService.open(content);
-    }
+  constructor(config: NgbModalConfig, private modalService: NgbModal) { }
+  open(content) {
+    this.modalService.open(content);
+  }
+  close(p) {
 
-    ngOnInit() {}
+  }
+
+  ngOnInit() { }
 
 }
