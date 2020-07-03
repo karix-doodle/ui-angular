@@ -278,6 +278,7 @@ export class GtSenderIdWhiteList_ApiResponse {
     message: string;
 }
 export class GtSenderIdWhiteList_Data {
+    data: GtSenderIdWhiteList_Data;
     gw_id: string;
     gw_name: string;
     totalcountry: number;
@@ -330,11 +331,8 @@ export class GtSenderIdWhiteListDelete_ApiResponse {
 export class GtSenderIdCountryList_ApiResponse {
     responsecode: number;
     responsestatus: string;
-    data: GtSenderIdCountryList_Data;
+    data: any;
     message: string;
-}
-export class GtSenderIdCountryList_Data {
-
 }
 /**
  ************************* @description Gateway Senderid country List END
@@ -626,7 +624,7 @@ export class GtCountryListViewLog_Data {
     gw_name: string;
     country: string;
     operator: string;
-    tabledata: GtCountryListViewLog_TableDataList
+    tabledata: GtCountryListViewLog_TableDataList[]
 }
 export class GtCountryListViewLog_TableDataList {
     rate: string;
@@ -669,6 +667,7 @@ export class GtSenderidContentList_ApiResponse {
     message: string;
 }
 export class GtSenderidContentList_Data {
+    data: GtSenderidContentList_Data;
     total: number;
     unique_senderid_count: number;
     unique_template_count: number;

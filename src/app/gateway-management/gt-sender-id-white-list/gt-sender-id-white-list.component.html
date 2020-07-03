@@ -2,8 +2,8 @@
     <div class="col-8">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span><a routerLink="/gateway-management/gateway-details/{{GtSenderIdWhiteList?.data.gw_id}}">
-                {{GtSenderIdWhiteList?.data.gw_id}} -
-                {{GtSenderIdWhiteList?.data.gw_name}} /</a> SENDERID’s WHITELISTED</span>
+                {{GtSenderIdWhiteList?.data.gw_id}} - {{GtSenderIdWhiteList?.data.gw_name}} /</a>
+            SENDERID’s WHITELISTED</span>
     </div>
     <div class="col-4 text-right">
         <button class="btn erp-intl-btn" (click)="open(senderIdModal)">Add SenderID</button>

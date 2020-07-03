@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtSenderIdWhiteList_ApiResponse, GtSenderIdWhiteList_Data, GtSenderIdWhiteListDelete_ApiResponse, GtSenderIdCountryList_ApiResponse, GtSenderIdCountryList_Data, GtAddSenderId_ApiResponse } from '../models/gateway-management.model';
+import { GtSenderIdWhiteList_ApiResponse, GtSenderIdWhiteList_Data, GtSenderIdWhiteListDelete_ApiResponse, GtSenderIdCountryList_ApiResponse, GtAddSenderId_ApiResponse } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
@@ -25,7 +25,7 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   GtSenderIdWhiteList: GtSenderIdWhiteList_Data;
 
   GtSenderIdCountryListRes: GtSenderIdCountryList_ApiResponse;
-  GtSenderIdCountryList: GtSenderIdCountryList_Data;
+  GtSenderIdCountryList: any
 
   addSenderidFormGroup: FormGroup;
   isAddSenderidValid: boolean = false;
