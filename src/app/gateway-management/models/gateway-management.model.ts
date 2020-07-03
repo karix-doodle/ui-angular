@@ -671,7 +671,7 @@ export class GtSenderidContentList_Data {
     total: number;
     unique_senderid_count: number;
     unique_template_count: number;
-    senderid_template_list: GtSenderidContentList_TableDataList;
+    senderid_template_list: GtSenderidContentList_TableDataList[];
 }
 export class GtSenderidContentList_TableDataList {
     id: number;

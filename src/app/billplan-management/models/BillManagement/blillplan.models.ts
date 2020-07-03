@@ -46,6 +46,7 @@ export class BillPlanCurrency_ApiResponse {
 }
 
 export class BillPlanCurrency_Data {
+  data: BillPlanCurrency_Data[];
   currency_id: number;
   currency_name: string;
   currency_symbol: string;
@@ -55,6 +56,7 @@ export class CurrencySybmol {
   bCurrency: Currency;
   nCurrency: Currency;
 }
+
 export class Currency {
   symbol: string;
   id: number;

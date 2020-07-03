@@ -13,7 +13,8 @@ import {
    BillPlanOperator_ApiRespone,
    BillPlanOperator_Data,
    BillPlanCreateGroup_ApiResponse,
-   CurrencyRateRes
+   CurrencyRateRes,
+   CurrencySybmol
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
 
 import { HttpErrorResponse } from "@angular/common/http";
@@ -42,12 +43,19 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
    billPalnOperatorApiResponse: BillPlanOperator_ApiRespone;
    billPlanOperator: BillPlanOperator_Data[] = [];
 
-   conversionRate: number = 0;
+   private eventGroupsListEvent: Subscription;
+   @Input() groupsListEvent: Observable<[FormArray, number]>;
 
-   currencySybmol: object = {
-      bCurrency: '',
-      nCurrency: ''
-   }
+   private eventHandleGroupsDelete: Subscription;
+   @Input() handleGroupsDelete: Observable<[string, number]>;
+
+   private eventCurrencyList: Subscription;
+   @Input() handlecurrencyList: Observable<CurrencySybmol>;
+
+   conversionRate: number = 0;
+   isLinear: boolean
+
+   currencySybmol: CurrencySybmol;
 
    @Input() parentForm: FormGroup;
    @Input() rowGroups: [];
@@ -56,15 +64,6 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
    @ViewChild('stepper', { static: false }) stepper: MatStepper;
 
    operatorObj: object = {}
-
-   private eventGroupsListEvent: Subscription;
-   @Input() groupsListEvent: Observable<[FormArray, number]>;
-
-   private eventHandleGroupsDelete: Subscription;
-   @Input() handleGroupsDelete: Observable<[string, number]>;
-
-   private eventCurrencyList: Subscription;
-   @Input() handlecurrencyList: Observable<[object]>;
 
    isEditMode: boolean = false
    submitGroupValid: boolean = false
@@ -96,7 +95,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
          this.handleGroupsListDelete(value, indexed);
       });
 
-      this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
+      this.eventCurrencyList = this.handlecurrencyList.subscribe((value) => {
          this.handleCurrencyData(value);
       });
 

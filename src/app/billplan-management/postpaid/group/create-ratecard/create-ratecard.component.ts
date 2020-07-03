@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Params, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { BillManagementService } from "src/app/billplan-management/services/BillManagement/billplan-management.service";
 import { count } from '../../../../shared/helper/helperFunctions'
@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import {
   BillPlanCurrency_ApiResponse,
   BillPlanCurrency_Data,
+  CurrencySybmol, Currency
 } from '../../../models/BillManagement/blillplan.models';
 
 import { successAlert, errorAlert, infoAlert } from 'src/app/shared/sweet-alert/sweet-alert';
@@ -28,10 +29,10 @@ export class CreateRatecardComponent implements OnInit {
   billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
   billPlanCurrencyData: BillPlanCurrency_Data;
 
-  currencySybmol: object = {
-    bCurrency: '',
-    nCurrency: ''
-  }
+  currencySybmol: CurrencySybmol = new CurrencySybmol();
+  bCurrency: Currency = new Currency();
+  nCurrency: Currency = new Currency();
+
   row_groups = []
   countryCount = 0
   searchvalue: string = ''
@@ -40,9 +41,10 @@ export class CreateRatecardComponent implements OnInit {
 
   groupListData: Subject<[FormArray, number]> = new Subject<[FormArray, number]>();
   handleGroupsDelete: Subject<[string, number]> = new Subject<[string, number]>();
-  handlecurrencyList: Subject<[object]> = new Subject<[object]>();
+  handlecurrencyList: Subject<CurrencySybmol> = new Subject<CurrencySybmol>();
 
   constructor(
+    private Route: ActivatedRoute,
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private billPlanservice: BillManagementService,
@@ -62,32 +64,23 @@ export class CreateRatecardComponent implements OnInit {
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
-          console.log(res);
+
           this.billPlanCurrencyRes = res;
           this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
-          let bcurrency = {}
-          let ncurrency = {}
           this.billPlanCurrencyRes.data.filter((item) => {
             if (item.currency_id == this.activeRoute.snapshot.params.cId) {
-              bcurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              }
+              this.bCurrency.symbol = item.currency_symbol;
+              this.bCurrency.id = item.currency_id;
             }
             if (item.currency_id == environment.currencyDefault) {
-              ncurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              }
+              this.nCurrency.symbol = item.currency_symbol;
+              this.nCurrency.id = item.currency_id;
             }
-          })
+          });
+          this.currencySybmol.bCurrency = this.bCurrency;
+          this.currencySybmol.nCurrency = this.nCurrency;
 
-          this.currencySybmol = {
-            bCurrency: bcurrency,
-            nCurrency: ncurrency
-          }
-
-          this.handlecurrencyList.next([this.currencySybmol]);
+          this.handlecurrencyList.next(this.currencySybmol);
 
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&

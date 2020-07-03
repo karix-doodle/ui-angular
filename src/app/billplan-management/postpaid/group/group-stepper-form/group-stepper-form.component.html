@@ -75,7 +75,7 @@
                                                 </div>
                                                 <div class="col-3 mb-2">
                                                     <label
-                                                        innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
+                                                        innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" maxlength="11"
                                                             (blur)="checkRate(Y.get('billing_rate').value, Y, 'billing_rate')"
@@ -92,7 +92,7 @@
                                                 </div>
                                                 <div class="col-3 mb-2">
                                                     <label
-                                                        innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
+                                                        innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" disabled
                                                             [value]="round(Y.get('billing_rate').value, Y)"
@@ -130,7 +130,7 @@
                     <button type="button" class="btn btn-basic mr-3" mat-button
                         [routerLink]="['/billplan-management/postpaid/', parentForm.get('billplan_id').value]">Cancel</button>
                     <button
-                        [disabled]="(isEditMode && this.firstFormGroup.untouched == 0) ? true : rowGroups.length == 0 ? true : false"
+                        [disabled]="(isEditMode && this.firstFormGroup.untouched == false) ? true : rowGroups.length == 0 ? true : false"
                         type="button" class="btn erp-intl-btn"
                         (click)="rowGroups.length != 0 ? stepperView(stepper, 0, 1) : ''" mat-button>Next</button>
                 </div>
@@ -186,7 +186,7 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
+                            <label innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="11"
                                     (blur)="checkRate(X.get('billing_rate').value, X, 'billing_rate')"
@@ -202,7 +202,7 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
+                            <label innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" disabled formControlName="normalize_rate"
                                     [value]="round(X.get('billing_rate').value, X)" />
@@ -250,7 +250,7 @@
                 <div class="gt-ratio-div" *ngIf="parentForm.get('ratetype_row').value == 'custom'">
                     <div class="row mb-2">
                         <div class="col-5 mb-2">
-                            <label innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
+                            <label innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="11"
                                     (blur)="checkRate(parentForm.get('billing_rate_row').value, parentForm, 'billing_rate_row')"
@@ -266,7 +266,7 @@
                             </div>
                         </div>
                         <div class="col-5 mb-2">
-                            <label innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
+                            <label innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="" disabled
                                     [value]="round(parentForm.get('billing_rate_row').value, parentForm)" />
@@ -276,7 +276,7 @@
                 </div>
                 <div class="row mt-2">
                     <label class="font-weight-bold col-12"
-                        innerHTML="Discount in % or Amount in {{currencySybmol.bCurrency.symbol}}"></label>
+                        innerHTML="Discount in % or Amount in {{currencySybmol?.bCurrency.symbol}}"></label>
                 </div>
                 <div class="gt-ratio-div">
                     <div class="row">
@@ -289,7 +289,7 @@
                                     formControlName="discount_rate" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('discount_rate').hasError('pattern') && submitGroupValid">
-                                    Discount rate is not valid
+                                    Invalid Input Value
                                 </span>
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('discount_rate').hasError('required') && submitGroupValid">
