@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { errorAlert, confirmAlert } from '../../../../shared/sweet-alert/sweet-alert';
 import { ActivatedRoute, Params } from '@angular/router';
 import { BillManagementService } from '../../../services/BillManagement/billplan-management.service';
-import { BillPlanCurrency_ApiResponse } from '../../../models/BillManagement/blillplan.models';
+import { BillPlanCurrency_ApiResponse, CurrencySybmol, Currency } from '../../../models/BillManagement/blillplan.models';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -22,17 +22,16 @@ export class CreateRatecardComponent implements OnInit {
   previewList: Countries[] = [];
   previewDeleteEvent: Subject<void> = new Subject<void>();
   editMode: Subject<[boolean, number, string]> = new Subject<[boolean, number, string]>();
-  handlecurrencyList: Subject<[object]> = new Subject<[object]>();
+  handlecurrencyList: Subject<CurrencySybmol> = new Subject<CurrencySybmol>();
   editModeStatus: boolean;
   countryCount: number;
   operatorCount: number;
   // paramsData: Params;
   billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
   billPlanCurrencyData: BillPlanCurrency_ApiResponse;
-  currencySybmol: object = {
-    bCurrency: '',
-    nCurrency: ''
-  };
+  currencySybmol: CurrencySybmol = new CurrencySybmol();
+  bCurrency: Currency = new Currency();
+  nCurrency: Currency = new Currency();
   searchvalue: any;
   constructor(
     private formBuilder: FormBuilder,
@@ -58,31 +57,22 @@ export class CreateRatecardComponent implements OnInit {
           // console.log(res);
           this.billPlanCurrencyRes = res;
           this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
-          let bcurrency = {};
-          let ncurrency = {};
-          // console.log(this.SlabFormGroup.value.billplan_currencyid);
+
           this.billPlanCurrencyRes.data.filter((item) => {
             if (item.currency_id === this.SlabFormGroup.value.billplan_currencyid) {
-              bcurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              };
+              this.bCurrency.symbol = item.currency_symbol;
+              this.bCurrency.id = item.currency_id;
             }
             if (item.currency_id === environment.currencyDefault) {
-              ncurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              };
+              this.nCurrency.symbol = item.currency_symbol;
+              this.nCurrency.id = item.currency_id;
             }
           });
-
-          this.currencySybmol = {
-            bCurrency: bcurrency,
-            nCurrency: ncurrency
-          };
+          this.currencySybmol.bCurrency = this.bCurrency;
+          this.currencySybmol.nCurrency = this.nCurrency;
           // console.log(this.currencySybmol);
 
-          this.handlecurrencyList.next([this.currencySybmol]);
+          this.handlecurrencyList.next(this.currencySybmol);
 
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&

@@ -11,7 +11,8 @@ import {
    BillPlanContinent_ApiRespone, BillPlanCountries_ApiRespone, BillPlanCountries_Data,
    BillPlanOperator_ApiRespone,
    BillPlanOperator_Data,
-   CurrencyRateRes
+   CurrencyRateRes,
+   CurrencySybmol
 } from '../../../models/BillManagement/blillplan.models';
 import { environment } from '../../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,7 +29,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    isLinear = false;
    @Input() parentForm: FormGroup;
    @Input() editMode: Observable<[boolean, number, string]>;
-   @Input() handlecurrencyList: Observable<[object]>;
+   @Input() handlecurrencyList: Observable<CurrencySybmol>;
    @Input() previewDeleteEvent: Observable<void>;
    @Output() countriesListChildToParent = new EventEmitter();
 
@@ -48,10 +49,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    operatorsList: BillPlanOperator_Data[];
    conversionRate: number;
    // focusedFormArrayIndex: number;
-   currencySybmol: object = {
-      bCurrency: '',
-      nCurrency: ''
-   };
+   currencySybmol: CurrencySybmol;
    // copiedSecondFormArray: FormArray;
    constructor(
       private formBuilder: FormBuilder,
@@ -91,7 +89,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       }, 16);
    }
    initCurrencyListSubscription() {
-      this.sub = this.handlecurrencyList.subscribe(([value]) => {
+      this.sub = this.handlecurrencyList.subscribe((value) => {
          this.handleCurrencyData(value);
       });
    }
@@ -206,7 +204,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       if (form !== undefined) {
          form.patchValue({
             normalize_rate: NormalizedRate
-         })
+         });
       }
       return NormalizedRate;
    }

@@ -72,7 +72,7 @@
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <label
-                                                    innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
+                                                    innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control" placeholder="Enter Rate"
                                                         formControlName="billing_rate" maxlength="11"
@@ -92,7 +92,7 @@
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <label
-                                                    innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
+                                                    innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                                                 <div class="form-group">
                                                     <input type="number" class="form-control"
                                                         [value]="round(slab.get('billing_rate').value, slab)"
@@ -191,7 +191,7 @@
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <label
-                                                    innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
+                                                    innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control" placeholder="Enter Rate"
                                                         formControlName="billing_rate" maxlength="11"
@@ -211,7 +211,7 @@
                                             </div>
                                             <div class="col-3 mb-2">
                                                 <label
-                                                    innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
+                                                    innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                                                 <div class="form-group">
                                                     <input type="number" class="form-control"
                                                         [value]="round(slab.get('billing_rate').value, slab)"
@@ -228,14 +228,13 @@
                             </div>
                         </div>
                         <div class="col-2 add-div-btn">
-                            <button type="button" class="btn btn-light"
-                                (click)="addToSlabsSecondFormArray()">+</button>
+                            <button type="button" class="btn btn-light" (click)="addToSlabsSecondFormArray()">+</button>
                         </div>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <label class="font-weight-bold col-12"
-                        innerHTML="Discount in % or Amount in ({{currencySybmol.bCurrency.symbol}})"></label>
+                        innerHTML="Discount in % or Amount in ({{currencySybmol?.bCurrency.symbol}})"></label>
                 </div>
                 <div class="gt-ratio-div">
                     <div class="row ">
