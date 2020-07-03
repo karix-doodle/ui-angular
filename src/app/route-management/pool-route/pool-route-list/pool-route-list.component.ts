@@ -30,7 +30,7 @@ export class PoolRouteListComponent implements OnInit {
     config: NgbModalConfig,
     private modalService: NgbModal,
     private poolRouteService: PoolRouteService,
-    private authorizationService: AuthorizationService
+    public authorizationService: AuthorizationService
   ) { }
 
   open(

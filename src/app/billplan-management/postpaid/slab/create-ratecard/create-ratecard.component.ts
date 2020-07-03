@@ -36,7 +36,7 @@ export class CreateRatecardComponent implements OnInit {
   searchvalue: any;
   constructor(
     private formBuilder: FormBuilder,
-    private slabRouteService: SlabRouteService,
+    public slabRouteService: SlabRouteService,
     private Route: ActivatedRoute,
     private billPlanservice: BillManagementService,
   ) {

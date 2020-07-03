@@ -24,7 +24,7 @@ export class PrActWiseViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private poolRouteService: PoolRouteService,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) { }
 
   ngOnInit() {

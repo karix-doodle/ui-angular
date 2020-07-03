@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 })
 export class RouteStepperFormComponent implements OnInit, OnDestroy {
    @ViewChild('stepper', { static: false }) stepper: MatStepper;
+   isLinear = false;
    @Input() parentFormGroup: FormGroup;
    @Input() gatewaysListObs: Observable<GatewaysListData[]>;
    @Input() previewEditObs: Observable<[boolean, number, string, NewRowRoutesList[]]>;
@@ -55,7 +56,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
       private modalService: NgbModal,
-      private poolRouteService: PoolRouteService,
+      public poolRouteService: PoolRouteService,
       private genericService: GenericService,
       private router: Router,
    ) {

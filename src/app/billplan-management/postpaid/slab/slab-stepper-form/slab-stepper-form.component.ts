@@ -56,7 +56,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
-      private slabRouteService: SlabRouteService,
+      public slabRouteService: SlabRouteService,
       private billMgmtService: BillManagementService,
       private router: Router,
    ) { }
