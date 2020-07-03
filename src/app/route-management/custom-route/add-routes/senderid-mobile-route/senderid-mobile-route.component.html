@@ -19,7 +19,6 @@
 </div>
 
 <div *ngIf="authService.authorizationState.route_mgmt.customroute_mobilesenderid_add_route_enabled">
-  <pre>{{senderIdFrom.value | json}}</pre>
   <div class="main-container p-4">
     <form [formGroup]="senderIdFrom" (ngSubmit)="onSubmit()">
       <mat-radio-group class="mat-radio-group" formControlName="whitelist_type"
