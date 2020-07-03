@@ -54,15 +54,18 @@
                                             </select>
                                             <span class="text-danger pl-1 f-12"
                                                 *ngIf="item.get('gw_id').hasError('required') && submitted">
-                                                Gateway is required
+                                                Gateway is required &nbsp;
+                                            </span>
+                                            <span class="text-danger pl-1 f-12 text-center"
+                                                *ngIf="firstStepRatioTotal < 100 && submitted">
+                                                Ratio must be upto 100%
                                             </span>
                                         </div>
                                         <div class="col-5 p-0">
                                             <input type="number" formControlName="ratio_in_percentage" step="10"
                                                 min="10" max="100" onKeyDown="return false" matInput placeholder="%"
-                                                class="ratio-text"
-                                                [ngClass]="{submitError:submitted && firstStepRatioTotal !== 100}"
-                                                (click)="setFormArrayIndex(i)">
+                                                class="ratio-text" (click)="setFormArrayIndex(i)">
+                                            <!-- [ngClass]="{submitError:submitted && firstStepRatioTotal !== 100}" -->
                                         </div>
                                         <span class="closeGateway" (click)="onCloseGateway(i)"><b>X</b></span>
                                     </div>
@@ -143,14 +146,18 @@
                                             </select>
                                             <span class="text-danger pl-1 f-12"
                                                 *ngIf="item.get('gw_id').hasError('required') && secondStepSubmitted">
-                                                Gateway is required
+                                                Gateway is required &nbsp;
+                                            </span>
+                                            <span class="text-danger pl-1 f-12 text-center"
+                                                *ngIf="secondStepRatioTotal < 100 && secondStepSubmitted">
+                                                Ratio must be upto 100%
                                             </span>
                                         </div>
                                         <div class="col-5 p-0">
                                             <input type="number" formControlName="ratio_in_percentage" step="10"
                                                 min="10" max="100" onKeyDown="return false" matInput placeholder="%"
-                                                class="ratio-text" (click)="setFormArrayIndex(i)"
-                                                [ngClass]="{submitError:secondStepSubmitted && secondStepRatioTotal !== 100}" />
+                                                class="ratio-text" (click)="setFormArrayIndex(i)" />
+                                            <!-- [ngClass]="{submitError:secondStepSubmitted && secondStepRatioTotal !== 100}" -->
                                         </div>
                                         <span class="closeGateway" (click)="onCloseRowGateway(i)"><b>X</b></span>
                                     </div>

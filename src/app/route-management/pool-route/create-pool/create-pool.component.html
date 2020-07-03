@@ -37,8 +37,9 @@
                     Gateway Type is required
                 </span>
             </div>
-            <div class="col-3 text-right lcr-value" *ngIf="parentFormGroup.get('gw_type').value !== ''">
-                <span>Fallback - <b>LCR ({{parentFormGroup.get('gw_type').value}})</b></span>
+            <div class="col-3 text-right lcr-value">
+                <span>Fallback<b *ngIf="parentFormGroup.get('gw_type').value !== ''"> - LCR
+                        ({{parentFormGroup.get('gw_type').value}})</b></span>
             </div>
         </div>
         <!-- <pre> {{parentFormGroup.value | json}}</pre> -->
