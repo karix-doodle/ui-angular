@@ -37,7 +37,7 @@ export class SenderidMobileRouteComponent implements OnInit {
     public mobileSenderIdCustomService: MobileSenderidCustomService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {
@@ -158,7 +158,7 @@ export class SenderidMobileRouteComponent implements OnInit {
       : "";
     this.senderIdFrom.value.req_type = "single_req";
     this.senderIdFrom.value.createdby = "1234";
-    this.senderIdFrom.value.whitelist_type = this.senderIdFrom.value.whitelist_type
+    this.senderIdFrom.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
     this.onAddRoute({ ...this.senderIdFrom.value });
     }
 

@@ -16,7 +16,7 @@ export class RmMenuPageComponent implements OnInit {
   summary: SummaryData;
   constructor(
     private routeManagementService: RouteManagementService,
-    private authorizationService: AuthorizationService) { }
+    public authorizationService: AuthorizationService) { }
 
   ngOnInit() {
     this.routeManagementService.getRouteMgmtSummary().subscribe(

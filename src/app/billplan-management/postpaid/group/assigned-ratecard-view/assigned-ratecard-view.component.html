@@ -2,7 +2,7 @@
   <div class="col-7 pt-10">
     <label class="main-heading">BILL PLAN MANAGEMENT /</label>
     <span
-    > <a [routerLink]="['/billplan-management/home']"  > BILLPLAN</a> / <a [routerLink]="['/billplan-management-postpaid',billplan_id]">
+    > <a [routerLink]="['/billplan-management/home']"  > BILLPLAN</a> / <a [routerLink]="['/billplan-management/postpaid',billplan_id]">
       {{billplan_name}}/</a
     >
     VIEW</span
@@ -70,9 +70,8 @@
       <tr *ngFor="let item of countryArray |  filter: { group_name: searchvalue , country: searchvalue,operator: searchvalue }">
         <td class="font-weight-semi-bold">{{item.group_name}}</td>
         <td>{{item.country}}</td>
-        <td>{{item.operator}}</td>
-        <td *ngIf="item.mnc === null || 0">{{item.mcc}}</td>
-        <td *ngIf="item.mnc !== null || 0">{{item.mcc}} + {{item.mnc}}</td>
+        <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+        <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
         <td>{{item.billing_rate}}</td>
         <td>{{item.normalizerate}}</td>
 
@@ -119,9 +118,8 @@
           <tr *ngFor="let item of roc">
             <td class="font-weight-semi-bold">{{item.continent}}</td>
             <td>{{item.country}}</td>
-            <td>{{item.operator}}</td>
-            <td *ngIf="item.mnc === null || 0">{{item.mcc}}</td>
-            <td *ngIf="item.mnc !== null || 0">{{item.mcc}} + {{item.mnc}}</td>
+            <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+            <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
             <td>{{item.billing_rate}}</td>
             <td>{{item.normalizerate}}</td>
 
@@ -177,9 +175,8 @@
           <tr *ngFor="let item of roc">
             <td class="font-weight-semi-bold">{{item.continent}}</td>
             <td>{{item.country}}</td>
-            <td>{{item.operator}}</td>
-            <td *ngIf="item.mnc === null || 0">{{item.mcc}}</td>
-            <td *ngIf="item.mnc !== null || 0">{{item.mcc}} + {{item.mnc}}</td>
+            <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+            <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
             <td>{{item.billing_rate}}</td>
             <td>{{item.normalizerate}}</td>
 

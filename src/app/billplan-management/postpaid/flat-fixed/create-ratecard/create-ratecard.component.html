@@ -38,16 +38,17 @@
                       <label
                       innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></label>
                         <div class="form-group">
-                          <input type="text" class="form-control"
-                              formControlName="billing_rate" placeholder="Enter Rate" maxlength="10" />
+                          <input type="text" class="form-control" maxlength="11"
+                          (blur)="checkRate(fixedRateFrom.get('billing_rate').value, fixedRateFrom, 'billing_rate')"
+                          formControlName="billing_rate" placeholder="Enter Rate" />
                           <span class="text-danger pl-1 f-12"
                           *ngIf="fixedRateFrom.get('billing_rate').hasError('required') && Submitted">
                               Billing Rate is required
                           </span>
                           <span class="text-danger pl-1 f-12"
-                          *ngIf="fixedRateFrom.get('billing_rate').hasError('pattern') && fixedRateFrom.get('billing_rate').dirty">
-                              Please enter valid input
-                          </span>
+                          *ngIf="(fixedRateFrom.get('billing_rate').hasError('pattern') && fixedRateFrom.get('billing_rate').dirty) || (fixedRateFrom.get('billing_rate').hasError('pattern') && Submitted && !fixedRateFrom.get('billing_rate').dirty)">
+                          Please enter valid input
+                      </span>
                       </div>
                     </div>
                     <div class="col-6">
@@ -112,7 +113,7 @@
     <div class="row mt-4 create-route-section">
         <div class="col-12 text-center">
           <button type="reset" class="btn btn-basic mr-3"
-          [routerLink]="['/billplan-management-postpaid/', fixedRateFrom.get('billplan_id').value]"> Cancel</button>
+          [routerLink]="['/billplan-management/postpaid/', fixedRateFrom.get('billplan_id').value]"> Cancel</button>
           <button type="submit" class="btn erp-intl-btn" > Save</button>
 
         </div>

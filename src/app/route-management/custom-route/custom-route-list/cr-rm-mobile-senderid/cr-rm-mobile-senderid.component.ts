@@ -26,7 +26,7 @@ export class CrRmMobileSenderidComponent implements OnInit {
   constructor(
     public mobileSenderidCustomService: MobileSenderidCustomService,
     public customService: CustomService,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
 
   mobileSenderidCustomData: MobileCustomSender_Data;

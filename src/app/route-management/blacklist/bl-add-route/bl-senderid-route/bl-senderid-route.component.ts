@@ -35,7 +35,7 @@ export class BlSenderidRouteComponent implements OnInit {
     public Service: BlackListAddMobileSenderidService,
     public router: Router,
     public formBuilder: FormBuilder,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {

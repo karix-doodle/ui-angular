@@ -11,7 +11,8 @@ import {
    BillPlanContinent_ApiRespone, BillPlanCountries_ApiRespone, BillPlanCountries_Data,
    BillPlanOperator_ApiRespone,
    BillPlanOperator_Data,
-   CurrencyRateRes
+   CurrencyRateRes,
+   CurrencySybmol
 } from '../../../models/BillManagement/blillplan.models';
 import { environment } from '../../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,7 +29,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    isLinear = false;
    @Input() parentForm: FormGroup;
    @Input() editMode: Observable<[boolean, number, string]>;
-   @Input() handlecurrencyList: Observable<[object]>;
+   @Input() handlecurrencyList: Observable<CurrencySybmol>;
    @Input() previewDeleteEvent: Observable<void>;
    @Output() countriesListChildToParent = new EventEmitter();
 
@@ -48,15 +49,12 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    operatorsList: BillPlanOperator_Data[];
    conversionRate: number;
    // focusedFormArrayIndex: number;
-   currencySybmol: object = {
-      bCurrency: '',
-      nCurrency: ''
-   };
+   currencySybmol: CurrencySybmol;
    // copiedSecondFormArray: FormArray;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
-      private slabRouteService: SlabRouteService,
+      public slabRouteService: SlabRouteService,
       private billMgmtService: BillManagementService,
       private router: Router,
    ) { }
@@ -91,7 +89,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
       }, 16);
    }
    initCurrencyListSubscription() {
-      this.sub = this.handlecurrencyList.subscribe(([value]) => {
+      this.sub = this.handlecurrencyList.subscribe((value) => {
          this.handleCurrencyData(value);
       });
    }
@@ -106,7 +104,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
             [999999999, [Validators.required, Validators.min(2), Validators.max(999999999)]]
             : [max, [Validators.required, Validators.min(2), Validators.max(999999999)]],
          billing_rate: ['',
-            [Validators.required, Validators.pattern('^[1-9]{1}$|^[1-9]{10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[1-9]{1,4}([\.][0-9]{1,6})?$')]],
+            [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
          normalize_rate: ['']
       });
    }
@@ -143,11 +141,71 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    //    // console.log(index);
    //    this.focusedFormArrayIndex = undefined;
    // }
+   checkRate(data: number, form: FormGroup, key: string) {
+
+      const hasDot = data.toString().split('.');
+      let BillingRate = data.toString();
+
+      if (hasDot.length === 2) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            BillingRate = Number('0' + '.' + hasDot[0])
+               .toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1])
+                  .toString().replace(/^0+/, '');
+         } else {
+            BillingRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         }
+      } else if (hasDot.length === 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            BillingRate = '0';
+         }
+      }
+
+      const dotIndex = BillingRate.indexOf('.');
+
+      if (dotIndex === 0) {
+         BillingRate = '0' + BillingRate;
+      }
+
+      BillingRate = BillingRate !== '' ? BillingRate : '0';
+
+      if (form !== undefined) {
+         const obj = {};
+         obj[key] = BillingRate;
+         form.patchValue(obj);
+      }
+
+      return BillingRate;
+   }
+
    round(data, form: FormGroup) {
-      const NormalizedRate = (data * this.conversionRate).toFixed(6);
-      form.patchValue({
-         normalize_rate: NormalizedRate
-      });
+      let NormalizedRate = data === 0 ? 0 : (data * this.conversionRate).toFixed(6);
+      const hasDot = NormalizedRate.toString().split('.');
+
+      if (hasDot.length === 2) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            NormalizedRate = Number('0' + '.' + hasDot[0])
+               .toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1])
+                  .toString().replace(/^0+/, '');
+         } else {
+            NormalizedRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+         }
+      } else if (hasDot.length === 1) {
+         if (RegExp('^[0]+$').test(hasDot[0])) {
+            NormalizedRate = '0';
+         }
+      }
+
+      const dotIndex = NormalizedRate.toString().indexOf('.')
+
+      if (dotIndex === 0) {
+         NormalizedRate = '0' + NormalizedRate;
+      }
+
+      if (form !== undefined) {
+         form.patchValue({
+            normalize_rate: NormalizedRate
+         });
+      }
       return NormalizedRate;
    }
    // ------------------- common ----------------------------------
@@ -539,7 +597,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                res.responsecode > environment.APIStatus.success.code
             ) {
                successAlert(res.message, res.responsestatus);
-               this.router.navigate(['billplan-management-postpaid/' + this.SlabCreateRateCardInput.billplan_id]);
+               this.router.navigate(['billplan-management/postpaid/' + this.SlabCreateRateCardInput.billplan_id]);
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
                res.responsecode < environment.APIStatus.error.code

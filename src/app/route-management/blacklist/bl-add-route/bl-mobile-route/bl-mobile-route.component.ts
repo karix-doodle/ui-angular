@@ -37,7 +37,7 @@ export class BlMobileRouteComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {

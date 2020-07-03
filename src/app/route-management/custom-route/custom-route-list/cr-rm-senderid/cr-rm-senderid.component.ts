@@ -29,7 +29,7 @@ export class CrRmSenderidComponent implements OnInit {
 
   constructor(
     public senderService: SenderCustomService,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
     ) { }
 
   ngOnInit() {

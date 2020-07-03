@@ -44,7 +44,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
     public mobileSenderTemplateService: SenderCustomService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
-    private authService: AuthorizationService
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {
@@ -202,10 +202,10 @@ export class SenderidTemplateRouteComponent implements OnInit {
       this.senderContentFrom.value.default_senderid = true;
       this.senderContentFrom.value.priority = +this.senderContentFrom.value
         .priority;
-        this.senderContentFrom.value.whitelist_type = this.senderContentFrom.value.whitelist_type
+        this.senderContentFrom.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
       // this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
       console.log(this.senderContentFrom.value)
-      // this.onAddRoute({ ...this.senderContentFrom.value });
+      this.onAddRoute({ ...this.senderContentFrom.value });
     }
   }
 

@@ -23,8 +23,6 @@ import * as moment from 'moment';
 })
 export class CmEditComponent implements OnInit {
   public params: any;
-  ratecard_id:number;
-  ratecard_type:string
   apiResponse : UserActivation_ApiResponse;
   usersData: UserRoutingConfig;
   esmeaddr: string;
