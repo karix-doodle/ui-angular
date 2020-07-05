@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BillplanFlatFixedService } from 'src/app/billplan-management/services/BillManagement/billplan-country-flat-fixed/billplan-flat-fixed.service';
-import { BillPlanCreateFlatFixed_ApiResponse, CurrencyRateRes, BillPlanCurrency_ApiResponse, BillPlanCurrency_Data } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
+import { BillPlanCreateFlatFixed_ApiResponse, CurrencyRateRes, BillPlanCurrency_ApiResponse, BillPlanCurrency_Data, CurrencySybmol, Currency } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { successAlert, errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
@@ -21,10 +21,9 @@ Submitted = false
   ratecard_name
   ratecard_type="flat-fixed"
   conversionRate: number
-  currencySybmol: object = {
-    bCurrency: '',
-    nCurrency: ''
-  }
+  currencySybmol: CurrencySybmol = new CurrencySybmol();
+  bCurrency: Currency = new Currency();
+  nCurrency: Currency = new Currency();
   billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
   billPlanCurrencyData: BillPlanCurrency_Data;
   constructor( private formBuilder: FormBuilder,
@@ -60,29 +59,22 @@ this.getBillPlanCurrency();
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
+
           this.billPlanCurrencyRes = res;
           this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
-          let bcurrency = {}
-          let ncurrency = {}
           this.billPlanCurrencyRes.data.filter((item) => {
             if (item.currency_id == this.activeRoute.snapshot.params.cId) {
-              bcurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              }
+              this.bCurrency.symbol = item.currency_symbol;
+              this.bCurrency.id = item.currency_id;
             }
             if (item.currency_id == environment.currencyDefault) {
-              ncurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              }
+              this.nCurrency.symbol = item.currency_symbol;
+              this.nCurrency.id = item.currency_id;
             }
-          })
+          });
+          this.currencySybmol.bCurrency = this.bCurrency;
+          this.currencySybmol.nCurrency = this.nCurrency;
 
-          this.currencySybmol = {
-            bCurrency: bcurrency,
-            nCurrency: ncurrency
-          }
 
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
@@ -96,6 +88,7 @@ this.getBillPlanCurrency();
       }
     );
   }
+
 
   get control() {
     return this.fixedRateFrom.controls;

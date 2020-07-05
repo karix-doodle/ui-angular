@@ -20,7 +20,7 @@
   <div class="main-container p-4">
     <form [formGroup]="blacklistSenderTemplateAddForm" (ngSubmit)="onSubmit()">
       <mat-radio-group class="mat-radio-group" formControlName="blacklist_type"
-        (change)="cMobileUpload = null; fileData = null; onChange()">
+        (change)="fileData = null; fileData = null; onChange()">
         <mat-radio-button class="mat-radio-button" *ngFor="let labelname of accounts" [value]="labelname">
           {{ labelname }}
         </mat-radio-button>
@@ -88,7 +88,7 @@
               Cancel
             </button>
             <button type="submit" class="btn erp-intl-btn save-btn">
-              Add Route
+              Block
             </button>
           </div>
         </div>
@@ -172,7 +172,7 @@
               Cancel
             </button>
             <button type="submit" class="btn erp-intl-btn save-btn">
-              Add Route
+              Block
             </button>
           </div>
         </div>
@@ -255,7 +255,7 @@
               Cancel
             </button>
             <button type="submit" class="btn erp-intl-btn save-btn">
-              Add Route
+              Block
             </button>
           </div>
         </div>

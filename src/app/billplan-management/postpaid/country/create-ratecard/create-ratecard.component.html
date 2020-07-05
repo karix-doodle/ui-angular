@@ -22,7 +22,7 @@
         </div>
         <div class="col-3 offset-6 text-right">
             <div class="form-group">
-              <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})" >
+              <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Bill Plan Currency ({{currencySybmol.bCurrency?.symbol}})" >
               </button>
             </div>
         </div>
@@ -31,7 +31,7 @@
 
 <div class="main-container p-4">
     <app-country-stepper-form  [parentForm]="totalCountryForm"
-    (countryList)="countryListData($event,index)"
+    (countryList)="countryListData($event)"
       [countryListEvent]="countryLisData.asObservable()"
       [handleCountryDelete]="handleCountryDelete.asObservable()"
       [handlecurrencyList]="handlecurrencyList.asObservable()"
@@ -64,8 +64,8 @@
             <tr>
                 <th>Country</th>
                 <th>MCC</th>
-                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></th>
-                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
+                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency?.symbol}})"></th>
+                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>

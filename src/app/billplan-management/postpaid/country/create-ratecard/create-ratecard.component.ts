@@ -6,7 +6,7 @@ import { Subject } from "rxjs";
 import Swal from "sweetalert2";
 import { ActivatedRoute } from '@angular/router';
 import { BillManagementService } from 'src/app/billplan-management/services/BillManagement/billplan-management.service';
-import { BillPlanCurrency_ApiResponse, BillPlanCurrency_Data } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
+import { BillPlanCurrency_ApiResponse, BillPlanCurrency_Data, CurrencySybmol, Currency } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
 import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
 @Component({
@@ -29,14 +29,14 @@ export class CreateRatecardComponent implements OnInit {
   handleCountryDelete: Subject< number> = new Subject<
      number
   >();
-  currencySybmol: object = {
-    bCurrency: '',
-    nCurrency: ''
-  }
+  currencySybmol: CurrencySybmol = new CurrencySybmol();
+  bCurrency: Currency = new Currency();
+  nCurrency: Currency = new Currency();
+
   searchValue:string = ''
   billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
   billPlanCurrencyData: BillPlanCurrency_Data;
-  handlecurrencyList: Subject<[object]> = new Subject<[object]>();
+  handlecurrencyList: Subject<CurrencySybmol> = new Subject<CurrencySybmol>();
   constructor(private _formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute,
     private billPlanservice: BillManagementService,) {
@@ -73,31 +73,23 @@ export class CreateRatecardComponent implements OnInit {
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
+
           this.billPlanCurrencyRes = res;
           this.billPlanCurrencyData = JSON.parse(JSON.stringify(this.billPlanCurrencyRes));
-          let bcurrency = {}
-          let ncurrency = {}
           this.billPlanCurrencyRes.data.filter((item) => {
             if (item.currency_id == this.activeRoute.snapshot.params.cId) {
-              bcurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              }
+              this.bCurrency.symbol = item.currency_symbol;
+              this.bCurrency.id = item.currency_id;
             }
             if (item.currency_id == environment.currencyDefault) {
-              ncurrency = {
-                symbol: item.currency_symbol,
-                id: item.currency_id
-              }
+              this.nCurrency.symbol = item.currency_symbol;
+              this.nCurrency.id = item.currency_id;
             }
-          })
+          });
+          this.currencySybmol.bCurrency = this.bCurrency;
+          this.currencySybmol.nCurrency = this.nCurrency;
 
-          this.currencySybmol = {
-            bCurrency: bcurrency,
-            nCurrency: ncurrency
-          }
-
-          this.handlecurrencyList.next([this.currencySybmol]);
+          this.handlecurrencyList.next(this.currencySybmol);
 
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&

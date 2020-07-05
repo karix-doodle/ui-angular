@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<mat-horizontal-stepper  #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup" (ngSubmit)="addToParentForm()">
       <section class="mb-2">
@@ -135,7 +135,7 @@
                   innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></label>
                     <div class="form-group">
                       <input type="number" class="form-control" disabled
-                      [value]="round(parentForm.get('billing_rate_row').value)"
+                      [value]="round(parentForm.get('billing_rate_row').value, parentForm)"
                        placeholder="0.0000" />
                     </div>
                 </div>

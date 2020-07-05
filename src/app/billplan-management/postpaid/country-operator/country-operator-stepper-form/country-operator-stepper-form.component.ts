@@ -23,6 +23,7 @@ import {
   BillPlanOperator_Data,
   BillPlanCreateCountryOperator_ApiResponse,
   CurrencyRateRes,
+  CurrencySybmol,
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
 import { environment } from "src/environments/environment";
 import {
@@ -61,13 +62,10 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   private eventHandleCountryDelete: Subscription;
   @Input() handleCountryDelete: Observable<[string, number]>;
   private eventCurrencyList: Subscription;
-  @Input() handlecurrencyList: Observable<[object]>;
+  @Input() handlecurrencyList: Observable<CurrencySybmol>;
   Submitted: boolean = false;
   operatorObj: object = {};
-  currencySybmol: object = {
-    bCurrency: "",
-    nCurrency: "",
-  };
+  currencySybmol: CurrencySybmol;
   Psubmitted: boolean = false;
   conversionRate: number;
   constructor(
@@ -95,7 +93,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
         this.handleCountryListDelete(value, indexed);
       }
     );
-    this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
+    this.eventCurrencyList = this.handlecurrencyList.subscribe((value) => {
       this.handleCurrencyData(value);
     });
     this.initCurrencyConversion();

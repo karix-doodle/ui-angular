@@ -20,7 +20,7 @@
           </div>
       </div>
       <div class="col-3 offset-6 text-right">
-        <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Bill Plan Currency ({{currencySybmol?.bCurrency?.symbol}})" >
+        <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Bill Plan Currency ({{currencySybmol.bCurrency?.symbol}})" >
         </button>
 
       </div>
@@ -29,7 +29,7 @@
 <div class="main-container p-4">
     <app-country-operator-stepper-form
     [parentForm]="totalCountryOperatorForm"
-    (countryOperatorList)="countryListData($event,index)"
+    (countryOperatorList)="countryListData($event)"
      [countryOperatorListEvent]="countryOperatorListData.asObservable()"
      [handleCountryDelete]="handleCountryDelete.asObservable()"
      [handlecurrencyList]="handlecurrencyList.asObservable()"
@@ -63,8 +63,8 @@
                 <th>Country</th>
                 <th>Operator</th>
                 <th>MCC + MNC</th>
-                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency.symbol}})"></th>
-                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
+                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency?.symbol}})"></th>
+                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
                 <th>&nbsp;</th>
                 <th>&nbsp;</th>
             </tr>

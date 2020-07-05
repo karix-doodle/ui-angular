@@ -21,6 +21,7 @@ import {
   BillPlanCountries_Data,
   BillPlanCreateCountry_ApiResponse,
   CurrencyRateRes,
+  CurrencySybmol,
 } from "src/app/billplan-management/models/BillManagement/blillplan.models";
 import {
   errorAlert,
@@ -61,12 +62,9 @@ export class CountryStepperFormComponent implements OnInit {
   countryObj: object = {};
   conversionRate: number;
   private eventCurrencyList: Subscription;
-  @Input() handlecurrencyList: Observable<[object]>;
+  @Input() handlecurrencyList: Observable<CurrencySybmol>;
   operatorObj: object = {};
-  currencySybmol: object = {
-    bCurrency: "",
-    nCurrency: "",
-  };
+  currencySybmol: CurrencySybmol;
 
   Psubmitted: boolean = false;
 
@@ -95,7 +93,7 @@ export class CountryStepperFormComponent implements OnInit {
         this.handleCountryListDelete(value);
       }
     );
-    this.eventCurrencyList = this.handlecurrencyList.subscribe(([value]) => {
+    this.eventCurrencyList = this.handlecurrencyList.subscribe((value) => {
       this.handleCurrencyData(value);
     });
 
