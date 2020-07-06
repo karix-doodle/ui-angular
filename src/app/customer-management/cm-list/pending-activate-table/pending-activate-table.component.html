@@ -2,7 +2,7 @@
     <div class="col-7 mt-2">
         <label class="mr-2"><b>Total ESME Addr.</b></label>
         <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>{{usersData?.data.pendingesmelists.length}}</b></span>
+        <span class="ml-3 badge badge-dark"><b>{{usersData?.pendingesmelists.length}}</b></span>
     </div>
   
     <div class="col-5 text-right">
@@ -28,7 +28,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let user of usersData?.data.pendingesmelists | filter: { esmeaddr: searchvalue, username: searchvalue } | sort: sortingName: isDesc">
+            <tr *ngFor="let user of usersData?.pendingesmelists | filter: { esmeaddr: searchvalue, username: searchvalue } | sort: sortingName: isDesc">
                 <td class="font-weight-semi-bold">{{user.esmeaddr}}</td>
                 <td>{{user.username}}</td>
                 <td>{{user.orgname}}</td>
@@ -37,7 +37,7 @@
                 <td>{{user.submissiondateandtime}}</td>
                 <td><a routerLink="/customer-management/customer-management-edit/{{user.esmeaddr}}"><i class="fa fa-paperclip" aria-hidden="true"></i></a></td>
             </tr>
-            <tr *ngIf="usersData?.data.pendingesmelists.length == 0">
+            <tr *ngIf="usersData?.pendingesmelists.length == 0">
                 <td colspan="7" class="text-center py-3 main-heading">No data Found</td>
             </tr>
         </tbody>
