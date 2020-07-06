@@ -48,7 +48,7 @@ export class MobileRouteComponent implements OnInit {
   private initForm() {
     this.mobileRouteForm = this.formBuilder.group({
       whitelist_type: ["Global", [Validators.required]],
-      mobile: ["", [Validators.required, Validators.pattern("[0-9]{10}")]],
+      mobile: ["", [Validators.required, Validators.pattern("[0-9]{10,14}")]],
       primary_gw_id: [null, [Validators.required]],
       fallback_gw_id: [null, [Validators.required]],
       comments: [""],
