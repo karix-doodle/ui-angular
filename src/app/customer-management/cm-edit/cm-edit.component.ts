@@ -51,6 +51,7 @@ export class CmEditComponent implements OnInit {
   max_loss_per_sms: number = 0.000000;
   effectiveTill: string;
   is_permanent: number = 0;
+  notifysales:number = 0;
   timeZonesMap: any = {};
   showMargin: boolean = false;
   showEditPage: boolean = true;

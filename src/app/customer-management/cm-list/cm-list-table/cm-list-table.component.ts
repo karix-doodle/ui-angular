@@ -16,7 +16,7 @@ export class CmListTableComponent implements OnInit {
   existingUserData:ExistingUserData;
   apiResponse:APIResponse;
   existingUsersList:ExistingUsers[];
-  searchText: any = '';
+  searchvalue: any = '';
   constructor(private customerMgmtService:CustomerManagementService) { }
 
   ngOnInit() {
