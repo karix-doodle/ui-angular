@@ -78,7 +78,7 @@
                               formControlName="discount_rate" />
                           <span class="text-danger pl-1 f-12"
                               *ngIf="fixedRateFrom.get('discount_rate').hasError('pattern') && Submitted">
-                              Discount rate is not valid
+                              Invalid Input Value
                           </span>
                           <span class="text-danger pl-1 f-12"
                               *ngIf="fixedRateFrom.get('discount_rate').hasError('required') && Submitted">

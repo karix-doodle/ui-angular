@@ -268,7 +268,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
         .get("discount_rate")
         .setValidators([
           Validators.required,
-          Validators.pattern("^([0-9]+(.[0-9]+)?)"),
+          Validators.pattern('^([0-9]+(\.[0-9]+)?)'),
         ]);
       this.parentForm.get("discount_rate").updateValueAndValidity();
     } else {
