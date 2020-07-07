@@ -8,6 +8,8 @@ import { BillManagementService } from 'src/app/billplan-management/services/Bill
 import { BillPlanCurrency_ApiResponse, BillPlanCurrency_Data, CurrencySybmol, Currency } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
 import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BillplanMgmt } from '../../../../model/authorization.model';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-create-ratecard",
@@ -37,9 +39,12 @@ export class CreateRatecardComponent implements OnInit {
   >();
   handlecurrencyList: Subject<CurrencySybmol> = new Subject<CurrencySybmol>();
   searchvalue: string = ''
+  billPlanMgmtAuthControls: BillplanMgmt;
   constructor(private formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute,
-    private billPlanservice: BillManagementService,) {
+    private billPlanservice: BillManagementService,
+    private authorizationService: AuthorizationService) {
+    this.billPlanMgmtAuthControls = this.authorizationService.authorizationState.billplan_mgmt;
     this.initForm();
     this.billplan_id = +this.activeRoute.snapshot.params.bId
     this.billplan_currencyid = +this.activeRoute.snapshot.params.cId
@@ -120,32 +125,32 @@ export class CreateRatecardComponent implements OnInit {
   countryListData([event, index]) {
     let parentGroupArray = this.getcountryOperatorControl();
 
-   if(event != null){
-    if (index == null) {
+    if (event != null) {
+      if (index == null) {
 
-      if (
-        parentGroupArray.value.length == 1 &&
-        parentGroupArray.value[0].country_name == ""
-      ) {
-        parentGroupArray.value[0] = event.value[0];
+        if (
+          parentGroupArray.value.length == 1 &&
+          parentGroupArray.value[0].country_name == ""
+        ) {
+          parentGroupArray.value[0] = event.value[0];
+        } else {
+          parentGroupArray.value.push(event.value[0]);
+        }
       } else {
-        parentGroupArray.value.push(event.value[0]);
+        parentGroupArray.value[index] = event.value[0];
       }
-    } else {
-      parentGroupArray.value[index] = event.value[0];
+      this.updateRowGroups(parentGroupArray.value);
     }
-    this.updateRowGroups(parentGroupArray.value);
-   }
-   this.editMode = false
-   console.log(this.countryOperatorArray)
+    this.editMode = false
+    console.log(this.countryOperatorArray)
   }
 
   editGroups(cindex: number) {
-    if(this.editMode == false){
+    if (this.editMode == false) {
       this.editMode = true;
-    let groupsControl = this.getcountryOperatorControl();
-    console.log([groupsControl.value[cindex], cindex]);
-    this.countryOperatorListData.next([groupsControl.value[cindex], cindex]);
+      let groupsControl = this.getcountryOperatorControl();
+      console.log([groupsControl.value[cindex], cindex]);
+      this.countryOperatorListData.next([groupsControl.value[cindex], cindex]);
     }
   }
 

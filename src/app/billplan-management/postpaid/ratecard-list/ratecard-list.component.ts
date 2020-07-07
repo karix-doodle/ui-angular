@@ -20,6 +20,7 @@ import * as moment from 'moment';
 import { BillManagementService } from '../../services/BillManagement/billplan-management.service';
 import { GetNameCheck_ApiResponse } from '../../models/BillManagement/blillplan.models';
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+import { BillplanMgmt } from '../../../model/authorization.model';
 
 @Component({
   selector: 'app-ratecard-list',
@@ -37,7 +38,7 @@ export class RatecardListComponent implements OnInit {
   public params: any;
   handleDateParams: Subject<[any]> = new Subject<[any]>();
 
-  GtMgmtAuthControls = null
+  billPlanMgmtAuthControls: BillplanMgmt;
 
   rateCardValid: boolean = false
   showdropdown: boolean = false
@@ -51,7 +52,7 @@ export class RatecardListComponent implements OnInit {
     private billplanListService: BillManagementService,
     private authorizationService: AuthorizationService
   ) {
-    this.GtMgmtAuthControls = authorizationService.authorizationState.billplan_mgmt
+    this.billPlanMgmtAuthControls = this.authorizationService.authorizationState.billplan_mgmt;
 
     this.params = {
       type: 'dateOnly',
@@ -166,11 +167,11 @@ export class RatecardListComponent implements OnInit {
 
   onrateCardSearchFormSubmit(data) {
     if (data.ratecardid == '') {
-      if (this.GtMgmtAuthControls.billplan_create_ratecard_enabled) {
+      if (this.billPlanMgmtAuthControls.billplan_create_ratecard_enabled) {
         this.nameCheck(data);
       }
     } else {
-      if (this.GtMgmtAuthControls.billplan_assign_ratecard_enabled) {
+      if (this.billPlanMgmtAuthControls.billplan_assign_ratecard_enabled) {
         this.assignRatecard(data)
       }
     }
