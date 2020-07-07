@@ -11,12 +11,16 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+
+
 import { GatewayManagementModule } from './gateway-management/gateway-management.module';
 import { SharedModule } from './shared/shared.module';
 import { SettingsModule } from './settings/settings.module';
 import { RouteManagementModule } from './route-management/route-management.module';
 import { CustomerManagementModule } from './customer-management/customer-management.module';
 import { BillplanManagementModule } from './billplan-management/billplan-management.module';
+import {AuthManagementModule} from './auth-management/auth-management.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +44,8 @@ import { BillplanManagementModule } from './billplan-management/billplan-managem
     CustomerManagementModule,
     BillplanManagementModule,
     SettingsModule,
+    AuthManagementModule
+    
   ],
   exports: [],
   providers: [],
