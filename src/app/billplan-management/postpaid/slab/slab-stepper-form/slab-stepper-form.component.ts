@@ -597,7 +597,10 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
                res.responsecode > environment.APIStatus.success.code
             ) {
                successAlert(res.message, res.responsestatus);
-               this.router.navigate(['billplan-management/postpaid/' + this.SlabCreateRateCardInput.billplan_id]);
+               this.router.navigate(
+                  ['billplan-management/postpaid/'
+                     + this.SlabCreateRateCardInput.billplan_id + '/'
+                     + this.SlabCreateRateCardInput.ratecard_name]);
             } else if (
                res.responsestatus === environment.APIStatus.error.text &&
                res.responsecode < environment.APIStatus.error.code

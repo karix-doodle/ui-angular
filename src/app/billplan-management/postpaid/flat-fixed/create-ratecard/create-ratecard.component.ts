@@ -214,7 +214,7 @@ export class CreateRatecardComponent implements OnInit {
             (res: BillPlanCreateFlatFixed_ApiResponse) => {
                if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
                   successAlert(res.message, res.responsestatus)
-                  this.router.navigate(['billplan-management/postpaid/' + this.billplan_id]);
+                  this.router.navigate(['billplan-management/postpaid/' + this.billplan_id + '/' + this.fixedRateFrom.value.ratecard_name]);
                } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
                   errorAlert(res.message, res.responsestatus)
                }

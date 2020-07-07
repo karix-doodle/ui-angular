@@ -74,7 +74,7 @@ export class CountryStepperFormComponent implements OnInit {
     private billPlanservice: BillManagementService,
     private billplancountryService: BillplanCountryService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -255,63 +255,63 @@ export class CountryStepperFormComponent implements OnInit {
     let BillingRate = data.toString();
 
     if (hasDot.length == 2) {
-       if (RegExp('^[0]+$').test(hasDot[0])) {
-          BillingRate = Number('0' + '.' + hasDot[0]).toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
-       } else {
-          BillingRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
-       }
+      if (RegExp('^[0]+$').test(hasDot[0])) {
+        BillingRate = Number('0' + '.' + hasDot[0]).toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+      } else {
+        BillingRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+      }
     } else if (hasDot.length == 1) {
-       if (RegExp('^[0]+$').test(hasDot[0])) {
-          BillingRate = '0'
-       }
+      if (RegExp('^[0]+$').test(hasDot[0])) {
+        BillingRate = '0'
+      }
     }
 
     let dotIndex = BillingRate.indexOf('.')
 
     if (dotIndex == 0) {
-       BillingRate = '0' + BillingRate
+      BillingRate = '0' + BillingRate
     }
 
     BillingRate = BillingRate != '' ? BillingRate : '0'
 
     if (form != undefined) {
-       let obj = {}
-       obj[key] = BillingRate
-       form.patchValue(obj)
+      let obj = {}
+      obj[key] = BillingRate
+      form.patchValue(obj)
     }
 
     return BillingRate;
- }
+  }
 
- round(data, form: FormGroup) {
+  round(data, form: FormGroup) {
     let NormalizedRate = data == 0 ? 0 : (data * this.conversionRate).toFixed(6)
     let hasDot = NormalizedRate.toString().split('.')
 
     if (hasDot.length == 2) {
-       if (RegExp('^[0]+$').test(hasDot[0])) {
-          NormalizedRate = Number('0' + '.' + hasDot[0]).toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
-       } else {
-          NormalizedRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
-       }
+      if (RegExp('^[0]+$').test(hasDot[0])) {
+        NormalizedRate = Number('0' + '.' + hasDot[0]).toString().replace(/^0+/, '') + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+      } else {
+        NormalizedRate = hasDot[0] + Number('0' + '.' + hasDot[1]).toString().replace(/^0+/, '');
+      }
     } else if (hasDot.length == 1) {
-       if (RegExp('^[0]+$').test(hasDot[0])) {
-          NormalizedRate = '0'
-       }
+      if (RegExp('^[0]+$').test(hasDot[0])) {
+        NormalizedRate = '0'
+      }
     }
 
     let dotIndex = NormalizedRate.toString().indexOf('.')
 
     if (dotIndex == 0) {
-       NormalizedRate = '0' + NormalizedRate
+      NormalizedRate = '0' + NormalizedRate
     }
 
     if (form != undefined) {
-       form.patchValue({
-          normalize_rate: NormalizedRate
-       })
+      form.patchValue({
+        normalize_rate: NormalizedRate
+      })
     }
     return NormalizedRate
- }
+  }
 
   // ------------------- common ----------------------------------
 
@@ -414,7 +414,7 @@ export class CountryStepperFormComponent implements OnInit {
           ) {
             successAlert(res.message, res.responsestatus);
             this.router.navigate([
-              "billplan-management/postpaid/" + data.billplan_id,
+              "billplan-management/postpaid/" + data.billplan_id + '/' + this.parentForm.value.ratecard_name
             ]);
           } else if (
             res.responsestatus === environment.APIStatus.error.text &&

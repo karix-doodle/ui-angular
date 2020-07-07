@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
 import { CreateAssignRateCardService, } from '../../services/BillManagement/CreateAssignRateCard/create-assign-rate-card.service';
@@ -43,7 +43,7 @@ export class RatecardListComponent implements OnInit {
   rateCardValid: boolean = false
   showdropdown: boolean = false
   ratecardName: string = '';
-
+  cardName: string;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -64,17 +64,27 @@ export class RatecardListComponent implements OnInit {
     this.initRateCardSearchForm();
     this.initSearchSuggestion();
     this.billPlanDetailsView();
+    this.activeRoute.params.subscribe((params: Params) => {
+      if (params.hasOwnProperty('name')) {
+        this.setRateCardName(params.name);
+      } else {
+        this.setRateCardName('');
+      }
+    });
   }
-
+  setRateCardName(rateCardname) {
+    this.cardName = rateCardname;
+  }
   initRateCardSearchForm() {
-    let ratecardname = '[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{5,20}';
+    let ratecardnamePattern = '[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{5,20}';
     this.rateCardSearchForm = this.formBuilder.group({
       billplanid: ['', Validators.required],
       ratecardid: [''],
       currencyid: [''],
       effectdate: [moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(1, "days"), Validators.required],
-      ratecardtype: ['slab', Validators.required],
-      ratecardname: ['', [Validators.required, Validators.pattern(ratecardname)]],
+      ratecardtype: ['', Validators.required],
+      ratecardname: [''
+        , [Validators.required, Validators.pattern(ratecardnamePattern)]],
     });
   }
 
@@ -90,13 +100,16 @@ export class RatecardListComponent implements OnInit {
           this.rateCardSearchForm.patchValue({
             billplanid: this.billPlanDetailsViewData.data.billplanid,
             currencyid: this.billPlanDetailsViewData.data.currency_id,
-            ratecardtype: this.billPlanDetailsViewData.data.ratecardtype ? this.billPlanDetailsViewData.data.ratecardtype : ''
-          })
+            ratecardtype: this.billPlanDetailsViewData.data.ratecardtype ? this.billPlanDetailsViewData.data.ratecardtype : '',
+            // ratecardname: this.rateCardName !== undefined ? this.ratecardName : ''
+          });
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText)
+      }, () => {
+        this.rateCardSearchForm.get('ratecardname').patchValue(this.cardName);
       }
     );
   }
@@ -117,6 +130,17 @@ export class RatecardListComponent implements OnInit {
       if (res.responsestatus === environment.APIStatus.success.text &&
         res.responsecode > environment.APIStatus.success.code) {
         this.rateCardNameList = res.data;
+        if (this.cardName !== undefined && this.cardName !== '') {
+          this.rateCardNameList.forEach(element => {
+            if (element.ratecard_name === this.cardName) {
+              this.rateCardSearchForm.patchValue({
+                ratecardid: element.ratecard_id
+              });
+              this.showdropdown = false;
+            }
+          });
+          this.cardName = undefined;
+        }
       } else if (
         res.responsestatus === environment.APIStatus.error.text &&
         res.responsecode < environment.APIStatus.error.code

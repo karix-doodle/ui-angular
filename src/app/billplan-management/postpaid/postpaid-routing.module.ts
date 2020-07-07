@@ -9,7 +9,11 @@ const postpaidRoutes: Routes = [
     path: 'billplan-management/postpaid/:id',
     component: RatecardListComponent
   },
-]
+  {
+    path: 'billplan-management/postpaid/:id/:name',
+    component: RatecardListComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(postpaidRoutes)],
