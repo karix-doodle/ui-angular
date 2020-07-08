@@ -9,6 +9,8 @@ import { BillManagementService } from 'src/app/billplan-management/services/Bill
 import { BillPlanCurrency_ApiResponse, BillPlanCurrency_Data, CurrencySybmol, Currency } from 'src/app/billplan-management/models/BillManagement/blillplan.models';
 import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { BillplanMgmt } from '../../../../model/authorization.model';
 @Component({
   selector: "app-create-ratecard",
   templateUrl: "./create-ratecard.component.html",
@@ -26,24 +28,27 @@ export class CreateRatecardComponent implements OnInit {
   countryLisData: Subject<[FormArray, number]> = new Subject<
     [FormArray, number]
   >();
-  handleCountryDelete: Subject< number> = new Subject<
-     number
+  handleCountryDelete: Subject<number> = new Subject<
+    number
   >();
   currencySybmol: CurrencySybmol = new CurrencySybmol();
   bCurrency: Currency = new Currency();
   nCurrency: Currency = new Currency();
 
-  searchValue:string = ''
+  searchValue: string = ''
   billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
   billPlanCurrencyData: BillPlanCurrency_Data;
   handlecurrencyList: Subject<CurrencySybmol> = new Subject<CurrencySybmol>();
+  billPlanMgmtAuthControls: BillplanMgmt;
   constructor(private _formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute,
-    private billPlanservice: BillManagementService,) {
+    private billPlanservice: BillManagementService,
+    private authorizationService: AuthorizationService) {
+    this.billPlanMgmtAuthControls = this.authorizationService.authorizationState.billplan_mgmt;
     this.initForm();
     this.billplan_id = +this.activeRoute.snapshot.params.bId
-      this.billplan_currencyid = this.activeRoute.snapshot.params.cId
-      this.ratecard_name = this.activeRoute.snapshot.params.name
+    this.billplan_currencyid = this.activeRoute.snapshot.params.cId
+    this.ratecard_name = this.activeRoute.snapshot.params.name
 
   }
 
@@ -54,9 +59,9 @@ export class CreateRatecardComponent implements OnInit {
   private initForm() {
     this.totalCountryForm = this._formBuilder.group({
       billplan_id: +this.activeRoute.snapshot.params.bId,
-      billplan_currencyid:  +this.activeRoute.snapshot.params.cId,
+      billplan_currencyid: +this.activeRoute.snapshot.params.cId,
       ratecard_type: ["country"],
-      ratecard_name:  this.activeRoute.snapshot.params.name,
+      ratecard_name: this.activeRoute.snapshot.params.name,
       ratetype_row: ["standard"],
       billing_rate_row: ['', [Validators.required, Validators.pattern('^[1-9]{1}$|^[0-9]{2,10}$|^[0-9]{1}([\.][0-9]{1,6})$|^[0-9]{2,4}([\.][0-9]{1,6})?$')]],
       discount_rate: [''],
@@ -119,7 +124,7 @@ export class CreateRatecardComponent implements OnInit {
   countryListData([event, index]) {
     let parentGroupArray = this.getcountryControl();
 
-    if(event !== null){
+    if (event !== null) {
       if (index == null) {
         if (
           parentGroupArray.value.length == 1 &&
@@ -140,7 +145,7 @@ export class CreateRatecardComponent implements OnInit {
   }
 
   editGroups(cindex: number) {
-    if(this.editMode == false){
+    if (this.editMode == false) {
       this.editMode = true
       let groupsControl = this.getcountryControl();
       this.countryLisData.next([groupsControl.value[cindex], cindex]);
@@ -150,7 +155,7 @@ export class CreateRatecardComponent implements OnInit {
 
   deleteGroups(cindex: number, item) {
     let groupsControl = this.getcountryControl();
-    if(this.editMode == false){
+    if (this.editMode == false) {
       this.handleCountryDelete.next(item.mcc);
       groupsControl.value.splice(cindex, 1);
       this.updateRowGroups(groupsControl.value);

@@ -1,11 +1,11 @@
-<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.billplan_view_enabled">
+<div class="row btm-border headings-div">
     <div class="col-12">
         <label class="main-heading">
             <a routerLink="/billplan-management">BILLPLAN MANAGEMENT /</a></label>
         <span><a routerLink="/billplan-management/home"> BILLPLAN /</a> CREATE-ASSIGN RATECARD</span>
     </div>
 </div>
-<div *ngIf="GtMgmtAuthControls.billplan_view_enabled">
+<div *ngIf="billPlanMgmtAuthControls.billplan_view_enabled">
     <div class="row second-row-det">
         <div class="col-7">
             <div class="row">
@@ -94,10 +94,10 @@
             *ngIf="rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'country' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'country-operator' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'flat-fixed' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'group' || rateCardSearchForm.get('ratecardtype').value.toLowerCase() === 'slab'">
             <div class="form-group">
                 <a routerLink="/billplan-management/home" class="btn btn-basic mr-3">Cancel</a>
-                <button [disabled]="!GtMgmtAuthControls.billplan_assign_ratecard_enabled" type="submit"
+                <button [disabled]="!billPlanMgmtAuthControls.billplan_assign_ratecard_enabled" type="submit"
                     *ngIf="rateCardSearchForm.get('ratecardid').value != ''" class="btn erp-intl-btn">
                     Assign RateCard</button>
-                <button [disabled]="!GtMgmtAuthControls.billplan_create_ratecard_enabled" type="submit"
+                <button [disabled]="!billPlanMgmtAuthControls.billplan_create_ratecard_enabled" type="submit"
                     *ngIf="rateCardSearchForm.get('ratecardid').value == ''" class="btn erp-intl-btn">
                     Create RateCard</button>
             </div>
@@ -118,24 +118,29 @@
             <tbody>
                 <tr *ngFor="let item of billPlanDetailsViewData?.data.tabledata">
                     <td class="font-weight-semi-bold">
-                        <a *ngIf="item.ratecardtype === 'country' || item.ratecardtype === 'Country'"
-                            [routerLink]="['/billplan-management/postpaid/country/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_ratecard_enabled}"
+                            *ngIf="item.ratecardtype === 'country' || item.ratecardtype === 'Country'"
+                            [routerLink]="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled ? [] : ['/billplan-management/postpaid/country/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                             {{item.ratecardname}}
                         </a>
-                        <a *ngIf="item.ratecardtype === 'country-operator'"
-                            [routerLink]="['/billplan-management/postpaid/country-operator/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_ratecard_enabled}"
+                            *ngIf="item.ratecardtype === 'country-operator'"
+                            [routerLink]="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled ? [] : ['/billplan-management/postpaid/country-operator/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                             {{item.ratecardname}}
                         </a>
-                        <a *ngIf="item.ratecardtype === 'flat-fixed'"
-                            [routerLink]="['/billplan-management/postpaid/flat-fixed/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_ratecard_enabled}"
+                            *ngIf="item.ratecardtype === 'flat-fixed'"
+                            [routerLink]="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled ? [] : ['/billplan-management/postpaid/flat-fixed/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                             {{item.ratecardname}}
                         </a>
-                        <a *ngIf="item.ratecardtype === 'group' || item.ratecardtype === 'Group'"
-                            [routerLink]="['/billplan-management/postpaid/group/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_ratecard_enabled}"
+                            *ngIf="item.ratecardtype === 'group' || item.ratecardtype === 'Group'"
+                            [routerLink]="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled ? [] : ['/billplan-management/postpaid/group/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                             {{item.ratecardname}}
                         </a>
-                        <a *ngIf="item.ratecardtype === 'slab' || item.ratecardtype === 'Slab'"
-                            [routerLink]="['/billplan-management/postpaid/slab/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
+                        <a [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_view_ratecard_enabled}"
+                            *ngIf="item.ratecardtype === 'slab' || item.ratecardtype === 'Slab'"
+                            [routerLink]="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled ? [] : ['/billplan-management/postpaid/slab/assigned-ratecard-view/', item.ratecardid, item.ratecardtype]">
                             {{item.ratecardname}}
                         </a>
                     </td>
@@ -144,7 +149,9 @@
                     <td>{{item.uploaddate}} | {{item.uploadtime}}</td>
                     <td>{{item.uploaduser}}</td>
                     <td>
-                        <img *ngIf="item.deleteenabled" (click)="delete(item.billplanid, item.ratecardid)"
+                        <img [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_delete_ratecard_enabled}"
+                            *ngIf="item.deleteenabled"
+                            (click)="billPlanMgmtAuthControls.billplan_delete_ratecard_enabled && delete(item.billplanid, item.ratecardid)"
                             src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon" />
                     </td>
                 </tr>
@@ -153,7 +160,7 @@
     </div>
 </div>
 
-<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.billplan_view_enabled">
+<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_view_enabled">
     <div class="d-block">
         <img style="width: 150px;" src="assets/icons/icon-lock.png" />
         <span class="w-100 d-block">

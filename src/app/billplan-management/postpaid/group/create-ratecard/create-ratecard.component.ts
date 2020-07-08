@@ -15,6 +15,8 @@ import { successAlert, errorAlert, infoAlert } from 'src/app/shared/sweet-alert/
 
 import { environment } from 'src/environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { BillplanMgmt } from '../../../../model/authorization.model';
 
 @Component({
   selector: 'app-create-ratecard',
@@ -42,13 +44,15 @@ export class CreateRatecardComponent implements OnInit {
   groupListData: Subject<[FormArray, number]> = new Subject<[FormArray, number]>();
   handleGroupsDelete: Subject<[string, number]> = new Subject<[string, number]>();
   handlecurrencyList: Subject<CurrencySybmol> = new Subject<CurrencySybmol>();
-
+  billPlanMgmtAuthControls: BillplanMgmt;
   constructor(
     private Route: ActivatedRoute,
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private billPlanservice: BillManagementService,
+    private authorizationService: AuthorizationService
   ) {
+    this.billPlanMgmtAuthControls = this.authorizationService.authorizationState.billplan_mgmt;
     this.createGroupForm();
     this.ratecard_name = this.activeRoute.snapshot.params.name
   }

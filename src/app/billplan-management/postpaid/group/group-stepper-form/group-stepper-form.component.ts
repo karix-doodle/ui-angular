@@ -683,7 +683,7 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
             (res: BillPlanCreateGroup_ApiResponse) => {
                if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
                   successAlert(res.message, res.responsestatus)
-                  this.router.navigate(['billplan-management/postpaid/' + data.billplan_id]);
+                  this.router.navigate(['billplan-management/postpaid/' + data.billplan_id + '/' + data.ratecard_name]);
                } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
                   errorAlert(res.message, res.responsestatus)
                }

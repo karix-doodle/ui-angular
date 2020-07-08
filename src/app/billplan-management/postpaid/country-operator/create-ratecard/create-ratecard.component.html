@@ -7,86 +7,101 @@
     <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
         <span class="green-heading">BILL TYPE - POSTPAID</span>
 
-        <button class="btn dropdown-basic px-4" style="cursor: not-allowed;" id="erp-dropdown" >
-           Country + Operator</button>
+        <button class="btn dropdown-basic px-4" style="cursor: not-allowed;" id="erp-dropdown">
+            Country + Operator</button>
 
     </div>
 </div>
-<div class="btm-border second-row-pr mb_10">
-  <div class="row">
-      <div class="col-3 text-right">
-          <div class="form-group">
-            <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" [innerHTML]=" ratecard_name" ></button>
-          </div>
-      </div>
-      <div class="col-3 offset-6 text-right">
-        <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"  innerHTML="Bill Plan Currency ({{currencySybmol.bCurrency?.symbol}})" >
-        </button>
-
-      </div>
-  </div>
-</div>
-<div class="main-container p-4">
-    <app-country-operator-stepper-form
-    [parentForm]="totalCountryOperatorForm"
-    (countryOperatorList)="countryListData($event)"
-     [countryOperatorListEvent]="countryOperatorListData.asObservable()"
-     [handleCountryDelete]="handleCountryDelete.asObservable()"
-     [handlecurrencyList]="handlecurrencyList.asObservable()"
-     [countryOperatorArray]="countryOperatorArray"></app-country-operator-stepper-form>
-</div>
-<div class="row btm-border second-row-det">
-    <div class="col-7">
-        <div class="row mt-1">
-            <div class="col-5">
-                <label class="mr-2"><b>Total Countries</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
+<div *ngIf="billPlanMgmtAuthControls.billplan_create_ratecard_enabled">
+    <div class="btm-border second-row-pr mb_10">
+        <div class="row">
+            <div class="col-3 text-right">
+                <div class="form-group">
+                    <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
+                        [innerHTML]=" ratecard_name"></button>
+                </div>
             </div>
-            <div class="col-7">
-                <label class="mr-2"><b>Total Operators</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>{{OperatorCount}}</b></span>
+            <div class="col-3 offset-6 text-right">
+                <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
+                    innerHTML="Bill Plan Currency ({{currencySybmol.bCurrency?.symbol}})">
+                </button>
+
             </div>
         </div>
     </div>
-
-    <div class="col-5 text-right">
-        <input type="search" class="form-control"  [(ngModel)]="searchvalue" placeholder="&#xf002; Search by  Country, Operator" />
+    <div class="main-container p-4">
+        <app-country-operator-stepper-form [parentForm]="totalCountryOperatorForm"
+            (countryOperatorList)="countryListData($event)"
+            [countryOperatorListEvent]="countryOperatorListData.asObservable()"
+            [handleCountryDelete]="handleCountryDelete.asObservable()"
+            [handlecurrencyList]="handlecurrencyList.asObservable()" [countryOperatorArray]="countryOperatorArray">
+        </app-country-operator-stepper-form>
     </div>
+    <div class="row btm-border second-row-det">
+        <div class="col-7">
+            <div class="row mt-1">
+                <div class="col-5">
+                    <label class="mr-2"><b>Total Countries</b></label>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
+                </div>
+                <div class="col-7">
+                    <label class="mr-2"><b>Total Operators</b></label>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="ml-3 badge badge-dark"><b>{{OperatorCount}}</b></span>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-5 text-right">
+            <input type="search" class="form-control" [(ngModel)]="searchvalue"
+                placeholder="&#xf002; Search by  Country, Operator" />
+        </div>
+
+    </div>
+    <div class="main-container table-responsive">
+        <table class="table table-borderless erp-list-table row-hover-effect">
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>Operator</th>
+                    <th>MCC + MNC</th>
+                    <th innerHTML="Billing Rate ({{currencySybmol.bCurrency?.symbol}})"></th>
+                    <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let item of countryOperatorArray | filter: {country_name: searchvalue, operator_name: searchvalue}; let i= index;">
+                    <td class="font-weight-semi-bold">{{item.country_name}}</td>
+                    <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+                    <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
+                    <td>{{item.billing_rate}}</td>
+                    <td>{{item.normalize_rate}}</td>
+                    <td [ngClass]="{'disabled': editMode == true}">
+                        <img src="assets/icons/edit-icon.svg" class=" cursor-pointer" (click)="editGroups(i)"
+                            alt="edit" />
+                    </td>
+                    <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg"
+                            class="img-fluid  cursor-pointer" (click)="deleteGroups(i, item)" alt="delete icon" /></td>
+                </tr>
+                <tr *ngIf="countryOperatorArray.length == 0">
+                    <td colspan="9" class="text-center py-3 main-heading">
+                        No Data Available
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-            <tr>
-                <th>Country</th>
-                <th>Operator</th>
-                <th>MCC + MNC</th>
-                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency?.symbol}})"></th>
-                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of countryOperatorArray | filter: {country_name: searchvalue, operator_name: searchvalue}; let i= index;">
-                <td class="font-weight-semi-bold">{{item.country_name}}</td>
-                <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
-                <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
-                <td>{{item.billing_rate}}</td>
-                <td>{{item.normalize_rate}}</td>
-                <td [ngClass]="{'disabled': editMode == true}">
-                    <img src="assets/icons/edit-icon.svg" class=" cursor-pointer"   (click)="editGroups(i)" alt="edit"/>
-                </td>
-                <td [ngClass]="{'disabled': editMode == true}"> <img src="assets/icons/delete-icon.svg"   class="img-fluid  cursor-pointer" (click)="deleteGroups(i, item)"  alt="delete icon" /></td>
-            </tr>
-            <tr *ngIf="countryOperatorArray.length == 0">
-              <td colspan="9" class="text-center py-3 main-heading">
-                  No Data Available
-              </td>
-          </tr>
-
-        </tbody>
-    </table>
+<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_create_ratecard_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>

@@ -15,6 +15,8 @@ import {
 } from "../../../../shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import Swal from 'sweetalert2';
+import { MobileBlackList_AddResponse } from 'src/app/route-management/models/BlackList/blacklist.model';
 
 @Component({
   selector: "app-mobile-route",
@@ -172,12 +174,20 @@ export class MobileRouteComponent implements OnInit {
   onAddRoute(body) {
     const formType = this.fileData ? true : false;
     this.mobileCustomService.addCustomMobile(body, formType).subscribe(
-      (data: MobileCustomResponse) => {
+      (data: MobileBlackList_AddResponse) => {
         if (data.responsestatus === "failure") {
           errorAlert(data.message, data.responsestatus);
           this.fromReset();
         } else {
-          successAlert(data.message);
+          Swal.fire({
+            icon: 'success',
+            title: data.responsestatus,
+            text: `Success:${data.data.success}
+                   Duplicate:${data.data.duplicate}
+                   Failed:${data.data.failed}
+                   Invalid:${data.data.invalid}
+                   Total:${data.data.total}`
+          });
           this.cancel();
         }
       },
