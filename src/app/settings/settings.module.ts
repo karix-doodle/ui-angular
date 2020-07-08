@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../shared/shared.module';
 import { MatInputModule, MatRadioModule } from '@angular/material';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsComponent } from './settings.component';
@@ -17,9 +18,15 @@ import { SettingsHomeComponent } from './settings-home/settings-home.component';
     CommonModule,
     NgbModule,
     FormsModule,
-    MatInputModule, 
+    ReactiveFormsModule,
+    MatInputModule,
     MatRadioModule,
-    SettingsRoutingModule
-  ]
+    SettingsRoutingModule,
+    SharedModule,
+  ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class SettingsModule { }

@@ -97,51 +97,63 @@
             </div>
         </div>
     </section>
-
-    <div class="row">
-        <div class="col-4">
-            <label class="gateway-section-heading">NORMALIZE RATE SETTINGS<span class="badge rounded-question"
-                    title="tooltip data">?</span></label>
-            <section class="main-section">
-                <div class="form-group">
-                    <label>Normalize Currency</label>
-                    <select class="dropdown-select w-100">
-                        <option value="">Select Gateway Currency</option>
-                        <option value="{{item.currency_id}}" *ngFor="let item of settingsCurrencyData?.data"
-                            [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
-                        </option>
-                    </select>
-                </div>
-            </section>
-        </div>
-        <div class="col-5">
-            <label class="gateway-section-heading">TIMEZONE<span class="badge rounded-question"
-                    title="tooltip data">?</span></label>
-
-            <section class="main-section">
-                <div class="row">
-                    <div class="col-5"><label>TIMEZONE</label></div>
-                    <div class="col-7 day-light-check text-right">
-                        <label class="checkbox-label" for="day-light">
-                            Day Light
-                            <input type="checkbox" id="day-light" disabled>
-                            <span class="checkmark"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <select class="dropdown-select w-100">
-                        <option value="" default>Select Gateway Timezone</option>
-                        <option *ngFor="let item of settingsTimeZoneData?.data" value="{{item.id}}">
-                            {{item.timezone}}
-                        </option>
-                    </select>
-                </div>
-            </section>
-
-        </div>
+    <div class="col-12 text-left">
+        <button type="submit" class="btn erp-intl-btn">Save</button>
     </div>
+
+    <form [formGroup]="currencyTimezoneFormGroup" class="col-12 pt-5 px-0"
+        (ngSubmit)="onSubmitCurrencyTimezoneFormGroup(currencyTimezoneFormGroup.value)">
+        <div class="row">
+            <!-- <pre>Form values: {{currencyTimezoneFormGroup.value | json}}</pre> -->
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class="gateway-section-heading">NORMALIZE RATE SETTINGS<span class="badge rounded-question"
+                        title="tooltip data">?</span></label>
+                <section class="main-section">
+                    <div class="form-group">
+                        <label>Normalize Currency</label>
+                        <select class="dropdown-select w-100" formControlName="currency_id">
+                            <option value="" default disabled>Select Gateway Currency</option>
+                            <option value="{{item.currency_id}}" *ngFor="let item of settingsCurrencyData?.data"
+                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                            </option>
+                        </select>
+                    </div>
+                </section>
+            </div>
+            <div class="col-5">
+                <label class="gateway-section-heading">TIMEZONE
+                    <span class="badge rounded-question" title="tooltip data">?</span>
+                </label>
+                <section class="main-section">
+                    <div class="row">
+                        <div class="col-5"><label>TIMEZONE</label></div>
+                        <div class="col-7 day-light-check text-right">
+                            <label class="checkbox-label" for="day-light">
+                                Day Light
+                                <input type="checkbox" id="day-light" disabled>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select class="dropdown-select w-100" formControlName="timezone_id">
+                            <option value="" default disabled>Select Gateway Timezone</option>
+                            <option *ngFor="let item of settingsTimeZoneData?.data" value="{{item.id}}">
+                                {{item.timezone}}
+                            </option>
+                        </select>
+                    </div>
+                </section>
+            </div>
+            <div class="col-12 text-left">
+                <button type="submit" class="btn erp-intl-btn">Save</button>
+            </div>
+        </div>
+    </form>
 </div>
+
 <!-- modal pop-up -->
 <ng-template #viewAudit let-c="close" let-d="dismiss">
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"

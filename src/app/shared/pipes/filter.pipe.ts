@@ -35,6 +35,14 @@ export class FilterPipe implements PipeTransform {
           })
 
       });
+    } else if (filterId === 3) { // Settings -> Global country operator -> Edit popup
+      return items.filter(item => {
+        const value = field['value'];
+        let searchText = '';
+        if (value !== undefined) { searchText = value.toLowerCase(); }
+        return item.includes(searchText)
+      });
+
     } else {
       const filterKeys = Object.keys(field);
       return items.filter(item => {
