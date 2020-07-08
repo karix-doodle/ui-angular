@@ -268,7 +268,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
         .get("discount_rate")
         .setValidators([
           Validators.required,
-          Validators.pattern("^([0-9]+(.[0-9]+)?)"),
+          Validators.pattern('^([0-9]+(\.[0-9]+)?)'),
         ]);
       this.parentForm.get("discount_rate").updateValueAndValidity();
     } else {
@@ -483,7 +483,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
             ) {
               successAlert(res.message, res.responsestatus);
               this.router.navigate([
-                "billplan-management/postpaid/" + data.billplan_id,
+                "billplan-management/postpaid/" + data.billplan_id, + '/' + this.parentForm.value.ratecard_name
               ]);
             } else if (
               res.responsestatus === environment.APIStatus.error.text &&

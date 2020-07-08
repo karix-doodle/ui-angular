@@ -1,193 +1,198 @@
 <div class="row btm-border">
   <div class="col-7 pt-10">
     <label class="main-heading">BILL PLAN MANAGEMENT /</label>
-    <span
-    > <a [routerLink]="['/billplan-management/home']"  > BILLPLAN</a> / <a [routerLink]="['/billplan-management/postpaid',billplan_id]">
-      {{billplan_name}}/</a
-    >
-    VIEW</span
-  >
+    <span> <a [routerLink]="['/billplan-management/home']"> BILLPLAN</a> / <a
+        [routerLink]="['/billplan-management/postpaid',billplan_id]">
+        {{billplan_name}}/</a>
+      VIEW</span>
   </div>
   <div class="col-5 dropdown text-right pt-2 mb-2" ngbDropdown>
     <span class="green-heading">BILL TYPE - POSTPAID</span>
-
     <button class="btn dropdown-basic " id="erp-dropdown" style="cursor: not-allowed;">
       Group </button>
-
-
   </div>
 </div>
-<div class="row btm-border second-row-det">
+<div *ngIf="billPlanMgmtAuthControls.billplan_view_ratecard_enabled">
+  <div class="row btm-border second-row-det">
 
-  <div class="col-3 ">
-    <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" [innerHTML]=" ratecardname"></button>
+    <div class="col-3 ">
+      <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" [innerHTML]=" ratecardname"></button>
+    </div>
+    <div class="col-3 offset-6 text-right">
+      <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" innerHTML="Billing Rate ({{currency}})">
+        Country + Operator </button>
+
+    </div>
+
   </div>
-  <div class="col-3 offset-6 text-right">
-    <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;"
-    innerHTML="Billing Rate ({{currency}})">
-      Country + Operator </button>
-
-  </div>
-
-</div>
-
-
-<div class="row btm-border second-row-det">
-  <div class="col-7">
-    <div class="row mt-1">
-      <div class="col-5">
-        <label class="mr-2"><b>Total Groups</b></label>
-        <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>{{totalgroup}}</b></span>
-      </div>
-      <div class="col-7">
-        <label class="mr-2"><b>Total Countries</b></label>
-        <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>{{totalCountries}}</b></span>
+  <div class="row btm-border second-row-det">
+    <div class="col-7">
+      <div class="row mt-1">
+        <div class="col-5">
+          <label class="mr-2"><b>Total Groups</b></label>
+          <span class="border-right">&nbsp;</span>
+          <span class="ml-3 badge badge-dark"><b>{{totalgroup}}</b></span>
+        </div>
+        <div class="col-7">
+          <label class="mr-2"><b>Total Countries</b></label>
+          <span class="border-right">&nbsp;</span>
+          <span class="ml-3 badge badge-dark"><b>{{totalCountries}}</b></span>
+        </div>
       </div>
     </div>
+
+    <div class="col-5 text-right">
+      <input type="search" class="form-control" placeholder="&#xf002;  Search by Group, Country, Operator"
+        [(ngModel)]="searchvalue" />
+    </div>
+
   </div>
+  <div class="main-container table-responsive">
+    <table class="table table-borderless erp-list-table row-hover-effect">
+      <thead>
+        <tr>
+          <th>Group Name</th>
+          <th>Country</th>
+          <th>Operator</th>
+          <th>MCC + MNC</th>
+          <th innerHTML="Billing Rate ({{currency}})"></th>
+          <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let item of countryArray |  filter: { group_name: searchvalue , country: searchvalue,operator: searchvalue }">
+          <td class="font-weight-semi-bold">{{item.group_name}}</td>
+          <td>{{item.country}}</td>
+          <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+          <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
+          <td>{{item.billing_rate}}</td>
+          <td>{{item.normalizerate}}</td>
 
-  <div class="col-5 text-right">
-    <input type="search" class="form-control"
-      placeholder="&#xf002;  Search by Group, Country, Operator" [(ngModel)]="searchvalue"/>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
-</div>
-<div class="main-container table-responsive">
-  <table class="table table-borderless erp-list-table row-hover-effect">
-    <thead>
-      <tr>
-        <th>Group Name</th>
-        <th>Country</th>
-        <th>Operator</th>
-        <th>MCC + MNC</th>
-        <th innerHTML="Billing Rate ({{currency}})"></th>
-        <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of countryArray |  filter: { group_name: searchvalue , country: searchvalue,operator: searchvalue }">
-        <td class="font-weight-semi-bold">{{item.group_name}}</td>
-        <td>{{item.country}}</td>
-        <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
-        <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
-        <td>{{item.billing_rate}}</td>
-        <td>{{item.normalizerate}}</td>
-
-      </tr>
-    </tbody>
-  </table>
-</div>
-<div class="main-container row">
+  <div class="main-container row">
 
     <div class="col-6 table-responsive px-0 mt-4">
       <div *ngIf="roc_billplan === 'custom'">
-      <label class="sub-heading mx-4">ROC (custom)</label>
-      <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-          <tr>
-            <th>Continent</th>
-            <th innerHTML="Billing Rate ({{currency}})"></th>
-            <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of roc">
-            <td class="font-weight-semi-bold">{{item.continent}}</td>
-            <td>{{item.billing_rate}}</td>
-            <td>{{item.normalizerate}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div *ngIf="roc_billplan === 'standard'">
-      <label class="sub-heading mx-4">ROC (standard)</label>
-      <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-          <tr>
-            <th>Continent Name</th>
-            <th>Country</th>
-            <th>Operator</th>
-            <th>MCC + MNC</th>
-            <th innerHTML="Billing Rate ({{currency}})"></th>
-            <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of roc">
-            <td class="font-weight-semi-bold">{{item.continent}}</td>
-            <td>{{item.country}}</td>
-            <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
-            <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
-            <td>{{item.billing_rate}}</td>
-            <td>{{item.normalizerate}}</td>
+        <label class="sub-heading mx-4">ROC (custom)</label>
+        <table class="table table-borderless erp-list-table row-hover-effect">
+          <thead>
+            <tr>
+              <th>Continent</th>
+              <th innerHTML="Billing Rate ({{currency}})"></th>
+              <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of roc">
+              <td class="font-weight-semi-bold">{{item.continent}}</td>
+              <td>{{item.billing_rate}}</td>
+              <td>{{item.normalizerate}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="roc_billplan === 'standard'">
+        <label class="sub-heading mx-4">ROC (standard)</label>
+        <table class="table table-borderless erp-list-table row-hover-effect">
+          <thead>
+            <tr>
+              <th>Continent Name</th>
+              <th>Country</th>
+              <th>Operator</th>
+              <th>MCC + MNC</th>
+              <th innerHTML="Billing Rate ({{currency}})"></th>
+              <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of roc">
+              <td class="font-weight-semi-bold">{{item.continent}}</td>
+              <td>{{item.country}}</td>
+              <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+              <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
+              <td>{{item.billing_rate}}</td>
+              <td>{{item.normalizerate}}</td>
 
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-
-
-
-  <div class="col-6 table-responsive px-0 mt-4">
-    <div *ngIf="row_billplan === 'custom'">
-      <label class="sub-heading mx-4">ROW (custom)</label>
-      <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-          <tr>
-            <th innerHTML="Billing Rate ({{currency}})"></th>
-            <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
-            <th>Discount (%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of rowArray">
-            <td>{{item.billing_rate}}</td>
-            <td>{{item.normalizerate}}</td>
-            <td>{{item.discount_percentage}} </td>
-          </tr>
-
-        </tbody>
-      </table>
-      <div class="col-12 my-4">
-        <label class="sub-heading">Description</label>
-        <textarea rows="4" class="w-100" readonly [value]="description" placeholder="Enter short Description here"></textarea>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div *ngIf="row_billplan === 'standard'">
 
-      <label class="sub-heading mx-4">ROW (standard)</label>
-      <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-          <tr>
-            <th>Continent Name</th>
-            <th>Country</th>
-            <th>Operator</th>
-            <th>MCC + MNC</th>
-            <th innerHTML="Billing Rate ({{currency}})"></th>
-            <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of roc">
-            <td class="font-weight-semi-bold">{{item.continent}}</td>
-            <td>{{item.country}}</td>
-            <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
-            <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
-            <td>{{item.billing_rate}}</td>
-            <td>{{item.normalizerate}}</td>
 
-          </tr>
-        </tbody>
-      </table>
-      <div class="col-12 my-4">
-        <label class="sub-heading">Description</label>
-        <textarea rows="4" class="w-100" readonly [value]="description" placeholder="Enter short Description here"></textarea>
+
+
+    <div class="col-6 table-responsive px-0 mt-4">
+      <div *ngIf="row_billplan === 'custom'">
+        <label class="sub-heading mx-4">ROW (custom)</label>
+        <table class="table table-borderless erp-list-table row-hover-effect">
+          <thead>
+            <tr>
+              <th innerHTML="Billing Rate ({{currency}})"></th>
+              <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
+              <th>Discount (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of rowArray">
+              <td>{{item.billing_rate}}</td>
+              <td>{{item.normalizerate}}</td>
+              <td>{{item.discount_percentage}} </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <div class="col-12 my-4">
+          <label class="sub-heading">Description</label>
+          <textarea rows="4" class="w-100" readonly [value]="description"
+            placeholder="Enter short Description here"></textarea>
+        </div>
+      </div>
+      <div *ngIf="row_billplan === 'standard'">
+
+        <label class="sub-heading mx-4">ROW (standard)</label>
+        <table class="table table-borderless erp-list-table row-hover-effect">
+          <thead>
+            <tr>
+              <th>Continent Name</th>
+              <th>Country</th>
+              <th>Operator</th>
+              <th>MCC + MNC</th>
+              <th innerHTML="Billing Rate ({{currency}})"></th>
+              <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency.symbol}})"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of roc">
+              <td class="font-weight-semi-bold">{{item.continent}}</td>
+              <td>{{item.country}}</td>
+              <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+              <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
+              <td>{{item.billing_rate}}</td>
+              <td>{{item.normalizerate}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+        <div class="col-12 my-4">
+          <label class="sub-heading">Description</label>
+          <textarea rows="4" class="w-100" readonly [value]="description"
+            placeholder="Enter short Description here"></textarea>
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
+</div>
+<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled">
+  <div class="d-block">
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
+  </div>
 </div>

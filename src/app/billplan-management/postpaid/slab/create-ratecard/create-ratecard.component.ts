@@ -9,6 +9,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { BillManagementService } from '../../../services/BillManagement/billplan-management.service';
 import { BillPlanCurrency_ApiResponse, CurrencySybmol, Currency } from '../../../models/BillManagement/blillplan.models';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { BillplanMgmt } from '../../../../model/authorization.model';
 
 @Component({
   selector: 'app-create-ratecard',
@@ -33,12 +35,15 @@ export class CreateRatecardComponent implements OnInit {
   bCurrency: Currency = new Currency();
   nCurrency: Currency = new Currency();
   searchvalue: any;
+  billPlanMgmtAuthControls: BillplanMgmt;
   constructor(
     private formBuilder: FormBuilder,
     public slabRouteService: SlabRouteService,
     private Route: ActivatedRoute,
     private billPlanservice: BillManagementService,
+    private authorizationService: AuthorizationService
   ) {
+    this.billPlanMgmtAuthControls = this.authorizationService.authorizationState.billplan_mgmt;
     this.createSlabForm();
     this.initRouteParams();
   }

@@ -20,6 +20,7 @@ export class PendingActivateTableComponent implements OnInit {
   usersData: PendingUsers;
   sortingName: string;
   isDesc: boolean;
+  searchvalue: any = '';
 
   constructor(private customerManagementService: CustomerManagementService) { }
 

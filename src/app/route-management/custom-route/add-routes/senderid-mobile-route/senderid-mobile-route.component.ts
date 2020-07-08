@@ -60,7 +60,7 @@ export class SenderidMobileRouteComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(5),
-          Validators.pattern("[0-9]{10}"),
+          Validators.pattern("[0-9]{10,14}"),
         ],
       ],
       senderid: [

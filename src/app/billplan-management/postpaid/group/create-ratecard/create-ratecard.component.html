@@ -1,106 +1,119 @@
-<form [formGroup]="typeGroupFormGroup">
-    <div class="row btm-border">
-        <div class="col-8 pt-10">
-            <label class="main-heading">
-                <a routerLink="/billplan-management">BILLPLAN MANAGEMENT /</a></label>
-            <span><a routerLink="/billplan-management/home"> BILLPLAN /</a> CREATE NEW</span>
-        </div>
-        <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
-            <span class="green-heading">BILL TYPE - POSTPAID</span>
-            <button class="btn dropdown-basic px-4" id="erp-dropdown" disabled>
-                Group
-            </button>
-        </div>
+<div class="row btm-border">
+    <div class="col-8 pt-10">
+        <label class="main-heading">
+            <a routerLink="/billplan-management">BILLPLAN MANAGEMENT /</a></label>
+        <span><a routerLink="/billplan-management/home"> BILLPLAN /</a> CREATE NEW</span>
     </div>
-    <div class="btm-border second-row-pr mb_10">
-        <div class="row">
-            <div class="col-3 text-right">
-                <div class="form-group">
-                    <button class="btn w-100 dropdown-basic" disabled [innerHTML]="ratecard_name"></button>
-                </div>
-            </div>
-            <div class="col-3 offset-6 text-right">
-                <div class="form-group">
-                    <button class="btn w-100 dropdown-basic" disabled
-                        innerHTML="Bill Plan Currency ({{currencySybmol.bCurrency?.symbol}})"></button>
-                </div>
-            </div>
-        </div>
+    <div class="col-4 dropdown text-right pt-2 mb-2" ngbDropdown>
+        <span class="green-heading">BILL TYPE - POSTPAID</span>
+        <button class="btn dropdown-basic px-4" id="erp-dropdown" disabled>
+            Group
+        </button>
     </div>
-    <!-- <pre>{{typeGroupFormGroup.value| json}}</pre> -->
-    <div class="main-container p-4 group-stepper">
-        <app-group-stepper-form (parentGroupsList)="parentGroupListData($event)"
-            [handlecurrencyList]="handlecurrencyList.asObservable()" (parentRocData)="parentRocData($event)"
-            [groupsListEvent]="groupListData.asObservable()" [handleGroupsDelete]="handleGroupsDelete.asObservable()"
-            [parentForm]="typeGroupFormGroup" [rowGroups]="row_groups">
-        </app-group-stepper-form>
-    </div>
-</form>
-<div class="row btm-border second-row-det">
-    <div class="col-7">
-        <div class="row mt-1">
-            <div class="col-5">
-                <label class="mr-2"><b>Total Groups</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>{{row_groups.length}}</b></span>
-            </div>
-            <div class="col-7">
-                <label class="mr-2"><b>Total Countries</b></label>
-                <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-5 text-right">
-        <input type="search" class="form-control" placeholder="&#xf002; Search by Group, Continent, Country, Operator"
-            name="searchvalue" [(ngModel)]="searchvalue" />
-    </div>
-
 </div>
-<div class="main-container table-responsive">
-    <table class="table table-borderless erp-list-table row-hover-effect">
-        <thead>
-            <tr>
-                <th>Group Name</th>
-                <th>Continent</th>
-                <th>Country</th>
-                <th>Operator</th>
-                <th>MCC + MNC</th>
-                <th innerHTML="Billing Rate ({{currencySybmol.bCurrency?.symbol}})"></th>
-                <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
-                <th>&nbsp;</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let items of row_groups | filter: { value: searchvalue } : 2; let gindex=index">
-            <tr *ngFor="let item of items.countries; let cindex=index"
-                [ngClass]="{'border-bottom': items.countries.length - 1 == cindex}">
-                <td class="font-weight-semi-bold">{{items.group_name}}</td>
-                <td>{{item.continent_name }}</td>
-                <td>{{item.country_name}}</td>
-                <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
-                <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
-                <td>{{item.billing_rate}}</td>
-                <td>{{item.normalize_rate}}</td>
-                <td style="vertical-align: middle;padding: 0;" class="border-bottom"
-                    [ngClass]="{'disabled': isEditMode == true}" [attr.rowspan]="items.countries.length"
-                    *ngIf="cindex==0">
-                    <img class="cursor-pointer" (click)="editGroups(gindex)" src="assets/icons/edit-icon.svg"
-                        alt="edit" />
-                </td>
-                <td [ngClass]="{'disabled': isEditMode == true}">
-                    <img (click)="deleteGroups(gindex, cindex, item)" src="assets/icons/delete-icon.svg"
-                        class="img-fluid cursor-pointer" alt="delete icon" />
-                </td>
-            </tr>
-        </tbody>
-        <tbody *ngIf="row_groups.length == 0">
-            <tr>
-                <td colspan="9" class="text-center py-3 main-heading">
-                    No Data Available
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div *ngIf="billPlanMgmtAuthControls.billplan_create_ratecard_enabled">
+    <form [formGroup]="typeGroupFormGroup">
+        <div class="btm-border second-row-pr mb_10">
+            <div class="row">
+                <div class="col-3 text-right">
+                    <div class="form-group">
+                        <button class="btn w-100 dropdown-basic" disabled [innerHTML]="ratecard_name"></button>
+                    </div>
+                </div>
+                <div class="col-3 offset-6 text-right">
+                    <div class="form-group">
+                        <button class="btn w-100 dropdown-basic" disabled
+                            innerHTML="Bill Plan Currency ({{currencySybmol.bCurrency?.symbol}})"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <pre>{{typeGroupFormGroup.value| json}}</pre> -->
+        <div class="main-container p-4 group-stepper">
+            <app-group-stepper-form (parentGroupsList)="parentGroupListData($event)"
+                [handlecurrencyList]="handlecurrencyList.asObservable()" (parentRocData)="parentRocData($event)"
+                [groupsListEvent]="groupListData.asObservable()"
+                [handleGroupsDelete]="handleGroupsDelete.asObservable()" [parentForm]="typeGroupFormGroup"
+                [rowGroups]="row_groups">
+            </app-group-stepper-form>
+        </div>
+    </form>
+    <div class="row btm-border second-row-det">
+        <div class="col-7">
+            <div class="row mt-1">
+                <div class="col-5">
+                    <label class="mr-2"><b>Total Groups</b></label>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="ml-3 badge badge-dark"><b>{{row_groups.length}}</b></span>
+                </div>
+                <div class="col-7">
+                    <label class="mr-2"><b>Total Countries</b></label>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="ml-3 badge badge-dark"><b>{{countryCount}}</b></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-5 text-right">
+            <input type="search" class="form-control"
+                placeholder="&#xf002; Search by Group, Continent, Country, Operator" name="searchvalue"
+                [(ngModel)]="searchvalue" />
+        </div>
+
+    </div>
+    <div class="main-container table-responsive">
+        <table class="table table-borderless erp-list-table row-hover-effect">
+            <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Continent</th>
+                    <th>Country</th>
+                    <th>Operator</th>
+                    <th>MCC + MNC</th>
+                    <th innerHTML="Billing Rate ({{currencySybmol.bCurrency?.symbol}})"></th>
+                    <th innerHTML="Normalize Rate ({{currencySybmol.nCurrency?.symbol}})"></th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let items of row_groups | filter: { value: searchvalue } : 2; let gindex=index">
+                <tr *ngFor="let item of items.countries; let cindex=index"
+                    [ngClass]="{'border-bottom': items.countries.length - 1 == cindex}">
+                    <td class="font-weight-semi-bold">{{items.group_name}}</td>
+                    <td>{{item.continent_name }}</td>
+                    <td>{{item.country_name}}</td>
+                    <td>{{item.operator_name == 'All' ? 'All Operator' : item.operator_name}}</td>
+                    <td>{{item.mcc}} {{item.mnc != 0 ? '+ ' + item.mnc : ''}}</td>
+                    <td>{{item.billing_rate}}</td>
+                    <td>{{item.normalize_rate}}</td>
+                    <td style="vertical-align: middle;padding: 0;" class="border-bottom"
+                        [ngClass]="{'disabled': isEditMode == true}" [attr.rowspan]="items.countries.length"
+                        *ngIf="cindex==0">
+                        <img class="cursor-pointer" (click)="editGroups(gindex)" src="assets/icons/edit-icon.svg"
+                            alt="edit" />
+                    </td>
+                    <td [ngClass]="{'disabled': isEditMode == true}">
+                        <img (click)="deleteGroups(gindex, cindex, item)" src="assets/icons/delete-icon.svg"
+                            class="img-fluid cursor-pointer" alt="delete icon" />
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="row_groups.length == 0">
+                <tr>
+                    <td colspan="9" class="text-center py-3 main-heading">
+                        No Data Available
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_create_ratecard_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>

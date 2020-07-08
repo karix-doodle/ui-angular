@@ -20,6 +20,7 @@ export class CmShowMarginComponent implements OnInit {
   intl_acc_type:string = '';
   routetype:string = '';
   gwidWiseCurrency:any = {};
+  searchText:any = '';
 
   constructor(private customerManagementService: CustomerManagementService){}
 

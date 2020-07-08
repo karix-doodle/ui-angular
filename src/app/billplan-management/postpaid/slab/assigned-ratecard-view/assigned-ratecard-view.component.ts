@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BillManagementService } from 'src/app/billplan-management/services/BillManagement/billplan-management.service';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { BillplanMgmt } from '../../../../model/authorization.model';
 
 @Component({
   selector: 'app-assigned-ratecard-view',
@@ -29,12 +31,16 @@ export class AssignedRatecardViewComponent implements OnInit {
   nCurrency: Currency = new Currency();
   billPlanCurrencyRes: BillPlanCurrency_ApiResponse;
   billPlanCurrencyData: BillPlanCurrency_Data;
+  billPlanMgmtAuthControls: BillplanMgmt;
   constructor(
     private Route: ActivatedRoute,
     private route: Router,
     private ratecardviewservice: BillplanRatecardViewService,
-    private billPlanservice: BillManagementService
-  ) {}
+    private billPlanservice: BillManagementService,
+    private authorizationService: AuthorizationService
+  ) {
+    this.billPlanMgmtAuthControls = this.authorizationService.authorizationState.billplan_mgmt;
+  }
 
   ngOnInit() {
     this.Route.params.subscribe((data: Params) => {
