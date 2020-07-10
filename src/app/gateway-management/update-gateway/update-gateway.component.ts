@@ -349,6 +349,8 @@ export class UpdateGatewayComponent implements OnInit {
     this.isGtPriceUpdateValid = true;
     let priceValidation = false;
 
+    data.orginal_filename = this.selectedFileName;
+
     data.is_autocompile = data.is_autocompile == true ? 1 : 0
 
     removeValidators(this.priceListFormGroup, 'operator_column')
