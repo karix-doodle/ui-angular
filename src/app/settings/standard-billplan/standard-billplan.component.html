@@ -59,8 +59,8 @@
                         <td>{{item.operator}}</td>
                         <td>{{item.mcc}} + {{item.mnc}}</td>
                         <td [innerHTML]="item.billing_currency"></td>
-                        <td>{{item.billing_rate}}</td>
-                        <td>{{item.normalizerate}}</td>
+                        <td>{{item.billing_rate ? item.billing_rate : '-'}}</td>
+                        <td>{{item.normalizerate ? item.normalizerate : '-'}}</td>
                     </tr>
                 </tbody>
             </table>

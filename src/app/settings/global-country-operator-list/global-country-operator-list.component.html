@@ -10,12 +10,12 @@
     <div class="col-2 pr-0 mt-2">
         <label class="mr-2"><b>Total Countries</b></label>
         <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>35</b></span>
+        <span class="ml-3 badge badge-dark"><b>{{gsGlobalCountryOperatorData?.data.totalcountry}}</b></span>
     </div>
     <div class="col-6 mt-2">
         <label class="mr-2"><b>Total Operators</b></label>
         <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>435</b></span>
+        <span class="ml-3 badge badge-dark"><b>{{gsGlobalCountryOperatorData?.data.totaloperator}}</b></span>
     </div>
     <div class="col-3">
         <input type="search" class="form-control" placeholder="&#xf002; Search by Country, Operator" />
@@ -56,7 +56,7 @@
                 <td>{{item.senderid_length ? item.senderid_length : '-'}}</td>
                 <td>{{item.min_dest_length ? item.min_dest_length : '-'}}</td>
                 <td>{{item.max_dest_length ? item.max_dest_length : '-'}}</td>
-                <td>{{item.series}}
+                <td>{{seriesCheckComma(item.series)}}
                     <span class="badge badge-dark ml-2" *ngIf="item.balanceseries != 0 && item.balanceseries != '0+'">
                         {{item.balanceseries}}
                     </span>
@@ -129,7 +129,7 @@
         <form action="" [formGroup]="editGlobalCountryOperatorFormGroup"
             (ngSubmit)="onSubmitEditGlobalCountryOperatorFormGroup(editGlobalCountryOperatorFormGroup.value)">
             <div class="row">
-                <pre>Form values: {{editGlobalCountryOperatorFormGroup.value | json}}</pre>
+                <!-- <pre>Form values: {{editGlobalCountryOperatorFormGroup.value | json}}</pre> -->
             </div>
             <div class="row">
                 <div class="col-3 border-right mb-2"><label>Country</label></div>

@@ -184,6 +184,7 @@ export class GlobalCountryOperatorListComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           successAlert(res.message, res.responsestatus)
           this.resetFormEdit()
+          this.Globalsetting_globalCountryOperator()
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
@@ -201,15 +202,23 @@ export class GlobalCountryOperatorListComponent implements OnInit {
     })
   }
 
+  seriesCheckComma(value) {
+    return value && value.split(',').filter(Boolean)
+  }
+
   normalEditService(data) {
     let updateData = { ...data }
     delete updateData.file
     delete updateData.searchvalue
+    updateData.series = updateData.series.toString();
+    updateData.removeseries = updateData.removeseries.toString();
+    updateData.senderid_type = Number(updateData.senderid_type);
     this.settingsService.Globalsetting_updateCountryOperator(updateData).subscribe(
       (res: GsCountryOperatorupdate_ApiResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           successAlert(res.message, res.responsestatus)
           this.resetFormEdit()
+          this.Globalsetting_globalCountryOperator()
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
