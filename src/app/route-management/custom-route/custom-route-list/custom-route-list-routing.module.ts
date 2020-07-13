@@ -5,24 +5,29 @@ import { CustomRouteListComponent } from './custom-route-list.component';
 import { CrRmMobileComponent } from './cr-rm-mobile/cr-rm-mobile.component';
 import { CrRmSenderidComponent } from './cr-rm-senderid/cr-rm-senderid.component';
 import { CrRmMobileSenderidComponent } from './cr-rm-mobile-senderid/cr-rm-mobile-senderid.component';
+import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 
 
 const crListroutes: Routes = [
   {
     path: 'route-management/custom-route',
     component: CustomRouteListComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'mobile',
-        component: CrRmMobileComponent
+        component: CrRmMobileComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'sender-id',
-        component: CrRmSenderidComponent
+        component: CrRmSenderidComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'mobile-sender-id',
-        component: CrRmMobileSenderidComponent
+        component: CrRmMobileSenderidComponent,
+        canActivate: [AuthGuard]
       },
     ]
   }

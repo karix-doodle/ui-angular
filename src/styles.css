@@ -935,3 +935,11 @@ select {
   cursor: pointer;
   z-index: 2;
 }
+
+.center-block {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: -webkit-fill-available;
+  align-items: center;
+}

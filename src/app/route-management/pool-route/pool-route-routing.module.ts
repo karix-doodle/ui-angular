@@ -5,12 +5,14 @@ import { PoolRouteComponent } from './pool-route.component';
 import { CreatePoolComponent } from './create-pool/create-pool.component';
 import { PoolRouteListComponent } from './pool-route-list/pool-route-list.component';
 import { PrActWiseViewComponent } from './pr-act-wise-view/pr-act-wise-view.component';
+import { AuthGuard } from '../../auth-management/guards/auth.guard';
 
 
 const poolRoutes: Routes = [
   {
     path: 'route-management/pool-route',
-    component: PoolRouteListComponent
+    component: PoolRouteListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'route-management/pool-route',
@@ -18,15 +20,18 @@ const poolRoutes: Routes = [
     children: [
       {
         path: 'create-pool',
-        component: CreatePoolComponent
+        component: CreatePoolComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'clone-pool/:id',
-        component: CreatePoolComponent
+        component: CreatePoolComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'account-wise-view/:id',
-        component: PrActWiseViewComponent
+        component: PrActWiseViewComponent,
+        canActivate: [AuthGuard]
       }
     ]
   }

@@ -7,32 +7,39 @@ import { CmViewLogComponent } from './cm-view-log/cm-view-log.component';
 import { CmAuditLogComponent } from './cm-audit-log/cm-audit-log.component';
 import { CmShowMarginComponent } from './cm-show-margin/cm-show-margin.component';
 import { CountryOperatorListComponent } from './country-operator-list/country-operator-list.component';
+import { AuthGuard } from '../auth-management/guards/auth.guard';
 
 const CMroutes: Routes = [
     {
       path: 'customer-management/customer-management-view',
-      component: CmViewComponent
+      component: CmViewComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'customer-management/customer-management-edit/:esmeaddr',
-      component: CmEditComponent
+      component: CmEditComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'customer-management/customer-management-view-log',
-      component: CmViewLogComponent
+      component: CmViewLogComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'customer-management/customer-management-audit-log',
-      component: CmAuditLogComponent
+      component: CmAuditLogComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'customer-management/customer-management-show-margin-list',
-      component: CmShowMarginComponent
+      component: CmShowMarginComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'customer-management/allowed-country-operator-list',
-      component: CountryOperatorListComponent
-    },
+      component: CountryOperatorListComponent,
+      canActivate: [AuthGuard]
+    }
 
 ];
 

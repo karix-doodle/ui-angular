@@ -5,13 +5,15 @@ import { BlAddRouteComponent } from './bl-add-route.component';
 import { BlMobileRouteComponent } from './bl-mobile-route/bl-mobile-route.component';
 import { BlMobileSenderidRouteComponent } from './bl-mobile-senderid-route/bl-mobile-senderid-route.component';
 import { BlSenderidRouteComponent } from './bl-senderid-route/bl-senderid-route.component';
+import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 
 
 
 const blRoutes: Routes = [
   {
     path: 'route-management/blacklist/add-route',
-    component: BlMobileRouteComponent
+    component: BlMobileRouteComponent,
+    canActivate: [AuthGuard]
   },
   {
   path: 'route-management/blacklist/add-route',
@@ -19,15 +21,18 @@ const blRoutes: Routes = [
   children: [
     {
       path: 'mobile-route',
-      component: BlMobileRouteComponent
+      component: BlMobileRouteComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'senderid-route',
-      component: BlSenderidRouteComponent
+      component: BlSenderidRouteComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: 'senderid-mobile-route',
-      component: BlMobileSenderidRouteComponent
+      component: BlMobileSenderidRouteComponent,
+      canActivate: [AuthGuard]
     },
 ]}
 ];
