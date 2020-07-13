@@ -1,13 +1,12 @@
-<div *ngIf="!isLoggedIn; else authorized">
-    <div class="center-block">
-        <div class="d-block">
-            <img style="width: 150px;" src="assets/icons/icon-lock.png" />
-            <span class="w-100 d-block">
-                Your are not <b>Authorized</b> to access this page
-            </span>
-        </div>
+<div class="center-block" *ngIf="!isLoggedIn; else authorized">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
     </div>
 </div>
+
 <ng-template #authorized>
     <app-navbar></app-navbar>
     <button type="button" class="btn btn-light ml-4 sidenav-btn" (click)="toggleClass()">
