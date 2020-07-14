@@ -8,6 +8,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-standard-billplan',
@@ -25,9 +26,14 @@ export class StandardBillplanComponent implements OnInit {
   accountType: string;
   accounts: string[] = ['Country & Operator', 'Country'];
 
+  StMgmtAuthControls = null
+
   constructor(
     private settingsService: SettingsService,
-  ) { }
+    private authorizationService: AuthorizationService
+  ) {
+    this.StMgmtAuthControls = authorizationService.authorizationState.settings
+  }
 
   ngOnInit() {
     this.accountType = this.accounts[0];

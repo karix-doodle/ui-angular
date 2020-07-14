@@ -10,6 +10,7 @@ import {
   GsUserupdate_ApiResponse
 } from '../models/settings.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 import {
   errorAlert,
@@ -33,12 +34,17 @@ export class SettingsHomeComponent implements OnInit {
   currencyTimezoneFormGroup: FormGroup;
   isCurrencyTimeZoneValid: boolean = false;
 
+  StMgmtAuthControls = null
+
   constructor(
     config: NgbModalConfig,
     private settingsService: SettingsService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+    this.StMgmtAuthControls = authorizationService.authorizationState.settings
+
     this.currencyTimezoneFormGroup = this.formBuilder.group({
       currency_id: new FormControl(''),
       timezone_id: new FormControl(''),

@@ -16,6 +16,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-global-country-operator-list',
@@ -40,12 +41,19 @@ export class GlobalCountryOperatorListComponent implements OnInit {
   editOperator: string = null
   editSeries: any = []
 
+  searchvalue: string = ''
+
+  StMgmtAuthControls = null
+
   constructor(
     config: NgbModalConfig,
     private settingsService: SettingsService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+    this.StMgmtAuthControls = authorizationService.authorizationState.settings
+
     this.initiateEditForm()
   }
 

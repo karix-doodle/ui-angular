@@ -3,7 +3,9 @@
         <label class="main-heading">SETTINGS</label>
     </div>
     <div class="col-7 text-right">
-        <a routerLink="/settings/default-rate-card" class="btn btn-basic mr-3">Default Rate Card</a>
+        <a [ngClass]="{'disabled-func disabled': StMgmtAuthControls.settings_standard_rate_card_view_enabled ? null : true }"
+            [routerLink]="StMgmtAuthControls.settings_standard_rate_card_view_enabled ? ['/settings/default-rate-card'] : []"
+            class="btn btn-basic mr-3">Default Rate Card</a>
         <a routerLink="/settings/global-country-operator-list" class="btn erp-intl-btn">Global Country Operator
             Listing</a>
     </div>
@@ -93,7 +95,10 @@
                 </div>
             </div>
             <div class="col-2 text-right">
-                <button class="btn btn-light" (click)="open(viewAudit)">View Audit</button>
+                <button class="btn btn-light"
+                    [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled }"
+                    (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? open(viewAudit): ''">View
+                    Audit</button>
             </div>
         </div>
     </section>
@@ -113,7 +118,17 @@
                 <section class="main-section">
                     <div class="form-group">
                         <label>Normalize Currency</label>
-                        <select class="dropdown-select w-100" formControlName="currency_id">
+                        <select *ngIf="StMgmtAuthControls.settings_set_or_update_normalize_rate_currency_enabled"
+                            class="dropdown-select w-100" formControlName="currency_id"
+                            [attr.disabled]="StMgmtAuthControls.settings_set_or_update_normalize_rate_currency_enabled ? null : true">
+                            <option value="" default disabled>Select Gateway Currency</option>
+                            <option value="{{item.currency_id}}" *ngFor="let item of settingsCurrencyData?.data"
+                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                            </option>
+                        </select>
+                        <select *ngIf="!StMgmtAuthControls.settings_set_or_update_normalize_rate_currency_enabled"
+                            class="dropdown-select w-100" disabled
+                            [value]="currencyTimezoneFormGroup.get('currency_id').value">
                             <option value="" default disabled>Select Gateway Currency</option>
                             <option value="{{item.currency_id}}" *ngFor="let item of settingsCurrencyData?.data"
                                 [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
@@ -138,7 +153,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <select class="dropdown-select w-100" formControlName="timezone_id">
+                        <select *ngIf="StMgmtAuthControls.settings_set_or_update_timezone_enabled"
+                            [attr.disabled]="StMgmtAuthControls.settings_set_or_update_timezone_enabled ? null : true"
+                            class="dropdown-select w-100" formControlName="timezone_id">
+                            <option value="" default disabled>Select Gateway Timezone</option>
+                            <option *ngFor="let item of settingsTimeZoneData?.data" value="{{item.id}}">
+                                {{item.timezone}}
+                            </option>
+                        </select>
+                        <select *ngIf="!StMgmtAuthControls.settings_set_or_update_timezone_enabled"
+                            class="dropdown-select w-100" [value]="currencyTimezoneFormGroup.get('timezone_id').value"
+                            disabled>
                             <option value="" default disabled>Select Gateway Timezone</option>
                             <option *ngFor="let item of settingsTimeZoneData?.data" value="{{item.id}}">
                                 {{item.timezone}}
