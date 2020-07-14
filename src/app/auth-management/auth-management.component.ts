@@ -30,6 +30,8 @@ export class AuthManagementComponent implements OnInit {
 
     if (this.accesstoken && this.refreshtoken) {
       this.authenticate();
+    } else {
+      this.router.navigate(['/dashboard']);
     }
     // else {
     //   console.log('set');
