@@ -8,6 +8,7 @@ import {
   GatewaysListBody, GatewaysListRes
 } from '../../../models/RouteManagement/Generic/generic';
 import { User } from '../../../../shared/models/commonModels';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,14 @@ export class GenericService {
   baseUrl: string = environment.serverUrl + '/routemgmt';
   httpOptions = { headers: new HttpHeaders({ Accept: 'application/json', 'Content-Type': 'application/json' }) };
   user: User = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
-  constructor(public http: HttpClient) { }
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService
+    ) { }
 
   /**
    * @description gets the route management countries list

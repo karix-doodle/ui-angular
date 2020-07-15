@@ -9,6 +9,7 @@ import {
   CreateAPoolRouteBody, CloneAPoolRouteBody, CloneAPoolRouteRes, NewRoutesList
 } from '../../../models/RouteManagement/PoolRoute/poolRoute';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class PoolRouteService {
   baseUrl: string = environment.serverUrl + '/routemgmt/';
   httpOptions = { headers: new HttpHeaders({ Accept: 'application/json', 'Content-Type': 'application/json' }) };
   user: User = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
   public previewList: NewRoutesList[] = []; // common preview list data
@@ -32,7 +33,8 @@ export class PoolRouteService {
 
   constructor(
     public http: HttpClient,
-    private formBuilder: FormBuilder,) { }
+    private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService) { }
 
   changeSubjectData(data) {
     this.parentToChildDetectionSubject.next(data);

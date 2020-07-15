@@ -79,7 +79,11 @@ export class PoolRouteListComponent implements OnInit {
     confirmAlert(`You won't be able to revert ${routeName}!`)
       .then((result) => {
         if (result.isConfirmed) {
-          this.poolRouteService.deletePoolRoute({ loggedinempid: environment.loggedinempid, route_id: routeId })
+          this.poolRouteService.deletePoolRoute(
+            {
+              loggedinempid: this.authorizationService.authorizationState.loggedinempid,
+              route_id: routeId
+            })
             .subscribe((res: PoolRouteRes) => {
               if (res.responsestatus === environment.APIStatus.success.text
                 && res.responsecode > environment.APIStatus.success.code) {

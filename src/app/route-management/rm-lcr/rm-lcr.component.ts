@@ -114,8 +114,8 @@ export class RmLcrComponent implements OnInit {
     this.Gateways = JSON.parse(JSON.stringify(gateways));
     this.modalService.open(content, { windowClass: 'gt-detail-modal' });
     // this.modalService.open(content, { centered: true });
-    this.LCRUpdateStatusInputs.loggedinempid = environment.loggedinempid;
-    this.LCRUpdateStatusInputs.loggedinusername = environment.loggedinusername;
+    this.LCRUpdateStatusInputs.loggedinempid = this.authorizationService.authorizationState.loggedinempid;
+    this.LCRUpdateStatusInputs.loggedinusername = this.authorizationService.authorizationState.loggedinusername;
     this.LCRUpdateStatusInputs.list = [];
   }
 

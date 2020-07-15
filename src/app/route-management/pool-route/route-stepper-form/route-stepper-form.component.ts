@@ -16,6 +16,7 @@ import {
    NewRoutesList, CreateAPoolRouteBody, CloneAPoolRouteData, PoolRouteRes, NewRowRoutesList
 } from '../../models/RouteManagement/PoolRoute/poolRoute';
 import { Router } from '@angular/router';
+import { AuthorizationService } from '../../../service/auth/authorization.service';
 
 @Component({
    selector: 'app-route-stepper-form',
@@ -59,6 +60,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       public poolRouteService: PoolRouteService,
       private genericService: GenericService,
       private router: Router,
+      private authService: AuthorizationService
    ) {
       this.createSecondFormGroup();
       this.commentsTextAreaMin = environment.createClonePoolRouteFieldLength.commentsTextArea.min;
@@ -488,7 +490,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          secondCtrl: [''],
          row_route: ['block'],
          row_routes_list: this.formBuilder.array([this.poolRouteService.createItem()]),
-         loggedinempid: environment.loggedinempid,
+         loggedinempid: this.authService.authorizationState.loggedinempid,
          comments: ['', [Validators.required]]
       });
    }

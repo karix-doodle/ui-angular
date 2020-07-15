@@ -28,7 +28,7 @@ export class PrActWiseViewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.SelectedPoolRouteInput.loggedinempid = environment.loggedinempid;
+    this.SelectedPoolRouteInput.loggedinempid = this.authService.authorizationState.loggedinempid;
     this.route.params
       .subscribe(
         (params: Params) => {
