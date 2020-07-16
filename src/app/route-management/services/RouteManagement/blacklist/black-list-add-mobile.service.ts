@@ -10,12 +10,16 @@ import {
   BlackListGateway_ApiResponse,
 } from "../../../models/BlackList/blacklist.model";
 import { map } from "rxjs/operators";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: "root",
 })
 export class BlackListAddMobileService {
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService
+    ) {}
   baseUrl: string = environment.serverUrl + "/routemgmt/blacklist/";
   httpOptions = {
     headers: new HttpHeaders({
@@ -24,8 +28,8 @@ export class BlackListAddMobileService {
     }),
   };
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
   /**

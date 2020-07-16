@@ -10,6 +10,11 @@ export class AuthorizationStateData {
     billplan_mgmt: BillplanMgmt;
     customer_management: CustomerMgmt;
     settings: Settings;
+    loggedinempid: number;
+    loggedinusername: string;
+    role: string;
+    timezone: string;
+    timeoffset: string;
 }
 export class MainPanel {
     gw_mgmt_enabled: boolean;

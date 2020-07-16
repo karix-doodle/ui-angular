@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import {
   MobileBlackList_AddResponse,
   MobileSenderidBlackList_DeleteResponse,
@@ -13,7 +14,9 @@ import {
   providedIn: "root",
 })
 export class BlackListAddSenderidService {
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService) {}
 
   baseUrl = environment.serverUrl + "/routemgmt/blacklist/mobile/senderid";
   httpOptions = {
@@ -23,8 +26,8 @@ export class BlackListAddSenderidService {
     }),
   };
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
   /**
    *

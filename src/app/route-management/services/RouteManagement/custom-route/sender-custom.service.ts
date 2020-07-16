@@ -3,6 +3,7 @@ import { environment } from "../../../../../environments/environment";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import {
   SenderCustomApiResponse,
   MobileCustomSenderIdResponse,
@@ -12,7 +13,9 @@ import {
   providedIn: "root",
 })
 export class SenderCustomService {
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService) {}
 
   baseUrl: string =
     environment.serverUrl + "/routemgmt/custom/senderidtemplate";
@@ -23,8 +26,8 @@ export class SenderCustomService {
     }),
   };
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
   /**

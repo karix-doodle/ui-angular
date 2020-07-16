@@ -8,12 +8,15 @@ import {
 } from "../../../models/BlackList/blacklist.model";
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: "root",
 })
 export class BlackListAddMobileSenderidService {
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService) {}
 
   baseurl = environment.serverUrl + "/routemgmt/blacklist/senderid/content";
   httpOptions = {
@@ -23,8 +26,8 @@ export class BlackListAddMobileSenderidService {
     }),
   };
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
   /**
    *

@@ -73,7 +73,7 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       );
   }
   getRouteCloneDate(routeId) {
-    this.poolRouteService.cloneAPoolRoute({ route_id: routeId, loggedinempid: environment.loggedinempid })
+    this.poolRouteService.cloneAPoolRoute({ route_id: routeId, loggedinempid: this.authService.authorizationState.loggedinempid })
       .subscribe(
         (res: CloneAPoolRouteRes) => {
           if (
@@ -191,8 +191,8 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     this.parentFormGroup.patchValue({
       fallback_gw_type: `lcr-${this.parentFormGroup.value.gw_type}`
     });
-    this.gatewaysListBody.loggedinempid = environment.loggedinempid;
-    this.gatewaysListBody.loggedinusername = environment.loggedinusername;
+    this.gatewaysListBody.loggedinempid = this.authService.authorizationState.loggedinempid;
+    this.gatewaysListBody.loggedinusername = this.authService.authorizationState.loggedinusername;
     this.gatewaysListBody.gw_type = this.parentFormGroup.value.gw_type;
     this.genericService.getGatewaysList(this.gatewaysListBody).subscribe(
       (res: GatewaysListRes) => {
