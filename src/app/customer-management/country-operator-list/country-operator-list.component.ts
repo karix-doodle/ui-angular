@@ -21,6 +21,8 @@ import {
 } from "../../shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+
 @Component({
   selector: "app-country-operator-list",
   templateUrl: "./country-operator-list.component.html",
@@ -35,19 +37,25 @@ export class CountryOperatorListComponent implements OnInit {
   countryList: AllowedCountry_Data[] = [];
   getOperatorListApiaResponse: AllowedOperatorApi_Response;
   operatorList: AllowedOperator_Data[] = [];
-  billSubCountryList:BillOnSubmissionCountryList_Data[] = []
+  billSubCountryList: BillOnSubmissionCountryList_Data[] = []
   allowedCountyrOperatorList: AllowedCountryOperTable[];
   allowedCoutryOpertorDetails;
   isSubmitted = false;
   hasdata: boolean = false
-  billSubmitted:boolean = false
+  billSubmitted: boolean = false
+
+  CmAuthControls = null
+
   constructor(
     config: NgbModalConfig,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private service: CustomerManagementService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+    this.CmAuthControls = authorizationService.authorizationState.customer_management
+
     this.esmeaddr = +this.route.snapshot.params.id;
   }
 
@@ -78,11 +86,11 @@ export class CountryOperatorListComponent implements OnInit {
     });
   }
 
-  private initialForm (){
+  private initialForm() {
     this.billSubmissionForm = this.fb.group({
-      country: ['' ,[Validators.required]],
-      mcc: ['',[Validators.required]],
-      billonsub: ['',[Validators.required]]
+      country: ['', [Validators.required]],
+      mcc: ['', [Validators.required]],
+      billonsub: ['', [Validators.required]]
     })
   }
   getcountryControl() {
@@ -99,7 +107,7 @@ export class CountryOperatorListComponent implements OnInit {
     if (key === "mcc") {
       this.senderidForm.patchValue({
         operator: '',
-        mnc:''
+        mnc: ''
       })
       this.getOperatorlist(value);
 
@@ -124,50 +132,50 @@ export class CountryOperatorListComponent implements OnInit {
     let obj = {};
     obj[key] = mcc;
     this.billSubmissionForm.patchValue({
-      billonsub : billonSub
+      billonsub: billonSub
     })
     this.billSubmissionForm.patchValue(obj);
   }
 
-  getSenderidDetails(){
+  getSenderidDetails() {
     let data = {
       esmeaddr: +this.route.snapshot.params.id,
       mnc: this.senderidForm.get("mnc").value,
-      mcc:this.senderidForm.get("mcc").value
+      mcc: this.senderidForm.get("mcc").value
     }
-    this.service.getSenderidsList(data).subscribe((res: GetSenderisApi_Response ) =>{
+    this.service.getSenderidsList(data).subscribe((res: GetSenderisApi_Response) => {
       if (
         res.responsestatus === environment.APIStatus.success.text &&
         res.responsecode > environment.APIStatus.success.code
       ) {
-         console.log(res ,'23456')
-            if(res.data.hasdata){
-              this.hasdata = res.data.hasdata
-              this.senderidForm.patchValue({
-               senderid_type: res.data.senderids.senderid_type,
-             default_senderid: res.data.senderids.default_senderid,
-             alternate_senderid: res.data.senderids.alternate_senderid,
-              })
-            } else{
-              this.hasdata = res.data.hasdata
-              this.senderidForm.patchValue({
-                senderid_type:'',
-              default_senderid: '',
-              alternate_senderid: '',
-               })
-            }
+        console.log(res, '23456')
+        if (res.data.hasdata) {
+          this.hasdata = res.data.hasdata
+          this.senderidForm.patchValue({
+            senderid_type: res.data.senderids.senderid_type,
+            default_senderid: res.data.senderids.default_senderid,
+            alternate_senderid: res.data.senderids.alternate_senderid,
+          })
+        } else {
+          this.hasdata = res.data.hasdata
+          this.senderidForm.patchValue({
+            senderid_type: '',
+            default_senderid: '',
+            alternate_senderid: '',
+          })
+        }
 
       } else if (
         res.responsestatus === environment.APIStatus.error.text &&
         res.responsecode < environment.APIStatus.error.code
       ) {
-        errorAlert( res.responsestatus);
+        errorAlert(res.responsestatus);
       }
     },
-    (error: HttpErrorResponse) => {
-      errorAlert(error.message, error.statusText);
-    }
-  );
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+      }
+    );
 
   }
 
@@ -297,7 +305,7 @@ export class CountryOperatorListComponent implements OnInit {
     );
   }
 
-  onBillSubmit(){
+  onBillSubmit() {
     let data = {
       ...this.billSubmissionForm.value,
       esmeaddr: this.esmeaddr,

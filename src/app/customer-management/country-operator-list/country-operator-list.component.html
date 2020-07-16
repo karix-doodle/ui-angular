@@ -1,4 +1,5 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div"
+  *ngIf="CmAuthControls.cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled">
   <div class="col-8 pr-0">
     <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
     <span><a [routerLink]="[
@@ -20,7 +21,8 @@
   </div>
 </div>
 
-<div class="row btm-border second-row-det">
+<div class="row btm-border second-row-det"
+  *ngIf="CmAuthControls.cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled">
   <div class="col-8">
     <div class="row">
       <div class="col-12">
@@ -47,11 +49,13 @@
   </div>
   <div class="col-4 text-right mt-2">
     <div class="form-group">
-      <input type="search" class="form-control" [(ngModel)]="searchValue" placeholder="&#xf002; Search By Country, Operator" />
+      <input type="search" class="form-control" [(ngModel)]="searchValue"
+        placeholder="&#xf002; Search By Country, Operator" />
     </div>
   </div>
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive"
+  *ngIf="CmAuthControls.cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled">
   <table class="table table-borderless erp-list-table">
     <thead>
       <tr>
@@ -83,8 +87,8 @@
         | filter:{country: searchValue, operator: searchValue}
       ).length === 0
     ">
-      <td colspan="10" style="text-align: center;">No Records Found</td>
-    </tr>
+        <td colspan="10" style="text-align: center;">No Records Found</td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -122,7 +126,8 @@
         </div>
         <div class="form-group col-6 my-2">
           <label>SenderID Type</label>
-          <select class="dropdown-select w-100" [attr.disabled]="hasdata ? 'disabled' : null" formControlName="senderid_type">
+          <select class="dropdown-select w-100" [attr.disabled]="hasdata ? 'disabled' : null"
+            formControlName="senderid_type">
             <option value="" default>Select Sender ID Type</option>
             <option value="Open">Open</option>
             <option value="List">List</option>
@@ -158,7 +163,7 @@
           </span>
         </div>
         <div class="col-12 text-center mt-2">
-          <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="resetForm()"/>
+          <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="resetForm()" />
           <input type="submit" class="btn erp-intl-btn save-btn" value="Save" />
         </div>
       </div>
@@ -171,28 +176,30 @@
     &times;
   </button>
   <div class="modal-body">
-    <form [formGroup] ="billSubmissionForm" (ngSubmit)="onBillSubmit()">
+    <form [formGroup]="billSubmissionForm" (ngSubmit)="onBillSubmit()">
       <div class="row">
         <div class="col-6 form-group">
           <label>Country</label>
-          <select class="dropdown-select w-100" formControlName="country"
-          (change)="handleCountry('mcc', $event)">
-          <option value='' default disabled>Select Country</option>
-          <option *ngFor="let item of billSubCountryList" [attr.data-value]="item.mcc" [attr.sub-value]="item.billOnSub">{{ item.country }}
-          </option>
-        </select>
-        <span class="text-danger pl-1 f-12" *ngIf="billSubmissionForm.get('mcc').hasError('required') && billSubmitted">
-          Country is required
-        </span>
+          <select class="dropdown-select w-100" formControlName="country" (change)="handleCountry('mcc', $event)">
+            <option value='' default disabled>Select Country</option>
+            <option *ngFor="let item of billSubCountryList" [attr.data-value]="item.mcc"
+              [attr.sub-value]="item.billOnSub">{{ item.country }}
+            </option>
+          </select>
+          <span class="text-danger pl-1 f-12"
+            *ngIf="billSubmissionForm.get('mcc').hasError('required') && billSubmitted">
+            Country is required
+          </span>
         </div>
         <div class="form-group col-6">
           <label>Bill On Submission</label>
           <select class="dropdown-select w-100" formControlName="billonsub">
             <option value="" disabled default>Select Type</option>
-            <option value="Yes" >Yes</option>
+            <option value="Yes">Yes</option>
             <option value="No">No</option>
           </select>
-          <span class="text-danger pl-1 f-12" *ngIf="billSubmissionForm.get('billonsub').hasError('required') && billSubmitted">
+          <span class="text-danger pl-1 f-12"
+            *ngIf="billSubmissionForm.get('billonsub').hasError('required') && billSubmitted">
             Submission type is required
           </span>
         </div>
@@ -204,3 +211,13 @@
     </form>
   </div>
 </ng-template>
+
+<div class="pt-3 center-block h-100"
+  *ngIf="!CmAuthControls.cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled">
+  <div class="d-block">
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
+  </div>
+</div>

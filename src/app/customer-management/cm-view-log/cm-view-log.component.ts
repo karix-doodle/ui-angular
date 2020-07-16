@@ -7,16 +7,25 @@ import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
 import { viewLogApi_Response } from '../models/customer-management.model';
 import { saveAs } from 'file-saver';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+
 @Component({
   selector: 'app-cm-view-log',
   templateUrl: './cm-view-log.component.html',
   styleUrls: ['./cm-view-log.component.css']
 })
+
 export class CmViewLogComponent implements OnInit {
   public params: any;
   viewLogData: viewLogApi_Response
+  CmAuthControls = null
+
   constructor(private route: ActivatedRoute,
-    private service: CustomerManagementService) {
+    private service: CustomerManagementService,
+    private authorizationService: AuthorizationService
+  ) {
+    this.CmAuthControls = authorizationService.authorizationState.customer_management
+
     let startDate = moment().subtract(29, 'days').utcOffset(environment.UTC);
     let todate = moment().utcOffset(environment.UTC);
     let dayDiffer = todate.diff(startDate, 'days') + 1;
@@ -28,7 +37,7 @@ export class CmViewLogComponent implements OnInit {
   }
 
   ngOnInit() {
-this.CustomerMangaementzViewLog()
+    this.CustomerMangaementzViewLog()
   }
 
   CustomerMangaementzViewLog() {
@@ -41,7 +50,7 @@ this.CustomerMangaementzViewLog()
         this.viewLogData = res;
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
-          errorAlert( res.responsestatus)
+          errorAlert(res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText)
