@@ -4,6 +4,7 @@ import { of, Observable } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 import { Tokens } from '../models/tokens';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -21,7 +22,9 @@ export class AuthService {
     loggedinempid: environment.loggedinempid
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router) { }
 
   authenticateTokens(tokens: { accesstoken: string, refreshtoken: string }) {
     console.log(`Tokens:${JSON.stringify(tokens)}`);
@@ -51,9 +54,15 @@ export class AuthService {
   refreshToken() {
     return this.http.post<any>(`${this.baseUrl}/refreshToken`, {
       refreshToken: this.getRefreshToken()
-    }).pipe(tap((tokens: Tokens) => {
-      console.log(`refresh tokens:${JSON.stringify(tokens)}`);
-      this.storeJwtToken(tokens.accesstoken);
+    }).pipe(tap((res) => {
+      if (res.responsestatus === environment.APIStatus.success.text
+        && res.responsecode > environment.APIStatus.success.code) {
+        this.storeJwtToken(res.accesstoken);
+      } else if (res.responsestatus === environment.APIStatus.error.text
+        && res.responsecode < environment.APIStatus.error.code) {
+        this.doLogoutUser();
+      }
+
     }));
     // return this.storeJwtToken(this.testRefresh);
   }
@@ -76,6 +85,7 @@ export class AuthService {
   private removeTokens() {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
+    this.router.navigate(['/dashboard']);
   }
 
 }
