@@ -10,8 +10,7 @@ import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 const addRoutes: Routes = [
   {
     path: 'route-management/custom-route/add-route',
-    component: MobileRouteComponent,
-    canActivate: [AuthGuard]
+    component: MobileRouteComponent
   },
   {
   path: 'route-management/custom-route/add-route',
@@ -19,18 +18,15 @@ const addRoutes: Routes = [
   children: [
     {
       path: 'mobile-route',
-      component: MobileRouteComponent,
-      canActivate: [AuthGuard]
+      component: MobileRouteComponent
     },
     {
       path: 'senderid-route',
-      component: SenderidTemplateRouteComponent,
-      canActivate: [AuthGuard]
+      component: SenderidTemplateRouteComponent
     },
     {
       path: 'senderid-mobile-route',
-      component: SenderidMobileRouteComponent,
-      canActivate: [AuthGuard]
+      component: SenderidMobileRouteComponent
     },
 ]}
 ];

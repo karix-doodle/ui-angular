@@ -11,17 +11,14 @@ const cmTabroutes: Routes = [
   {
     path: 'customer-management',
     component: CmListComponent,
-    canActivate: [AuthGuard],
     children: [
       {
         path: '',
-        component: CmListTableComponent,
-        canActivate: [AuthGuard],
+        component: CmListTableComponent
       },
       {
         path: 'pending-activation',
-        component: PendingActivateTableComponent,
-        canActivate: [AuthGuard],
+        component: PendingActivateTableComponent
       },
     ]
   }

@@ -12,23 +12,19 @@ const crListroutes: Routes = [
   {
     path: 'route-management/custom-route',
     component: CustomRouteListComponent,
-    canActivate: [AuthGuard],
     children: [
       {
         path: 'mobile',
-        component: CrRmMobileComponent,
-        canActivate: [AuthGuard]
+        component: CrRmMobileComponent
       },
       {
         path: 'sender-id',
-        component: CrRmSenderidComponent,
-        canActivate: [AuthGuard]
+        component: CrRmSenderidComponent
       },
       {
         path: 'mobile-sender-id',
-        component: CrRmMobileSenderidComponent,
-        canActivate: [AuthGuard]
-      },
+        component: CrRmMobileSenderidComponent
+      }
     ]
   }
 ];

@@ -10,8 +10,7 @@ import { AuthGuard } from '../../auth-management/guards/auth.guard';
 const custRoutes: Routes = [
   {
     path: 'route-management/custom-route',
-    component: CrMenuComponent,
-    canActivate: [AuthGuard]
+    component: CrMenuComponent
   }
 ];
 

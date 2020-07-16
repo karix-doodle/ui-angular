@@ -11,8 +11,7 @@ import { AuthGuard } from '../auth-management/guards/auth.guard';
 const settingsRoutes: Routes = [
   {
     path: 'settings',
-    component: SettingsHomeComponent,
-    canActivate: [AuthGuard]
+    component: SettingsHomeComponent
   },
   {
     path: 'settings',
@@ -20,13 +19,11 @@ const settingsRoutes: Routes = [
     children: [
       {
         path: 'default-rate-card',
-        component: StandardBillplanComponent,
-        canActivate: [AuthGuard]
+        component: StandardBillplanComponent
       },
       {
         path: 'global-country-operator-list',
-        component: GlobalCountryOperatorListComponent,
-        canActivate: [AuthGuard]
+        component: GlobalCountryOperatorListComponent
       },
     ]
   }

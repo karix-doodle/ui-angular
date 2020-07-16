@@ -21,8 +21,7 @@ import { AuthGuard } from '../auth-management/guards/auth.guard';
 const GMroutes: Routes = [
   {
     path: 'gateway-management',
-    component: GtListingComponent,
-    canActivate: [AuthGuard]
+    component: GtListingComponent
   },
   {
     path: 'gateway-management',
@@ -30,68 +29,55 @@ const GMroutes: Routes = [
     children: [
       {
         path: 'gateway-list',
-        component: GtListingComponent,
-        canActivate: [AuthGuard]
+        component: GtListingComponent
       },
       {
         path: 'create-gateway',
-        component: CreateGatewayComponent,
-        canActivate: [AuthGuard]
+        component: CreateGatewayComponent
       },
       {
         path: 'edit-gateway/:id',
-        component: EditGatewayComponent,
-        canActivate: [AuthGuard]
+        component: EditGatewayComponent
       },
       {
         path: 'update-gateway/:id/:name/:currencyId',
-        component: UpdateGatewayComponent,
-        canActivate: [AuthGuard]
+        component: UpdateGatewayComponent
       },
       {
         path: 'gateway-details/:id',
-        component: GatewayDetailsComponent,
-        canActivate: [AuthGuard]
+        component: GatewayDetailsComponent
       },
       {
         path: 'country-list/:id/:name',
-        component: GtCountrylistComponent,
-        canActivate: [AuthGuard]
+        component: GtCountrylistComponent
       },
       {
         path: 'country-list-view/:id/:name/:country/:operator',
-        component: GtCountryListViewLogComponent,
-        canActivate: [AuthGuard]
+        component: GtCountryListViewLogComponent
       },
       {
         path: 'details-view-log/:id/:name',
-        component: GtDetailsViewLogComponent,
-        canActivate: [AuthGuard]
+        component: GtDetailsViewLogComponent
       },
       {
         path: 'file-audit-log/:id/:name',
-        component: GtFileAuditLogComponent,
-        canActivate: [AuthGuard]
+        component: GtFileAuditLogComponent
       },
       {
         path: 'file-audit-log-view/:id/:name/:uuid',
-        component: GtFileAuditLogViewComponent,
-        canActivate: [AuthGuard]
+        component: GtFileAuditLogViewComponent
       },
       {
         path: 'sender-id-whitelist/:id/:name',
-        component: GtSenderIdWhiteListComponent,
-        canActivate: [AuthGuard]
+        component: GtSenderIdWhiteListComponent
       },
       {
         path: 'esme-addr-routed/:id/:name',
-        component: GtESMEAddrRoutedComponent,
-        canActivate: [AuthGuard]
+        component: GtESMEAddrRoutedComponent
       },
       {
         path: 'senderid-content-block/:id/:name',
-        component: GtSenderidContentComponent,
-        canActivate: [AuthGuard]
+        component: GtSenderidContentComponent
       },
     ]
   }

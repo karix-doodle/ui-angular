@@ -11,8 +11,7 @@ import { AuthGuard } from '../auth-management/guards/auth.guard';
 const BProutes: Routes = [
   {
     path: 'billplan-management',
-    component: BillplanHomeComponent,
-    canActivate: [AuthGuard]
+    component: BillplanHomeComponent
   },
   {
     path: 'billplan-management',
@@ -20,8 +19,7 @@ const BProutes: Routes = [
     children: [
       {
         path: 'home',
-        component: BillplanListComponent,
-        canActivate: [AuthGuard]
+        component: BillplanListComponent
       }
     ]
   }

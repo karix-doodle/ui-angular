@@ -12,8 +12,7 @@ import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 const blRoutes: Routes = [
   {
     path: 'route-management/blacklist/add-route',
-    component: BlMobileRouteComponent,
-    canActivate: [AuthGuard]
+    component: BlMobileRouteComponent
   },
   {
   path: 'route-management/blacklist/add-route',
@@ -21,18 +20,15 @@ const blRoutes: Routes = [
   children: [
     {
       path: 'mobile-route',
-      component: BlMobileRouteComponent,
-      canActivate: [AuthGuard]
+      component: BlMobileRouteComponent
     },
     {
       path: 'senderid-route',
-      component: BlSenderidRouteComponent,
-      canActivate: [AuthGuard]
+      component: BlSenderidRouteComponent
     },
     {
       path: 'senderid-mobile-route',
-      component: BlMobileSenderidRouteComponent,
-      canActivate: [AuthGuard]
+      component: BlMobileSenderidRouteComponent
     },
 ]}
 ];

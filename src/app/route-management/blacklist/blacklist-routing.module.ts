@@ -7,8 +7,7 @@ import { AuthGuard } from '../../auth-management/guards/auth.guard';
 const blackListroutes: Routes = [
   {
     path: 'route-management/blacklist',
-    component: BlacklistMenuComponent,
-    canActivate: [AuthGuard]
+    component: BlacklistMenuComponent
   }
 ];
 

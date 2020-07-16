@@ -11,8 +11,7 @@ import { AuthGuard } from '../../auth-management/guards/auth.guard';
 const poolRoutes: Routes = [
   {
     path: 'route-management/pool-route',
-    component: PoolRouteListComponent,
-    canActivate: [AuthGuard]
+    component: PoolRouteListComponent
   },
   {
     path: 'route-management/pool-route',
@@ -20,18 +19,15 @@ const poolRoutes: Routes = [
     children: [
       {
         path: 'create-pool',
-        component: CreatePoolComponent,
-        canActivate: [AuthGuard]
+        component: CreatePoolComponent
       },
       {
         path: 'clone-pool/:id',
-        component: CreatePoolComponent,
-        canActivate: [AuthGuard]
+        component: CreatePoolComponent
       },
       {
         path: 'account-wise-view/:id',
-        component: PrActWiseViewComponent,
-        canActivate: [AuthGuard]
+        component: PrActWiseViewComponent
       }
     ]
   }
