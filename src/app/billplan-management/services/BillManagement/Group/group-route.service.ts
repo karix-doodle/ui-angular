@@ -8,6 +8,7 @@ import {
 } from '../../../models/BillManagement/blillplan.models';
 import { User } from '../../../../shared/models/commonModels';
 import { } from '../../../models/BillManagement/Group/groupRoute.model';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +20,19 @@ export class GroupRouteService {
   httpOptions = { headers: new HttpHeaders({ Accept: 'application/json', 'Content-Type': 'application/json' }) };
 
   user: User = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
-  constructor(public http: HttpClient) { }
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService) { }
 
 
   BillPlanCreateGroup(data): Observable<BillPlanCreateGroup_ApiResponse> {
     let details = {
       ...data,
-      loggedinempid: environment.loggedinempid
+      loggedinempid: this.user.loggedinempid
     }
     return this.http.post(this.baseUrl + '/createratecard/group', details, this.httpOptions)
       .pipe(map(m => m as BillPlanCreateGroup_ApiResponse));

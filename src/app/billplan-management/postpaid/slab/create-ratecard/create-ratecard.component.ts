@@ -106,8 +106,8 @@ export class CreateRatecardComponent implements OnInit {
   }
   private createSlabForm() {
     this.SlabFormGroup = this.formBuilder.group({
-      loggedinusername: [environment.loggedinusername],
-      loggedinempid: [environment.loggedinempid],
+      loggedinusername: [this.authorizationService.authorizationState.loggedinusername],
+      loggedinempid: [this.authorizationService.authorizationState.loggedinempid],
       billplan_id: [''],
       billplan_currencyid: [''],
       ratecard_type: ['slab'],

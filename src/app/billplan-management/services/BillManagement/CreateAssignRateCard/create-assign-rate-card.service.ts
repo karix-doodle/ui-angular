@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../../shared/models/commonModels';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import {
   RateCardSearchSuggestionParams,
   RateCardSearchRes,
@@ -23,16 +24,18 @@ export class CreateAssignRateCardService {
   };
 
   user: User = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
-  constructor(public http: HttpClient) { }
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService) { }
 
   getRateCardNameSuggestion(input: RateCardSearchSuggestionParams): Observable<RateCardSearchRes> {
     return this.http
       .get(
-        `${this.baseUrl}ratecard/search?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&ratecardtype=${input.ratecardtype}&ratecardname=${input.ratecardname}`, this.httpOptions
+        `${this.baseUrl}ratecard/search?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&ratecardtype=${input.ratecardtype}&ratecardname=${input.ratecardname}`, this.httpOptions
       )
       .pipe(map((data) => data as RateCardSearchRes));
   }
@@ -48,7 +51,7 @@ export class CreateAssignRateCardService {
   }
 
   BillPlanDetailsView(data): Observable<BillPlanDetailsView_ApiResponse> {
-    return this.http.get(`${this.baseUrl}view?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&billplanid=${data.billplanid}`, this.httpOptions)
+    return this.http.get(`${this.baseUrl}view?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&billplanid=${data.billplanid}`, this.httpOptions)
       .pipe(map(m => m as BillPlanDetailsView_ApiResponse));
   }
 
