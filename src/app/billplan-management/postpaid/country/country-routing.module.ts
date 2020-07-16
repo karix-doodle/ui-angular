@@ -11,21 +11,18 @@ const countryRoutes: Routes = [
   {
     path: 'billplan-management/postpaid/country',
     component: CountryComponent,
-    canActivate: [AuthGuard],
     children: [
       {
-        path: 'create-ratecard',
-        component: CreateRatecardComponent,
-        canActivate: [AuthGuard],
+        path: 'create-ratecard/:name/:cId/:bId',
+        component: CreateRatecardComponent
       },
       {
-        path: 'assigned-ratecard-view',
-        component: AssignedRatecardViewComponent,
-        canActivate: [AuthGuard],
-      }
+        path: 'assigned-ratecard-view/:id/:type',
+        component: AssignedRatecardViewComponent
+      },
     ]
   }
-];
+]
 
 @NgModule({
   imports: [RouterModule.forChild(countryRoutes)],

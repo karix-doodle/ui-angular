@@ -14,6 +14,8 @@ import {
   successAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "app-bl-senderid-route",
@@ -33,7 +35,8 @@ export class BlSenderidRouteComponent implements OnInit {
     public blackListService: BlackListService,
     public Service: BlackListAddMobileSenderidService,
     public router: Router,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {
@@ -185,7 +188,15 @@ export class BlSenderidRouteComponent implements OnInit {
           this.fromReset();
           errorAlert(data.message, data.responsestatus);
         } else {
-          successAlert(data.message);
+          Swal.fire({
+            icon: 'success',
+            title: data.responsestatus,
+            text: `Success:${data.data.success}
+                   Duplicate:${data.data.duplicate}
+                   Failed:${data.data.failed}
+                   Invalid:${data.data.invalid}
+                   Total:${data.data.total}`
+          });
           this.cancel();
         }
       },

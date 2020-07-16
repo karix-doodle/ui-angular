@@ -5,6 +5,7 @@ import { PoolRouteListRes, TaggedAccountsList, PoolRouteRes, RoutesRowlist } fro
 import { environment } from '../../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { errorAlert, confirmAlert } from '../../../shared/sweet-alert/sweet-alert';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 @Component({
   selector: 'app-pool-route-list',
   templateUrl: './pool-route-list.component.html',
@@ -28,7 +29,8 @@ export class PoolRouteListComponent implements OnInit {
   constructor(
     config: NgbModalConfig,
     private modalService: NgbModal,
-    private poolRouteService: PoolRouteService
+    private poolRouteService: PoolRouteService,
+    public authorizationService: AuthorizationService
   ) { }
 
   open(
@@ -77,7 +79,11 @@ export class PoolRouteListComponent implements OnInit {
     confirmAlert(`You won't be able to revert ${routeName}!`)
       .then((result) => {
         if (result.isConfirmed) {
-          this.poolRouteService.deletePoolRoute({ loggedinempid: environment.loggedinempid, route_id: routeId })
+          this.poolRouteService.deletePoolRoute(
+            {
+              loggedinempid: this.authorizationService.authorizationState.loggedinempid,
+              route_id: routeId
+            })
             .subscribe((res: PoolRouteRes) => {
               if (res.responsestatus === environment.APIStatus.success.text
                 && res.responsecode > environment.APIStatus.success.code) {

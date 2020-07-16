@@ -9,6 +9,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-listing',
@@ -25,9 +26,14 @@ export class GtListingComponent implements OnInit {
 
   searchvalue: string = ''
 
+  GtMgmtAuthControls = null
+
   constructor(
     private gatewayManagementService: GatewayManagementService,
-  ) { }
+    private authorizationService: AuthorizationService
+  ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+  }
 
   ngOnInit() {
     this.GtListing_list();
@@ -79,9 +85,9 @@ export class GtListingComponent implements OnInit {
         let val2Format = formatdate2 + ' ' + val2.lasttime + '.0'
         return <any>new Date(val1Format) - <any>new Date(val2Format);
       });
-      this.gatewayData.data.tabledata = this.selectedType;
+      this.gatewayData.data.tabledata = this.selectedType.reverse();
     } else {
-      this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type === type);
+      this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type.toLowerCase() === type.toLowerCase());
       this.gatewayData.data.tabledata = this.selectedType;
     }
   }

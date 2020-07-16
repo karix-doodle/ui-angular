@@ -14,6 +14,7 @@ import {
   successAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-cr-rm-mobile",
@@ -23,6 +24,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class CrRmMobileComponent implements OnInit {
   constructor(
     public mobileCustomRoute: MobileCustomRouteService,
+    public authService: AuthorizationService
   ) {}
   searchvalue: "";
   sortingName: string;

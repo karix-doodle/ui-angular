@@ -8,6 +8,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 import * as moment from 'moment';
 
@@ -22,14 +23,26 @@ export class GtCountryListViewLogComponent implements OnInit {
   GtCountryListViewLogData: GtCountryListViewLog_Data;
 
   public params: any;
+  searchvalue: string = ''
+
+  GtMgmtAuthControls = null
+
+  gw_id: number = null
+  gw_name: string = null
 
   constructor(
     private activeRoute: ActivatedRoute,
     private gatewayManagementService: GatewayManagementService,
+    private authorizationService: AuthorizationService
   ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+
+    this.gw_id = this.activeRoute.snapshot.params.id
+    this.gw_name = this.activeRoute.snapshot.params.name
+
     let startDate = moment().subtract(9, 'days').utcOffset(environment.UTC);
     let todate = moment().utcOffset(environment.UTC);
-    let dayDiffer = todate.diff(startDate, 'days') + 1;
+    let dayDiffer = todate && todate.diff(startDate, 'days') + 1;
     this.params = {
       fromdate: startDate,
       todate: todate,
@@ -44,7 +57,7 @@ export class GtCountryListViewLogComponent implements OnInit {
   getDateSelection(e) {
     let startDate = e.startDate;
     let todate = e.endDate;
-    let dayDiffer = todate.diff(startDate, 'days') + 1;
+    let dayDiffer = todate && todate.diff(startDate, 'days') + 1;
     this.params = {
       fromdate: e.startDate,
       todate: e.endDate,
@@ -65,8 +78,6 @@ export class GtCountryListViewLogComponent implements OnInit {
       (res: GtCountryListViewLog_ApiResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.GtCountryListViewLogDataRes = res;
-          this.GtCountryListViewLogDataRes.data.gw_id = this.activeRoute.snapshot.params.id
-          this.GtCountryListViewLogDataRes.data.gw_name = this.activeRoute.snapshot.params.name
           this.GtCountryListViewLogData = JSON.parse(JSON.stringify(this.GtCountryListViewLogDataRes));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)

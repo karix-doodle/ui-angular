@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../../../../environments/environment";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import {
   CustomSummary_ApiResponse,
   CustomGateway_ApiResponse,
@@ -25,11 +26,13 @@ export class CustomService {
     }),
   };
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService) {}
 
   /**
    * @description gets the custom route summary

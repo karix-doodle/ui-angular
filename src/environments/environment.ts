@@ -6,7 +6,10 @@ export const environment = {
   production: true,
   //serverUrl: '/erpinternationallogin/api',
   serverUrl: 'http://115.114.108.242/api/intlmgmt',
-  FileUploadUrl: 'http://10.20.59.248:8989/api/intlmgmt',
+  //FileUploadUrl: 'http://10.20.59.248:8989/api/intlmgmt',
+  //serverUrl: 'http://10.20.59.232:8383/api/intlmgmt',
+  FileUploadUrl: 'http://10.20.51.182:8484/api/intlmgmt',
+  //FileUploadUrl: 'http://10.20.59.232:8383/api/intlmgmt',
   loggedinusername: 'testuser',
   loggedinempid: 1234,
   UTC: "+05:30",
@@ -37,10 +40,11 @@ export const environment = {
       max: 1000
     }
   },
-  charsetEncode: ['GSM','ISO-8859-1','ASCII'],
-  defaultCharsetEncode : 'GSM',
-  dlrType: ['No DLR','Handset DLR','SMSC DLR'],
-  defaultDlrType : 'Handset DLR'
+  charsetEncode: ['GSM', 'ISO-8859-1', 'ASCII'],
+  defaultCharsetEncode: 'GSM',
+  dlrType: ['No DLR', 'Handset DLR', 'SMSC DLR'],
+  customerTypes: ['Direct', 'Premium', 'Wholesale'],
+  dateTimePickerTimeDifference: 10
 };
 
 /*

@@ -3,6 +3,7 @@ import { BlackListService } from '../../services/RouteManagement/blacklist/black
 import { BlackListSummary_ApiResponse, BlackListSummary_Data } from '../../models/BlackList/blacklist.model';
 import { environment } from 'src/environments/environment';
 import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
+import { AuthorizationService } from '../../../service/auth/authorization.service';
 
 @Component({
   selector: 'app-blacklist-menu',
@@ -12,7 +13,10 @@ import { errorAlert } from 'src/app/shared/sweet-alert/sweet-alert';
 export class BlacklistMenuComponent implements OnInit {
 blackListSummaryApiResponse: BlackListSummary_ApiResponse;
 blacklistSummary: BlackListSummary_Data;
-  constructor(public blackListService: BlackListService) { }
+  constructor(
+    public blackListService: BlackListService,
+    public authService: AuthorizationService
+    ) { }
 
   ngOnInit() {
     this.getBlackListSummary()

@@ -7,12 +7,15 @@ import {
   MobileCustomResponse,
 } from "src/app/route-management/models/custom.model";
 import { map } from "rxjs/operators";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: "root",
 })
 export class MobileCustomRouteService {
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private authorizationService: AuthorizationService) {}
   baseUrl: string = environment.serverUrl + "/routemgmt/custom/mobile";
   httpOptions = {
     headers: new HttpHeaders({
@@ -21,8 +24,8 @@ export class MobileCustomRouteService {
     }),
   };
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
   /**
    * @description gets all the mobile custom route datas

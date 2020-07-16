@@ -10,6 +10,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-edit-gateway',
@@ -30,6 +31,8 @@ export class EditGatewayComponent implements OnInit {
   updateGatewayFormGroup: FormGroup;
   isUpdateValid: boolean = false;
 
+  GtMgmtAuthControls = null
+
   public messageType = [
     { item: "Transaction", value: 0, status: 0 },
     { item: "Promotion", value: 1, status: 0 },
@@ -46,7 +49,10 @@ export class EditGatewayComponent implements OnInit {
     private router: Router,
     private gatewayManagementService: GatewayManagementService,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+
     let gw_name = '[0-9a-zA-Z-_.@$\' ]{4,200}';
     let gw_id = '[0-9a-zA-Z]{2,10}';
     let tps = '[0-9]{1,100000}';
@@ -65,7 +71,7 @@ export class EditGatewayComponent implements OnInit {
       dlr_type: new FormControl('', [Validators.required]),
       charset_enc: this.formBuilder.array([], [Validators.required]),
       senderid_whitelist_required: new FormControl(true),
-      senderid_type: new FormControl('', [Validators.required]),
+      senderid_type: new FormControl(''),
       description: new FormControl('', [Validators.required, Validators.pattern(description)]),
     });
   }
@@ -173,7 +179,7 @@ export class EditGatewayComponent implements OnInit {
             tps: this.gatewayEditDataRes.data.tps,
             dlr_type: this.gatewayEditDataRes.data.dlr_type,
             senderid_whitelist_required: this.gatewayEditDataRes.data.senderid_whitelist_required,
-            senderid_type: this.gatewayEditDataRes.data.senderid_type,
+            senderid_type: this.gatewayEditDataRes.data.senderid_type != null ? this.gatewayEditDataRes.data.senderid_type : '',
             description: this.gatewayEditDataRes.data.description,
           });
           this.setMessageType(this.gatewayEditDataRes.data.msg_type.split(','))
@@ -185,6 +191,19 @@ export class EditGatewayComponent implements OnInit {
         errorAlert(error.message, error.statusText)
       }
     );
+  }
+
+  handleSenderIdWhitelist(isChecked: boolean) {
+    if (isChecked) {
+      this.updateGatewayFormGroup.get('senderid_type').setValidators([Validators.required]);
+      this.updateGatewayFormGroup.get('senderid_type').updateValueAndValidity();
+    } else {
+      this.updateGatewayFormGroup.patchValue({
+        senderid_type: ''
+      })
+      this.updateGatewayFormGroup.get('senderid_type').clearValidators();
+      this.updateGatewayFormGroup.get('senderid_type').updateValueAndValidity();
+    }
   }
 
   onSubmitUpdateGateway(data) {
@@ -200,7 +219,11 @@ export class EditGatewayComponent implements OnInit {
       data.is_bill_on_submission = data.is_bill_on_submission ? 1 : 0;
       data.exclude_lcr = data.exclude_lcr ? "1" : "0";
       data.senderid_whitelist_required = data.senderid_whitelist_required ? "1" : "0";
-      data.senderid_type = (Number)(data.senderid_type);
+      if (data.senderid_whitelist_required == "1") {
+        data.senderid_type = data.senderid_type ? (Number)(data.senderid_type) : '';
+      } else {
+        delete data.senderid_type
+      }
       data.msg_type = (data.msg_type.toString());
       data.charset_enc = (data.charset_enc.toString());
       this.gatewayManagementService.Gateway_update(data).subscribe(

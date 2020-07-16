@@ -3,8 +3,11 @@
         <label class="main-heading">SETTINGS</label>
     </div>
     <div class="col-7 text-right">
-        <a routerLink="/settings/default-rate-card" class="btn btn-basic mr-3">Default Rate Card</a>
-        <a routerLink="/settings/global-country-operator-list" class="btn erp-intl-btn">Global Country Operator Listing</a>
+        <a [ngClass]="{'disabled-func disabled': StMgmtAuthControls.settings_standard_rate_card_view_enabled ? null : true }"
+            [routerLink]="StMgmtAuthControls.settings_standard_rate_card_view_enabled ? ['/settings/default-rate-card'] : []"
+            class="btn btn-basic mr-3">Default Rate Card</a>
+        <a routerLink="/settings/global-country-operator-list" class="btn erp-intl-btn">Global Country Operator
+            Listing</a>
     </div>
 </div>
 <div class="data-container m-lr_15">
@@ -52,9 +55,11 @@
         </div>
     </section> -->
     <div class="row">
-        <label class="gateway-section-heading col-6">INVOICE BILL PLAN CONVERSION RATE<span class="badge rounded-question" title="tooltip data">?</span></label>
+        <label class="gateway-section-heading col-6">INVOICE BILL PLAN CONVERSION RATE<span
+                class="badge rounded-question" title="tooltip data">?</span></label>
         <div class="col-6 text-right setting-select">
-            <input type="radio" name="invoiceBillplan" id="manual2" checked /><label for="manual2" class="mr-2">Manual</label>
+            <input type="radio" name="invoiceBillplan" id="manual2" checked /><label for="manual2"
+                class="mr-2">Manual</label>
             <input type="radio" name="invoiceBillplan" id="automatic2" /><label for="automatic2">Automatic</label>
         </div>
     </div>
@@ -90,103 +95,142 @@
                 </div>
             </div>
             <div class="col-2 text-right">
-                <button class="btn btn-light" (click)="open(viewAudit)" >View Audit</button>
+                <button class="btn btn-light"
+                    [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled }"
+                    (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? open(viewAudit): ''">View
+                    Audit</button>
             </div>
         </div>
     </section>
+    <div class="col-12 text-left">
+        <button type="submit" class="btn erp-intl-btn">Save</button>
+    </div>
 
-    <div class="row">
-        <div class="col-4">
-            <label class="gateway-section-heading">NORMALIZE RATE SETTINGS<span class="badge rounded-question" title="tooltip data">?</span></label>
-            <section class="main-section">
-                <div class="form-group">
-                    <label>Normalize Currency</label>
-                    <select class="dropdown-select w-100">
-                        <option value="" default>USD</option>
-                        <option value="">option1</option>
-                        <option value="">option2</option>
-                        <option value="">option3</option>
-                    </select>
-                </div>
-            </section>
+    <form [formGroup]="currencyTimezoneFormGroup" class="col-12 pt-5 px-0"
+        (ngSubmit)="onSubmitCurrencyTimezoneFormGroup(currencyTimezoneFormGroup.value)">
+        <div class="row">
+            <!-- <pre>Form values: {{currencyTimezoneFormGroup.value | json}}</pre> -->
         </div>
-        <div class="col-5">
-            <label class="gateway-section-heading">TIMEZONE<span class="badge rounded-question" title="tooltip data">?</span></label>
-
+        <div class="row">
+            <div class="col-4">
+                <label class="gateway-section-heading">NORMALIZE RATE SETTINGS<span class="badge rounded-question"
+                        title="tooltip data">?</span></label>
+                <section class="main-section">
+                    <div class="form-group">
+                        <label>Normalize Currency</label>
+                        <select *ngIf="StMgmtAuthControls.settings_set_or_update_normalize_rate_currency_enabled"
+                            class="dropdown-select w-100" formControlName="currency_id"
+                            [attr.disabled]="StMgmtAuthControls.settings_set_or_update_normalize_rate_currency_enabled ? null : true">
+                            <option value="" default disabled>Select Gateway Currency</option>
+                            <option value="{{item.currency_id}}" *ngFor="let item of settingsCurrencyData?.data"
+                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                            </option>
+                        </select>
+                        <select *ngIf="!StMgmtAuthControls.settings_set_or_update_normalize_rate_currency_enabled"
+                            class="dropdown-select w-100" disabled
+                            [value]="currencyTimezoneFormGroup.get('currency_id').value">
+                            <option value="" default disabled>Select Gateway Currency</option>
+                            <option value="{{item.currency_id}}" *ngFor="let item of settingsCurrencyData?.data"
+                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                            </option>
+                        </select>
+                    </div>
+                </section>
+            </div>
+            <div class="col-5">
+                <label class="gateway-section-heading">TIMEZONE
+                    <span class="badge rounded-question" title="tooltip data">?</span>
+                </label>
                 <section class="main-section">
                     <div class="row">
                         <div class="col-5"><label>TIMEZONE</label></div>
                         <div class="col-7 day-light-check text-right">
-                            <label class="checkbox-label" for="day-light">Day Light
-                                <input type="checkbox" id="day-light">
+                            <label class="checkbox-label" for="day-light">
+                                Day Light
+                                <input type="checkbox" id="day-light" disabled>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                     </div>
                     <div class="form-group">
-                        
-                        <select class="dropdown-select w-100">
-                            <option value="" default>USD</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
+                        <select *ngIf="StMgmtAuthControls.settings_set_or_update_timezone_enabled"
+                            [attr.disabled]="StMgmtAuthControls.settings_set_or_update_timezone_enabled ? null : true"
+                            class="dropdown-select w-100" formControlName="timezone_id">
+                            <option value="" default disabled>Select Gateway Timezone</option>
+                            <option *ngFor="let item of settingsTimeZoneData?.data" value="{{item.id}}">
+                                {{item.timezone}}
+                            </option>
+                        </select>
+                        <select *ngIf="!StMgmtAuthControls.settings_set_or_update_timezone_enabled"
+                            class="dropdown-select w-100" [value]="currencyTimezoneFormGroup.get('timezone_id').value"
+                            disabled>
+                            <option value="" default disabled>Select Gateway Timezone</option>
+                            <option *ngFor="let item of settingsTimeZoneData?.data" value="{{item.id}}">
+                                {{item.timezone}}
+                            </option>
                         </select>
                     </div>
                 </section>
-
+            </div>
+            <div class="col-12 text-left">
+                <button type="submit" class="btn erp-intl-btn">Save</button>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
+
 <!-- modal pop-up -->
 <ng-template #viewAudit let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
-        <div class="modal-body ">
-            <form action="">
-                <label class="view-audit-head">View Audit</label>
-                <div class="row">
-                    <table class="table table-borderless erp-list-table row-hover-effect erp-table-scroll">
-                        <thead>
-                            <tr>
-                                <th>From Currency</th>
-                                <th>To Currency</th>
-                                <th>Conversion Rate</th>
-                                <th>Conversion Type</th>
-                                <th>Conversion Date & Tme</th>
-                                <th>Converted By User</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-weight-semi-bold">Inr (₹)</td>
-                                <td class="font-weight-semi-bold">Euro (€)</td>
-                                <td>14.567</td>
-                                <td>Manual</td>
-                                <td>28/10/2019 | 23:25:00</td>
-                                <td>Nawal</td>
-                            </tr>
-                            <tr>
-                                <td class="font-weight-semi-bold col-hover">Inr (₹)</td>
-                                <td class="font-weight-semi-bold">Euro (€)</td>
-                                <td>14.567</td>
-                                <td>Manual</td>
-                                <td>28/10/2019 | 23:25:00</td>
-                                <td>Nawal</td>
-                            </tr>
-                            <tr>
-                                <td class="font-weight-semi-bold">Inr (₹)</td>
-                                <td class="font-weight-semi-bold">Euro (€)</td>
-                                <td>14.567</td>
-                                <td>Manual</td>
-                                <td>28/10/2019 | 23:25:00</td>
-                                <td>Nawal</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="col-12 text-center">
-                        <input type="reset" class="btn erp-intl-btn mr-3" value="Close" aria-label="Close" (click)="d('Cross click')">     
-                    </div>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
+    <div class="modal-body ">
+        <form action="">
+            <label class="view-audit-head">View Audit</label>
+            <div class="row">
+                <table class="table table-borderless erp-list-table row-hover-effect erp-table-scroll">
+                    <thead>
+                        <tr>
+                            <th>From Currency</th>
+                            <th>To Currency</th>
+                            <th>Conversion Rate</th>
+                            <th>Conversion Type</th>
+                            <th>Conversion Date & Tme</th>
+                            <th>Converted By User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-weight-semi-bold">Inr (₹)</td>
+                            <td class="font-weight-semi-bold">Euro (€)</td>
+                            <td>14.567</td>
+                            <td>Manual</td>
+                            <td>28/10/2019 | 23:25:00</td>
+                            <td>Nawal</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-semi-bold col-hover">Inr (₹)</td>
+                            <td class="font-weight-semi-bold">Euro (€)</td>
+                            <td>14.567</td>
+                            <td>Manual</td>
+                            <td>28/10/2019 | 23:25:00</td>
+                            <td>Nawal</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-semi-bold">Inr (₹)</td>
+                            <td class="font-weight-semi-bold">Euro (€)</td>
+                            <td>14.567</td>
+                            <td>Manual</td>
+                            <td>28/10/2019 | 23:25:00</td>
+                            <td>Nawal</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-12 text-center">
+                    <input type="reset" class="btn erp-intl-btn mr-3" value="Close" aria-label="Close"
+                        (click)="d('Cross click')">
                 </div>
-            </form>
-        </div> 
+            </div>
+        </form>
+    </div>
 
 </ng-template>

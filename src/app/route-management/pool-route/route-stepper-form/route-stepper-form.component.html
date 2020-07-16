@@ -1,33 +1,34 @@
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
-
-    <mat-step [stepControl]="parentForm">
-        <form [formGroup]="parentForm" (ngSubmit)="onFirstStepSubmit(stepper)">
+    <mat-step [stepControl]="parentFormGroup">
+        <form [formGroup]="parentFormGroup" (ngSubmit)="onAddNewRouteFormSubmit()">
             <section class="mb-2">
                 <div class="row">
                     <div class="col-3 form-group">
                         <label>Country</label>
-                        <select (change)="selectCountry()" class="dropdown-select w-100" formControlName="countryName"
-                            ngDefaultControl>
-                            <!-- [ngClass]="{submitError:submitted && parentForm.get('countryName').hasError('required')}" -->
+                        <select #coun (change)="selectCountryGetOperatorList(coun.value, $event)"
+                            class="dropdown-select w-100" formControlName="country">
                             <option value="" disabled>Select Country</option>
-                            <option *ngFor="let countryObj of countriesList" [ngValue]="countryObj.country">
+                            <option *ngFor="let countryObj of countriesList" [value]="countryObj.country"
+                                [attr.data-mcc]="countryObj.mcc" [attr.data-continent]="countryObj.continent"
+                                [attr.data-country_code]="countryObj.country_code">
                                 {{ countryObj.country }}</option>
                         </select>
                         <span class="text-danger pl-1 f-12"
-                            *ngIf="parentForm.get('countryName').hasError('required') && submitted">
+                            *ngIf="parentFormGroup.get('country').hasError('required') && submitted">
                             Country Name is required
                         </span>
                     </div>
                     <div class="col-3 form-group">
                         <label>Operator</label>
-                        <select (change)="selectOperator()" class="dropdown-select w-100" formControlName="operatorMNC">
-                            <!-- [ngClass]="{submitError:submitted && parentForm.get('operatorMNC').hasError('required')}" -->
+                        <select #oper (change)="selectOperatorDropdown(oper.value, $event)"
+                            class="dropdown-select w-100" formControlName="operator">
                             <option value="" disabled>Select Operator</option>
-                            <option *ngFor="let operatorObj of operatorsList" [ngValue]="operatorObj.mnc">
-                                {{ operatorObj.operator }}</option>
+                            <option *ngFor="let operatorObj of operatorsList" [value]="operatorObj.operator"
+                                [attr.data-mnc]="operatorObj.mnc">
+                                {{operatorObj.operator == 'All' ? 'All Operator' : operatorObj.operator}}</option>
                         </select>
                         <span class="text-danger pl-1 f-12"
-                            *ngIf="parentForm.get('countryName').hasError('required') && submitted">
+                            *ngIf="parentFormGroup.get('operator').hasError('required') && submitted">
                             Operator Name is required
                         </span>
                     </div>
@@ -35,8 +36,8 @@
                 <div class="row gt-ratio-div">
                     <div class="col-10">
                         <div class="row">
-                            <div class="col-4 mb-2" formArrayName="gatewayRatio"
-                                *ngFor="let item of parentForm.get('gatewayRatio').controls; let i = index;">
+                            <div class="col-4 mb-2" formArrayName="ratios"
+                                *ngFor="let item of firstStepFormArray.controls; let i = index;">
                                 <div [formGroupName]="i">
                                     <div class="row">
                                         <label class="col-5">Gateway</label>
@@ -44,26 +45,27 @@
                                     </div>
                                     <div class="row ml-0 gatewayRow">
                                         <div class="col-7 p-0">
-                                            <!-- [ngClass]="{submitError:submitted && item.get('gw_id').hasError('required')}" -->
                                             <select class="dropdown-select w-100" formControlName="gw_id"
                                                 (change)="onChangeSelect(i, 'firstForm')">
                                                 <option value="" disabled>Select Gateway</option>
-                                                <option *ngFor="let obj of gatewaysList" [ngValue]="obj.gw_id"
-                                                    [hidden]="obj.isSelected === true">
+                                                <option *ngFor="let obj of firstStepGatewaysList" [ngValue]="obj.gw_id"
+                                                    [hidden]="obj.isSelected">
                                                     {{ obj.gw_id }}</option>
                                             </select>
                                             <span class="text-danger pl-1 f-12"
                                                 *ngIf="item.get('gw_id').hasError('required') && submitted">
-                                                Gateway is required
+                                                Gateway is required &nbsp;
+                                            </span>
+                                            <span class="text-danger pl-1 f-12 text-center"
+                                                *ngIf="firstStepRatioTotal < 100 && submitted">
+                                                Ratio must be upto 100%
                                             </span>
                                         </div>
                                         <div class="col-5 p-0">
                                             <input type="number" formControlName="ratio_in_percentage" step="10"
                                                 min="10" max="100" onKeyDown="return false" matInput placeholder="%"
-                                                class="ratio-text"
-                                                [ngClass]="{submitError:submitted && getRatioCount !== 100}"
-                                                (click)="setFormArrayIndex(i)">
-                                            <!-- [readonly]="item.get('gw_id').hasError('required')" -->
+                                                class="ratio-text" (click)="setFormArrayIndex(i)">
+                                            <!-- [ngClass]="{submitError:submitted && firstStepRatioTotal !== 100}" -->
                                         </div>
                                         <span class="closeGateway" (click)="onCloseGateway(i)"><b>X</b></span>
                                     </div>
@@ -75,7 +77,6 @@
                         <button type="button" class="btn btn-light" (click)="addGateway()">+</button>
                     </div>
 
-
                 </div>
             </section>
             <div>
@@ -83,28 +84,27 @@
             </div>
             <div class="row mt-4 create-route-section">
                 <div class="col-6">
-                    <button type="button" class="btn btn-dark" (click)="onAddNewRoute(stepper, 'fromAddNew')">ADD
-                        NEW</button>
+                    <button type="submit" class="btn btn-dark">ADD NEW</button>
                 </div>
                 <div class="col-6 text-right save-form-div">
-                    <!-- <a routerLink="/route-management/pool-route/account-wise-view" class="btn btn-basic mr-3"
-                        mat-button>Cancel</a> -->
-                    <!-- <button class="btn erp-intl-btn" mat-button matStepperNext>Next</button> -->
-                    <button type="button" class="btn btn-basic mr-3" mat-button
-                    routerLink="/route-management/pool-route" (click)="firstFormCancel()">Cancel</button>
-                    <button type="submit" class="btn erp-intl-btn" mat-button>Next</button>
+                    <button type="button" class="btn btn-basic mr-3" routerLink="/route-management/pool-route"
+                        mat-button>Cancel</button>
+                    <button type="button" (click)="poolRouteService.previewList.length && onNext(stepper)"
+                        class="btn erp-intl-btn" mat-button
+                        [ngClass]="{'isDisabled': !poolRouteService.previewList.length}">Next</button>
                 </div>
             </div>
         </form>
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup" (ngSubmit)="onSecondStepSubmit(stepper)">
+        <form [formGroup]="secondFormGroup" (ngSubmit)="onSecondStepSubmit()">
+            <!-- <pre> {{secondFormGroup.value | json}}</pre> -->
             <div class="main-container p-4">
                 <div class="row">
                     <label class="font-weight-bold col-12 mb-4">REST OF THE WORLD (ROW)</label>
                     <div class="col-5">
                         <div class="row">
-                            <div class=" form-group col-4 pr-0">
+                            <div class="form-group col-4 pr-0">
                                 <input type="radio" id="block-row" value="block" formControlName="row_route">
                                 <label for="block-row" class="radio-inline">Block ROW</label>
                             </div>
@@ -112,9 +112,9 @@
                                 <input type="radio" id="row-lcr" value="lcr" formControlName="row_route">
                                 <label for="row-lcr" class="radio-inline">ROW on LCR</label>
                             </div>
-                            <div class="form-group col-4 p-0" *ngIf="customRowGateway.length">
+                            <div class="form-group col-4 p-0">
                                 <input type="radio" id="define-row" value="custom" formControlName="row_route"
-                                    (change)="rowRoutesListFormArray.value.length === 0 && addRowGateway() ">
+                                    (change)="secondStepFormArray.value.length === 0 && initRowGateway() ">
                                 <label for="define-row" class="radio-inline">Define ROW</label>
                             </div>
                         </div>
@@ -125,37 +125,39 @@
                 </div>
 
 
-                <div class="row gt-ratio-div" *ngIf="secondFormGroup.get('row_route').value === 'custom'">
+                <div class="row gt-ratio-div" *ngIf="rowRouteValue === 'custom'">
                     <div class="col-10">
                         <div class="row">
                             <div class="col-4 mb-2" formArrayName="row_routes_list"
-                                *ngFor="let item of secondFormGroup.get('row_routes_list').controls; let i = index;">
+                                *ngFor="let item of secondStepFormArray.controls; let i = index;">
                                 <div [formGroupName]="i">
                                     <div class="row">
                                         <label class="col-5">Gateway</label>
-                                        <label class=" pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
+                                        <label class="pull-1 col-6 text-center">Enter Ratio<br>(%)</label>
                                     </div>
                                     <div class="row ml-0 gatewayRow">
                                         <div class="col-7 p-0">
-                                            <!-- [ngClass]="{submitError:secondStepSubmitted && item.get('gw_id').hasError('required')}" -->
                                             <select class="dropdown-select w-100" formControlName="gw_id"
                                                 (change)="onChangeSelect(i, 'secondForm')">
                                                 <option value="" disabled>Select Gateway</option>
-                                                <option *ngFor="let obj of defineRowGatewaysList" [ngValue]="obj.gw_id"
-                                                    [hidden]="obj.isSelected === true">
+                                                <option *ngFor="let obj of secondStepGatewaysList" [ngValue]="obj.gw_id"
+                                                    [hidden]="obj.isSelected">
                                                     {{ obj.gw_id }}</option>
                                             </select>
                                             <span class="text-danger pl-1 f-12"
                                                 *ngIf="item.get('gw_id').hasError('required') && secondStepSubmitted">
-                                                Gateway is required
+                                                Gateway is required &nbsp;
+                                            </span>
+                                            <span class="text-danger pl-1 f-12 text-center"
+                                                *ngIf="secondStepRatioTotal < 100 && secondStepSubmitted">
+                                                Ratio must be upto 100%
                                             </span>
                                         </div>
                                         <div class="col-5 p-0">
-
                                             <input type="number" formControlName="ratio_in_percentage" step="10"
                                                 min="10" max="100" onKeyDown="return false" matInput placeholder="%"
-                                                class="ratio-text" (click)="setFormArrayIndex(i)"
-                                                [ngClass]="{submitError:secondStepSubmitted && getRowRatioCount !== 100}">
+                                                class="ratio-text" (click)="setFormArrayIndex(i)" />
+                                            <!-- [ngClass]="{submitError:secondStepSubmitted && secondStepRatioTotal !== 100}" -->
                                         </div>
                                         <span class="closeGateway" (click)="onCloseRowGateway(i)"><b>X</b></span>
                                     </div>
@@ -171,10 +173,9 @@
                 </div>
                 <div class="row mt-4">
                     <div class="col-12">
-                        <Label class="font-weight-bold mb-3">Comments</Label>
+                        <Label class="font-weight-bold">Comments:</Label>
                         <textarea rows="4" [minlength]="commentsTextAreaMin" [maxlength]="commentsTextAreaMax"
                             class="w-100" placeholder="Enter Comment here" formControlName="comments"></textarea>
-                        <!-- [ngClass]="{submitError:secondStepSubmitted && secondFormGroup.get('comments').hasError('required')}" -->
                         <span class="text-danger pl-1 f-12"
                             *ngIf="!secondFormGroup.get('comments').valid && secondStepSubmitted">
                             Comments are required
@@ -184,6 +185,7 @@
 
 
                 <div class="row mt-4 create-route-section">
+
                     <div class="col-3">
                         <button type="button" class="btn btn-dark"
                             (click)="openPreviewModel(previewModal)">Preview</button>
@@ -193,8 +195,9 @@
                         <button type="submit" class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
                     </div>
                 </div>
+
             </div>
-            <!-- {{secondFormGroup.value | json}} -->
+
         </form>
     </mat-step>
 
@@ -205,13 +208,13 @@
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body gt-det-modal">
-        <form action="">
+        <form>
 
             <div class="row">
                 <div class="col-4 p-0">
                     <label class="mr-2"><b>ROUTE NAME</b></label>
                     <span class="border-right">&nbsp;</span>
-                    <span class="ml-3"><b>{{parentForm.get('route_name').value}}</b></span>
+                    <span class="ml-3"><b>{{parentFormGroup.get('route_name').value}}</b></span>
                 </div>
                 <div class="col-4 p-0">
                     <label class="mr-2"><b>Total Continents Added</b></label>
@@ -224,10 +227,10 @@
                     <span class="ml-3"><b>{{countryCount}}</b></span>
                 </div>
             </div>
-            <div class="row my-3" *ngIf="secondFormGroup.get('row_route').value === 'custom'">
+            <div class="row my-3" *ngIf="rowRouteValue === 'custom'">
                 <label class="table-heading w-100">ROW (Defined)</label>
-                <div class="col-5 row-details">
-                    <label class="mt-1" *ngFor="let item of this.secondFormGroup.get('row_routes_list').value">
+                <div class="col-12 row-details">
+                    <label class="mt-1" *ngFor="let item of secondStepFormArray.value">
                         {{item.gw_id}}
                         <span class="badge badge-white">{{item.ratio_in_percentage}}%</span>
                     </label>

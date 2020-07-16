@@ -4,12 +4,12 @@
             <section class="mb-2" formArrayName="groups"
                 *ngFor="let X of firstFormGroup['controls'].groups['controls']; let indexGroup=index">
                 <div formGroupName="{{indexGroup}}">
-                    {{firstFormGroup.value | json}}
+                    <!-- {{firstFormGroup.value | json}} -->
                     <div class="row">
                         <div class="col-3 mb-2">
                             <label>Group Name</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" formControlName="group_name"
+                                <input type="text" class="form-control" formControlName="group_name"
                                     placeholder="Enter Group Name" />
                                 <span class="text-danger pl-1 f-12"
                                     *ngIf="X.get('group_name').hasError('required') && groupSubmitted">
@@ -19,7 +19,8 @@
                         </div>
                         <div class="col-3 mb-2 offset-6">
                             <label>Continent(Optional)</label>
-                            <select class="dropdown-select w-100" formControlName="continent_name">
+                            <select [attr.disabled]="isEditMode ? 'disabled' : null" class="dropdown-select w-100"
+                                formControlName="continent_name">
                                 <option value="" default>Select Continent</option>
                                 <option *ngFor="let list of billPlanContinentList" [value]="list">
                                     {{ list }}
@@ -27,7 +28,8 @@
                             </select>
                         </div>
                     </div>
-                    <div class="gt-ratio-div">
+                    <div class="gt-ratio-div position-relative"
+                        [ngClass]="{'disable-wrapper' : disableWrapper == true }">
                         <div class="row mb-2">
                             <div class="col-10">
                                 <div formArrayName="countries">
@@ -37,63 +39,69 @@
                                             <div class="row">
                                                 <div class="col-3 mb-2">
                                                     <label>Country</label>
-                                                    <select class="dropdown-select w-100"
-                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mcc', $event)"
+                                                    <select class="dropdown-select w-100" #grpCountry
+                                                        (change)="handleCountryOperator(indexGroup, indexCountries, 'mcc', $event, grpCountry.value)"
                                                         formControlName="country_name">
-                                                        <option value="" default>Select Country</option>
+                                                        <option value="" default disabled>Select Country</option>
                                                         <option *ngFor="let clist of billPlanCountryList"
                                                             [value]="clist.country" [attr.data-value]="clist.mcc"
+                                                            [attr.data-code]="clist.country_code"
                                                             [attr.data-continent]="clist.continent">
                                                             {{ clist.country }}
                                                         </option>
                                                     </select>
                                                     <span class="text-danger pl-1 f-12"
                                                         *ngIf="Y.get('country_name').hasError('required') && groupSubmitted">
-                                                        Group Name is required
+                                                        Country is required
                                                     </span>
                                                 </div>
                                                 <div class="col-3 mb-2">
                                                     <label>Operator</label>
                                                     <select class="dropdown-select w-100"
-                                                        (click)="handleCountryOperator(indexGroup, indexCountries, 'mnc', $event)"
+                                                        (change)="handleCountryOperator(indexGroup, indexCountries, 'mnc', $event, grpCountry.value)"
                                                         formControlName="operator_name">
-                                                        <option value="" default>Select Operator</option>
-                                                        <option value="option1" [attr.data-value]="1">option1
-                                                        </option>
-                                                        <option value="option2" [attr.data-value]="2">option2
-                                                        </option>
-                                                        <option value="option3" [attr.data-value]="3">option3
+                                                        <option value="" default disabled>Select Operator</option>
+                                                        <option
+                                                            *ngFor="let olist of operatorObj[Y.get('country_name').value]"
+                                                            value="{{olist.operator}}" [attr.data-value]="olist.mnc"
+                                                            [disabled]="olist.isSelected == true">
+                                                            {{olist.operator == 'All' ? 'All Operator' : olist.operator}}
                                                         </option>
                                                     </select>
                                                     <span class="text-danger pl-1 f-12"
                                                         *ngIf="Y.get('operator_name').hasError('required') && groupSubmitted">
-                                                        Group Name is required
+                                                        Operator is required
                                                     </span>
                                                 </div>
                                                 <div class="col-3 mb-2">
-                                                    <label>Billing Rate (€)</label>
+                                                    <label
+                                                        innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                                                     <div class="form-group">
-                                                        <input type="search" class="form-control"
+                                                        <input type="text" class="form-control" maxlength="11"
+                                                            (blur)="checkRate(Y.get('billing_rate').value, Y, 'billing_rate')"
                                                             formControlName="billing_rate" placeholder="Enter Rate" />
                                                         <span class="text-danger pl-1 f-12"
                                                             *ngIf="Y.get('billing_rate').hasError('required') && groupSubmitted">
-                                                            Group Name is required
+                                                            Billing Rate is required
+                                                        </span>
+                                                        <span class="text-danger pl-1 f-12"
+                                                            *ngIf="(Y.get('billing_rate').hasError('pattern') && Y.get('billing_rate').dirty) || (Y.get('billing_rate').hasError('pattern') && groupSubmitted && !Y.get('billing_rate').dirty)">
+                                                            Please enter valid input
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-3 mb-2">
-                                                    <label>Normalize Rate (€)</label>
+                                                    <label
+                                                        innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                                                     <div class="form-group">
-                                                        <input type="search" class="form-control" disabled
-                                                            formControlName="normalize_rate" placeholder="0.0678" />
-                                                        <span class="text-danger pl-1 f-12"
-                                                            *ngIf="Y.get('normalize_rate').hasError('required') && groupSubmitted">
-                                                            Group Name is required
-                                                        </span>
+                                                        <input type="text" class="form-control" disabled
+                                                            [value]="round(Y.get('billing_rate').value, Y)"
+                                                            formControlName="normalize_rate" placeholder="" />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="indexCountries != 0" class="custom-delete add-div-btn">
+                                            <div *ngIf="firstFormGroup.get('groups').value[indexGroup].countries.length >= 2"
+                                                class="custom-delete add-div-btn">
                                                 <button type="button" class="btn btn-light"
                                                     (click)="removeFromCountries(indexGroup,indexCountries)">-</button>
                                             </div>
@@ -119,27 +127,30 @@
                     </button>
                 </div>
                 <div class="col-6 text-right save-form-div">
-                    <button type="button" class="btn btn-basic mr-3" mat-button>Cancel</button>
-                    <!-- *ngIf="rowGroups.length != 0" -->
-                    <button type="button" class="btn erp-intl-btn" (click)="stepperView(stepper, 0, 1)"
-                        mat-button>Next</button>
+                    <button type="button" class="btn btn-basic mr-3" mat-button
+                        [routerLink]="['/billplan-management/postpaid/', parentForm.get('billplan_id').value]">Cancel</button>
+                    <button
+                        [disabled]="(isEditMode && this.firstFormGroup.untouched == false) ? true : rowGroups.length == 0 ? true : false"
+                        type="button" class="btn erp-intl-btn"
+                        (click)="rowGroups.length != 0 ? stepperView(stepper, 0, 1) : ''" mat-button>Next</button>
                 </div>
             </div>
         </form>
     </mat-step>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
-            {{secondFormGroup.value | json}}
+            <!-- {{secondFormGroup.value | json}} -->
             <section class="mb-2">
                 <div class="row ml-0">
                     <label class="col-12 pl-0">ROC - <span class="font-weight-bold ">CONTINENTS</span></label>
                     <div class="col-6">
                         <div class="row">
                             <div class=" form-group col-7 px-0">
-                                <input type="radio" name="ratetype_roc" id="default-roc" value="default"
+                                <input type="radio" name="ratetype_roc" id="default-roc" value="standard"
                                     formControlName="ratetype_roc">
                                 <label for="default-roc" class="radio-inline">Copy from Default Rate Card</label>
-                                <a routerLink="/settings/default-rate-card" class="ml-2"> <i class="fa fa-eye"></i></a>
+                                <a target="_blank" routerLink="/settings/default-rate-card" class="ml-2"> <i
+                                        class="fa fa-eye"></i></a>
                             </div>
                             <div class="form-group col-5 px-0">
                                 <input type="radio" name="ratetype_roc" id="custom-roc" value="custom"
@@ -154,7 +165,8 @@
                     </div>
                 </div>
 
-                <div class="gt-ratio-div roc-div" formArrayName="roc"
+                <div class="gt-ratio-div roc-div position-relative" formArrayName="roc"
+                    [ngClass]="{'disable-wrapper' : secondFormGroup.get('ratetype_roc').value == 'standard' }"
                     *ngFor="let X of secondFormGroup['controls'].roc['controls']; let indexROC=index">
                     <div class="row" formGroupName="{{indexROC}}">
                         <div class="col-6">
@@ -174,16 +186,26 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <label>Billing Rate (€)</label>
+                            <label innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="11"
+                                    (blur)="checkRate(X.get('billing_rate').value, X, 'billing_rate')"
                                     formControlName="billing_rate" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="X.get('billing_rate').hasError('required') && isupdateRoc">
+                                    Billing Rate is required
+                                </span>
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="(X.get('billing_rate').hasError('pattern') && X.get('billing_rate').dirty) || (X.get('billing_rate').hasError('pattern') && isupdateRoc && !X.get('billing_rate').dirty)">
+                                    Please enter valid input
+                                </span>
                             </div>
                         </div>
                         <div class="col-3">
-                            <label>Normalize Rate (€)</label>
+                            <label innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" disabled placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled formControlName="normalize_rate"
+                                    [value]="round(X.get('billing_rate').value, X)" />
                             </div>
                         </div>
 
@@ -196,7 +218,7 @@
             <div class="row mt-4 create-route-section">
                 <div class="col-12 text-center save-form-div">
                     <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
-                    <button class="btn erp-intl-btn" mat-button matStepperNext>Next</button>
+                    <button class="btn erp-intl-btn" mat-button (click)="updateRoc(stepper)">Next</button>
                 </div>
             </div>
         </form>
@@ -212,7 +234,8 @@
                                 <input type="radio" name="ratetype_row" id="std-row" value="standard"
                                     formControlName="ratetype_row">
                                 <label for="std-row" class="radio-inline">Copy from Default Rate Card</label>
-                                <a routerLink="/settings/default-rate-card" class="ml-2"> <i class="fa fa-eye"></i></a>
+                                <a target="_blank" routerLink="/settings/default-rate-card" class="ml-2"> <i
+                                        class="fa fa-eye"></i></a>
                             </div>
                             <div class="form-group col-5 pr-0">
                                 <input type="radio" name="ratetype_row" id="custom-row" value="custom"
@@ -224,39 +247,62 @@
                     <div class="col-6 p-0 text-right f-14"><label class="font-weight-semi-bold">Note: If there is no
                             specific ROW BillPlan, copy from Default Rate Card and Save</label></div>
                 </div>
-                <div class="gt-ratio-div">
+                <div class="gt-ratio-div" *ngIf="parentForm.get('ratetype_row').value == 'custom'">
                     <div class="row mb-2">
                         <div class="col-5 mb-2">
-                            <label>Billing Rate (€)</label>
+                            <label innerHTML="Billing Rate ({{currencySybmol?.bCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Rate"
+                                <input type="text" class="form-control" id="" placeholder="Enter Rate" maxlength="11"
+                                    (blur)="checkRate(parentForm.get('billing_rate_row').value, parentForm, 'billing_rate_row')"
                                     formControlName="billing_rate_row" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('billing_rate_row').hasError('required') && submitGroupValid">
+                                    Billing Rate is required
+                                </span>
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="(parentForm.get('billing_rate_row').hasError('pattern') && parentForm.get('billing_rate_row').dirty) || (parentForm.get('billing_rate_row').hasError('pattern') && submitGroupValid && !parentForm.get('billing_rate_row').dirty)">
+                                    Please enter valid input
+                                </span>
                             </div>
                         </div>
                         <div class="col-5 mb-2">
-                            <label>Normalize Rate (€)</label>
+                            <label innerHTML="Normalize Rate ({{currencySybmol?.nCurrency.symbol}})"></label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" disabled placeholder="0.0678" />
+                                <input type="text" class="form-control" id="" disabled
+                                    [value]="round(parentForm.get('billing_rate_row').value, parentForm)" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <label class="font-weight-bold col-12">Discount in % or Amount in €</label>
+                    <label class="font-weight-bold col-12"
+                        innerHTML="Discount in % or Amount in {{currencySybmol?.bCurrency.symbol}}"></label>
                 </div>
                 <div class="gt-ratio-div">
                     <div class="row">
                         <div class="col-6">
                             <label>Discount Amount</label>
                             <div class="form-group">
-                                <input type="search" class="form-control" id="" placeholder="Enter Discount"
+                                <input type="text" class="form-control" id="" placeholder="Enter Discount"
+                                    formControlName="discount_type"
+                                    [attr.disabled]="parentForm.get('discount_type').value == '' ? true : null"
                                     formControlName="discount_rate" />
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('discount_rate').hasError('pattern') && submitGroupValid">
+                                    Invalid Input Value
+                                </span>
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="parentForm.get('discount_rate').hasError('required') && submitGroupValid">
+                                    Discount rate is required
+                                </span>
                             </div>
                         </div>
                         <div class="col-6 discount-select">
-                            <select class="dropdown-select w-100" formControlName="discount_type">
-                                <option value="percentage" default>percentage</option>
-                                <option value="amount">Amount</option>
+                            <select class="dropdown-select w-100" (change)="handleDiscountType()"
+                                formControlName="discount_type">
+                                <option value="" default>Select discount type</option>
+                                <option value="percentage" default>Percentage</option>
+                                <option value="unit">Unit</option>
                             </select>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ import {
   successAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-bl-senderid",
@@ -18,7 +19,10 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ["./bl-senderid.component.css"],
 })
 export class BlSenderidComponent implements OnInit {
-  constructor(public blSenderService: BlackListAddMobileSenderidService) {}
+  constructor(
+    public blSenderService: BlackListAddMobileSenderidService,
+    public authService: AuthorizationService
+    ) {}
 
   searchvalue: any;
 

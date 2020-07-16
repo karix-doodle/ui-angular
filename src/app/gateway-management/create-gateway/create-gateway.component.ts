@@ -9,6 +9,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-create-gateway',
@@ -26,6 +27,8 @@ export class CreateGatewayComponent implements OnInit {
   isCreateValid: boolean = false;
   currency_id = environment.currencyDefault;
 
+  GtMgmtAuthControls = null
+
   messageType = [{ item: "Transaction", value: 0 }, { item: "Promotion", value: 1 }, { item: "Transscrub", value: 3 }]
   charsetType = [{ item: "ASCII" }, { item: "ISO" }, { item: "GSM" }]
 
@@ -33,7 +36,10 @@ export class CreateGatewayComponent implements OnInit {
     private gatewayManagementService: GatewayManagementService,
     private router: Router,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+
     let gw_name = '[0-9a-zA-Z-_.@$\' ]{4,200}';
     let gw_id = '[0-9a-zA-Z]{2,10}';
     let tps = '[0-9]{1,100000}';
@@ -113,6 +119,19 @@ export class CreateGatewayComponent implements OnInit {
     }
   }
 
+  handleSenderIdWhitelist(isChecked: boolean) {
+    if (isChecked) {
+      this.createGatewayFormGroup.get('senderid_type').setValidators([Validators.required]);
+      this.createGatewayFormGroup.get('senderid_type').updateValueAndValidity();
+    } else {
+      this.createGatewayFormGroup.patchValue({
+        senderid_type: ''
+      })
+      this.createGatewayFormGroup.get('senderid_type').clearValidators();
+      this.createGatewayFormGroup.get('senderid_type').updateValueAndValidity();
+    }
+  }
+
   onSubmitCreateGateway(data) {
     this.isCreateValid = true;
     // for (let el in this.createGatewayFormGroup.controls) {
@@ -130,7 +149,11 @@ export class CreateGatewayComponent implements OnInit {
       data.is_bill_on_submission = data.is_bill_on_submission ? 1 : 0;
       data.exclude_lcr = data.exclude_lcr ? "1" : "0";
       data.senderid_whitelist_required = data.senderid_whitelist_required ? "1" : "0";
-      data.senderid_type = (Number)(data.senderid_type);
+      if (data.senderid_whitelist_required == "1") {
+        data.senderid_type = data.senderid_type ? (Number)(data.senderid_type) : '';
+      } else {
+        delete data.senderid_type
+      }
       data.msg_type = (data.msg_type.toString());
       data.charset_enc = (data.charset_enc.toString());
       this.gatewayManagementService.Gateway_create(data).subscribe(

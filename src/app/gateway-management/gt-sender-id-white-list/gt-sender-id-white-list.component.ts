@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@ang
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GatewayManagementService } from '../services/gateway-management.service';
-import { GtSenderIdWhiteList_ApiResponse, GtSenderIdWhiteList_Data, GtSenderIdWhiteListDelete_ApiResponse, GtSenderIdCountryList_ApiResponse, GtSenderIdCountryList_Data, GtAddSenderId_ApiResponse } from '../models/gateway-management.model';
+import { GtSenderIdWhiteList_ApiResponse, GtSenderIdWhiteList_Data, GtSenderIdWhiteListDelete_ApiResponse, GtSenderIdCountryList_ApiResponse, GtAddSenderId_ApiResponse } from '../models/gateway-management.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
@@ -12,6 +12,7 @@ import {
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
 import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-sender-id-white-list',
@@ -24,19 +25,27 @@ export class GtSenderIdWhiteListComponent implements OnInit {
   GtSenderIdWhiteList: GtSenderIdWhiteList_Data;
 
   GtSenderIdCountryListRes: GtSenderIdCountryList_ApiResponse;
-  GtSenderIdCountryList: GtSenderIdCountryList_Data;
+  GtSenderIdCountryList: any
 
   addSenderidFormGroup: FormGroup;
   isAddSenderidValid: boolean = false;
+  sortingName: string;
+  isDesc: boolean;
+  searchvalue: string = ''
 
   fileData: FormData = null;
+
+  GtMgmtAuthControls = null
 
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
     private gatewayManagementService: GatewayManagementService,
     private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService
   ) {
+
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
 
     this.addSenderidFormGroup = this.formBuilder.group({
       country: ['', [Validators.required]],
@@ -219,6 +228,20 @@ export class GtSenderIdWhiteListComponent implements OnInit {
       senderid: '',
       file: ''
     });
+  }
+
+  /**
+   *
+   * @param tableHeaderName consists of table header
+   * @description sorts the table based upon the table Header Name
+   */
+  sort(tableHeaderName: string): void {
+    if (tableHeaderName && this.sortingName !== tableHeaderName) {
+      this.isDesc = false;
+    } else {
+      this.isDesc = !this.isDesc;
+    }
+    this.sortingName = tableHeaderName;
   }
 
 

@@ -1,26 +1,31 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div"
+    *ngIf="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled">
     <div class="col-12">
         <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
-        <span><a routerLink="/customer-management/customer-management-edit"> 70000 100000011 /</a> VIEWLOG</span>
+        <span><a [routerLink]="['/customer-management/customer-management-edit', viewLogData.data.esmeaddr]">
+                {{viewLogData.data.esmeaddr}} /</a> VIEWLOG</span>
     </div>
 </div>
-<div class="row btm-border second-row-det">
-    <div class="col-9">
+<div class="row btm-border second-row-det"
+    *ngIf="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled">
+    <div class="col-8">
         <div class="row mb-2">
             <div class="col-2 border-right "><label>ESME Addr.</label></div>
-            <div class="col-9"><span><b>70000 100000011</b></span></div>
+            <div class="col-9"><span><b>{{viewLogData.data.esmeaddr}}</b></span></div>
         </div>
         <div class="row">
             <div class="col-2 border-right"><label>Client Name</label></div>
-            <div class="col-9"><span><b>Australia Telecom</b></span></div>
+            <div class="col-9"><span><b>{{viewLogData.data.clientname}}</b></span></div>
         </div>
     </div>
-    <div class="col-2 mt-2 form-group">
-        <app-calendar-picker></app-calendar-picker>
+    <div class="col-3 mt-2 form-group">
+        <app-calendar-picker [params]="params" (selectDate)="getDateSelection($event)"></app-calendar-picker>
     </div>
-    <div class="col-1 mt-2 text-right"><a class="icon-btn" href="#"><i aria-hidden="true" class="fa fa-download"></i></a></div>
+    <div class="col-1 mt-2 text-right"><a class="icon-btn" style="cursor: pointer;" (click)="viewlistDownload()"><i
+                aria-hidden="true" class="fa fa-download"></i></a></div>
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive"
+    *ngIf="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled">
     <table class="table table-borderless erp-list-table">
         <thead>
             <tr>
@@ -32,28 +37,23 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>23:43:56</td>
-                <td class="font-weight-semi-bold">Sanal C</td>
-                <td>Module1</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipiscing elitunt</td>
+            <tr *ngFor="let item of viewLogData.data.tabledata">
+                <td>{{item.date}} </td>
+                <td> {{item.time}}</td>
+                <td class="font-weight-semi-bold"> {{item.user}}</td>
+                <td> {{item.activity}}</td>
+                <td> {{item.comments}}</td>
             </tr>
-            <tr>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>23:43:56</td>
-                <td class="font-weight-semi-bold">Sanal C</td>
-                <td>Module1</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipiscing elitunt</td>
-            </tr>
-            <tr>
-                <td>28/10/2019 | 23:25:00</td>
-                <td>23:43:56</td>
-                <td class="font-weight-semi-bold">Sanal C</td>
-                <td>Module1</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipiscing elitunt</td>
-            </tr>
+
         </tbody>
     </table>
 </div>
 
+<div class="pt-3 center-block h-100" *ngIf="!CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
+</div>

@@ -1,23 +1,22 @@
-<div class="row btm-border headings-div first-row">
+<div class="row btm-border headings-div first-row" *ngIf="CmAuthControls.cust_existing_customer_detailed_view_enabled">
     <div class="col-12">
         <label class="main-heading pl-2"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
-        <span> 70000 100000011</span>
+        <span> {{esmeaddr}}</span>
     </div>
-
 </div>
-<div class="row second-row-det">
+<div class="row second-row-det" *ngIf="CmAuthControls.cust_existing_customer_detailed_view_enabled">
     <div class="col-5">
         <div class="row mb-2">
             <div class="col-5 border-right"><label>ESME Addr.</label></div>
-            <div class="col-7"><span><b>70000 100000011</b></span></div>
+            <div class="col-7"><span><b>{{esmeddrDetails?.data.esmeaddr}}</b></span></div>
         </div>
         <div class="row mb-2">
             <div class="col-5 border-right"><label>Client Name</label></div>
-            <div class="col-7"><span><b>ABC HYIUO</b></span></div>
+            <div class="col-7"><span><b>{{esmeddrDetails?.data.clientname}}</b></span></div>
         </div>
         <div class="row">
             <div class="col-5 border-right"><label>Customer Type</label></div>
-            <div class="col-7"><span><b>International</b></span></div>
+            <div class="col-7"><span><b>{{esmeddrDetails?.data.customertype}}</b></span></div>
         </div>
         <div class="row">
             <div class="col-5 border-right"><label>Services</label></div>
@@ -27,57 +26,57 @@
         </div>
     </div>
     <div class="col-7 gateway-description text-right">
-       <div class="row mb-2 float-right">
-           <div class="border-right ">
-                <label>Billing Contact Name</label>
-                <span class="badge badge-white mr-3">XYRJKV</span>
-           </div>
-           <div class="ml-3">
-                <label>Sales Manager</label>
-                <span class="badge badge-white">ABX XYZ HJK</span>
-          </div>
-       </div>
-       <div class="row mb-2 float-right">
+        <div class="row mb-2 float-right">
             <div class="border-right ">
-                <label>Message Type</label>
-                <span class="badge badge-white mr-3">Transactional</span>
+                <label>Billing Contact Name</label>
+                <span class="badge badge-white mr-3">{{esmeddrDetails?.data.billingcontactname}}</span>
             </div>
             <div class="ml-3">
-                    <label>Billing Type</label>
-                    <span class="badge badge-white">Postpaid with Top Up</span>
+                <label>Sales Manager</label>
+                <span class="badge badge-white">{{esmeddrDetails?.data.salesmanagername}}</span>
+            </div>
+        </div>
+        <div class="row mb-2 float-right">
+            <div class="border-right ">
+                <label>Message Type</label>
+                <span class="badge badge-white mr-3">{{esmeddrDetails?.data.messagetype}}</span>
+            </div>
+            <div class="ml-3">
+                <label>Billing Type</label>
+                <span class="badge badge-white">{{esmeddrDetails?.data.billingtype}}</span>
             </div>
         </div>
         <div class="row mb-2 float-right">
             <div class="border-right ">
                 <label>SMTP Bind Allowed</label>
-                <span class="badge badge-white mr-3">TX, RX, TRX</span>
+                <span class="badge badge-white mr-3">{{esmeddrDetails?.data.smppbindallowed}}</span>
             </div>
             <div class="ml-3 border-right">
-                    <label>No. Of Binds Allowed</label>
-                    <span class="badge badge-white mr-3">23</span>
+                <label>No. Of Binds Allowed</label>
+                <span class="badge badge-white mr-3">{{esmeddrDetails?.data.noofbindsallowed}}</span>
             </div>
             <div class="ml-3">
-                    <label>Char. Set Encoding</label>
-                    <span class="badge badge-white">GSM</span>
+                <label>Char. Set Encoding</label>
+                <span class="badge badge-white">{{esmeddrDetails?.data.charsetencoding}}</span>
             </div>
         </div>
         <div class="row mb-2 float-right">
             <div class="border-right ">
                 <label>SLA Configuration</label>
-                <span class="badge badge-white mr-3">Same Day</span>
+                <span class="badge badge-white mr-3"></span>
             </div>
             <div class="ml-3 border-right">
-                    <label>DLR Type</label>
-                    <span class="badge badge-white mr-3">SMSC DLR</span>
+                <label>DLR Type</label>
+                <span class="badge badge-white mr-3">{{esmeddrDetails?.data.dlrtype}}</span>
             </div>
             <div class="ml-3">
-                    <label>DLR Configuration</label>
-                    <span class="badge badge-white">Call Back API</span>
+                <label>DLR Configuration</label>
+                <span class="badge badge-white">{{esmeddrDetails?.data.dlrconfiguration}}</span>
             </div>
         </div>
     </div>
 </div>
-<section>
+<section *ngIf="CmAuthControls.cust_existing_customer_detailed_view_enabled">
     <div class="data-container cm-view-section mb-3">
         <div class="row">
             <div class="col-5">
@@ -86,35 +85,42 @@
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Sender ID Type</label>
-                            <p><b>Listing</b></p>
+                            <p><b>{{esmeddrDetails?.data.validation.senderidtype}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Default Sender ID</label>
-                            <p><b>Alerts</b></p>
+                            <p><b>{{esmeddrDetails?.data.validation.defaultsenderid}}</b></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Template Failed<br> Sender ID</label>
-                            <p><b>Notify</b></p>
+                            <p><b>{{esmeddrDetails?.data.validation.templatefailedsenderid}}</b></p>
 
                         </div>
                         <div class="col-4 offset-1">
                             <label>Block SMS to India</label>
-                            <p><b>Allowed</b></p>
+                            <p><b>{{esmeddrDetails?.data.validation.blocksmstoindia}}</b></p>
                         </div>
                     </div>
                     <hr>
                     <div class="cm-view-btn-div text-center mb-3">
-                        <button class="btn erp-intl-btn mr-3" (click)="open(senderIdModal)">Sender ID's</button>
-                        <button class="btn btn-basic" (click)="open(blockedSenderIdModal)">Blocked Sender ID's</button>
+                        <button class="btn erp-intl-btn mr-3"
+                            [disabled]="!CmAuthControls.cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled"
+                            (click)="CmAuthControls.cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled ? open(senderIdModal) : ''">Sender
+                            ID's</button>
+                        <button class="btn btn-basic"
+                            [disabled]="!CmAuthControls.cust_existing_customer_detailed_view_listing_blocked_senderids_enabled"
+                            (click)="CmAuthControls.cust_existing_customer_detailed_view_listing_blocked_senderids_enabled ? open(blockedSenderIdModal) : ''">Blocked
+                            Sender ID's</button>
                     </div>
 
                 </section>
                 <div class="cm-view-btn-div">
-                    <button class="btn erp-intl-btn mr-3" (click)="open(blacklistTemplateModal)">Blacklisted Template</button>
+                    <button class="btn erp-intl-btn mr-3" (click)="open(blacklistTemplateModal)">Blacklisted
+                        Template</button>
                     <button class="btn btn-basic" (click)="open(templateType)">Templates Type (Listing)</button>
                 </div>
             </div>
@@ -124,44 +130,47 @@
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Routing Type</label>
-                            <p><b>Gateway</b></p>
+                            <p><b>{{esmeddrDetails?.data.routing.routingtype}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Routing Name</label>
-                            <p><b>XYZ ABC TYU</b></p>
+                            <p><b>{{esmeddrDetails?.data.routing.routingname}}</b></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6 border-right">
                             <label>Countries Allowed</label>
-                            <p class="mt-4"><b>120</b>(Active - 110 <br> inactive-10)</p>
+                            <p class="mt-4">{{esmeddrDetails?.data.routing.countriesallowed}}</p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Countries Blocked @ Platform</label>
-                            <p><b>5</b></p>
+                            <p><b>{{esmeddrDetails?.data.routing.countriesblockedplatform}}</b></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-6">
                             <label>ROW Allowed</label>
-                            <p><b>Blocked</b></p>
+                            <p><b>{{esmeddrDetails?.data.routing.rowallowed}}</b></p>
                         </div>
                     </div>
 
                 </section>
                 <div class="cm-view-btn-div">
-                    <a routerLink="/customer-management/allowed-country-operator-list" class="btn btn-basic w-100">Allowed Country & Operator List</a>
+                    <a [ngClass]="{'disabled-func disabled': CmAuthControls.cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled ? null : true }"
+                        [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled ? ['/customer-management/allowed-country-operator-list', esmeaddr? esmeaddr : 0] : []"
+                        class="btn btn-basic w-100">Allowed Country & Operator List</a>
                 </div>
+
             </div>
         </div>
 
     </div>
 </section>
-<section class="row">
+<section class="row" *ngIf="CmAuthControls.cust_existing_customer_detailed_view_enabled">
     <div class="data-container cm-view-section mb-3 col-5 ml-15">
         <div class="row">
             <div class="col-12">
@@ -170,25 +179,25 @@
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Bill Plan Name</label>
-                            <p><b>XYZ ABC TYU</b></p>
+                            <p><b>{{esmeddrDetails?.data.billinginfo.billplanname}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
                             <label>Rate Card Type</label>
-                            <p><b>Group</b></p>
-                            
+                            <p><b>{{esmeddrDetails?.data.billinginfo.ratecardtype}}</b></p>
+
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Billing Currency</label>
-                            <p><b>€</b></p>
+                            <p><b>{{esmeddrDetails?.data.billinginfo.billingcurrency}}</b></p>
 
                         </div>
                         <div class="col-6 offset-1">
                             <label>Applicable Taxation</label>
-                            <p><b>International Customer</b></p>
+                            <p><b>{{esmeddrDetails?.data.billinginfo.applicabletaxation}}</b></p>
                         </div>
                     </div>
                     <hr>
@@ -198,7 +207,8 @@
                         </div>
                         <div class="col-4 text-right">
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" checked>
+                                <input type="checkbox" class="switch-btn" disabled
+                                    [checked]="esmeddrDetails?.data.billinginfo.billplanchangenotificationtoclient === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -215,13 +225,14 @@
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Process ROW</label>
-                            <p><b>Allowed</b></p>
+                            <p><b>{{esmeddrDetails?.data.settings.processrow}}</b></p>
 
                         </div>
                         <div class="col-5 offset-1">
-                            <label>Process @ Loss</label>
+                            <label style="padding-right: 3px;">Process @ Loss </label>
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" checked>
+                                <input type="checkbox" class="switch-btn" disabled
+                                    [checked]="esmeddrDetails?.data.settings.processloss === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -230,11 +241,11 @@
                     <div class="row">
                         <div class="col-5 border-right">
                             <label>Loss Threshold</label>
-                            <p><b>1000 €</b></p>
+                            <p><b>{{esmeddrDetails?.data.settings.lossthreshold}}</b></p>
                         </div>
                         <div class="col-5 offset-1">
                             <label>Billing Timezone</label>
-                            <p><b>UTC</b></p>
+                            <p><b>{{esmeddrDetails?.data.settings.billingtimezone}}</b></p>
                         </div>
                     </div>
                     <hr>
@@ -244,7 +255,8 @@
                         </div>
                         <div class="col-4 text-right">
                             <label class="toggle-switch">
-                                <input type="checkbox" class="switch-btn" checked>
+                                <input type="checkbox" class="switch-btn" disabled
+                                    [checked]="esmeddrDetails?.data.settings.failurenotificationtosalesandinternationalteam === 1">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -254,11 +266,13 @@
         </div>
     </div>
 </section>
-<div class="data-container mb-3">
+<div class="data-container mb-3" *ngIf="CmAuthControls.cust_existing_customer_detailed_view_enabled">
     <div class="row">
         <label class="gateway-section-heading col-6">ACCOUNT ACTIVITIES</label>
         <div class="col-6 text-right f-12">
-            <a routerLink="/customer-management/customer-management-view-log" class="font-weight-bold">
+            <a [ngClass]="{'disabled-func': CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? null : true }"
+                [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? ['/customer-management/customer-management-view-log', esmeaddr,esmeddrDetails?.data.clientname] : []"
+                class="font-weight-bold">
                 View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>
             </a>
         </div>
@@ -270,41 +284,36 @@
                     <div class="form-group col-4 gateway-activity-detail">
                         <label class="col-12">Creation Date & Time</label>
                         <div class="row ml-1 font-weight-bold">
-                            <div class="col-7 border-right">
-                                <span>23/10/2019</span>
+                            <div class="col-12 border-right">
+                                <span>{{esmeddrDetails?.data.accountactivities.creationdatetime}}</span>
                             </div>
-                            <div class="col-5">
+                            <!-- <div class="col-5">
                                 <span>14:30</span>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
                     <div class="form-group col-5 gateway-activity-detail">
                         <label class="col-12">Last Modification Date & Time</label>
                         <div class="row font-weight-bold ml-1">
-                            <div class="col-7 border-right">
-                                <span>23/10/2019</span>
-                            </div>
-                            <div class="col-5">
-                                <span>14:30</span>
+                            <div class="col-12 border-right">
+                                <span>{{esmeddrDetails?.data.accountactivities.lastmodificationdatetime}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="form-group col-3 p-0">
                         <label class="col-12">Last Modified User</label>
                         <span class="col-12 font-weight-bold">
-                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> username</span>
+                            <img src="assets/images/user-image.png" alt="user" class="username-img" />
+                            {{esmeddrDetails.data.accountactivities.lastmodifieduser}}</span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-4 gateway-activity-detail">
                         <label class="col-12 pr-0">Rate Card Assign Date & Time</label>
                         <div class="row ml-1 font-weight-bold">
-                            <div class="col-7 border-right">
-                                <span>23/10/2019</span>
-                            </div>
-                            <div class="col-5">
-                                <span>14:30</span>
+                            <div class="col-12 border-right">
+                                <span>{{esmeddrDetails?.data.accountactivities.ratecardAssigndatetime}}</span>
                             </div>
                         </div>
                     </div>
@@ -313,45 +322,34 @@
                         <label class="col-12">Bill Plan Last Modification Date & Time</label>
                         <div class="row font-weight-bold ml-1">
                             <div class="col-7 border-right">
-                                <span>23/10/2019</span>
+                                <span>{{esmeddrDetails?.data.accountactivities.billplanlastmodificationdatetime}}</span>
                             </div>
-                            <div class="col-5">
-                                <span>14:30</span>
-                            </div>
+
                         </div>
                     </div>
                     <div class="form-group col-3 p-0">
                         <label class="col-12">Bill Plan Modified By</label>
                         <span class="col-12 font-weight-bold">
-                         <img src="assets/images/user-image.png" alt="user" class="username-img"/> username</span>
+                            <img src="assets/images/user-image.png" alt="user" class="username-img" />
+                            {{esmeddrDetails.data.accountactivities.billplanmodifiedby}}</span>
                     </div>
                 </div>
             </div>
             <div class="col-4 bg-grey">
-                <div class="row">
-                    <div class="col-5 pr-0">
-                        <label>RateCard Name</label>
-                    </div>
-                    <div class="col-7 pl-0">
-                        <label>Effective Date</label>
-                    </div>
-                </div>
-                <div class="row account-activity-data">
-                    <div class="col-5 px-0">
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                        <p><b>card name 1</b></p>
-                    </div>
-                    <div class="col-7 p-0">
-                        <p><b>02/01/2020 - Present</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                        <p><b>25/12/2019 -01/01/2020</b></p>
-                    </div>
-                </div>
+                <table class="table  table-borderless table-responsive">
+                    <thead>
+                        <tr>
+                            <th scope="col">RateCard Name</th>
+                            <th scope="col">Effective Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of rateCardList?.data.tabledata">
+                            <td>{{item.ratecardname}}</td>
+                            <td>{{item.effectivefrom}} - {{item.effectivefrom}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
@@ -359,51 +357,29 @@
 
 <!-- modal pop-up -->
 <ng-template #senderIdModal let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-3"><label>Sender IDs</label></div>
-                <div class="col-9"><span class="badge badge-dark">25</span></div>
+                <div class="col-9"><span class="badge badge-dark">{{senderidLis?.data.total}}</span></div>
             </div>
             <div class="row">
                 <div class="table-responsive senderid-list-table">
                     <table class="table table-borderless erp-list-table">
                         <tbody>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngFor="let item of senderidLis?.data.senderidlists">
+                                <td>{{item.senderid}}</td>
                             </tr>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngIf="senderidLis?.data.senderidlists.length === 0">
+                                <td>No Data Available</td>
                             </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -413,50 +389,27 @@
 </ng-template>
 
 <ng-template #blockedSenderIdModal let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-4 "><label>Blocked Sender IDs</label></div>
-                <div class="col-8"><span class="badge badge-dark">25</span></div>
+                <div class="col-8"><span class="badge badge-dark">{{blockedSenderidList?.data.total}}</span></div>
             </div>
             <div class="row">
                 <div class="table-responsive senderid-list-table">
                     <table class="table table-borderless erp-list-table">
                         <tbody>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngFor="let item of blockedSenderidList?.data.blockedsenderidlists">
+                                <td>{{item.senderid}}</td>
                             </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngIf=" blockedSenderidList?.data.blockedsenderidlists.length === 0">
+                                <td>No Data Available</td>
                             </tr>
                         </tbody>
                     </table>
@@ -467,50 +420,27 @@
 </ng-template>
 
 <ng-template #blacklistTemplateModal let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-4"><label>Blacklisted Templates</label></div>
-                <div class="col-8"><span class="badge badge-dark">25</span></div>
+                <div class="col-8"><span class="badge badge-dark">{{blockedTemplateList?.data.total}}</span></div>
             </div>
             <div class="row">
                 <div class="table-responsive senderid-list-table">
                     <table class="table table-borderless erp-list-table">
                         <tbody>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngFor="let item of blockedTemplateList?.data.blockedtemplatelists">
+                                <td>{{item.template}}</td>
                             </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngIf=" blockedTemplateList?.data.blockedtemplatelists.length === 0">
+                                <td>No Data Available</td>
                             </tr>
                         </tbody>
                     </table>
@@ -521,50 +451,27 @@
 </ng-template>
 
 <ng-template #templateType let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
                 <div class="col-3 border-right"><label>ESME Addr.</label></div>
-                <div class="col-8 ml-1"><span>70000 100000011</span></div>
+                <div class="col-8 ml-1"><span>{{esmeaddr}}</span></div>
             </div>
             <div class="row my-2 f-14">
                 <div class="col-2"><label>Templates</label></div>
-                <div class="col-9"><span class="badge badge-dark">25</span></div>
+                <div class="col-9"><span class="badge badge-dark">{{templateBlockedLis?.data.total}}</span></div>
             </div>
             <div class="row">
                 <div class="table-responsive senderid-list-table">
                     <table class="table table-borderless erp-list-table">
                         <tbody>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngFor="let item of templateBlockedLis?.data.whitelistedtemplatelists">
+                                <td>{{item.pattern}}</td>
                             </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
-                            </tr>
-                            <tr>
-                                <td>senderid name</td>
+                            <tr *ngIf=" templateBlockedLis?.data.whitelistedtemplatelists.length === 0">
+                                <td>No Data Available</td>
                             </tr>
                         </tbody>
                     </table>
@@ -576,7 +483,8 @@
 
 <!-- modal pop-up assigned services -->
 <ng-template #assignedServices let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
     <div class="modal-body assigned-services">
         <form action="">
             <div class="row">
@@ -586,13 +494,14 @@
                     <div class="row">
                         <div class="col-2">
                             <label class="checkbox-label col-4 ml-15" for="sms">SMS
-                                <input type="checkbox" checked="checked" id="sms">
+                                <input type="checkbox" disabled [checked]="asignedService.data.channel.includes('sms')">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="col-3">
                             <label class="checkbox-label col-4 ml-15" for="voice">Voice
-                                <input type="checkbox" checked="checked" id="voice">
+                                <input type="checkbox" disabled
+                                    [checked]="asignedService.data.channel.includes('voice')">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
@@ -600,34 +509,38 @@
                 </div>
             </div>
             <section class="main-section mt-2">
-                <div class="row">
-                    <label class="checkbox-label col-4 ml-15" for="globalOne">GlobalOne
-                        <input type="checkbox" checked="checked" id="globalOne">
-                        <span class="checkmark"></span>
-                    </label>
-                    <label class="checkbox-label col-12 ml-15 my-2" for="powerApi">Power API
-                        <input type="checkbox" checked="checked" id="powerApi">
-                        <span class="checkmark"></span>
-                    </label>
-
-                    <label class="checkbox-label col-12 ml-15 mt-2" for="smpp">SMPP
-                        <input type="checkbox" checked="checked" id="smpp">
-                        <span class="checkmark"></span>
-                    </label>
-
-                    <label class="checkbox-label col-12 ml-15 my-2" for="intl-msg">International Messages
-                        <input type="checkbox" id="intl-msg">
-                        <span class="checkmark"></span>
-                    </label>
-
+                <div class="row" style="overflow-y: scroll; height:150px;">
+                    <div class="col-3">
+                        <div class="col-12" *ngFor="let item of asignedService.data.mediaandservicelists.sms">
+                            <label class="checkbox-label col-4 ml-15" for="globalOne">{{item}}
+                                <input type="checkbox" checked="checked" disabled id="globalOne">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="col-12" *ngFor="let item of asignedService.data.mediaandservicelists.voice">
+                            <label class="checkbox-label col-4 ml-15" for="globalOne">{{item}}
+                                <input type="checkbox" checked="checked" disabled id="globalOne">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12 text-center mt-3">
-                    <button type="button" class="btn erp-intl-btn w-25" aria-label="Close" (click)="d('Cross click')">OK</button>
+                    <button type="button" class="btn erp-intl-btn w-25" aria-label="Close"
+                        (click)="d('Cross click')">OK</button>
                 </div>
-
             </section>
-
-
         </form>
     </div>
 </ng-template>
+
+<div class="pt-3 center-block h-100" *ngIf="!CmAuthControls.cust_existing_customer_detailed_view_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
+</div>

@@ -8,6 +8,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gt-senderid-content',
@@ -24,10 +25,16 @@ export class GtSenderidContentComponent implements OnInit {
   gw_id: string = null
   gw_name: string = null
 
+  searchvalue: string = ''
+  GtMgmtAuthControls = null
+
   constructor(
     private activeRoute: ActivatedRoute,
     private gatewayManagementService: GatewayManagementService,
-  ) { }
+    private authorizationService: AuthorizationService
+  ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+  }
 
   ngOnInit() {
     this.gw_id = this.activeRoute.snapshot.params.id;

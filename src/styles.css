@@ -942,7 +942,7 @@ body {
   height: 100%;
 }
 
-.center-block {
+.center-block-full {
   display        : flex;
   justify-content: center;
   text-align     : center;
@@ -953,4 +953,45 @@ body {
   /* Mozilla-based browsers will ignore this. */
   min-height     : stretch;
   align-items    : center;
+}
+
+.disabled img,
+.disabled-func {
+  cursor: not-allowed;
+}
+
+[type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled),
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.center-block {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  align-items: center;
+}
+
+.date-wrapper {
+  background-color: #3e4b5b;
+  color: #fff;
+  font-size: 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+.date-wrapper input {
+  cursor: pointer;
+  width: 100% !important;
+  border: 0;
+  text-align: center;
 }

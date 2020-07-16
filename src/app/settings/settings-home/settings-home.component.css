@@ -1,24 +1,25 @@
-.setting-select label{
-    font-weight:600;
+.setting-select label {
+    font-weight: 600;
 }
-.rounded-question{
-border-radius:100%;
-background:#E9EDF4;
-padding:4px 8px;
-margin-left:10px;
+.rounded-question {
+    border-radius: 100%;
+    background: #e9edf4;
+    padding: 4px 8px;
+    margin-left: 10px;
 }
 .add-div-btn {
     margin-top: 32px;
-    margin-left:-15px;
+    margin-left: -15px;
 }
-.add-div-btn button{
+.add-div-btn button {
     font-size: 22px;
     padding: 0 12px;
 }
-.checkmark{
-    left:115px;
+.checkmark {
+    left: inherit;
+    right: 70px;
 }
-.view-audit-head{
-    font-weight:bold;
-    padding-left:10px;
+.view-audit-head {
+    font-weight: bold;
+    padding-left: 10px;
 }

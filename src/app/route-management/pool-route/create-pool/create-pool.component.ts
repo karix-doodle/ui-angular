@@ -1,19 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { User } from 'src/app/shared/models/commonModels';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
-import {
-  CountriesListData, OperatorsListData, GatewaysListData, GatewaysListBody,
-  GatewaysListRes
-} from '../../models/RouteManagement/Generic/generic';
-import { NewRoutesList, CloneAPoolRouteData, CloneAPoolRouteRes } from '../../models/RouteManagement/PoolRoute/poolRoute';
-import { Subscription } from 'rxjs';
-import { GenericService } from '../../services/RouteManagement/Generic/generic.service';
-import { ActivatedRoute, Params } from '@angular/router';
-import { PoolRouteService } from '../../services/RouteManagement/poolRoute/pool-route.service';
+import { Subscription, Subject } from 'rxjs';
 import { startWith, pairwise } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { errorAlert, successAlert, confirmAlert } from '../../../shared/sweet-alert/sweet-alert';
+import { PoolRouteService } from '../../services/RouteManagement/poolRoute/pool-route.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { errorAlert, confirmAlert } from '../../../shared/sweet-alert/sweet-alert';
+import { GatewaysListRes, GatewaysListBody, GatewaysListData } from '../../models/RouteManagement/Generic/generic';
+import { GenericService } from '../../services/RouteManagement/Generic/generic.service';
+import { NewRoutesList, NewRowRoutesList, CloneAPoolRouteRes, CloneAPoolRouteData } from '../../models/RouteManagement/PoolRoute/poolRoute';
+import { Params, ActivatedRoute } from '@angular/router';
+import { AuthorizationService } from '../../../service/auth/authorization.service';
 
 @Component({
   selector: 'app-create-pool',
@@ -22,31 +19,31 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class CreatePoolComponent implements OnInit, OnDestroy {
   @ViewChild('tableRow', { static: false }) tableRow: ElementRef;
-  user: User;
-  submitted: boolean;
-  formOfCreateClone: FormGroup;
-  countriesList: CountriesListData[];
-  operatorsList: OperatorsListData[];
-  gatewaysList: GatewaysListData[];
-  gatewaysListBody: GatewaysListBody = new GatewaysListBody();
-  previewList: NewRoutesList[] = [];
-  continentsCount: number;
-  countryCount: number;
-  searchText: any;
-  clonedRouteData: CloneAPoolRouteData;
-  countryc: CountriesListData;
-  isClone: boolean;
-  previousGatewayType: string;
+  parentFormGroup: FormGroup;
   sub: Subscription;
-  sortingName: string;
-  isDesc: boolean;
+  previousGatewayType: string;
   routeNameMin: number;
   routeNameMax: number;
+  gatewaysListBody: GatewaysListBody = new GatewaysListBody();
+  // gatewaysList: GatewaysListData[];
+  gatewaysList: Subject<GatewaysListData[]> = new Subject<GatewaysListData[]>();
+  submitted: boolean;
+  previewList: NewRoutesList[];
+  continentsCount: number;
+  countryCount: number;
+  editModeStatus: boolean;
+  previewEditClick: Subject<[boolean, number, string, NewRowRoutesList[]]> = new Subject<[boolean, number, string, NewRowRoutesList[]]>();
+  clonedRouteData: CloneAPoolRouteData;
+  clonedData: Subject<CloneAPoolRouteData> = new Subject<CloneAPoolRouteData>();
+  childDataReset: Subject<number> = new Subject<number>();
+  previewDeleteClick: Subject<void> = new Subject<void>();
+  searchText: any;
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
+    public poolRouteService: PoolRouteService,
     private genericService: GenericService,
-    private poolRouteService: PoolRouteService
+    private route: ActivatedRoute,
+    public authService: AuthorizationService
   ) {
     this.createForm();
     this.routeNameMin = environment.createClonePoolRouteFieldLength.routeNameInputBox.min;
@@ -54,71 +51,29 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.submitted = false;
-    // clone a pool route
-    this.poolRouteService.changeSubjectData(null); // for initial subject data reset
-    /**
-     * @description gets route id form route params.
-     */
+    this.previewList = [];
+    this.poolRouteService.previewList = [];
+    this.editModeStatus = false;
+    this.searchText = '';
+    this.initCloneAPoolRouteParams(); // clone a pool route
+  }
+  initCloneAPoolRouteParams() {
     this.route.params
       .subscribe(
         (params: Params) => {
           const routeId = +params.id;
           if (routeId) {
-            this.isClone = true;
-            this.setParamData(routeId);
+            // this.isClone = true;
+            this.getRouteCloneDate(routeId);
           } else {
             this.poolRouteService.previewList = [];
           }
         }
       );
-    // clone a pool route
-    this.gatewaysListBody.loggedinempid = environment.loggedinempid;
-    this.gatewaysListBody.loggedinusername = environment.loggedinusername;
   }
-  /**
-   * @description create and define a parent(1st step) form.
-   */
-  private createForm() {
-    this.formOfCreateClone = this.formBuilder.group({
-      route_name: ['', Validators.required],
-      gw_type: ['', [Validators.required]],
-      fallback_gw_type: [''],
-      firstCtrl: [''],
-      countryName: ['', Validators.required],
-      operatorMNC: ['', Validators.required],
-      gatewayRatio: this.formBuilder.array([this.createItem()]),
-    });
-
-    this.sub = this.formOfCreateClone.get('gw_type')
-      .valueChanges
-      .pipe(startWith(null), pairwise())
-      .subscribe(([prev, next]: [any, any]) => {
-        this.previousGatewayType = prev;
-      });
-  }
-  /**
-   * @description create and define gatewayRatio form array.
-   */
-  createItem(): FormGroup {
-    return this.formBuilder.group({
-      gw_id: ['', [Validators.required]],
-      ratio_in_percentage: [10, [Validators.required]]
-    });
-  }
-  /**
-   * @description gets the parent form array data.
-   */
-  get parentFormArray(): FormArray {
-    return this.formOfCreateClone.get('gatewayRatio') as FormArray;
-  }
-  /**
-   * @param routeId consists of route id.
-   * @description gets the clone route data.
-   */
-  setParamData(routeId) {
-    this.poolRouteService.cloneAPoolRoute({ route_id: routeId, loggedinempid: environment.loggedinempid })
+  getRouteCloneDate(routeId) {
+    this.poolRouteService.cloneAPoolRoute({ route_id: routeId, loggedinempid: this.authService.authorizationState.loggedinempid })
       .subscribe(
         (res: CloneAPoolRouteRes) => {
           if (
@@ -126,36 +81,16 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
             res.responsecode > environment.APIStatus.success.code
           ) {
             this.clonedRouteData = res.data;
-            res.data.routes_list.forEach(element => {
-              element.ratios.forEach((ratio) => {
-                delete ratio.gw_name; // to remove the gateway name for res
-              });
-            });
-            res.data.routes_list.forEach(element => {
-              element.ratios.sort((obj1, obj2) => {
-                if (obj1.ratio_in_percentage > obj2.ratio_in_percentage) {
-                  return 1;
-                }
-                if (obj1.ratio_in_percentage < obj2.ratio_in_percentage) {
-                  return -1;
-                }
-                return 0;
-              });
-            });
-            // console.log(res.data.routes_list);
-            this.formOfCreateClone.patchValue({
-              firstCtrl: '',
-              route_name: res.data.route_name,
+            // console.log(res.data);
+            this.parentFormGroup.patchValue({
               gw_type: res.data.gw_type,
               fallback_gw_type: res.data.fallback_route
             });
-            this.prePopulateForm(res.data.routes_list[0]);
             this.poolRouteService.previewList = [];
-
-            // console.log(res.data.routes_list);
-            this.poolRouteService.previewList = res.data.routes_list.slice(1);
+            this.poolRouteService.previewList = res.data.routes_list;
             this.loadGatewaysList('cloneRouteParams');
-            this.previewListData();
+            this.previewListSetCount();
+            this.clonedData.next(this.clonedRouteData);
           } else if (
             res.responsestatus === environment.APIStatus.error.text &&
             res.responsecode < environment.APIStatus.error.code
@@ -168,47 +103,83 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       );
   }
   /**
-   * @param data consists of route id.
-   * @description to prepopulate the 1st step form data.
+   * @description create and define a parent(1st step) form.
    */
-  private prePopulateForm(data: NewRoutesList) {
-    this.formOfCreateClone.patchValue({
-      countryName: data.country,
-      operatorMNC: data.mnc
+  private createForm() {
+    this.parentFormGroup = this.formBuilder.group({
+      route_name: ['', Validators.required],
+      gw_type: ['', [Validators.required]],
+      fallback_gw_type: [''],
+      firstCtrl: [''],
+      continent: [''],
+      country: ['', Validators.required],
+      mcc: [''],
+      operator: ['', Validators.required],
+      mnc: [''],
+      ratios: this.formBuilder.array([this.poolRouteService.createItem()]),
     });
-    this.parentFormArray.clear();
-    const formArray = this.parentFormArray;
-    data.ratios.forEach(element => {
-      formArray.push(
-        this.formBuilder.group({
-          gw_id: [element.gw_id, [Validators.required]],
-          ratio_in_percentage: [element.ratio_in_percentage, [Validators.required]]
-        })
-      );
-    });
+
+    this.sub = this.parentFormGroup.get('gw_type')
+      .valueChanges
+      .pipe(startWith(null), pairwise())
+      .subscribe(([prev, next]: [any, any]) => {
+        this.previousGatewayType = prev;
+      });
   }
   /**
-   * @param from consists of origin method identification string.
-   * @description to check and initiate load Gateways list method.
+   * @description create and define gatewayRatio form array.
    */
+  // createItem(): FormGroup {
+  //   return this.formBuilder.group({
+  //     gw_id: ['', [Validators.required]],
+  //     ratio_in_percentage: [10, [Validators.required]]
+  //   });
+  // }
+  /**
+   * @description gets the parent form array data.
+   */
+  get parentFormGroupFormArray(): FormArray {
+    // return this.parentFormGroup.get('gatewayRatio') as FormArray;
+    return this.poolRouteService.formArray(this.parentFormGroup, 'ratios');
+  }
+
   loadGatewaysList(from) {
     if (from === 'cloneRouteParams') {
       this.loadList();
     } else if (from === 'onChange') {
       if (!this.poolRouteService.previewList.length) {
-        this.resetFirstFormArray();
-        this.loadList();
+        if (this.parentFormGroup.get('country').dirty ||
+          this.parentFormGroup.get('operator').dirty ||
+          this.parentFormGroupFormArray.dirty) {
+          confirmAlert('Your unsaved data will get erased', 'Yes, delete it!')
+            .then((result) => {
+              if (result.isConfirmed) {
+                // this.parentFormGroupReset();
+                this.childDataReset.next(1);
+                this.loadList();
+
+              } else {
+                this.parentFormGroup.patchValue({
+                  gw_type: this.previousGatewayType
+                });
+              }
+            });
+        } else {
+          this.loadList();
+        }
       } else if (this.poolRouteService.previewList.length) {
         confirmAlert('You won\'t be able to revert added route!', 'Yes, reset it!')
           .then((result) => {
             if (result.isConfirmed) {
               this.poolRouteService.previewList = [];
-              this.clonedRouteData = undefined;
-              this.resetFirstFormArray();
+              // this.clonedRouteData = undefined;
+              // this.parentFormGroupReset();
+              this.childDataReset.next(2);
               this.loadList();
-              this.poolRouteService.changeSubjectData(2);
+              // this.poolRouteService.changeSubjectData(2);
+
             } else {
-              this.formOfCreateClone.patchValue({
+              this.parentFormGroup.patchValue({
                 gw_type: this.previousGatewayType
               });
             }
@@ -216,22 +187,22 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       }
     }
   }
-  /**
-   * @description gets the gateways list date.
-   */
   loadList() {
-    this.formOfCreateClone.patchValue({
-      fallback_gw_type: `lcr-${this.formOfCreateClone.value.gw_type}`
+    this.parentFormGroup.patchValue({
+      fallback_gw_type: `lcr-${this.parentFormGroup.value.gw_type}`
     });
-    this.gatewaysListBody.gw_type = this.formOfCreateClone.value.gw_type;
+    this.gatewaysListBody.loggedinempid = this.authService.authorizationState.loggedinempid;
+    this.gatewaysListBody.loggedinusername = this.authService.authorizationState.loggedinusername;
+    this.gatewaysListBody.gw_type = this.parentFormGroup.value.gw_type;
     this.genericService.getGatewaysList(this.gatewaysListBody).subscribe(
       (res: GatewaysListRes) => {
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
-          this.gatewaysList = res.data;
-          this.poolRouteService.changeSubjectData(4);
+          const gatewaysList: GatewaysListData[] = res.data;
+          // this.poolRouteService.changeSubjectData(4);
+          this.gatewaysList.next(gatewaysList);
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code
@@ -243,89 +214,86 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
       }
     );
   }
-  /**
-   * @description to reset the 1st form array.
-   */
-  resetFirstFormArray() {
-    this.formOfCreateClone.get('gatewayRatio').markAsUntouched();
-    const formArray = this.parentFormArray;
-    formArray.controls.forEach(ratio => ratio.patchValue(
-      {
-        gw_id: '',
-        ratio_in_percentage: 10
-      }
-    ));
-  }
-  /**
-   * @description to set the parent form is submitted.
-   */
+  // parentFormGroupReset() {
+  //   const form = this.parentFormGroup;
+  //   this.parentFormGroup.reset({
+  //     route_name: form.value.route_name,
+  //     gw_type: form.value.gw_type,
+  //     fallback_gw_type: form.value.fallback_gw_type,
+  //     firstCtrl: '',
+  //     continent: '',
+  //     country: '',
+  //     mcc: '',
+  //     operator: '',
+  //     mnc: ''
+  //   });
+  //   const firstFormArray = this.parentFormGroupFormArray;
+  //   firstFormArray.clear();
+  //   firstFormArray.push(this.poolRouteService.createItem());
+  // }
+
   submitState() {
     this.submitted = true;
   }
-  /**
-   * @param eventData consists of add new button click method identification string
-   * @description to set the parent form is submitted.
-   */
-  previewListData(eventData?: string) {
+  listenAddedNewRouteChildEvent() {
+    this.submitted = false;
+    this.editModeStatus = false;
+    this.previewList = this.poolRouteService.previewList;
+    this.onScrollDown();
+    this.previewListSetCount();
+  }
+  previewListSetCount(eventData?: string) {
     this.continentsCount = this.poolRouteService.count('continent');
     this.countryCount = this.poolRouteService.count('country');
-    if (eventData === 'fromAddNew') {
-      this.onScrollDown();
+    // if (eventData === 'fromAddNew') {
+    //   this.onScrollDown();
+    // }
+  }
+  onEditPreview(routeData: NewRoutesList, listIndex) {
+    this.editModeStatus = true;
+    this.previewEditClick.next([true, listIndex, routeData.country, routeData.ratios]);
+    this.parentFormGroup.patchValue({
+      continent: routeData.continent,
+      country: routeData.country,
+      mcc: routeData.mcc,
+      operator: routeData.operator,
+      mnc: routeData.mnc
+    });
+    const firstFormArray = this.parentFormGroupFormArray;
+    firstFormArray.clear();
+    routeData.ratios.forEach(element => {
+      firstFormArray.push(
+        this.formBuilder.group({
+          gw_id: element.gw_id,
+          ratio_in_percentage: element.ratio_in_percentage
+        })
+      );
+    });
+    // console.log(routeData.ratios);
+  }
+  onDeleteRoute(listIndex) {
+    if (!this.editModeStatus) {
+      confirmAlert().then((result) => {
+        if (result.isConfirmed) {
+          this.poolRouteService.previewList.splice(listIndex, 1);
+          this.previewListSetCount();
+          this.previewDeleteClick.next();
+        }
+      });
+    } else {
+      errorAlert('You are in edit mode', 'Warning');
     }
   }
-  /**
-   * @param route consists of selected route detail object.
-   * @description to pass the preview list edit event from parent to child component.
-   */
-  onEditPreview(route: NewRoutesList) {
-    this.prePopulateForm(route);
-    this.poolRouteService.changeSubjectData(1);
-    // does tell about current edit event to child.
-    this.poolRouteService.previewList = this.poolRouteService.previewList.filter((element) => element !== route);
-    this.previewListData();
-
-  }
-  /**
-   * @param route consists of selected route detail object.
-   * @description to pass the preview delete edit event from parent to child component.
-   */
-  onDeleteRoute(route: NewRoutesList) {
-    confirmAlert().then((result) => {
-      if (result.isConfirmed) {
-        this.poolRouteService.previewList = this.poolRouteService.previewList.filter((element) => element !== route);
-        this.previewListData();
-        this.poolRouteService.changeSubjectData(3);
-        // does tell about preview delete event to child.
-      }
-    });
-  }
-  /**
-   * @description page scroll down.
-   */
   onScrollDown(): void {
     setTimeout(() => {
       this.tableRow.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
+    }, 250);
   }
   /**
    * @description to clear all observable subscriptions.
    */
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    // this.sub.unsubscribe();
   }
-
-  /**
-   * @param tableHeaderName consists of table header
-   * @description sorts the table based upon the table Header Name
-   */
-  sort(tableHeaderName: string): void {
-    if (tableHeaderName && this.sortingName !== tableHeaderName) {
-      this.isDesc = false;
-    } else {
-      this.isDesc = !this.isDesc;
-    }
-    this.sortingName = tableHeaderName;
-  }
-
 }
 

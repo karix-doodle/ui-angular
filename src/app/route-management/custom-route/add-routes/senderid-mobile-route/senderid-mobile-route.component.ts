@@ -15,6 +15,9 @@ import {
   successAlert,
 } from "../../../../shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { MobileBlackList_AddResponse } from 'src/app/route-management/models/BlackList/blacklist.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "app-senderid-mobile-route",
@@ -35,7 +38,8 @@ export class SenderidMobileRouteComponent implements OnInit {
     public customService: CustomService,
     public mobileSenderIdCustomService: MobileSenderidCustomService,
     public route: ActivatedRoute,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {
@@ -56,7 +60,7 @@ export class SenderidMobileRouteComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(5),
-          Validators.pattern("[0-9]{10}"),
+          Validators.pattern("[0-9]{10,14}"),
         ],
       ],
       senderid: [
@@ -156,7 +160,7 @@ export class SenderidMobileRouteComponent implements OnInit {
       : "";
     this.senderIdFrom.value.req_type = "single_req";
     this.senderIdFrom.value.createdby = "1234";
-    this.senderIdFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+    this.senderIdFrom.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
     this.onAddRoute({ ...this.senderIdFrom.value });
     }
 
@@ -194,12 +198,20 @@ export class SenderidMobileRouteComponent implements OnInit {
     this.mobileSenderIdCustomService
       .addCustomMobileSenderid(body, formType)
       .subscribe(
-        (data: MobileCustomResponse) => {
+        (data: MobileBlackList_AddResponse) => {
           if (data.responsestatus === "failure") {
             this.fromReset();
             errorAlert(data.message, data.responsestatus);
           } else {
-            successAlert(data.message);
+            Swal.fire({
+              icon: 'success',
+              title: data.responsestatus,
+              text: `Success:${data.data.success}
+                     Duplicate:${data.data.duplicate}
+                     Failed:${data.data.failed}
+                     Invalid:${data.data.invalid}
+                     Total:${data.data.total}`
+            });
             this.cancel();
           }
         },

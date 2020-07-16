@@ -1,19 +1,18 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="GtMgmtAuthControls.gw_countries_list_country_operator_history_enabled">
     <div class="col-12">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span>
-            <a routerLink="/gateway-management/gateway-details/{{GtCountryListViewLogData?.data.gw_id}}">
-                {{GtCountryListViewLogData?.data.gw_id}} -
-                {{GtCountryListViewLogData?.data.gw_name}}
+            <a routerLink="/gateway-management/gateway-details/{{gw_id}}">
+                {{gw_id}} - {{gw_name}}
                 /</a>
-            <a
-                routerLink="/gateway-management/country-list/{{GtCountryListViewLogData?.data.gw_id}}/{{GtCountryListViewLogData?.data.gw_name}}">
+            <a routerLink="/gateway-management/country-list/{{gw_id}}/{{gw_name}}">
                 COUNTRY LIST
             </a>/ VIEWLOG
         </span>
     </div>
 </div>
-<div class="row btm-border second-row-det">
+<div class="row btm-border second-row-det"
+    *ngIf="GtMgmtAuthControls.gw_countries_list_country_operator_history_enabled">
     <div class="col-5">
         <div class="row mb-2">
             <div class="col-3 border-right"><label>Country</label></div>
@@ -34,7 +33,8 @@
         </div>
     </div>
 </div>
-<div class="main-container table-responsive">
+<div class="main-container table-responsive"
+    *ngIf="GtMgmtAuthControls.gw_countries_list_country_operator_history_enabled">
     <table class="table table-borderless erp-list-table mb-0">
         <thead>
             <tr>
@@ -55,4 +55,12 @@
             </tr>
         </tbody>
     </table>
+</div>
+<div class="pt-3 center-block h-100" *ngIf="!GtMgmtAuthControls.gw_countries_list_country_operator_history_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
 </div>

@@ -18,8 +18,8 @@ export class CustomerManagementService{
 
     loggedinUserInfo = {
         loggedinusername: environment.loggedinusername,
-        //loggedinempid: environment.loggedinempid
-        loggedinempid: 1137
+        loggedinempid: environment.loggedinempid
+        //loggedinempid: 1137
     };
 
     constructor(private httpClient: HttpClient) {}

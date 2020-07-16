@@ -9,6 +9,7 @@ import {
   errorAlert,
   successAlert,
 } from "../../shared/sweet-alert/sweet-alert";
+import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 
 @Component({
   selector: 'app-gateway-details',
@@ -28,11 +29,18 @@ export class GatewayDetailsComponent implements OnInit {
 
   senderIdType = environment.senderIdType
 
+  GtMgmtAuthControls = null
+  gwId = null
+
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
-    private gatewayManagementService: GatewayManagementService
-  ) { }
+    private gatewayManagementService: GatewayManagementService,
+    private authorizationService: AuthorizationService
+  ) {
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    this.gwId = this.activeRoute.snapshot.params.id;
+  }
 
   open(content) {
     this.modalService.open(content);
@@ -44,7 +52,7 @@ export class GatewayDetailsComponent implements OnInit {
 
   GatewayDetails_view() {
     let data = {
-      gw_id: this.activeRoute.snapshot.params.id,
+      gw_id: this.gwId,
     }
     this.gatewayManagementService.GatewayDetails_view(data).subscribe(
       (res: GtDetails_ApiResponse) => {
@@ -65,7 +73,7 @@ export class GatewayDetailsComponent implements OnInit {
 
   GtAddedCountry_list() {
     let data = {
-      gw_id: this.activeRoute.snapshot.params.id,
+      gw_id: this.gwId,
       gw_name: this.GtDetailsDataRes.data.gw_name
     }
     this.gatewayManagementService.GtAddedCountry_list(data).subscribe(
@@ -84,7 +92,7 @@ export class GatewayDetailsComponent implements OnInit {
 
   GtInactiveCountry_list() {
     let data = {
-      gw_id: this.activeRoute.snapshot.params.id,
+      gw_id: this.gwId,
       gw_name: this.GtDetailsDataRes.data.gw_name
     }
     this.gatewayManagementService.GtInactiveCountry_list(data).subscribe(
@@ -103,7 +111,7 @@ export class GatewayDetailsComponent implements OnInit {
 
   GtPriceChangeCountry_list() {
     let data = {
-      gw_id: this.activeRoute.snapshot.params.id,
+      gw_id: this.gwId,
       gw_name: this.GtDetailsDataRes.data.gw_name
     }
     this.gatewayManagementService.GtPriceChangeCountry_list(data).subscribe(

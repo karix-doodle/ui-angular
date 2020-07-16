@@ -33,6 +33,14 @@ export function successAlert(message: string, title?) {
   });
 }
 
+export function infoAlert(message: string, title?) {
+  Swal.fire({
+    icon: 'info',
+    title,
+    text: message,
+  });
+}
+
 
 export function deleteAlert() {
   return Swal.fire({

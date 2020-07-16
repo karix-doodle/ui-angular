@@ -8,6 +8,8 @@ import {
   PoolRouteListRes, SelectedPoolRoute, SelectedPoolRouteRes, PoolRouteRes,
   CreateAPoolRouteBody, CloneAPoolRouteBody, CloneAPoolRouteRes, NewRoutesList
 } from '../../../models/RouteManagement/PoolRoute/poolRoute';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +19,8 @@ export class PoolRouteService {
   baseUrl: string = environment.serverUrl + '/routemgmt/';
   httpOptions = { headers: new HttpHeaders({ Accept: 'application/json', 'Content-Type': 'application/json' }) };
   user: User = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
   public previewList: NewRoutesList[] = []; // common preview list data
@@ -29,11 +31,16 @@ export class PoolRouteService {
   private parentToChildDetectionSubject: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   currentSubjectData = this.parentToChildDetectionSubject.asObservable();
 
-  constructor(public http: HttpClient) { }
+  constructor(
+    public http: HttpClient,
+    private formBuilder: FormBuilder,
+    private authorizationService: AuthorizationService) { }
 
   changeSubjectData(data) {
     this.parentToChildDetectionSubject.next(data);
   }
+
+
 
   /**
    * @description gets the pool route list
@@ -86,5 +93,15 @@ export class PoolRouteService {
       uniqueId.add(element[params]);
     });
     return uniqueId.size;
+  }
+  formArray(fb: FormGroup, fc: string): FormArray {
+    return fb.get(fc) as FormArray;
+  }
+
+  createItem(): FormGroup {
+    return this.formBuilder.group({
+      gw_id: ['', [Validators.required]],
+      ratio_in_percentage: [10, [Validators.required]]
+    });
   }
 }

@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="isLinear" #stepper>
+<mat-horizontal-stepper  #stepper>
     <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup">
             <section class="mb-2">
@@ -139,7 +139,7 @@
                 </div>
 
                 <div class="row mt-4 create-route-section">
-    
+
                     <div class="col-12 text-center">
                         <button class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
                         <button class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>

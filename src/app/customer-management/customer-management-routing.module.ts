@@ -11,35 +11,29 @@ import { AuthGuard } from '../auth-management/guards/auth.guard';
 
 const CMroutes: Routes = [
     {
-      path: 'customer-management/customer-management-view',
-      component: CmViewComponent,
-      canActivate: [AuthGuard]
+      path: 'customer-management/customer-management-view/:id',
+      component: CmViewComponent
     },
     {
       path: 'customer-management/customer-management-edit/:esmeaddr',
       component: CmEditComponent,
-      canActivate: [AuthGuard]
     },
     {
-      path: 'customer-management/customer-management-view-log',
-      component: CmViewLogComponent,
-      canActivate: [AuthGuard]
+      path: 'customer-management/customer-management-view-log/:id/:name',
+      component: CmViewLogComponent
     },
     {
       path: 'customer-management/customer-management-audit-log',
       component: CmAuditLogComponent,
-      canActivate: [AuthGuard]
     },
     {
       path: 'customer-management/customer-management-show-margin-list',
       component: CmShowMarginComponent,
-      canActivate: [AuthGuard]
     },
     {
-      path: 'customer-management/allowed-country-operator-list',
-      component: CountryOperatorListComponent,
-      canActivate: [AuthGuard]
-    }
+      path: 'customer-management/allowed-country-operator-list/:id',
+      component: CountryOperatorListComponent
+    },
 
 ];
 

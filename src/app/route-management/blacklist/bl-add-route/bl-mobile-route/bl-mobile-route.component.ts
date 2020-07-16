@@ -15,6 +15,7 @@ import {
   successAlert,
 } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Component({
   selector: "app-bl-mobile-route",
@@ -35,7 +36,8 @@ export class BlMobileRouteComponent implements OnInit {
     public mobileService: BlackListAddMobileService,
     public router: Router,
     public route: ActivatedRoute,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class BlMobileRouteComponent implements OnInit {
   private intForm() {
     this.blacklistMobileAddForm = this.formBuilder.group({
       blacklist_type: ["Global", [Validators.required]],
-      mobile: ["", [Validators.required, Validators.pattern("[0-9]{10}")]],
+      mobile: ["", [Validators.required, Validators.pattern("[0-9]{10,14}")]],
       esmeaddr: [""],
       gw_id: [null],
     });
@@ -183,7 +185,15 @@ export class BlMobileRouteComponent implements OnInit {
           errorAlert(data.message, data.responsestatus);
           this.fromReset();
         } else {
-          successAlert(data.message);
+          Swal.fire({
+            icon: 'success',
+            title: data.responsestatus,
+            text: `Success:${data.data.success}
+                   Duplicate:${data.data.duplicate}
+                   Failed:${data.data.failed}
+                   Invalid:${data.data.invalid}
+                   Total:${data.data.total}`
+          });
           this.cancel();
         }
       },

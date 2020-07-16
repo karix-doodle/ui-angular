@@ -1,39 +1,42 @@
-<div class="row btm-border headings-div">
+<div class="row btm-border headings-div" *ngIf="StMgmtAuthControls.settings_global_country_operator_listing_enabled">
     <div class="col-12">
         <label class="main-heading">
             <a routerLink="/settings">SETTINGS /</a>
         </label>
         <span> GLOBAL COUNTRY & OPERATOR LISTING </span>
     </div>
-
 </div>
-<div class="row btm-border second-row-pr">
+<div class="row btm-border second-row-pr" *ngIf="StMgmtAuthControls.settings_global_country_operator_listing_enabled">
     <div class="col-2 pr-0 mt-2">
         <label class="mr-2"><b>Total Countries</b></label>
         <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>35</b></span>
+        <span class="ml-3 badge badge-dark"><b>{{gsGlobalCountryOperatorData?.data.totalcountry}}</b></span>
     </div>
     <div class="col-6 mt-2">
         <label class="mr-2"><b>Total Operators</b></label>
         <span class="border-right">&nbsp;</span>
-        <span class="ml-3 badge badge-dark"><b>435</b></span>
+        <span class="ml-3 badge badge-dark"><b>{{gsGlobalCountryOperatorData?.data.totaloperator}}</b></span>
     </div>
-
     <div class="col-3">
-        <input type="search" class="form-control" placeholder="&#xf002; Search by Country, Operator" />
+        <input type="search" class="form-control" placeholder="&#xf002; Search by Country, Operator"
+            [(ngModel)]="searchvalue" />
     </div>
     <div class="col-1">
-        <button class="icon-btn"><i aria-hidden="true" class="fa fa-download"></i></button>
+        <button class="icon-btn"
+            [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_global_country_operator_download_enabled }"
+            (click)="StMgmtAuthControls.settings_global_country_operator_download_enabled ? GsGlobalCountryOperator_download() : ''">
+            <i aria-hidden="true" class="fa fa-download"></i>
+        </button>
     </div>
-
 </div>
-<div class="main-container table-responsive ">
+<div class="main-container table-responsive"
+    *ngIf="StMgmtAuthControls.settings_global_country_operator_listing_enabled">
     <table class="table table-borderless erp-list-table row-hover-effect erp-table-scroll">
         <thead>
             <tr>
                 <th class="col-hover">Continent</th>
                 <th>Country</th>
-                <th>Operator</th>
+                <th style="width: 180px;">Operator</th>
                 <th>MCC + MNC</th>
                 <th>SenderID Type</th>
                 <th>Default SenderID</th>
@@ -47,80 +50,47 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">Australia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Dynamic</td>
-                <td>Bankalerts</td>
-                <td>91</td>
-                <td>10</td>
-                <td>20</td>
-                <td>1800, 1980, 9897<span class="badge badge-dark ml-2">12+</span></td>
+            <tr
+                *ngFor="let item of gsGlobalCountryOperatorData?.data.tabledata | filter: { country: searchvalue, operator: searchvalue }">
+                <td class="font-weight-semi-bold col-hover">{{item.continent}}</td>
+                <td class="font-weight-semi-bold">{{item.country}}</td>
+                <td>{{item.operator}}</td>
+                <td>{{item.mcc}} + {{item.mnc}}</td>
+                <td>{{item.senderid_type}}</td>
+                <td>{{item.default_senderid}}</td>
+                <td>{{item.senderid_length ? item.senderid_length : '-'}}</td>
+                <td>{{item.min_dest_length ? item.min_dest_length : '-'}}</td>
+                <td>{{item.max_dest_length ? item.max_dest_length : '-'}}</td>
+                <td>{{seriesCheckComma(item.series)}}
+                    <span class="badge badge-dark ml-2" *ngIf="item.balanceseries != 0 && item.balanceseries != '0+'">
+                        {{item.balanceseries}}
+                    </span>
+                    {{item.series == null ? '-' : ''}}
+                </td>
                 <td class="send-test-msg-td">
-                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
-                        Test</button>
+                    <button *ngIf="StMgmtAuthControls.settings_global_country_operator_test_message_enabled"
+                        type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'"
+                        [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
+                        Test
+                    </button>
+                    <button *ngIf="!StMgmtAuthControls.settings_global_country_operator_test_message_enabled"
+                        type="button" class="btn btn-default p-0 test-msg-popup">
+                        Test
+                    </button>
                 </td>
                 <td>
                     <div class="form-group text-center">
                         <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
+                            <input type="checkbox" class="switch-btn" disabled [checked]="item.status === 1">
+                            <span class="slider round cursor-default"></span>
                         </label>
                     </div>
-                </td>
-                <td><button class="invisible-btn" (click)="open(addMobileNumber)"><img src="assets/icons/edit-icon.svg" alt="edit"/></button></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">Australia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Dynamic</td>
-                <td>Bankalerts</td>
-                <td>91</td>
-                <td>10</td>
-                <td>20</td>
-                <td>1800, 1980, 9897<span class="badge badge-dark  ml-2">12+</span></td>
-                <td class="send-test-msg-td">
-                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
-                        Test</button>
                 </td>
                 <td>
-                    <div class="form-group text-center">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
+                    <button class="invisible-btn" (click)="setEditValue(item)" (click)="open(addMobileNumber)">
+                        <img src="assets/icons/edit-icon.svg" alt="edit" />
+                    </button>
                 </td>
-                <td><button class="invisible-btn" (click)="open(addMobileNumber)"><img src="assets/icons/edit-icon.svg" alt="edit"/></button></td>
-            </tr>
-            <tr>
-                <td class="font-weight-semi-bold col-hover">Australia</td>
-                <td class="font-weight-semi-bold">Australia</td>
-                <td>Australian Telecom</td>
-                <td>345-345</td>
-                <td>Dynamic</td>
-                <td>Bankalerts</td>
-                <td>91</td>
-                <td>10</td>
-                <td>20</td>
-                <td>1800, 1980, 9897<span class="badge badge-dark  ml-2">12+</span></td>
-                <td class="send-test-msg-td">
-                    <button type="button" class="btn btn-default p-0 test-msg-popup" [autoClose]="'outside'" [ngbPopover]="sendTestMsg" data-placement="left" #p="ngbPopover">
-                        Test</button>
-                </td>
-                <td>
-                    <div class="form-group text-center">
-                        <label class="toggle-switch">
-                            <input type="checkbox" class="switch-btn">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </td>
-                <td><button class="invisible-btn" (click)="open(addMobileNumber)"><img src="assets/icons/edit-icon.svg" alt="edit"/></button></td>
             </tr>
         </tbody>
     </table>
@@ -132,7 +102,7 @@
         <form action="">
             <div class="row">
                 <div class="col-12">
-                    <button type="button" class="close-btn float-right" (click)="close(p)">&times;</button>
+                    <button type="button" class="close-btn float-right" (click)="close(sendTestMsg)">&times;</button>
                 </div>
                 <div class="form-group col-6">
                     <input type="text" class="form-control" placeholder="Enter SenderID" />
@@ -141,7 +111,6 @@
                     <input type="text" class="form-control" placeholder="Enter Mobile No." />
                 </div>
             </div>
-
             <div class="row">
                 <div class="form-group col-6">
                     <select class="dropdown-select w-100">
@@ -161,78 +130,105 @@
         </form>
     </section>
 </ng-template>
+
 <!-- modal pop-up -->
 <ng-template #addMobileNumber let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close" (click)="d('Cross click')">&times;</button>
-        <div class="modal-body settings-senderid-edit">
-            <form action="">
-                <div class="row">
-                    <div class="col-3 border-right mb-2"><label>Country</label></div>
-                    <div class="col-9"><span><b>INDIA</b></span></div>
-
-                    <div class="col-3 border-right"><label>Operator</label></div>
-                    <div class="col-9"><span><b>Airtel</b></span></div>
+    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+        (click)="d('Cross click')">&times;</button>
+    <div class="modal-body settings-senderid-edit">
+        <form action="" [formGroup]="editGlobalCountryOperatorFormGroup"
+            (ngSubmit)="onSubmitEditGlobalCountryOperatorFormGroup(editGlobalCountryOperatorFormGroup.value)">
+            <div class="row">
+                <!-- <pre>Form values: {{editGlobalCountryOperatorFormGroup.value | json}}</pre> -->
+            </div>
+            <div class="row">
+                <div class="col-3 border-right mb-2"><label>Country</label></div>
+                <div class="col-9"><span><b>{{editCountry}}</b></span></div>
+                <div class="col-3 border-right"><label>Operator</label></div>
+                <div class="col-9"><span><b>{{editOperator}}</b></span></div>
+            </div>
+            <div class="row mt-3">
+                <div class="form-group col-6">
+                    <label class="font-weight-semi-bold">Sender ID Type</label>
+                    <select *ngIf="StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled"
+                        [attr.disabled]="StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled ? null : true"
+                        class="dropdown-select w-100 form-control" formControlName="senderid_type">
+                        <option value="" default disabled>Select Sender ID Type</option>
+                        <option value="0">Open</option>
+                        <option value="1">List</option>
+                        <option value="2">Static</option>
+                        <option value="3">Numeric</option>
+                    </select>
+                    <select *ngIf="!StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled" disabled
+                        class="dropdown-select w-100 form-control"
+                        [value]="editGlobalCountryOperatorFormGroup.get('senderid_type').value">
+                        <option value="" default disabled>Select Sender ID Type</option>
+                        <option value="0">Open</option>
+                        <option value="1">List</option>
+                        <option value="2">Static</option>
+                        <option value="3">Numeric</option>
+                    </select>
                 </div>
-                <div class="row mt-3">
-                    <div class="form-group col-6">
-                        <label class="font-weight-semi-bold">Sender ID Type</label>
-                        <select class="dropdown-select w-100 form-control">
-                            <option value="" default>Select Sender ID Type</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-6">
-                        <label class="font-weight-semi-bold">Default Sender ID</label>
-                        <input type="text" class="form-control" placeholder="Enter Default Sender ID" />
-                    </div>
+                <div class="form-group col-6">
+                    <label class="font-weight-semi-bold">Default Sender ID</label>
+                    <input type="text" class="form-control" formControlName="default_senderid"
+                        placeholder="Enter Default Sender ID" />
                 </div>
-                <div class="row">
-                    <div class="form-group col-8 pr-0">
-                        <label class="font-weight-semi-bold">Enter Mobile Series (Separated by Comma)</label>
-                        <input type="text" class="form-control" placeholder="Mobile Series Separated By Comma" />
-                    </div>
-                    <div class="upload-btn-wrapper modal-upload-btn col-4 px-0">
-                        <button class="invisible-btn"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Browse Mobile Series File</button>
-                        <input type="file" name="" />
-                    </div>
-                    <div class="form-group col-12">
-                        <input type="text" class="form-control dark-form" placeholder="&#xf002; Search Mobile Series" />
-                    </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-8 pr-0">
+                    <label class="font-weight-semi-bold">Enter Mobile Series (Separated by Comma)</label>
+                    <input type="text" class="form-control"
+                        *ngIf="!StMgmtAuthControls.settings_global_country_operator_add_mobile_series_enabled"
+                        placeholder="Mobile Series Separated By Comma" disabled />
+                    <input type="text" class="form-control"
+                        *ngIf="StMgmtAuthControls.settings_global_country_operator_add_mobile_series_enabled"
+                        formControlName="series" (blur)="checkSeries()"
+                        placeholder="Mobile Series Separated By Comma" />
+                    <span class="text-danger pl-1 f-12"
+                        *ngIf="editGlobalCountryOperatorFormGroup.get('series').hasError('pattern') && editGlobalCountryOperatorFormGroup.get('series').dirty">
+                        Please enter valid input
+                    </span>
                 </div>
-                <section class="mobile-series-section row">
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>
-                    <div class="mobile-series-value">
-                        990845 <span>X</span>
-                    </div>  
-                </section>
-                                    
-                <div class="col-12 text-center mt-3">
-                    <input type="reset" class="btn btn-basic mr-3" value="Cancel" aria-label="Close" (click)="d('Cross click')">
-                    <input type="submit" class="btn erp-intl-btn save-btn" (click)="c('Save click')"  value="Save">
+                <div class="upload-btn-wrapper modal-upload-btn col-4 px-0">
+                    <button type="button" class="invisible-btn">
+                        <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                        Browse Mobile Series File
+                    </button>
+                    <input type="file" class="cursor-pointer"
+                        *ngIf="StMgmtAuthControls.settings_global_country_operator_add_mobile_series_enabled" name=""
+                        #fileSeriesInput (change)="fileUpload($event.target.files)" formControlName="file" />
+                    <span *ngIf="selectedFileName != ''">{{selectedFileName}} <img (click)="removeFile()"
+                            alt="delete icon" class="img-fluid cursor-pointer"
+                            src="assets/icons/delete-icon.svg"></span>
                 </div>
-            </form>
-        </div> 
-
+                <div class="form-group col-12">
+                    <input type="search" class="form-control" placeholder="&#xf002; Search Mobile Series"
+                        formControlName="searchvalue" />
+                </div>
+            </div>
+            <section class="mobile-series-section row">
+                <div class="mobile-series-value m-2"
+                    *ngFor="let item of gsCountryOperatorEditData?.data.mobileseries | filter: { value: editGlobalCountryOperatorFormGroup.get('searchvalue').value } : 3;">
+                    {{item}}
+                    <span *ngIf="StMgmtAuthControls.settings_global_country_operator_delete_mobile_series_enabled"
+                        class="cursor-pointer ml-1" (click)="removeService(item)">X</span>
+                </div>
+            </section>
+            <div class="col-12 text-center mt-3">
+                <input type="button" class="btn btn-basic mr-3" value="Cancel" aria-label="Close"
+                    (click)="d('Cross click')">
+                <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
+            </div>
+        </form>
+    </div>
 </ng-template>
+
+<div class="pt-3 center-block h-100" *ngIf="!StMgmtAuthControls.settings_global_country_operator_listing_enabled">
+    <div class="d-block">
+        <img style="width: 150px;" src="assets/icons/icon-lock.png" alt="" />
+        <span class="w-100 d-block">
+            Your are not <b>Authorized</b> to access this page
+        </span>
+    </div>
+</div>

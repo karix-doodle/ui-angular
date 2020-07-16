@@ -19,6 +19,9 @@ import {
 } from "src/app/route-management/models/RouteManagement/Generic/generic";
 import { SenderCustomService } from "src/app/route-management/services/RouteManagement/custom-route/sender-custom.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { MobileBlackList_AddResponse } from 'src/app/route-management/models/BlackList/blacklist.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "app-senderid-template-route",
@@ -42,7 +45,8 @@ export class SenderidTemplateRouteComponent implements OnInit {
     public customService: CustomService,
     public mobileSenderTemplateService: SenderCustomService,
     public route: ActivatedRoute,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public authService: AuthorizationService
   ) {}
 
   ngOnInit() {
@@ -176,6 +180,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
     if (!this.senderContentFrom.valid) {
       this.submitted = true;
     } else {
+
       this.senderContentFrom.value.template = this.senderContentFrom.value
         .template
         ? this.senderContentFrom.value.template
@@ -199,7 +204,9 @@ export class SenderidTemplateRouteComponent implements OnInit {
       this.senderContentFrom.value.default_senderid = true;
       this.senderContentFrom.value.priority = +this.senderContentFrom.value
         .priority;
-      this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+        this.senderContentFrom.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
+      // this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
+      console.log(this.senderContentFrom.value)
       this.onAddRoute({ ...this.senderContentFrom.value });
     }
   }
@@ -237,12 +244,20 @@ export class SenderidTemplateRouteComponent implements OnInit {
     this.mobileSenderTemplateService
       .addCustomSenderTemplate(body, formType)
       .subscribe(
-        (data: MobileCustomResponse) => {
+        (data: MobileBlackList_AddResponse) => {
           if (data.responsestatus === "failure") {
             errorAlert(data.message, data.responsestatus);
             this.fromReset();
           } else {
-            successAlert(data.message);
+            Swal.fire({
+              icon: 'success',
+              title: data.responsestatus,
+              text: `Success:${data.data.success}
+                     Duplicate:${data.data.duplicate}
+                     Failed:${data.data.failed}
+                     Invalid:${data.data.invalid}
+                     Total:${data.data.total}`
+            });
             this.cancel();
           }
         },
