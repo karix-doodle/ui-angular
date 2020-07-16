@@ -8,8 +8,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class AuthGuard implements CanActivate, CanLoad {
 
-  private isAuthorizedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  currentSubjectData = this.isAuthorizedSubject.asObservable();
+  private isUserAuthorizedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  isUserAuthorizedObs = this.isUserAuthorizedSubject.asObservable();
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -17,8 +17,8 @@ export class AuthGuard implements CanActivate, CanLoad {
   //   console.log("canactivate");
   //   return this.canLoad();
   // }
-  setAuthorizationSubject(state: boolean) {
-    this.isAuthorizedSubject.next(state);
+  setIsUserAuthorizedState(state: boolean) {
+    this.isUserAuthorizedSubject.next(state);
   }
 
   canLoad(): boolean {
@@ -35,10 +35,10 @@ export class AuthGuard implements CanActivate, CanLoad {
     console.log(this.authService.isLoggedIn());
     if (!this.authService.isLoggedIn()) {
       console.log('inside authmgmt');
-      this.setAuthorizationSubject(false);
+      this.setIsUserAuthorizedState(false);
       // this.router.navigate(['/authmgmt']);
     } else if (this.authService.isLoggedIn()) {
-      this.setAuthorizationSubject(true);
+      this.setIsUserAuthorizedState(true);
     }
     return this.authService.isLoggedIn();
   }

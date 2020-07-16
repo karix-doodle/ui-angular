@@ -32,7 +32,7 @@ export class GtListingComponent implements OnInit {
     private gatewayManagementService: GatewayManagementService,
     private authorizationService: AuthorizationService
   ) {
-    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt;
   }
 
   ngOnInit() {

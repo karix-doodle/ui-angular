@@ -19,13 +19,9 @@ export class AuthManagementComponent implements OnInit {
   refreshtoken: string;
 
   ngOnInit() {
-    console.log('welcome to authmanagement');
-
     this.route.queryParams.subscribe(params => {
       this.accesstoken = params.accesstoken;
       this.refreshtoken = params.refreshtoken;
-      console.log(this.accesstoken);
-      console.log(this.refreshtoken);
     });
 
     if (this.accesstoken && this.refreshtoken) {
@@ -33,12 +29,6 @@ export class AuthManagementComponent implements OnInit {
     } else {
       this.router.navigate(['/dashboard']);
     }
-    // else {
-    //   console.log('set');
-    //   setTimeout(() => {
-    //     this.authGuard.setAuthorizationSubject(false);
-    //   }, 1000);
-    // }
   }
 
   authenticate() {
@@ -48,7 +38,6 @@ export class AuthManagementComponent implements OnInit {
     })
       .subscribe(success => {
         if (success) {
-          console.log(`response:${success}`);
           this.router.navigate(['/dashboard']);
         }
       });

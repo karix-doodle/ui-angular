@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { of, Observable } from 'rxjs';
+import { of, Observable, BehaviorSubject } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 import { Tokens } from '../models/tokens';
 import { environment } from '../../../environments/environment';
@@ -22,12 +22,18 @@ export class AuthService {
     loggedinempid: environment.loggedinempid
   };
 
+  private isAccessTokenAvailableSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  isAccessTokenAvailableObs = this.isAccessTokenAvailableSubject.asObservable();
+
   constructor(
     private http: HttpClient,
     private router: Router) { }
 
+  setIsAccessTokenAvailableState(state: boolean) {
+    this.isAccessTokenAvailableSubject.next(state);
+  }
+
   authenticateTokens(tokens: { accesstoken: string, refreshtoken: string }) {
-    console.log(`Tokens:${JSON.stringify(tokens)}`);
     this.doLoginUser(this.user.loggedinusername, tokens);
     return of(true);
   }
@@ -38,7 +44,8 @@ export class AuthService {
   }
 
   private storeTokens(tokens: Tokens) {
-    localStorage.setItem(this.JWT_TOKEN, tokens.accesstoken);
+    // localStorage.setItem(this.JWT_TOKEN, tokens.accesstoken);
+    this.storeJwtToken(tokens.accesstoken);
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refreshtoken);
   }
 
@@ -69,6 +76,7 @@ export class AuthService {
 
   private storeJwtToken(jwt: string) {
     localStorage.setItem(this.JWT_TOKEN, jwt);
+    this.setIsAccessTokenAvailableState(true);
   }
   private getRefreshToken() {
     return localStorage.getItem(this.REFRESH_TOKEN);

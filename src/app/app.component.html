@@ -8,18 +8,20 @@
 </div>
 
 <ng-template #authorized>
-    <app-navbar></app-navbar>
-    <button type="button" class="btn btn-light ml-4 sidenav-btn" (click)="toggleClass()">
-        <img src="assets/images/sidenav.png" alt="sidenav" />
-    </button>
+    <div *ngIf="stateBoolean">
+        <app-navbar></app-navbar>
+        <button type="button" class="btn btn-light ml-4 sidenav-btn" (click)="toggleClass()">
+            <img src="assets/images/sidenav.png" alt="sidenav" />
+        </button>
 
-    <div class="container-fluid mt-100">
-        <div class="row">
-            <div class="col-3 sidebar-div" [class.active]="classApplied">
-                <app-sidenav></app-sidenav>
-            </div>
-            <div class="col-12 detail-container" [class.active]="classApplied">
-                <router-outlet></router-outlet>
+        <div class="container-fluid mt-100">
+            <div class="row">
+                <div class="col-3 sidebar-div" [class.active]="classApplied">
+                    <app-sidenav></app-sidenav>
+                </div>
+                <div class="col-12 detail-container" [class.active]="classApplied">
+                    <router-outlet ></router-outlet>
+                </div>
             </div>
         </div>
     </div>
