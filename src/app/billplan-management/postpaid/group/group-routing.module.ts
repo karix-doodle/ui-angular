@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, CanActivate } from '@angular/router';
 
 import { GroupComponent } from './group.component';
 import { CreateRatecardComponent } from './create-ratecard/create-ratecard.component';
@@ -10,6 +10,8 @@ const routes: Routes = [
   {
     path: 'billplan-management/postpaid/group',
     component:  GroupComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'create-ratecard/:name/:cId/:bId',

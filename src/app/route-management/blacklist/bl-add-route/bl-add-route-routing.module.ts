@@ -12,25 +12,28 @@ import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 const blRoutes: Routes = [
   {
     path: 'route-management/blacklist/add-route',
-    component: BlMobileRouteComponent
+    component: BlMobileRouteComponent,
+    canActivate: [AuthGuard]
   },
   {
-  path: 'route-management/blacklist/add-route',
-  component: BlAddRouteComponent,
-  children: [
-    {
-      path: 'mobile-route',
-      component: BlMobileRouteComponent
-    },
-    {
-      path: 'senderid-route',
-      component: BlSenderidRouteComponent
-    },
-    {
-      path: 'senderid-mobile-route',
-      component: BlMobileSenderidRouteComponent
-    },
-]}
+    path: 'route-management/blacklist/add-route',
+    component: BlAddRouteComponent,
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: 'mobile-route',
+        component: BlMobileRouteComponent
+      },
+      {
+        path: 'senderid-route',
+        component: BlSenderidRouteComponent
+      },
+      {
+        path: 'senderid-mobile-route',
+        component: BlMobileSenderidRouteComponent
+      },
+    ]
+  }
 ];
 
 @NgModule({

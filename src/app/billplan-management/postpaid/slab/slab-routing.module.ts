@@ -12,6 +12,8 @@ const routes: Routes = [
   {
     path: 'billplan-management/postpaid/slab',
     component: SlabComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'create-ratecard/:name/:cId/:bId',

@@ -112,7 +112,7 @@ export class UpdateGatewayComponent implements OnInit {
     private modalService: NgbModal,
     private authorizationService: AuthorizationService
   ) {
-    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    this.GtMgmtAuthControls = this.authorizationService.authorizationState.gw_mgmt
 
     this.priceListFormGroup = this.formBuilder.group({
       gw_id: [this.activeRoute.snapshot.params.id, [Validators.required]],
@@ -280,8 +280,8 @@ export class UpdateGatewayComponent implements OnInit {
     formData.append("file", file, file.name);
     getHeaderFormData.append("file", file, file.name);
     formData.append("source", "upload");
-    formData.append("createdby", String(environment.loggedinusername));
-    formData.append("loggedinempid", String(environment.loggedinempid));
+    formData.append("createdby", String(this.authorizationService.authorizationState.loggedinusername));
+    formData.append("loggedinempid", String(this.authorizationService.authorizationState.loggedinempid));
 
     this.priceFileData = formData
     this.getFileHeaderData = getHeaderFormData

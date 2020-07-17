@@ -21,11 +21,13 @@ import { AuthGuard } from '../auth-management/guards/auth.guard';
 const GMroutes: Routes = [
   {
     path: 'gateway-management',
-    component: GtListingComponent
+    component: GtListingComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'gateway-management',
     component: GatewayManagementComponent,
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'gateway-list',

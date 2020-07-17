@@ -10,6 +10,8 @@ const routes: Routes = [
   {
     path: 'billplan-management/postpaid/country-operator',
     component: CountryOperatorComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'create-ratecard/:name/:cId/:bId',

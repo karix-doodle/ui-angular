@@ -8,11 +8,13 @@ import { AuthGuard } from '../auth-management/guards/auth.guard';
 const RMroutes: Routes = [
   {
     path: 'route-management',
-    component: RmMenuPageComponent
+    component: RmMenuPageComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'route-management',
     component: RouteManagementComponent,
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'dashboard',

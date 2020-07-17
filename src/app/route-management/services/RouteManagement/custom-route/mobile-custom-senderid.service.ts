@@ -7,13 +7,16 @@ import {
 } from "src/app/route-management/models/custom.model";
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { AuthorizationService } from '../../../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: "root",
 })
 export class MobileSenderidCustomService {
   formDetails: any;
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    public authorizationService: AuthorizationService) {}
 
   baseUrl: string = environment.serverUrl + "/routemgmt/custom/mobilesenderid";
   httpOptions = {
@@ -23,8 +26,8 @@ export class MobileSenderidCustomService {
     }),
   };
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid,
   };
 
   /**
