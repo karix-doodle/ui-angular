@@ -7,6 +7,7 @@ import { AuthorizationStateData, AuthorizationState } from './model/authorizatio
 import { environment } from '../environments/environment';
 import { errorAlert } from './shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -25,12 +26,13 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authGuard: AuthGuard,
     private authorizationService: AuthorizationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     // this.stateBoolean = true;
     // if (this.isJWTTokenExists()) {
-    this.stateBoolean = false;
-    this.getAuthorizationState();
+      this.stateBoolean = false;
+      this.getAuthorizationState();
     // }
   }
 
@@ -49,7 +51,9 @@ export class AppComponent implements OnInit, OnDestroy {
         } else if (res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code) {
           this.stateBoolean = false;
-          errorAlert(res.responsestatus);
+          this.isLoggedIn = false;
+          errorAlert(res.message, res.responsestatus);
+          this.router.navigate(['/dashboard']);
         }
       }, (error: HttpErrorResponse) => {
         errorAlert(error.message, error.statusText);
@@ -69,7 +73,7 @@ export class AppComponent implements OnInit, OnDestroy {
   initIsAccessTokenAvailableSub() {
     this.sub = this.authService.isAccessTokenAvailableObs.subscribe((isTokenAvailable) => {
       if (isTokenAvailable) {
-        this.stateBoolean = true;
+        // this.stateBoolean = true;
         this.getAuthorizationState();
       }
     });
