@@ -79,6 +79,7 @@ export class AuthService {
   }
 
   removeTokens() {
+    this.setIsAccessTokenAvailableState(false);
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
     this.router.navigate(['/']);

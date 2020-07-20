@@ -24,7 +24,7 @@ export class CmListTableComponent implements OnInit {
     private customerMgmtService: CustomerManagementService,
     private authorizationService: AuthorizationService
   ) {
-    this.CmAuthControls = authorizationService.authorizationState.customer_management
+    this.CmAuthControls = this.authorizationService.authorizationState.customer_management;
   }
 
   ngOnInit() {

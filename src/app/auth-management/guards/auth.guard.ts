@@ -31,7 +31,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log(this.authService.isLoggedIn());
     if (!this.authService.isLoggedIn()) {
       // console.log('inside authmgmt');
       // this.setIsUserAuthorizedState(false);

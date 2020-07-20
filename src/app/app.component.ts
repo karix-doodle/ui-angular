@@ -22,6 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
   sub: Subscription;
   state: AuthorizationStateData;
   stateBoolean: boolean;
+  message: string;
+  isLogoutEvent: boolean;
 
   constructor(
     private authGuard: AuthGuard,
@@ -67,6 +69,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sub = this.authGuard.isUserAuthorizedObs.subscribe((isAuthorized) => {
       if (isAuthorized !== null) {
         this.isLoggedIn = isAuthorized;
+        if (!this.isLogoutEvent) {
+          this.message = environment.invalidSessionMsg;
+        }
       }
     });
   }
@@ -75,6 +80,11 @@ export class AppComponent implements OnInit, OnDestroy {
       if (isTokenAvailable) {
         // this.stateBoolean = true;
         this.getAuthorizationState();
+        this.isLogoutEvent = false;
+      } else if (isTokenAvailable === false) {
+        console.log(isTokenAvailable);
+        this.isLogoutEvent = true;
+        this.message = environment.userLoggedOutMsg;
       }
     });
   }
