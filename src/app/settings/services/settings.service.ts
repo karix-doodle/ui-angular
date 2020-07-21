@@ -15,6 +15,7 @@ import {
 } from '../models/settings.model';
 import { User } from '../../shared/models/commonModels';
 import { environment } from '../../../environments/environment';
+import { AuthorizationService } from '../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +28,13 @@ export class SettingsService {
   httpOptions_file = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' }), responseType: 'blob' as 'json' };
 
   user: User = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
   constructor(
     private http: HttpClient,
+    private authorizationService: AuthorizationService
   ) { }
 
   /**

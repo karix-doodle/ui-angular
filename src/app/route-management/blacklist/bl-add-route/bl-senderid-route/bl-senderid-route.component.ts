@@ -171,7 +171,7 @@ export class BlSenderidRouteComponent implements OnInit {
       "blacklist_type",
       this.blacklistSenderTemplateAddForm.value.blacklist_type.toLowerCase()
     );
-    formData.append("loggedinempid", +environment.loggedinempid);
+    formData.append("loggedinempid", +this.authService.authorizationState.loggedinempid);
     this.fileData = formData;
   }
   /**

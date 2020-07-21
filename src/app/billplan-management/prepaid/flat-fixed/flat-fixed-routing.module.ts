@@ -11,6 +11,8 @@ const routes: Routes = [
   {
     path: 'billplan-management/prepaid/flat-fixed',
     component: FlatFixedComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'create-ratecard',

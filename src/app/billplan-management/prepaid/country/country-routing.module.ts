@@ -11,6 +11,8 @@ const countryRoutes: Routes = [
   {
     path: 'billplan-management/prepaid/country',
     component: CountryComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'create-ratecard',

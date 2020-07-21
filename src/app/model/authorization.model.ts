@@ -2,6 +2,7 @@ export class AuthorizationState {
     responsecode: number;
     responsestatus: string;
     data: AuthorizationStateData;
+    message?: string;
 }
 export class AuthorizationStateData {
     main_panel: MainPanel;

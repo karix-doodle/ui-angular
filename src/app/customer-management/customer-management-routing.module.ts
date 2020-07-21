@@ -10,31 +10,36 @@ import { CountryOperatorListComponent } from './country-operator-list/country-op
 import { AuthGuard } from '../auth-management/guards/auth.guard';
 
 const CMroutes: Routes = [
-    {
-      path: 'customer-management/customer-management-view/:id',
-      component: CmViewComponent
-    },
-    {
-      path: 'customer-management/customer-management-edit/:esmeaddr',
-      component: CmEditComponent,
-    },
-    {
-      path: 'customer-management/customer-management-view-log/:id/:name',
-      component: CmViewLogComponent
-    },
-    {
-      path: 'customer-management/customer-management-audit-log',
-      component: CmAuditLogComponent,
-    },
-    {
-      path: 'customer-management/customer-management-show-margin-list',
-      component: CmShowMarginComponent,
-    },
-    {
-      path: 'customer-management/allowed-country-operator-list/:id',
-      component: CountryOperatorListComponent
-    },
-
+  {
+    path: 'customer-management/customer-management-view/:id',
+    component: CmViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customer-management/customer-management-edit/:esmeaddr',
+    component: CmEditComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customer-management/customer-management-view-log/:id/:name',
+    component: CmViewLogComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customer-management/customer-management-audit-log',
+    component: CmAuditLogComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customer-management/customer-management-show-margin-list',
+    component: CmShowMarginComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'customer-management/allowed-country-operator-list/:id',
+    component: CountryOperatorListComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({

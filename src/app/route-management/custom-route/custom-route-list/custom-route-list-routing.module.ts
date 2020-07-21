@@ -12,6 +12,8 @@ const crListroutes: Routes = [
   {
     path: 'route-management/custom-route',
     component: CustomRouteListComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'mobile',

@@ -52,7 +52,7 @@ export class GlobalCountryOperatorListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authorizationService: AuthorizationService
   ) {
-    this.StMgmtAuthControls = authorizationService.authorizationState.settings
+    this.StMgmtAuthControls = authorizationService.authorizationState.settings;
 
     this.initiateEditForm()
   }
@@ -184,8 +184,8 @@ export class GlobalCountryOperatorListComponent implements OnInit {
     this.fileData.append('senderid_type', data.senderid_type)
     this.fileData.append('default_senderid', data.default_senderid)
     this.fileData.append('removeseries', data.removeseries)
-    this.fileData.append('loggedinempid', String(environment.loggedinempid))
-    this.fileData.append('loggedinusername', String(environment.loggedinusername))
+    this.fileData.append('loggedinempid', String(this.authorizationService.authorizationState.loggedinempid))
+    this.fileData.append('loggedinusername', String(this.authorizationService.authorizationState.loggedinusername))
 
     this.settingsService.Globalsetting_updateCountryOperatorFile(this.fileData).subscribe(
       (res: GsCountryOperatorupdate_ApiResponse) => {

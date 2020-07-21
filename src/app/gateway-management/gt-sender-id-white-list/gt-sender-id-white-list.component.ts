@@ -45,7 +45,7 @@ export class GtSenderIdWhiteListComponent implements OnInit {
     private authorizationService: AuthorizationService
   ) {
 
-    this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    this.GtMgmtAuthControls = this.authorizationService.authorizationState.gw_mgmt;
 
     this.addSenderidFormGroup = this.formBuilder.group({
       country: ['', [Validators.required]],
@@ -154,7 +154,7 @@ export class GtSenderIdWhiteListComponent implements OnInit {
     formData.append("req_type", "fileupload");
     formData.append("gw_id", this.activeRoute.snapshot.params.id);
     formData.append("file", file, file.name);
-    formData.append("loggedinempid", String(environment.loggedinempid));
+    formData.append("loggedinempid", String(this.authorizationService.authorizationState.loggedinempid));
     this.fileData = formData;
   }
 

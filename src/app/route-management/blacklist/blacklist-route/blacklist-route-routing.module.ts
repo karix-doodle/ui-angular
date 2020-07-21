@@ -9,9 +9,11 @@ import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 
 
 
-const blRoutes: Routes = [  {
+const blRoutes: Routes = [{
   path: 'route-management/blacklist',
   component: BlacklistRouteComponent,
+  canActivate: [AuthGuard],
+  canActivateChild: [AuthGuard],
   children: [
     {
       path: 'mobile',

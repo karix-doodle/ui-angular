@@ -38,6 +38,7 @@ import {
 } from '../models/gateway-management.model';
 import { User } from '../../shared/models/commonModels';
 import { environment } from '../../../environments/environment';
+import { AuthorizationService } from '../../service/auth/authorization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,12 +53,13 @@ export class GatewayManagementService {
   httpOptions_formdata = { headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data;' }) };
 
   user: User = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid
   };
 
   constructor(
     private http: HttpClient,
+    private authorizationService: AuthorizationService
   ) { }
 
   /**

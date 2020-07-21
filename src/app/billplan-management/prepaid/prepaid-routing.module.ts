@@ -7,8 +7,9 @@ import { AuthGuard } from '../../auth-management/guards/auth.guard';
 const routes: Routes = [
   {
     path: 'billplan-management-prepaid',
-    component: RatecardListComponent
-  },
+    component: RatecardListComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({

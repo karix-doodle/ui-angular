@@ -11,6 +11,8 @@ const cmTabroutes: Routes = [
   {
     path: 'customer-management',
     component: CmListComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: '',

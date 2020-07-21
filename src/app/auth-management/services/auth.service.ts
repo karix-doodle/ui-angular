@@ -14,13 +14,8 @@ import { Router } from '@angular/router';
 export class AuthService {
   public readonly JWT_TOKEN = 'JWT_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-  private loggedUser: string;
   private testRefresh = 'testrefresh';
   baseUrl: string = environment.serverUrl + '/authmgmt';
-  user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid
-  };
 
   private isAccessTokenAvailableSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   isAccessTokenAvailableObs = this.isAccessTokenAvailableSubject.asObservable();
@@ -34,14 +29,10 @@ export class AuthService {
   }
 
   authenticateTokens(tokens: { accesstoken: string, refreshtoken: string }) {
-    this.doLoginUser(this.user.loggedinusername, tokens);
+    this.storeTokens(tokens);
     return of(true);
   }
 
-  private doLoginUser(username: string, tokens: Tokens) {
-    this.loggedUser = username;
-    this.storeTokens(tokens);
-  }
 
   private storeTokens(tokens: Tokens) {
     // localStorage.setItem(this.JWT_TOKEN, tokens.accesstoken);
@@ -69,7 +60,6 @@ export class AuthService {
         && res.responsecode < environment.APIStatus.error.code) {
         this.doLogoutUser();
       }
-
     }));
     // return this.storeJwtToken(this.testRefresh);
   }
@@ -78,22 +68,21 @@ export class AuthService {
     localStorage.setItem(this.JWT_TOKEN, jwt);
     this.setIsAccessTokenAvailableState(true);
   }
+
   private getRefreshToken() {
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
 
-
-
   // call on logout
   private doLogoutUser() {
-    this.loggedUser = null;
     this.removeTokens();
   }
 
-  private removeTokens() {
+  removeTokens() {
+    this.setIsAccessTokenAvailableState(false);
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/']);
   }
 
 }

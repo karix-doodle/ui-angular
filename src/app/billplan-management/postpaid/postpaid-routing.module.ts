@@ -8,11 +8,13 @@ import { AuthGuard } from '../../auth-management/guards/auth.guard';
 const postpaidRoutes: Routes = [
   {
     path: 'billplan-management/postpaid/:id',
-    component: RatecardListComponent
+    component: RatecardListComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'billplan-management/postpaid/:id/:name',
-    component: RatecardListComponent
+    component: RatecardListComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

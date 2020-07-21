@@ -10,25 +10,28 @@ import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 const addRoutes: Routes = [
   {
     path: 'route-management/custom-route/add-route',
-    component: MobileRouteComponent
+    component: MobileRouteComponent,
+    canActivate: [AuthGuard]
   },
   {
-  path: 'route-management/custom-route/add-route',
-  component: AddRoutesComponent,
-  children: [
-    {
-      path: 'mobile-route',
-      component: MobileRouteComponent
-    },
-    {
-      path: 'senderid-route',
-      component: SenderidTemplateRouteComponent
-    },
-    {
-      path: 'senderid-mobile-route',
-      component: SenderidMobileRouteComponent
-    },
-]}
+    path: 'route-management/custom-route/add-route',
+    component: AddRoutesComponent,
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: 'mobile-route',
+        component: MobileRouteComponent
+      },
+      {
+        path: 'senderid-route',
+        component: SenderidTemplateRouteComponent
+      },
+      {
+        path: 'senderid-mobile-route',
+        component: SenderidMobileRouteComponent
+      },
+    ]
+  }
 ];
 
 @NgModule({

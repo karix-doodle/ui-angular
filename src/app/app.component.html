@@ -1,8 +1,7 @@
 <div class="center-block-full" *ngIf="!isLoggedIn; else authorized">
     <div class="d-block">
         <img style="width: 150px;" src="assets/icons/icon-lock.png" />
-        <span class="w-100 d-block">
-            Invalid session. please try <b>login</b> again.
+        <span class="w-100 d-block" [innerHTML]="message">
         </span>
     </div>
 </div>
@@ -20,7 +19,7 @@
                     <app-sidenav></app-sidenav>
                 </div>
                 <div class="col-12 detail-container" [class.active]="classApplied">
-                    <router-outlet ></router-outlet>
+                    <router-outlet></router-outlet>
                 </div>
             </div>
         </div>
