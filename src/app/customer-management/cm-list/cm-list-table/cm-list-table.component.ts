@@ -38,7 +38,6 @@ export class CmListTableComponent implements OnInit {
         if (apiResponse.responsecode > environment.APIStatus.success.code) {
           this.existingUserData = apiResponse.data;
           this.existingUsersList = this.existingUserData.existing_esme_lists;
-          console.log(`data:${JSON.stringify(this.existingUserData)}`);
         }
         else {
           errorAlert(apiResponse.message, apiResponse.responsestatus)
