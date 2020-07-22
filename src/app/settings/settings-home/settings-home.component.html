@@ -54,57 +54,76 @@
             </div>
         </div>
     </section> -->
-    <div class="row">
-        <label class="gateway-section-heading col-6">INVOICE BILL PLAN CONVERSION RATE<span
-                class="badge rounded-question" title="tooltip data">?</span></label>
-        <div class="col-6 text-right setting-select">
-            <input type="radio" name="invoiceBillplan" id="manual2" checked /><label for="manual2"
-                class="mr-2">Manual</label>
-            <input type="radio" name="invoiceBillplan" id="automatic2" /><label for="automatic2">Automatic</label>
-        </div>
-    </div>
-    <section class="main-section">
-        <div class="row">
-            <div class="col-10">
-                <div class="row">
-                    <div class="col-3 form-group">
-                        <label>From Currency</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>USD</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-                    <div class="col-3 form-group">
-                        <label>To Currency</label>
-                        <select class="dropdown-select w-100">
-                            <option value="" default>€</option>
-                            <option value="">option1</option>
-                            <option value="">option2</option>
-                            <option value="">option3</option>
-                        </select>
-                    </div>
-                    <div class="col-4 form-group">
-                        <label>Conversion Rate</label>
-                        <input type="search" class="form-control" id="" placeholder="Enter Conversion Rate" />
-                    </div>
-                    <div class="col-2 add-div-btn">
-                        <button class="btn btn-light">+</button>
-                    </div>
+    <form [formGroup]="invoiceFormGroup">
+        <pre>{{invoiceFormGroup.value | json}}</pre>
+        <div class="d-block">
+            <div class="row">
+                <label class="gateway-section-heading col-6">INVOICE BILL PLAN CONVERSION RATE<span
+                        class="badge rounded-question" title="tooltip data">?</span></label>
+                <div class="col-6 text-right setting-select">
+                    <input type="radio" name="invoiceBillplan" id="manual2" checked /><label for="manual2"
+                        class="mr-2">Manual</label>
+                    <input type="radio" name="invoiceBillplan" id="automatic2" /><label
+                        for="automatic2">Automatic</label>
                 </div>
             </div>
-            <div class="col-2 text-right">
-                <button class="btn btn-light"
-                    [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled }"
-                    (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? open(viewAudit): ''">View
-                    Audit</button>
+            <section class="main-section">
+                <div class="row">
+                    <div class="col-10" formArrayName="currency_list"
+                        *ngFor="let X of invoiceFormGroup['controls'].currency_list['controls']; let indexCurrency=index">
+                        <div class="row" formGroupName="{{indexCurrency}}">
+                            <div class="col-11">
+                                <div class="row">
+                                    <div class="col-3 form-group">
+                                        <label>From Currency</label>
+                                        <select class="dropdown-select w-100" formControlName="fromcurrency">
+                                            <option value="" default disabled>Select Gateway Currency</option>
+                                            <option value="{{item.currency_id}}"
+                                                *ngFor="let item of settingsCurrencyData?.data"
+                                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3 form-group">
+                                        <label>To Currency</label>
+                                        <select class="dropdown-select w-100" formControlName="tocurrency">
+                                            <option value="" default disabled>Select Gateway Currency</option>
+                                            <option value="{{item.currency_id}}"
+                                                *ngFor="let item of settingsCurrencyData?.data"
+                                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4 form-group">
+                                        <label>Conversion Rate</label>
+                                        <input type="search" class="form-control" formControlName="rate"
+                                            placeholder="Enter Conversion Rate" />
+                                    </div>
+                                    <div *ngIf="invoiceFormGroup.get('currency_list').value.length >= 2"
+                                        class="custom-delete add-div-btn">
+                                        <button type="button" class="btn btn-light"
+                                            (click)="removeFromCurrencyRow(indexGroup,indexCountries)">-</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1 add-div-btn">
+                                <button class="btn btn-light">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 text-right">
+                        <button class="btn btn-light"
+                            [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled }"
+                            (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? open(viewAudit): ''">View
+                            Audit</button>
+                    </div>
+                </div>
+            </section>
+            <div class="col-12 text-left">
+                <button type="submit" class="btn erp-intl-btn">Save</button>
             </div>
         </div>
-    </section>
-    <div class="col-12 text-left">
-        <button type="submit" class="btn erp-intl-btn">Save</button>
-    </div>
+    </form>
 
     <form [formGroup]="currencyTimezoneFormGroup" class="col-12 pt-5 px-0"
         (ngSubmit)="onSubmitCurrencyTimezoneFormGroup(currencyTimezoneFormGroup.value)">

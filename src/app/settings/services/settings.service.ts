@@ -9,6 +9,7 @@ import {
   GsDefaultCountry_ApiResponse,
   GsGlobalCountryOperator_ApiResponse,
   GsCountryOperatorEdit_ApiResponse,
+  GsInvoiceconversion_ApiResponse,
   GsUserupdate_ApiResponse,
   GsCountryOperatorupdate_ApiResponse
 } from '../models/settings.model';
@@ -114,6 +115,14 @@ export class SettingsService {
   Globalsetting_users(): Observable<any> {
     return this.http.get(this.baseUrl + '/usersetting?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid, this.httpOptions)
       .pipe(map(m => m as any));
+  }
+
+  /**
+   * @description Settings invoiceconversion view
+  */
+  GsInvoiceconversion_view(): Observable<GsInvoiceconversion_ApiResponse> {
+    return this.http.get(this.baseUrl + '/invoiceconversion/view?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid, this.httpOptions)
+      .pipe(map(m => m as GsInvoiceconversion_ApiResponse));
   }
 
   /**

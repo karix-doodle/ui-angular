@@ -129,15 +129,36 @@ export class SettingsUsers_Data {
     currency_id: number;
     timezone_id: number;
 }
+
 // --
 export class GsUserupdate_ApiResponse {
     responsecode: number;
     responsestatus: string;
     message: string;
 }
+
 // --
 export class GsCountryOperatorupdate_ApiResponse {
     responsecode: number;
     responsestatus: string;
     message: string;
+}
+
+// --
+export class GsInvoiceconversion_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GsInvoiceconversion_Data[];
+    message: string;
+}
+export class GsInvoiceconversion_Data {
+    data: GsInvoiceconversion_Data;
+    mode: string;
+    conversiondetails: GsInvoiceconversion_TableDataList[]
+}
+export class GsInvoiceconversion_TableDataList {
+    fromcurrencyid: number;
+    rate: number;
+    status: string;
+    tocurrencyid: number;
 }
