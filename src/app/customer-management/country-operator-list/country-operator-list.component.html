@@ -10,7 +10,9 @@
       ALLOWED COUNTRY & OPERATOR LIST</span>
   </div>
   <div class="col-2 text-right senderid-div">
-    <button class="btn erp-intl-btn" (click)="open(senderIdModal)">
+    <button class="btn erp-intl-btn" (click)="CmAuthControls.cust_existing_customer_detailed_view_allowed_countries_operators_add_or_delete_alternate_senderids_enabled
+     && open(senderIdModal)"
+      [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_detailed_view_allowed_countries_operators_add_or_delete_alternate_senderids_enabled}">
       Add SenderID
     </button>
   </div>

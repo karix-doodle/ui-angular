@@ -82,7 +82,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.getAuthorizationState();
         this.isLogoutEvent = false;
       } else if (isTokenAvailable === false) {
-        console.log(isTokenAvailable);
+        // console.log(isTokenAvailable);
         this.isLogoutEvent = true;
         this.message = environment.userLoggedOutMsg;
       }

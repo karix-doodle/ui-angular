@@ -81,7 +81,7 @@ export class CmEditComponent implements OnInit {
     private router: Router, private activeRoute: ActivatedRoute, private formBuilder: FormBuilder,
     private authorizationService: AuthorizationService
   ) {
-    this.CmAuthControls = authorizationService.authorizationState.customer_management
+    this.CmAuthControls = this.authorizationService.authorizationState.customer_management;
 
     this.updateAccountFormGroup = this.formBuilder.group({
       billplanName: new FormControl({ value: this.billplanName, disabled: true }),
@@ -114,6 +114,10 @@ export class CmEditComponent implements OnInit {
 
   open(content) {
     this.modalService.open(content);
+  }
+
+  openNewTab(id, type) {
+    window.open(environment.basePortUrl + '/billplan-management/postpaid/country/assigned-ratecard-view/' + id + '/' + type, '_blank');
   }
 
   ngOnInit() {

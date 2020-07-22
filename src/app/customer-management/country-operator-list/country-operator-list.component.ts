@@ -54,7 +54,7 @@ export class CountryOperatorListComponent implements OnInit {
     private fb: FormBuilder,
     private authorizationService: AuthorizationService
   ) {
-    this.CmAuthControls = authorizationService.authorizationState.customer_management
+    this.CmAuthControls = this.authorizationService.authorizationState.customer_management;
 
     this.esmeaddr = +this.route.snapshot.params.id;
   }
