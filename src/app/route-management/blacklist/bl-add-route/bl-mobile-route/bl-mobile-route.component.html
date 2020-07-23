@@ -224,9 +224,12 @@
     <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
         (click)="d('Cross click')">&times;</button>
     <div class="modal-body">
-        <!-- <div class="row" style="justify-content: center;">
-            <img style="width: 40px;" src="/assets/images/circle-green-tick-png" alt="" />
-        </div> -->
+        <div *ngIf="fileResponse.responsestatus === 'failure'" class="row" style="justify-content: center;">
+            <img style="width: 60px;" src="https://img.icons8.com/fluent/96/000000/close-window.png" alt="" />
+        </div>
+        <div *ngIf="fileResponse.responsestatus === 'success'" class="row" style="justify-content: center;">
+          <img style="width: 60px;" src="https://img.icons8.com/color/96/000000/checked-2.png" alt="" />
+      </div>
         <div class="row font-weight-bold text-center">
             <div class="col-12 border-right pt-3">
                 <h4>{{fileResponse?.responsestatus |uppercase }}</h4>

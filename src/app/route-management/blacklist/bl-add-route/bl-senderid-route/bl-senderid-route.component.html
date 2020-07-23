@@ -273,62 +273,65 @@
   </div>
 </div>
 <ng-template #priceListSubmitSuccess let-c="close" let-d="dismiss">
-    <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
-        (click)="d('Cross click')">&times;</button>
-    <div class="modal-body">
-        <!-- <div class="row" style="justify-content: center;">
-            <img style="width: 40px;" src="/assets/images/circle-green-tick-png" alt="" />
-        </div> -->
-        <div class="row font-weight-bold text-center">
-            <div class="col-12 border-right pt-3">
-                <h4>{{fileResponse?.responsestatus |uppercase }}</h4>
-            </div>
-            <div class="col-12 pt-2">
-                <p>{{fileResponse?.message}}</p>
-            </div>
-        </div>
-        <div class="row my-4 f-14">
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-3"><label>Valid:</label></div>
-                    <div class="col-9">
-                        <span class="badge badge-dark">{{fileResponse?.data.success}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-3"><label>InValid:</label></div>
-                    <div class="col-9">
-                        <span class="badge badge-dark">{{fileResponse?.data.invalid}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <h6 class="px-3">UnProcessed Records</h6>
-            <div class="table-responsive senderid-list-table">
-                <table class="table table-borderless erp-list-table">
-                    <thead>
-                        <tr>
-                            <td>S.No</td>
-                            <td>Row</td>
-                            <td>Reason</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of fileResponse?.data.invalidData; index as i">
-                            <td>{{i + 1}}</td>
-                            <td>{{item.index}}</td>
-                            <td>
-                                <span placement="right" ngbTooltip="{{item.row | json}}">
-                                    {{item.reason}}
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <button type="button" class="offset-11 col-1 modal-close-btn" aria-label="Close"
+      (click)="d('Cross click')">&times;</button>
+  <div class="modal-body">
+      <div *ngIf="fileResponse.responsestatus === 'failure'" class="row" style="justify-content: center;">
+          <img style="width: 60px;" src="https://img.icons8.com/fluent/96/000000/close-window.png" alt="" />
+      </div>
+      <div *ngIf="fileResponse.responsestatus === 'success'" class="row" style="justify-content: center;">
+        <img style="width: 60px;" src="https://img.icons8.com/color/96/000000/checked-2.png" alt="" />
     </div>
+      <div class="row font-weight-bold text-center">
+          <div class="col-12 border-right pt-3">
+              <h4>{{fileResponse?.responsestatus |uppercase }}</h4>
+          </div>
+          <div class="col-12 pt-2">
+              <p>{{fileResponse?.message}}</p>
+          </div>
+      </div>
+      <div class="row my-4 f-14">
+          <div class="col-6">
+              <div class="row">
+                  <div class="col-3"><label>Valid:</label></div>
+                  <div class="col-9">
+                      <span class="badge badge-dark">{{fileResponse?.data.success}}</span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-6">
+              <div class="row">
+                  <div class="col-3"><label>InValid:</label></div>
+                  <div class="col-9">
+                      <span class="badge badge-dark">{{fileResponse?.data.invalid}}</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <h6 class="px-3">UnProcessed Records</h6>
+          <div class="table-responsive senderid-list-table">
+              <table class="table table-borderless erp-list-table">
+                  <thead>
+                      <tr>
+                          <td>S.No</td>
+                          <td>Row</td>
+                          <td>Reason</td>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let item of fileResponse?.data.invalidData; index as i">
+                          <td>{{i + 1}}</td>
+                          <td>{{item.index}}</td>
+                          <td>
+                              <span placement="right" ngbTooltip="{{item.row | json}}">
+                                  {{item.reason}}
+                              </span>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
 </ng-template>
