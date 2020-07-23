@@ -1,13 +1,13 @@
 <div class="row btm-border headings-div">
   <div class="col-12">
-      <label class="main-heading">CUSTOMER MANAGEMENT</label>
+    <label class="main-heading">CUSTOMER MANAGEMENT</label>
   </div>
 
 </div>
 <nav mat-tab-nav-bar disableRipple>
-  <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive"  [routerLinkActiveOptions]="{exact:
-    true}">
-      {{link.label}}
+  <a mat-tab-link [disabled]="!link.auth" *ngFor="let link of navLinks" [routerLink]="[link.link]" routerLinkActive #rla="routerLinkActive"
+    [active]="rla.isActive" [routerLinkActiveOptions]="{exact: true}">
+    {{link.label}}
   </a>
 </nav>
 <!--

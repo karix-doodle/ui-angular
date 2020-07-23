@@ -8,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { viewLogApi_Response } from '../models/customer-management.model';
 import { saveAs } from 'file-saver';
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+import { CustomerMgmt } from '../../model/authorization.model';
 
 @Component({
   selector: 'app-cm-view-log',
@@ -18,13 +19,15 @@ import { AuthorizationService } from 'src/app/service/auth/authorization.service
 export class CmViewLogComponent implements OnInit {
   public params: any;
   viewLogData: viewLogApi_Response
-  CmAuthControls = null
+  CmAuthControls: CustomerMgmt;
+  fromTabName: string;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private service: CustomerManagementService,
     private authorizationService: AuthorizationService
   ) {
-    this.CmAuthControls = authorizationService.authorizationState.customer_management
+    this.CmAuthControls = this.authorizationService.authorizationState.customer_management;
 
     let startDate = moment().subtract(29, 'days').utcOffset(environment.UTC);
     let todate = moment().utcOffset(environment.UTC);
@@ -37,7 +40,8 @@ export class CmViewLogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.CustomerMangaementzViewLog()
+    this.fromTabName = this.route.snapshot.params.from;
+    this.CustomerMangaementzViewLog();
   }
 
   CustomerMangaementzViewLog() {

@@ -17,6 +17,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+import { CustomerMgmt } from '../../model/authorization.model';
 
 @Component({
   selector: 'app-cm-edit',
@@ -75,7 +76,9 @@ export class CmEditComponent implements OnInit {
 
   updateAccountFormGroup: FormGroup;
 
-  CmAuthControls = null
+  CmAuthControls: CustomerMgmt;
+
+  fromTabName: string;
 
   constructor(config: NgbModalConfig, private modalService: NgbModal, private customerManagementService: CustomerManagementService,
     private router: Router, private activeRoute: ActivatedRoute, private formBuilder: FormBuilder,
@@ -128,6 +131,7 @@ export class CmEditComponent implements OnInit {
 
     // keep this as last call so that all select boxes loaded before this.
     let esmeaddr = this.activeRoute.snapshot.params.esmeaddr;
+    this.fromTabName = this.activeRoute.snapshot.params.from;
     this.getPendingUserDetails(esmeaddr);
   }
   private selectedLink: string = "";

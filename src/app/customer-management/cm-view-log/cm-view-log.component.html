@@ -2,7 +2,8 @@
     *ngIf="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled">
     <div class="col-12">
         <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
-        <span><a [routerLink]="['/customer-management/customer-management-edit', viewLogData.data.esmeaddr]">
+        <span><a
+                [routerLink]="['/customer-management/customer-management-edit', viewLogData.data.esmeaddr, fromTabName]">
                 {{viewLogData.data.esmeaddr}} /</a> VIEWLOG</span>
     </div>
 </div>

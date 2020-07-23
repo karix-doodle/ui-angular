@@ -16,17 +16,17 @@ const CMroutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'customer-management/customer-management-edit/:esmeaddr',
+    path: 'customer-management/customer-management-edit/:esmeaddr/:from',
     component: CmEditComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'customer-management/customer-management-view-log/:id/:name',
+    path: 'customer-management/customer-management-view-log/:id/:name/:from',
     component: CmViewLogComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'customer-management/customer-management-audit-log',
+    path: 'customer-management/customer-management-audit-log/:esmeaddr/:from',
     component: CmAuditLogComponent,
     canActivate: [AuthGuard]
   },

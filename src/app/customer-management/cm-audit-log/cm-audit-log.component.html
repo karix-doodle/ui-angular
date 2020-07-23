@@ -1,8 +1,10 @@
-<div class="row btm-border headings-div" *ngIf="CmAuthControls.cust_existing_customer_audit_logs_enabled">
+<div class="row btm-border headings-div">
     <div class="col-12">
         <label class="main-heading">
             <a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
-        <span><a routerLink="/customer-management/customer-management-edit"> 70000 100000011 /</a> AUDIT</span>
+        <span><a [routerLink]="['/customer-management/customer-management-edit', esmeAddress ,fromTabName]">
+                {{esmeAddress}} /</a>
+            AUDIT</span>
     </div>
 </div>
 <div class="row btm-border second-row-det" *ngIf="CmAuthControls.cust_existing_customer_audit_logs_enabled">

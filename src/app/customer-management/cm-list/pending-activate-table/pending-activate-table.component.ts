@@ -4,10 +4,12 @@ import { environment } from '../../../../environments/environment';
 import { CustomerManagementService } from '../../services/customer-management.service';
 import { PendingUsers_ApiResponse, PendingUsers } from '../../models/customer-management.model';
 import Swal from 'sweetalert2';
+import { AuthorizationService } from '../../../service/auth/authorization.service';
+import { CustomerMgmt } from '../../../model/authorization.model';
 import {
   errorAlert,
   successAlert,
-} from "../../../shared/sweet-alert/sweet-alert";
+} from '../../../shared/sweet-alert/sweet-alert';
 
 @Component({
   selector: 'app-pending-activate-table',
@@ -16,16 +18,23 @@ import {
 })
 export class PendingActivateTableComponent implements OnInit {
 
-  apiResponse : PendingUsers_ApiResponse;
-  usersData: PendingUsers;
+  apiResponse: PendingUsers_ApiResponse;
   sortingName: string;
   isDesc: boolean;
   searchvalue: any = '';
+  CmAuthControls: CustomerMgmt;
 
-  constructor(private customerManagementService: CustomerManagementService) { }
+  constructor(
+    private customerManagementService: CustomerManagementService,
+    private authorizationService: AuthorizationService
+  ) {
+    this.CmAuthControls = this.authorizationService.authorizationState.customer_management;
+  }
 
   ngOnInit() {
-    this.getPendingForActivationUsersList();
+    if (this.CmAuthControls.cust_pending_for_activation_enabled) {
+      this.getPendingForActivationUsersList();
+    }
   }
 
   getPendingForActivationUsersList() {
@@ -33,7 +42,6 @@ export class PendingActivateTableComponent implements OnInit {
       (res: PendingUsers_ApiResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.apiResponse = res;
-          this.usersData = JSON.parse(JSON.stringify(this.apiResponse));
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
