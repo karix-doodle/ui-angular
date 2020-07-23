@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { BlackListAddMobileService } from "src/app/route-management/services/RouteManagement/blacklist/black-list-add-mobile.service";
 import { BlackListService } from "src/app/route-management/services/RouteManagement/blacklist/black-list.service";
@@ -6,6 +6,8 @@ import {
   BlackListGateway_ApiResponse,
   BlackListGateway_Data,
   MobileBlackList_AddResponse,
+  InvalidData,
+  MobileBlackList_AddData,
 } from "src/app/route-management/models/BlackList/blacklist.model";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import Swal from "sweetalert2";
@@ -16,6 +18,7 @@ import {
 } from "src/app/shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: "app-bl-mobile-route",
@@ -30,13 +33,17 @@ export class BlMobileRouteComponent implements OnInit {
   fileData: FormData = null;
   blmobileUpload: any;
   blacklistMobileAddForm: FormGroup;
-
+fileResponse: MobileBlackList_AddResponse
+filResponseData: MobileBlackList_AddData
+@ViewChild('priceListSubmitSuccess', { static: true })
+  priceListSubmitSuccess: TemplateRef<any>;
   constructor(
     public blackListService: BlackListService,
     public mobileService: BlackListAddMobileService,
     public router: Router,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
+    private modalService: NgbModal,
     public authService: AuthorizationService
   ) {}
 
@@ -177,28 +184,71 @@ export class BlMobileRouteComponent implements OnInit {
    * @param body contains the addroute data
    * @description checks wheather the formtype is form or fomdata
    */
+  // onAddRoute(body) {
+  //   const formType = this.fileData ? true : false;
+  //   this.mobileService.addBlackListMobile(body, formType).subscribe(
+  //     (data: MobileBlackList_AddResponse) => {
+  //       if (data.responsestatus === "failure") {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: data.responsestatus,
+  //           text: `Success:${data.data.success}
+  //                  Duplicate:${data.data.duplicate}
+  //                  Failed:${data.data.failed}
+  //                  Invalid:${data.data.invalid}
+  //                  Total:${data.data.total}`
+  //         });
+  //         this.fromReset();
+  //       } else {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: data.responsestatus,
+  //           text: `Success:${data.data.success}
+  //                  Duplicate:${data.data.duplicate}
+  //                  Failed:${data.data.failed}
+  //                  Invalid:${data.data.invalid}
+  //                  Total:${data.data.total}`
+  //         });
+  //         this.cancel();
+  //       }
+  //     },
+  //     (error: HttpErrorResponse) => {
+  //       errorAlert(error.name, error.statusText);
+  //       this.fromReset();
+  //     }
+  //   );
+  // }
+
   onAddRoute(body) {
     const formType = this.fileData ? true : false;
     this.mobileService.addBlackListMobile(body, formType).subscribe(
-      (data: MobileBlackList_AddResponse) => {
-        if (data.responsestatus === "failure") {
-          errorAlert(data.message, data.responsestatus);
-          this.fromReset();
-        } else {
-          Swal.fire({
-            icon: 'success',
-            title: data.responsestatus,
-            text: `Success:${data.data.success}
-                   Duplicate:${data.data.duplicate}
-                   Failed:${data.data.failed}
-                   Invalid:${data.data.invalid}
-                   Total:${data.data.total}`
-          });
-          this.cancel();
+      (res: MobileBlackList_AddResponse) => {
+        this.fileResponse = res;
+        this.filResponseData = JSON.parse(JSON.stringify(this.fileResponse));
+        if(res.responsestatus === 'success'){
+
+          if(this.fileResponse.data.invalid === 0 && this.fileResponse.data.duplicate === 0){
+            successAlert(res.responsestatus, res.message)
+            this.fromReset()
+          } else {
+            console.log("2323232323232323")
+            this.modalService.open(this.priceListSubmitSuccess)
+            this.fromReset()
+          }
+        }  else if (res.responsestatus === 'failure') {
+          if(this.fileResponse.data.invalid === 0 && this.fileResponse.data.duplicate === 0) {
+            errorAlert(res.responsestatus, res.message)
+            this.fromReset()
+          } else {
+            console.log("23234234234234234234")
+            this.modalService.open(this.priceListSubmitSuccess)
+            this.fromReset()
+          }
         }
+
       },
       (error: HttpErrorResponse) => {
-        errorAlert(error.name, error.statusText);
+        errorAlert(error.message, error.statusText);
         this.fromReset();
       }
     );

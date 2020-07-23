@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import {
   errorAlert,
   successAlert,
@@ -20,8 +20,9 @@ import {
 import { SenderCustomService } from "src/app/route-management/services/RouteManagement/custom-route/sender-custom.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
-import { MobileBlackList_AddResponse } from 'src/app/route-management/models/BlackList/blacklist.model';
+import { MobileBlackList_AddResponse, MobileBlackList_AddData } from 'src/app/route-management/models/BlackList/blacklist.model';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: "app-senderid-template-route",
@@ -40,12 +41,17 @@ export class SenderidTemplateRouteComponent implements OnInit {
   gatewayListData: CustomGateway_Data;
   countriesData: any = [];
   operatorList: any = [];
+  fileResponse: MobileBlackList_AddResponse
+  filResponseData: MobileBlackList_AddData
+  @ViewChild('priceListSubmitSuccess', { static: true })
+    priceListSubmitSuccess: TemplateRef<any>;
   constructor(
     public router: Router,
     public customService: CustomService,
     public mobileSenderTemplateService: SenderCustomService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
+    private modalService: NgbModal,
     public authService: AuthorizationService
   ) {}
 
@@ -239,33 +245,76 @@ export class SenderidTemplateRouteComponent implements OnInit {
    * @description checks wheather the formtype is form or fomdata
    */
 
+  // onAddRoute(body) {
+  //   const formType = this.selectedFile ? true : false;
+  //   this.mobileSenderTemplateService
+  //     .addCustomSenderTemplate(body, formType)
+  //     .subscribe(
+  //       (data: MobileBlackList_AddResponse) => {
+  //         if (data.responsestatus === "failure") {
+  //           Swal.fire({
+  //             icon: 'error',
+  //             title: data.responsestatus,
+  //             text: `Success:${data.data.success}
+  //                    Duplicate:${data.data.duplicate}
+  //                    Failed:${data.data.failed}
+  //                    Invalid:${data.data.invalid}
+  //                    Total:${data.data.total}`
+  //           });
+  //           this.fromReset();
+  //         } else {
+  //           Swal.fire({
+  //             icon: 'success',
+  //             title: data.responsestatus,
+  //             text: `Success:${data.data.success}
+  //                    Duplicate:${data.data.duplicate}
+  //                    Failed:${data.data.failed}
+  //                    Invalid:${data.data.invalid}
+  //                    Total:${data.data.total}`
+  //           });
+  //           this.cancel();
+  //         }
+  //       },
+  //       (error: HttpErrorResponse) => {
+  //         errorAlert(error.message, error.statusText);
+  //         this.fromReset();
+  //       }
+  //     );
+  // }
+
   onAddRoute(body) {
     const formType = this.selectedFile ? true : false;
-    this.mobileSenderTemplateService
-      .addCustomSenderTemplate(body, formType)
-      .subscribe(
-        (data: MobileBlackList_AddResponse) => {
-          if (data.responsestatus === "failure") {
-            errorAlert(data.message, data.responsestatus);
-            this.fromReset();
+    this.mobileSenderTemplateService.addCustomSenderTemplate(body, formType).subscribe(
+      (res: MobileBlackList_AddResponse) => {
+        this.fileResponse = res;
+        this.filResponseData = JSON.parse(JSON.stringify(this.fileResponse));
+        if(res.responsestatus === 'success'){
+
+          if(this.fileResponse.data.invalid === 0 && this.fileResponse.data.duplicate === 0){
+            successAlert(res.responsestatus, res.message)
+            this.fromReset()
           } else {
-            Swal.fire({
-              icon: 'success',
-              title: data.responsestatus,
-              text: `Success:${data.data.success}
-                     Duplicate:${data.data.duplicate}
-                     Failed:${data.data.failed}
-                     Invalid:${data.data.invalid}
-                     Total:${data.data.total}`
-            });
-            this.cancel();
+            console.log("2323232323232323")
+            this.modalService.open(this.priceListSubmitSuccess)
+            this.fromReset()
           }
-        },
-        (error: HttpErrorResponse) => {
-          errorAlert(error.message, error.statusText);
-          this.fromReset();
+        }  else if (res.responsestatus === 'failure') {
+          if(this.fileResponse.data.invalid === 0 && this.fileResponse.data.duplicate === 0) {
+            errorAlert(res.responsestatus, res.message)
+            this.fromReset()
+          } else {
+            console.log("23234234234234234234")
+            this.modalService.open(this.priceListSubmitSuccess)
+            this.fromReset()
+          }
         }
-      );
+
+      },
+      (error: HttpErrorResponse) => {
+        errorAlert(error.message, error.statusText);
+        this.fromReset();
+      }
+    );
   }
 
   /**
