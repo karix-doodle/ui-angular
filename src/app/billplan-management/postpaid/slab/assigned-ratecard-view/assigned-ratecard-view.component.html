@@ -15,7 +15,7 @@
 
     </div>
 </div>
-<div *ngIf="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled">
+<div *ngIf="billPlanMgmtAuthControls.billplan_view_ratecard_enabled">
     <div class="row btm-border second-row-det">
         <div class="col-3 ">
             <button class="btn w-100 dropdown-basic" style="cursor: not-allowed;" [innerHTML]=" ratecardname"></button>
@@ -147,7 +147,7 @@
 
     </div>
 </div>
-<div class="pt-3 center-block h-100" *ngIf="billPlanMgmtAuthControls.billplan_view_ratecard_enabled">
+<div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_view_ratecard_enabled">
     <div class="d-block">
         <img style="width: 150px;" src="assets/icons/icon-lock.png" />
         <span class="w-100 d-block">
