@@ -59,6 +59,13 @@ export class MobileBlackList_AddData{
   failed: number;
   invalid: number;
   total: number;
+  invalidData:InvalidData;
+}
+
+export class InvalidData{
+  index:number;
+  row: any;
+  reason:string
 }
 
 export class MobileBlackList_DeleteResponse{

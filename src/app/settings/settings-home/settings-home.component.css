@@ -23,3 +23,6 @@
     font-weight: bold;
     padding-left: 10px;
 }
+.custom-delete {
+    right: -40px;
+}

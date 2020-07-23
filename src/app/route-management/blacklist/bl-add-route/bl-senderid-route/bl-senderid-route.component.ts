@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import {
   BlackListGateway_Data,
   BlackListGateway_ApiResponse,
   MobileBlackList_AddResponse,
+  MobileBlackList_AddData,
 } from "src/app/route-management/models/BlackList/blacklist.model";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { BlackListService } from "src/app/route-management/services/RouteManagement/blacklist/black-list.service";
@@ -16,6 +17,7 @@ import {
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: "app-bl-senderid-route",
@@ -30,12 +32,16 @@ export class BlSenderidRouteComponent implements OnInit {
   fileData: FormData = null;
   blmobileUpload: any;
   blacklistSenderTemplateAddForm: FormGroup;
-
+  fileResponse: MobileBlackList_AddResponse
+filResponseData: MobileBlackList_AddData
+@ViewChild('priceListSubmitSuccess', { static: true })
+  priceListSubmitSuccess: TemplateRef<any>;
   constructor(
     public blackListService: BlackListService,
     public Service: BlackListAddMobileSenderidService,
     public router: Router,
     public formBuilder: FormBuilder,
+    private modalService: NgbModal,
     public authService: AuthorizationService
   ) {}
 
@@ -180,28 +186,71 @@ export class BlSenderidRouteComponent implements OnInit {
    * @description checks wheather the formtype is form or fomdata
    */
 
+  // onAddRoute(body) {
+  //   const formType = this.fileData ? true : false;
+  //   this.Service.addBlSender(body, formType).subscribe(
+  //     (data: MobileBlackList_AddResponse) => {
+  //       if (data.responsestatus === "failure") {
+  //         this.fromReset();
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: data.responsestatus,
+  //           text: `Success:${data.data.success}
+  //                  Duplicate:${data.data.duplicate}
+  //                  Failed:${data.data.failed}
+  //                  Invalid:${data.data.invalid}
+  //                  Total:${data.data.total}`
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: data.responsestatus,
+  //           text: `Success:${data.data.success}
+  //                  Duplicate:${data.data.duplicate}
+  //                  Failed:${data.data.failed}
+  //                  Invalid:${data.data.invalid}
+  //                  Total:${data.data.total}`
+  //         });
+  //         this.cancel();
+  //       }
+  //     },
+  //     (error: HttpErrorResponse) => {
+  //       errorAlert(error.name, error.statusText);
+  //       this.fromReset();
+  //     }
+  //   );
+  // }
+
   onAddRoute(body) {
     const formType = this.fileData ? true : false;
     this.Service.addBlSender(body, formType).subscribe(
-      (data: MobileBlackList_AddResponse) => {
-        if (data.responsestatus === "failure") {
-          this.fromReset();
-          errorAlert(data.message, data.responsestatus);
-        } else {
-          Swal.fire({
-            icon: 'success',
-            title: data.responsestatus,
-            text: `Success:${data.data.success}
-                   Duplicate:${data.data.duplicate}
-                   Failed:${data.data.failed}
-                   Invalid:${data.data.invalid}
-                   Total:${data.data.total}`
-          });
-          this.cancel();
+      (res: MobileBlackList_AddResponse) => {
+        this.fileResponse = res;
+        this.filResponseData = JSON.parse(JSON.stringify(this.fileResponse));
+        if(res.responsestatus === 'success'){
+
+          if(this.fileResponse.data.invalid === 0 && this.fileResponse.data.duplicate === 0){
+            successAlert(res.responsestatus, res.message)
+            this.fromReset()
+          } else {
+            console.log("2323232323232323")
+            this.modalService.open(this.priceListSubmitSuccess)
+            this.fromReset()
+          }
+        }  else if (res.responsestatus === 'failure') {
+          if(this.fileResponse.data.invalid === 0 && this.fileResponse.data.duplicate === 0) {
+            errorAlert(res.responsestatus, res.message)
+            this.fromReset()
+          } else {
+            console.log("23234234234234234234")
+            this.modalService.open(this.priceListSubmitSuccess)
+            this.fromReset()
+          }
         }
+
       },
       (error: HttpErrorResponse) => {
-        errorAlert(error.name, error.statusText);
+        errorAlert(error.message, error.statusText);
         this.fromReset();
       }
     );

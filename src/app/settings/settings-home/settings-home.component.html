@@ -54,65 +54,110 @@
             </div>
         </div>
     </section> -->
-    <form [formGroup]="invoiceFormGroup">
-        <pre>{{invoiceFormGroup.value | json}}</pre>
+    <form [formGroup]="invoiceFormGroup" (ngSubmit)="GsConversionRate_add(invoiceFormGroup.value)">
+        <!-- <pre>{{invoiceFormGroup.value | json}}</pre> -->
         <div class="d-block">
             <div class="row">
                 <label class="gateway-section-heading col-6">INVOICE BILL PLAN CONVERSION RATE<span
                         class="badge rounded-question" title="tooltip data">?</span></label>
                 <div class="col-6 text-right setting-select">
-                    <input type="radio" name="invoiceBillplan" id="manual2" checked /><label for="manual2"
-                        class="mr-2">Manual</label>
-                    <input type="radio" name="invoiceBillplan" id="automatic2" /><label
-                        for="automatic2">Automatic</label>
+                    <input type="radio" name="invoiceBillplan" id="manual2" formControlName="invoiceBillplan"
+                        value="manual" (click)="changeType('manual')" />
+                    <label for="manual2" class="mr-2">Manual</label>
+                    <input type="radio" name="invoiceBillplan" id="automatic2" formControlName="invoiceBillplan"
+                        value="auto" (click)="changeType('auto')" />
+                    <label for="automatic2">Automatic</label>
                 </div>
             </div>
             <section class="main-section">
                 <div class="row">
-                    <div class="col-10" formArrayName="currency_list"
-                        *ngFor="let X of invoiceFormGroup['controls'].currency_list['controls']; let indexCurrency=index">
-                        <div class="row" formGroupName="{{indexCurrency}}">
-                            <div class="col-11">
-                                <div class="row">
-                                    <div class="col-3 form-group">
+                    <div class="col-9 position-relative">
+                        <div class="row">
+                            <div class="col-12" formArrayName="currency_list"
+                                *ngFor="let X of invoiceFormGroup['controls'].currency_list['controls']; let indexCurrency=index">
+                                <div class="row" formGroupName="{{indexCurrency}}">
+                                    <div class="col-4 form-group" *ngIf="X.get('status').value != 'delete'">
                                         <label>From Currency</label>
-                                        <select class="dropdown-select w-100" formControlName="fromcurrency">
+                                        <select class="dropdown-select w-100" formControlName="fromcurrencyid"
+                                            (change)="handleInvoiceCurrencyChange()"
+                                            *ngIf="X.get('status').value != 'view'">
                                             <option value="" default disabled>Select Gateway Currency</option>
                                             <option value="{{item.currency_id}}"
                                                 *ngFor="let item of settingsCurrencyData?.data"
                                                 [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
                                             </option>
                                         </select>
+                                        <span class="text-danger pl-1 f-12"
+                                            *ngIf="X.get('fromcurrencyid').hasError('required') && isConversionRateValid">
+                                            From Currency is required
+                                        </span>
+                                        <select class="dropdown-select w-100" disabled
+                                            *ngIf="X.get('status').value == 'view'"
+                                            [value]="X.get('fromcurrencyid').value">
+                                            <option value="">Select Gateway Currency</option>
+                                            <option value="{{item.currency_id}}"
+                                                *ngFor="let item of settingsCurrencyData?.data"
+                                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="col-3 form-group">
+                                    <div class="col-4 form-group" *ngIf="X.get('status').value != 'delete'">
                                         <label>To Currency</label>
-                                        <select class="dropdown-select w-100" formControlName="tocurrency">
+                                        <select class="dropdown-select w-100" formControlName="tocurrencyid"
+                                            (change)="handleInvoiceCurrencyChange()"
+                                            *ngIf="X.get('status').value != 'view'">
                                             <option value="" default disabled>Select Gateway Currency</option>
                                             <option value="{{item.currency_id}}"
                                                 *ngFor="let item of settingsCurrencyData?.data"
                                                 [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
                                             </option>
                                         </select>
+                                        <span class="text-danger pl-1 f-12"
+                                            *ngIf="X.get('tocurrencyid').hasError('required') && isConversionRateValid">
+                                            To Currency is required
+                                        </span>
+                                        <select class="dropdown-select w-100" disabled
+                                            *ngIf="X.get('status').value == 'view'"
+                                            [value]="X.get('tocurrencyid').value">
+                                            <option value="" disabled>Select Gateway Currency</option>
+                                            <option value="{{item.currency_id}}"
+                                                *ngFor="let item of settingsCurrencyData?.data"
+                                                [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="col-4 form-group">
+                                    <div class="col-4 form-group" *ngIf="X.get('status').value != 'delete'">
                                         <label>Conversion Rate</label>
                                         <input type="search" class="form-control" formControlName="rate"
+                                            (blur)="checkRate(X.get('rate').value, X, 'rate')"
+                                            *ngIf="X.get('status').value != 'view'"
                                             placeholder="Enter Conversion Rate" />
+                                        <input type="search" class="form-control light-bg" disabled
+                                            [value]="X.get('rate').value" *ngIf="X.get('status').value == 'view'"
+                                            placeholder="Enter Conversion Rate" />
+                                        <span class="text-danger pl-1 f-12"
+                                            *ngIf="X.get('rate').hasError('required') && isConversionRateValid">
+                                            Conversion Rate is required
+                                        </span>
+                                        <span class="text-danger pl-1 f-12"
+                                            *ngIf="(X.get('rate').hasError('pattern') && X.get('rate').dirty) || (X.get('rate').hasError('pattern') && isConversionRateValid && !X.get('rate').dirty)">
+                                            Please enter valid input
+                                        </span>
                                     </div>
-                                    <div *ngIf="invoiceFormGroup.get('currency_list').value.length >= 2"
-                                        class="custom-delete add-div-btn">
+                                    <div *ngIf="invoiceFormGroup.get('currency_list').value.length >= 2 && X.get('status').value != 'delete'"
+                                        class="custom-delete add-div-btn ml-0">
                                         <button type="button" class="btn btn-light"
-                                            (click)="removeFromCurrencyRow(indexGroup,indexCountries)">-</button>
+                                            (click)="removeFromCurrencyRow(indexCurrency)">-</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-1 add-div-btn">
-                                <button class="btn btn-light">+</button>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-2 text-right">
-                        <button class="btn btn-light"
+                    <div class="col-1 add-div-btn d-flex align-items-end justify-content-end mb-3 px-0">
+                        <button type="button" class="btn btn-light" (click)="addToCurrencyList(false)">+</button>
+                    </div>
+                    <div class="col-2 text-right pt-4">
+                        <button class="btn btn-light" type="button"
                             [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled }"
                             (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? open(viewAudit): ''">View
                             Audit</button>
@@ -205,7 +250,7 @@
     <div class="modal-body ">
         <form action="">
             <label class="view-audit-head">View Audit</label>
-            <div class="row">
+            <div class="main-container table-responsive">
                 <table class="table table-borderless erp-list-table row-hover-effect erp-table-scroll">
                     <thead>
                         <tr>
@@ -218,7 +263,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr *ngFor="let tableData of settingsConversionViewData?.data.tabledata">
                             <td class="font-weight-semi-bold">Inr (₹)</td>
                             <td class="font-weight-semi-bold">Euro (€)</td>
                             <td>14.567</td>
@@ -226,28 +271,15 @@
                             <td>28/10/2019 | 23:25:00</td>
                             <td>Nawal</td>
                         </tr>
-                        <tr>
-                            <td class="font-weight-semi-bold col-hover">Inr (₹)</td>
-                            <td class="font-weight-semi-bold">Euro (€)</td>
-                            <td>14.567</td>
-                            <td>Manual</td>
-                            <td>28/10/2019 | 23:25:00</td>
-                            <td>Nawal</td>
-                        </tr>
-                        <tr>
-                            <td class="font-weight-semi-bold">Inr (₹)</td>
-                            <td class="font-weight-semi-bold">Euro (€)</td>
-                            <td>14.567</td>
-                            <td>Manual</td>
-                            <td>28/10/2019 | 23:25:00</td>
-                            <td>Nawal</td>
+                        <tr *ngIf="settingsConversionViewData?.data.tabledata.length == 0">
+                            <td colspan="6" class="text-center py-3 main-heading">No data Found</td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="col-12 text-center">
-                    <input type="reset" class="btn erp-intl-btn mr-3" value="Close" aria-label="Close"
-                        (click)="d('Cross click')">
-                </div>
+            </div>
+            <div class="col-12 text-center">
+                <input type="reset" class="btn erp-intl-btn mr-3" value="Close" aria-label="Close"
+                    (click)="d('Cross click')">
             </div>
         </form>
     </div>
