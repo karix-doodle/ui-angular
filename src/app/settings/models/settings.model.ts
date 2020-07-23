@@ -162,3 +162,35 @@ export class GsInvoiceconversion_TableDataList {
     status: string;
     tocurrencyid: number;
 }
+// --
+export class GsConversionView_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GsConversionView_Data[];
+    message: string;
+}
+export class GsConversionView_Data {
+    data: GsConversionView_Data;
+    tabledata: GsConversionView_TableDataList[]
+}
+export class GsConversionView_TableDataList {
+    id: number;
+    conversionrate: number;
+    conversiontype: string;
+    convertedbyuser: string;
+    fromcurrency: string;
+    tocurrency: string;
+    conversiondate: string;
+    conversiontime: string;
+}
+// --
+export class GsConversionAdd_ApiResponse {
+    responsecode: number;
+    responsestatus: string;
+    data: GsConversionAdd_Data[];
+    message: string;
+}
+export class GsConversionAdd_Data {
+    data: GsInvoiceconversion_Data;
+    mode: string;
+}

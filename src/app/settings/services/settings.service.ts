@@ -10,6 +10,8 @@ import {
   GsGlobalCountryOperator_ApiResponse,
   GsCountryOperatorEdit_ApiResponse,
   GsInvoiceconversion_ApiResponse,
+  GsConversionView_ApiResponse,
+  GsConversionAdd_ApiResponse,
   GsUserupdate_ApiResponse,
   GsCountryOperatorupdate_ApiResponse
 } from '../models/settings.model';
@@ -123,6 +125,30 @@ export class SettingsService {
   GsInvoiceconversion_view(): Observable<GsInvoiceconversion_ApiResponse> {
     return this.http.get(this.baseUrl + '/invoiceconversion/view?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid, this.httpOptions)
       .pipe(map(m => m as GsInvoiceconversion_ApiResponse));
+  }
+
+  /**
+   * @description Settings conversion rate view
+  */
+  GsConversionRate_view(): Observable<GsConversionView_ApiResponse> {
+    return this.http.get(this.baseUrl + '/conversionrate/view?loggedinusername=' + this.user.loggedinusername + '&loggedinempid=' + this.user.loggedinempid, this.httpOptions)
+      .pipe(map(m => m as GsConversionView_ApiResponse));
+  }
+
+  /**
+   * @description Settings user add
+  */
+  GsInvoiceconversion_viewAuto(body): Observable<GsInvoiceconversion_ApiResponse> {
+    return this.http.post(this.baseUrl + '/invoiceconversion/automatic', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GsInvoiceconversion_ApiResponse));
+  }
+
+  /**
+   * @description Settings user add
+  */
+  GsConversionRate_add(body): Observable<GsConversionAdd_ApiResponse> {
+    return this.http.post(this.baseUrl + '/conversionrate/add', { ...this.user, ...body }, this.httpOptions)
+      .pipe(map(m => m as GsConversionAdd_ApiResponse));
   }
 
   /**
