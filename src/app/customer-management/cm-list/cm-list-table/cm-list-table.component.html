@@ -30,7 +30,7 @@
                 <tr
                     *ngFor="let existinguser of existingUsersList | filter: { esmeaddr: searchvalue, username: searchvalue } ">
                     <td class="font-weight-semi-bold">
-                        <a [ngClass]="{'disabled-func': CmAuthControls.cust_existing_customer_detailed_view_enabled ? null : true }"
+                        <a [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_detailed_view_enabled }"
                             [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_enabled ? 
                             ['/customer-management/customer-management-view',existinguser.esmeaddr]: []">
                             {{existinguser.esmeaddr}}

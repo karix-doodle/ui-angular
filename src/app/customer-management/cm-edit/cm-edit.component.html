@@ -144,8 +144,8 @@
                 </div>
                 <div class="text-right mt-3">
                     <a class="erp-intl-modal-link"
-                        [ngClass]="{'disabled-func': CmAuthControls.cust_existing_customer_test_message_enabled ? null : true }"
-                        (click)="CmAuthControls.cust_existing_customer_test_message_enabled ? open(routingTestModal) : ''">Test
+                        [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_test_routing_enabled }"
+                        (click)="CmAuthControls.cust_existing_customer_test_routing_enabled && open(routingTestModal)">Test
                         Routing</a>
                 </div>
             </div>

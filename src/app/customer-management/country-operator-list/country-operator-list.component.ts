@@ -64,11 +64,15 @@ export class CountryOperatorListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCountryOperatorlist();
-    this.GetCountryList();
+    if (this.CmAuthControls.cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled) {
+      this.getCountryOperatorlist();
+    }
+    if (this.CmAuthControls.cust_existing_customer_detailed_view_allowed_countries_operators_add_or_delete_alternate_senderids_enabled) {
+      this.GetCountryList();
+    }
     this.initForm();
-    this.initialForm()
-    this.getBillSubCountrylist()
+    this.initialForm();
+    this.getBillSubCountrylist();
   }
 
   private initForm() {
