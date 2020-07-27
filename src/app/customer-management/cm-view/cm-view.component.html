@@ -108,12 +108,12 @@
                     <hr>
                     <div class="cm-view-btn-div text-center mb-3">
                         <button class="btn erp-intl-btn mr-3"
-                            [ngClass]="{'isDisabled': cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled}"
+                            [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled}"
                             [disabled]="!CmAuthControls.cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled"
                             (click)="CmAuthControls.cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled ? open(senderIdModal) : ''">Sender
                             ID's</button>
                         <button class="btn btn-basic"
-                            [ngClass]="{'isDisabled': cust_existing_customer_detailed_view_listing_blocked_senderids_enabled}"
+                            [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_detailed_view_listing_blocked_senderids_enabled}"
                             [disabled]="!CmAuthControls.cust_existing_customer_detailed_view_listing_blocked_senderids_enabled"
                             (click)="CmAuthControls.cust_existing_customer_detailed_view_listing_blocked_senderids_enabled ? open(blockedSenderIdModal) : ''">Blocked
                             Sender ID's</button>
@@ -272,8 +272,9 @@
     <div class="row">
         <label class="gateway-section-heading col-6">ACCOUNT ACTIVITIES</label>
         <div class="col-6 text-right f-12">
-            <a [ngClass]="{'disabled-func': CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? null : true }"
-                [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? ['/customer-management/customer-management-view-log', esmeaddr,esmeddrDetails?.data.clientname] : []"
+            <!-- [ngClass]="{'disabled-func': CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? null : true }"
+                [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? ['/customer-management/customer-management-view-log', esmeaddr,esmeddrDetails?.data.clientname] : []" -->
+            <a [routerLink]="['/customer-management/customer-management-view-log', esmeaddr,esmeddrDetails?.data.clientname]"
                 class="font-weight-bold">
                 View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>
             </a>
