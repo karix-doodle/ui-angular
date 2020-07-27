@@ -52,7 +52,7 @@ export class AuthService {
   refreshToken() {
     return this.http.post<any>(`${this.baseUrl}/refreshToken`, {
       refreshToken: this.getRefreshToken()
-    }).pipe(tap((res) => {
+    }).pipe(tap((res: any) => {
       if (res.responsestatus === environment.APIStatus.success.text
         && res.responsecode > environment.APIStatus.success.code) {
         this.storeJwtToken(res.accesstoken);

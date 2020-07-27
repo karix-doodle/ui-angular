@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, filter, take, switchMap } from 'rxjs/operators';
+import { catchError, filter, take, switchMap, tap } from 'rxjs/operators';
+import { AuthGuard } from './guards/auth.guard';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -10,7 +11,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, public authGuard: AuthGuard) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -21,6 +22,9 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(request, next);
+      } else if (error instanceof HttpErrorResponse && error.status === 403) {
+        this.authGuard.setIsUserAuthorizedState(false);
+        return throwError(error);
       } else {
         return throwError(error);
       }
@@ -42,13 +46,19 @@ export class TokenInterceptor implements HttpInterceptor {
 
       return this.authService.refreshToken().pipe(
         switchMap((token: any) => {
+          console.log(token);
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.accesstoken);
           return next.handle(this.addToken(request, token.accesstoken));
         }));
 
     } else {
+      console.log('else block');
       return this.refreshTokenSubject.pipe(
+        // tap(t => {
+        //   console.log(t);
+        //   return t;
+        // }),
         filter(token => token != null),
         take(1),
         switchMap(accesstoken => {

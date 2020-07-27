@@ -471,8 +471,8 @@ export class CmEditComponent implements OnInit {
     this.routeTypeError = '';
 
     payload['esmeaddr'] = this.esmeaddr;
-    payload['loggedinempid'] = environment.loggedinempid;
-    payload['loggedinusername'] = environment.loggedinusername;
+    payload['loggedinempid'] = this.authorizationService.authorizationState.loggedinempid;
+    payload['loggedinusername'] = this.authorizationService.authorizationState.loggedinusername;
 
     if (_.isUndefined(json.selectedCharSetEncoding) || _.isNull(json.selectedCharSetEncoding) || _.isEmpty(_.trim(json.selectedCharSetEncoding))) {
       validationSuccess = false;
@@ -627,7 +627,7 @@ export class CmEditComponent implements OnInit {
     if (!_.isUndefined(div) && !_.isNull(div) && _.isEqual(div, 'showmargin')) {
       let validationSuccess = true;
       let message = '';
-      let queryParams = `loggedinempid=${environment.loggedinempid}&esmeaddr=${this.esmeaddr}`;
+      let queryParams = `loggedinempid=${this.authorizationService.authorizationState.loggedinempid}&esmeaddr=${this.esmeaddr}`;
       let routingtype = this.routeTypeNodeMapping[this.updateAccountFormGroup.value.selectedRouteType];
       if (!_.isUndefined(routingtype) && !_.isNull(routingtype) && !_.isEmpty(_.trim(routingtype))) {
         queryParams = `${queryParams}&route_type=${routingtype}`;

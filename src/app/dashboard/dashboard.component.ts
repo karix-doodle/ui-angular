@@ -9,25 +9,21 @@ import { DashboardService } from "./services/dashboard.service";
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private dashboardService:DashboardService) { }
-  apiResponse:any;
+  constructor(private dashboardService: DashboardService) { }
+  apiResponse: any;
 
   ngOnInit() {
     this.testToken();
   }
 
-  testToken()
-  {
+  testToken() {
     this.dashboardService.getTesttokens()
-    .subscribe((apiResponse:any)=>{
-      this.apiResponse = apiResponse;
-
-      console.log(`apiResponse:${JSON.stringify(apiResponse)}`);
-      
-    }, (error: HttpErrorResponse) => {
-      console.log(`errorMessage:${error.message}: errorStatusText:${error.statusText}`);
-      
-    });
+      .subscribe((apiResponse: any) => {
+        this.apiResponse = apiResponse;
+        console.log(`apiResponse:${JSON.stringify(apiResponse)}`);
+      }, (error: HttpErrorResponse) => {
+        console.log(`errorMessage:${error.message}: errorStatusText:${error.statusText}`);
+      });
   }
 
 }

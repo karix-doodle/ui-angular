@@ -31,11 +31,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router
   ) {
-    // this.stateBoolean = true;
-    // if (this.isJWTTokenExists()) {
+    this.stateBoolean = true;
+    if (this.isJWTTokenExists()) {
       this.stateBoolean = false;
       this.getAuthorizationState();
-    // }
+    }
   }
 
   ngOnInit() {
