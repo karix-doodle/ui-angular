@@ -25,6 +25,9 @@ export class TokenInterceptor implements HttpInterceptor {
       } else if (error instanceof HttpErrorResponse && error.status === 403) {
         this.authGuard.setIsUserAuthorizedState(false);
         return throwError(error);
+      } else if (error instanceof HttpErrorResponse && error.status === 404) {
+        this.authGuard.setIsUserAuthorizedState(false);
+        return throwError(error);
       } else {
         return throwError(error);
       }
@@ -53,7 +56,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }));
 
     } else {
-      console.log('else block');
+      // console.log('else block');
       return this.refreshTokenSubject.pipe(
         // tap(t => {
         //   console.log(t);
