@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { throwError, Observable } from "rxjs";
 import { map, catchError } from "rxjs/operators";
 import { APIResponse } from "../models/customer-management.model";
+import { AuthorizationService } from '../../service/auth/authorization.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,12 +18,12 @@ export class CustomerManagementService{
     httpOptions = { headers: new HttpHeaders({ 'Accept': 'application/json', 'Content-Type': 'application/json' }) };
 
     loggedinUserInfo = {
-        loggedinusername: environment.loggedinusername,
-        loggedinempid: environment.loggedinempid
+        loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+        loggedinempid: this.authorizationService.authorizationState.loggedinempid
         //loggedinempid: 1137
     };
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient, private authorizationService: AuthorizationService) {}
 
 
     getExistingUsersList():Observable<APIResponse>{

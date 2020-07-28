@@ -44,8 +44,8 @@
                 <input type="search" class="form-control" formControlName="billplanName" />
             </div>
             <div class="col-1 billplan-view mr-4">
-                <a (click)="CmAuthControls.cust_existing_view_billpplan_ratecard_enabled && openNewTab(usersData.ratecard_id,usersData.ratecard_type)"
-                    [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_view_billpplan_ratecard_enabled}">
+                <a (click)="CmAuthControls.cust_existing_customer_detailed_view_enabled && openNewTab(usersData.ratecard_id,usersData.ratecard_type)"
+                    [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_detailed_view_enabled}">
                     <!-- [routerLink]="!CmAuthControls.cust_existing_view_billpplan_ratecard_enabled 
                     ? ['/billplan-management/postpaid/country/assigned-ratecard-view',usersData.ratecard_id,usersData.ratecard_type]: []" -->
                     <i class="fa fa-eye"></i></a>
@@ -144,8 +144,8 @@
                 </div>
                 <div class="text-right mt-3">
                     <a class="erp-intl-modal-link"
-                        [ngClass]="{'disabled-func': CmAuthControls.cust_existing_customer_test_message_enabled ? null : true }"
-                        (click)="CmAuthControls.cust_existing_customer_test_message_enabled ? open(routingTestModal) : ''">Test
+                        [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_test_routing_enabled }"
+                        (click)="CmAuthControls.cust_existing_customer_test_routing_enabled && open(routingTestModal)">Test
                         Routing</a>
                 </div>
             </div>
@@ -222,12 +222,14 @@
                 (click)="set('permanent')">
             <button class="btn btn-basic mr-3" *ngIf="!isSelected('lcr')"
                 (click)="open(selectedRouteModal)">Save</button>
-            <button class="btn erp-intl-btn mr-3"
-                [disabled]="!CmAuthControls.cust_existing_customer_show_margin_enabled"
-                (click)="CmAuthControls.cust_existing_customer_show_margin_enabled ? set('showmargin') : ''">Show
+            <button class="btn erp-intl-btn mr-3" [ngClass]="{'isDisabled':fromTabName === 'existing' && !CmAuthControls.cust_existing_customer_show_margin_enabled ||
+            fromTabName === 'pending' && !CmAuthControls.cust_pending_for_activation_show_margin_enabled}" [disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_customer_show_margin_enabled ||
+                fromTabName === 'pending' && !CmAuthControls.cust_pending_for_activation_show_margin_enabled"
+                (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_customer_show_margin_enabled ||
+                fromTabName === 'pending' && CmAuthControls.cust_pending_for_activation_show_margin_enabled ? set('showmargin') : ''">Show
                 Margin</button>
-            <a [ngClass]="{'disabled-func disabled': CmAuthControls.cust_existing_customer_audit_logs_enabled ? null : true }"
-                [routerLink]="CmAuthControls.cust_existing_customer_audit_logs_enabled ? ['/customer-management/customer-management-audit-log'] : []"
+            <a [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_audit_logs_enabled }"
+                [routerLink]="CmAuthControls.cust_existing_customer_audit_logs_enabled ? ['/customer-management/customer-management-audit-log', esmeaddr, fromTabName] : []"
                 class="btn btn-basic">Audit Log</a>
         </div>
         <!-- </form> -->

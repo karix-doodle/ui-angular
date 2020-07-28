@@ -4,6 +4,7 @@ import { environment } from "../../../environments/environment";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import * as _ from "lodash";
+import { AuthorizationService } from '../../service/auth/authorization.service';
 import {
   EsmeaddrApi_Response,
   EssmeddrRateCardList_ApiResponse,
@@ -43,16 +44,18 @@ export class CustomerManagementService {
   };
 
   user = {
-    loggedinusername: environment.loggedinusername,
-    loggedinempid: environment.loggedinempid,
+    loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+    loggedinempid: this.authorizationService.authorizationState.loggedinempid,
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authorizationService: AuthorizationService) {}
 
   getEsmeaddrDetails(data: number): Observable<EsmeaddrApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/getparticularesmeaddrdetails?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/getparticularesmeaddrdetails?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as EsmeaddrApi_Response));
@@ -61,7 +64,7 @@ export class CustomerManagementService {
   getAssignedServiceDetails(data: number): Observable<AssignedServiceApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/getmediaandserviceofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/getmediaandserviceofesmeaddr?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as AssignedServiceApi_Response));
@@ -72,7 +75,7 @@ export class CustomerManagementService {
   ): Observable<EssmeddrRateCardList_ApiResponse> {
     return this.http
       .get(
-        `${this.baseUrl}/getratecarddetails?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/getratecarddetails?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as EssmeddrRateCardList_ApiResponse));
@@ -83,7 +86,7 @@ export class CustomerManagementService {
   ): Observable<SenderIdsApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/getsenderidsofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/getsenderidsofesmeaddr?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as SenderIdsApi_Response));
@@ -94,7 +97,7 @@ export class CustomerManagementService {
   ): Observable<BlacklistTemplateApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/getwhitelistedtemplatesofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/getwhitelistedtemplatesofesmeaddr?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as BlacklistTemplateApi_Response));
@@ -105,7 +108,7 @@ export class CustomerManagementService {
   ): Observable<BlockedTemplateListApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/getblockedtemplatesofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/getblockedtemplatesofesmeaddr?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as BlockedTemplateListApi_Response));
@@ -115,7 +118,7 @@ export class CustomerManagementService {
   ): Observable<BlockedSenderIdsApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/getblockedsenderidsofesmeaddr?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/getblockedsenderidsofesmeaddr?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as BlockedSenderIdsApi_Response));
@@ -123,14 +126,14 @@ export class CustomerManagementService {
 
   getviewLogDetails(data): Observable<viewLogApi_Response>{
     return this.http.get(
-      `${this.baseUrl}/getviewactivity?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data.esmeaddr}&clientname=${data.clientname}&dateselectiontype=${data.dateselectiontype}&fromdate=${data.fromdate}&todate=${data.todate}`,
+      `${this.baseUrl}/getviewactivity?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data.esmeaddr}&clientname=${data.clientname}&dateselectiontype=${data.dateselectiontype}&fromdate=${data.fromdate}&todate=${data.todate}`,
       this.httpOptions
     )
     .pipe(map((data) => data as viewLogApi_Response))
   }
   getviewLogFileDownload(data): Observable<any>{
     return this.http.get(
-      `${this.baseUrl}/getdownloadactivity?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data.esmeaddr}&clientname=${data.clientname}&dateselectiontype=${data.dateselectiontype}&fromdate=${data.fromdate}&todate=${data.todate}`,
+      `${this.baseUrl}/getdownloadactivity?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data.esmeaddr}&clientname=${data.clientname}&dateselectiontype=${data.dateselectiontype}&fromdate=${data.fromdate}&todate=${data.todate}`,
       this.httpOptions_file
     )
     .pipe(map((data) => data as any))
@@ -141,7 +144,7 @@ export class CustomerManagementService {
   ): Observable<AllowedCountryOperatorList> {
     return this.http
       .get(
-        `${this.baseUrl}/allowedcountryoperatorslist?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/allowedcountryoperatorslist?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as AllowedCountryOperatorList));
@@ -152,7 +155,7 @@ export class CustomerManagementService {
   ): Observable<AllowedCountryApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/allowedcountryoperators?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data.esmeaddr}&load=${data.load}`,
+        `${this.baseUrl}/allowedcountryoperators?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data.esmeaddr}&load=${data.load}`,
         this.httpOptions
       )
       .pipe(map((data) => data as AllowedCountryApi_Response));
@@ -163,7 +166,7 @@ export class CustomerManagementService {
   ): Observable<BillOnSubmissionCountryListApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/countrieslistforbillonsubmission?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data}`,
+        `${this.baseUrl}/countrieslistforbillonsubmission?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data}`,
         this.httpOptions
       )
       .pipe(map((data) => data as BillOnSubmissionCountryListApi_Response));
@@ -173,7 +176,7 @@ export class CustomerManagementService {
   ): Observable<AllowedOperatorApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/allowedcountryoperators?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data.esmeaddr}&load=${data.load}&mcc=${data.mcc}`,
+        `${this.baseUrl}/allowedcountryoperators?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data.esmeaddr}&load=${data.load}&mcc=${data.mcc}`,
         this.httpOptions
       )
       .pipe(map((data) => data as AllowedOperatorApi_Response));
@@ -205,7 +208,7 @@ export class CustomerManagementService {
   ): Observable<GetSenderisApi_Response> {
     return this.http
       .get(
-        `${this.baseUrl}/getsenderids?loggedinusername=${environment.loggedinusername}&loggedinempid=${environment.loggedinempid}&esmeaddr=${data.esmeaddr}&mcc=${data.mcc}&mnc=${data.mnc}`,
+        `${this.baseUrl}/getsenderids?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}&esmeaddr=${data.esmeaddr}&mcc=${data.mcc}&mnc=${data.mnc}`,
         this.httpOptions
       )
       .pipe(map((data) => data as GetSenderisApi_Response));

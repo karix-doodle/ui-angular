@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PendingUsers_ApiResponse, UserActivation_ApiResponse, TimeZonesApiResponse, ApiResponse_Generic, PoolRouteSearchRes } from '../models/customer-management.model';
 import * as _ from 'lodash';
+import { AuthorizationService } from '../../service/auth/authorization.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,11 +18,12 @@ export class CustomerManagementService {
     httpOptions_formdata = { headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data;' }) };
 
     user = {
-        loggedinusername: environment.loggedinusername,
-        loggedinempid: environment.loggedinempid
+        loggedinusername: this.authorizationService.authorizationState.loggedinusername,
+        loggedinempid: this.authorizationService.authorizationState.loggedinempid
     };
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+      private authorizationService: AuthorizationService) { }
     
       /**
        * @description List of users pending for activation

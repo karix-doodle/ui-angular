@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { of, Observable, BehaviorSubject } from 'rxjs';
+import { of, Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, mapTo, tap } from 'rxjs/operators';
 import { Tokens } from '../models/tokens';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
+import { error } from 'protractor';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 
 export class AuthService {
   public readonly JWT_TOKEN = 'JWT_TOKEN';
-  private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
+  public readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
   private testRefresh = 'testrefresh';
   baseUrl: string = environment.serverUrl + '/authmgmt';
 
@@ -52,14 +53,15 @@ export class AuthService {
   refreshToken() {
     return this.http.post<any>(`${this.baseUrl}/refreshToken`, {
       refreshToken: this.getRefreshToken()
-    }).pipe(tap((res) => {
+    }).pipe(tap((res: any) => {
       if (res.responsestatus === environment.APIStatus.success.text
         && res.responsecode > environment.APIStatus.success.code) {
         this.storeJwtToken(res.accesstoken);
-      } else if (res.responsestatus === environment.APIStatus.error.text
-        && res.responsecode < environment.APIStatus.error.code) {
-        this.doLogoutUser();
       }
+      // else if (res.responsestatus === environment.APIStatus.error.text
+      //   && res.responsecode < environment.APIStatus.error.code) {
+      //   this.doLogoutUser();
+      // }
     }));
     // return this.storeJwtToken(this.testRefresh);
   }

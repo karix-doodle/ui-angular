@@ -12,7 +12,7 @@ export class PendingUsers_ApiResponse {
   responsecode: number;
   responsestatus: string;
   data: PendingUsers;
-  message: string;
+  message?: string;
 }
 
 export class PendingEsmeList {

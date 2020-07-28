@@ -87,27 +87,38 @@ export class BillplanMgmt {
     billplan_delete_ratecard_enabled: boolean;
 }
 export class CustomerMgmt {
-    new_account_pending_for_activation_esmes_tab_enabled: boolean;
-    new_account_pending_for_activation_esme_show_margin_enabled: boolean;
-    new_account_creation_review_enabled: boolean;
-    new_account_creation_pending_from_Activation_enabled: boolean;
-    new_account_creation_view_billplan_ratecard_enabled: boolean;
-    new_account_creation_change_additional_setting_enabled: boolean;
-    new_account_creation_profit_margin_report_enabled: boolean;
-    cust_pending_for_activation_esmes_tab_enabled: boolean;
-    cust_pending_for_activation_esme_show_margin_enabled: boolean;
-    cust_existing_customers_tab_enabled: boolean;
-    cust_existing_view_billpplan_ratecard_enabled: boolean;
-    cust_existing_change_additional_setting_enabled: boolean;
+    // new_account_pending_for_activation_esmes_tab_enabled: boolean;
+    // new_account_pending_for_activation_esme_show_margin_enabled: boolean;
+    // new_account_creation_review_enabled: boolean;
+    // new_account_creation_pending_from_Activation_enabled: boolean;
+    // new_account_creation_view_billplan_ratecard_enabled: boolean;
+    // new_account_creation_change_additional_setting_enabled: boolean;
+    // new_account_creation_profit_margin_report_enabled: boolean;
+    // cust_pending_for_activation_esmes_tab_enabled: boolean;
+    // cust_pending_for_activation_esme_show_margin_enabled: boolean;
+    // cust_existing_customers_tab_enabled: boolean;
+    // cust_existing_view_billpplan_ratecard_enabled: boolean;
+    // cust_existing_change_additional_setting_enabled: boolean;
+    // cust_existing_customer_show_margin_enabled: boolean;
+    // cust_existing_customer_audit_logs_enabled: boolean;
+    // cust_existing_customer_test_message_enabled: boolean;
+    // cust_existing_customer_detailed_view_enabled: boolean;
+    // cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled: boolean;
+    // cust_existing_customer_detailed_view_listing_blocked_senderids_enabled: boolean;
+    // cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled: boolean;
+    // cust_existing_customer_detailed_view_allowed_countries_operators_add_or_delete_alternate_senderids_enabled: boolean;
+    // cust_existing_customer_detailed_view_activity_logs_enabled: boolean;
+    cust_pending_for_activation_enabled: boolean;
+    cust_pending_for_activation_show_margin_enabled: boolean;
+    cust_existing_customers_enabled: boolean;
     cust_existing_customer_show_margin_enabled: boolean;
     cust_existing_customer_audit_logs_enabled: boolean;
-    cust_existing_customer_test_message_enabled: boolean;
+    cust_existing_customer_test_routing_enabled: boolean;
     cust_existing_customer_detailed_view_enabled: boolean;
     cust_existing_customer_detailed_view_listing_whitelisted_senderids_enabled: boolean;
     cust_existing_customer_detailed_view_listing_blocked_senderids_enabled: boolean;
     cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled: boolean;
     cust_existing_customer_detailed_view_allowed_countries_operators_add_or_delete_alternate_senderids_enabled: boolean;
-    cust_existing_customer_detailed_view_activity_logs_enabled: boolean;
 }
 export class Settings {
     settings_standard_rate_card_view_enabled: boolean;

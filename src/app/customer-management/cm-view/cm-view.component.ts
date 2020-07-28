@@ -14,7 +14,7 @@ import { AuthorizationService } from 'src/app/service/auth/authorization.service
   styleUrls: ['./cm-view.component.css']
 })
 export class CmViewComponent implements OnInit {
-  esmeaddr = +this.route.snapshot.params.id
+  esmeaddr = +this.route.snapshot.params.id;
   esmeddrDetails: EsmeaddrApi_Response;
   rateCardList: EssmeddrRateCardList_ApiResponse;
   senderidLis: SenderIdsApi_Response

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CustomerManagementService } from "../../cm-services/customer-management-services";
+import { CustomerManagementService } from '../../cm-services/customer-management-services';
 import { APIResponse, ExistingUserData, ExistingUsers } from '../../models/customer-management.model';
 import { environment } from '../../../../environments/environment';
-import { errorAlert } from "../../../shared/sweet-alert/sweet-alert";
+import { errorAlert } from '../../../shared/sweet-alert/sweet-alert';
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+import { CustomerMgmt } from '../../../model/authorization.model';
 
 @Component({
   selector: 'app-cm-list-table',
@@ -18,7 +19,7 @@ export class CmListTableComponent implements OnInit {
   existingUsersList: ExistingUsers[];
   searchvalue: any = '';
 
-  CmAuthControls = null
+  CmAuthControls: CustomerMgmt;
 
   constructor(
     private customerMgmtService: CustomerManagementService,
@@ -28,7 +29,9 @@ export class CmListTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getExistingUserList();
+    if (this.CmAuthControls.cust_existing_customers_enabled) {
+      this.getExistingUserList();
+    }
   }
 
   getExistingUserList() {
@@ -38,8 +41,7 @@ export class CmListTableComponent implements OnInit {
         if (apiResponse.responsecode > environment.APIStatus.success.code) {
           this.existingUserData = apiResponse.data;
           this.existingUsersList = this.existingUserData.existing_esme_lists;
-        }
-        else {
+        } else {
           errorAlert(apiResponse.message, apiResponse.responsestatus)
         }
       }, (error: HttpErrorResponse) => {

@@ -31,15 +31,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router
   ) {
-    // this.stateBoolean = true;
-    // if (this.isJWTTokenExists()) {
+    this.stateBoolean = true;
+    if (this.isJWTTokenExists()) {
       this.stateBoolean = false;
       this.getAuthorizationState();
-    // }
+    }
   }
 
   ngOnInit() {
     this.isLoggedIn = true;
+    this.isLogoutEvent = false;
     this.initIsAuthorizedUserSub();
     this.initIsAccessTokenAvailableSub();
   }
@@ -71,6 +72,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.isLoggedIn = isAuthorized;
         if (!this.isLogoutEvent) {
           this.message = environment.invalidSessionMsg;
+          // console.log(isAuthorized, this.isLogoutEvent);
+          if (!isAuthorized) {
+            this.removeTokens();
+          }
         }
       }
     });
@@ -87,6 +92,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.message = environment.userLoggedOutMsg;
       }
     });
+  }
+  removeTokens() {
+    localStorage.removeItem(this.authService.JWT_TOKEN);
+    localStorage.removeItem(this.authService.REFRESH_TOKEN);
+    this.router.navigate(['/']);
   }
   getJwtToken() {
     return localStorage.getItem(this.authService.JWT_TOKEN);
