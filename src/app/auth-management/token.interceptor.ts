@@ -22,10 +22,7 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(request, next);
-      } else if (error instanceof HttpErrorResponse && error.status === 403) {
-        this.authGuard.setIsUserAuthorizedState(false);
-        return throwError(error);
-      } else if (error instanceof HttpErrorResponse && error.status === 404) {
+      } else if (error instanceof HttpErrorResponse && (error.status === 403 || error.status === 404 || error.status === 500)) {
         this.authGuard.setIsUserAuthorizedState(false);
         return throwError(error);
       } else {
@@ -49,7 +46,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
       return this.authService.refreshToken().pipe(
         switchMap((token: any) => {
-          console.log(token);
+          // console.log(token);
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.accesstoken);
           return next.handle(this.addToken(request, token.accesstoken));
