@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         console.log(`errorMessage:${error.message}: errorStatusText:${error.statusText}`);
+        console.log(error);
       });
   }
 

@@ -13,7 +13,7 @@
 }
 
 .add-div-btn {
-    margin-top: 55px;
+    margin-top: auto;
     text-align: right;
 
 }
@@ -29,10 +29,6 @@
     padding: 0px 50px;
 }
 
-.add-div-btn {
-    margin-top: 55px;
-    text-align: right;
-}
 
 .create-route-section .btn {
     padding: 0px 30px;

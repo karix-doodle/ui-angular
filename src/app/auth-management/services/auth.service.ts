@@ -58,12 +58,7 @@ export class AuthService {
         && res.responsecode > environment.APIStatus.success.code) {
         this.storeJwtToken(res.accesstoken);
       }
-      // else if (res.responsestatus === environment.APIStatus.error.text
-      //   && res.responsecode < environment.APIStatus.error.code) {
-      //   this.doLogoutUser();
-      // }
     }));
-    // return this.storeJwtToken(this.testRefresh);
   }
 
   private storeJwtToken(jwt: string) {
