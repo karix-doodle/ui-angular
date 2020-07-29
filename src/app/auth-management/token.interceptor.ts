@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, EMPTY } from 'rxjs';
 import { catchError, filter, take, switchMap, tap } from 'rxjs/operators';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -22,9 +22,9 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(request, next);
-      } else if (error instanceof HttpErrorResponse && (error.status === 403 || error.status === 404 || error.status === 500)) {
+      } else if (error instanceof HttpErrorResponse && (error.status === 403 || error.status === 402)) {
         this.authGuard.setIsUserAuthorizedState(false);
-        return throwError(error);
+        return EMPTY;
       } else {
         return throwError(error);
       }
