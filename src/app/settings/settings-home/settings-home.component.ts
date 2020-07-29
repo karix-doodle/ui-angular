@@ -151,7 +151,6 @@ export class SettingsHomeComponent implements OnInit {
             'currency_name': item.currency_name,
             'currency_symbol': item.currency_symbol,
             'isSelected': true
-
           })
         } else {
           currencyArray.push({
@@ -159,7 +158,6 @@ export class SettingsHomeComponent implements OnInit {
             'currency_name': item.currency_name,
             'currency_symbol': item.currency_symbol,
             'isSelected': false
-
           })
         }
       })
@@ -276,9 +274,35 @@ export class SettingsHomeComponent implements OnInit {
     return ConversionRate;
   }
 
-  handleInvoiceCurrencyChange() {
+  handleInvoiceCurrencyChange(key, from, index, event) {
+    const currencyListControl = this.currencyListFormArray();
+
+    if (key == 'tocurrencyid') {
+      this.currencyObj[from].filter((item) => {
+        if (item.currency_id == event.target.value) {
+          item.isSelected = true
+        }
+      })
+    }
+
+    if (key == 'fromcurrencyid') {
+      if (currencyListControl.at(index).value['tocurrencyid'] != "") {
+        this.currencyObj[from].filter((item) => {
+          if (item.currency_id == currencyListControl.at(index).value['tocurrencyid']) {
+            item.isSelected = false
+          }
+        })
+      }
+      currencyListControl.at(index).patchValue({
+        tocurrencyid: ''
+      })
+    }
+
+    let obj = {}
+    obj[key] = event.target.value != null ? event.target.value : '';
+    currencyListControl.at(index).patchValue(obj)
+
     if (this.invoiceFormGroup.value['invoiceBillplan'] == 'auto') {
-      const currencyListControl = this.currencyListFormArray();
       [...Array(currencyListControl.value.length)].map((item, index) => {
         currencyListControl.at(index).get('rate').clearValidators();
         currencyListControl.at(index).get('rate').updateValueAndValidity();
