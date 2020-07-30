@@ -7,7 +7,7 @@ import { GtDefaultTemplate_ApiResponse, GtDefaultTemplate_Data, getHeaderFromFil
 import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
-import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
+import { addValidators, removeValidators, addMultipleEmailValidators } from '../../shared/helper/helperFunctions';
 
 import { DndDropEvent, DropEffect } from "ngx-drag-drop";
 
@@ -360,13 +360,13 @@ export class UpdateGatewayComponent implements OnInit {
     removeValidators(this.priceListFormGroup, 'mcc_column')
 
     if (data.is_autocompile == 1) {
-      addValidators(this.priceListFormGroup, 'notify_email')
-      addValidators(this.priceListFormGroup, 'from_email')
+      addMultipleEmailValidators(this.priceListFormGroup, 'notify_email')
+      addMultipleEmailValidators(this.priceListFormGroup, 'from_email')
       addValidators(this.priceListFormGroup, 'from_subject')
       addValidators(this.priceListFormGroup, 'read_attachment')
     } else {
-      removeValidators(this.priceListFormGroup, 'notify_email')
-      removeValidators(this.priceListFormGroup, 'from_email')
+      addMultipleEmailValidators(this.priceListFormGroup, 'notify_email')
+      addMultipleEmailValidators(this.priceListFormGroup, 'from_email')
       removeValidators(this.priceListFormGroup, 'from_subject')
       removeValidators(this.priceListFormGroup, 'read_attachment')
     }
