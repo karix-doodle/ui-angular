@@ -170,7 +170,7 @@ export class SettingsHomeComponent implements OnInit {
       value.forEach((items) => {
         if (items.tocurrencyid != '') {
           this.currencyObj[items.fromcurrencyid].filter((item) => {
-            if (items.tocurrencyid == item.currency_id) {
+            if (items.tocurrencyid == item.currency_id && items.status != 'delete') {
               item.isSelected = true
             }
           })

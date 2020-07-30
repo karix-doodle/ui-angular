@@ -1,4 +1,7 @@
-// --
+/**
+ * @module settings
+ * @description Settings TimeZone START
+*/
 export class SettingsTimeZone_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -12,7 +15,14 @@ export class SettingsTimeZone_Data {
     country_name: string;
     timezone: string;
 }
-// --
+/**
+ ************************* @description Settings TimeZone END
+*/
+
+/**
+ * @module settings
+ * @description Settings Currency START
+*/
 export class SettingsCurrency_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -25,7 +35,14 @@ export class SettingsCurrency_Data {
     currency_name: string;
     currency_symbol: string;
 }
-// --
+/**
+ ************************* @description Settings Currency END
+*/
+
+/**
+ * @module settings
+ * @description Settings DefaultCountryOperator START
+*/
 export class GsDefaultCountryOperator_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -50,7 +67,14 @@ export class GsDefaultCountryOperator_TableDataList {
     billing_rate: string;
     normalizerate: string;
 }
-// --
+/**
+ ************************* @description Settings DefaultCountryOperator END
+*/
+
+/**
+ * @module settings
+ * @description Settings DefaultCountry START
+*/
 export class GsDefaultCountry_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -72,8 +96,14 @@ export class GsDefaultCountry_TableDataList {
     billing_rate: string;
     normalizerate: string;
 }
+/**
+ ************************* @description Settings DefaultCountry END
+*/
 
-// --
+/**
+ * @module settings
+ * @description Settings GlobalCountryOperator START
+*/
 export class GsGlobalCountryOperator_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -102,8 +132,14 @@ export class GsGlobalCountryOperator_TableDataList {
     series: string;
     balanceseries: string;
 }
+/**
+ ************************* @description Settings GlobalCountryOperator END
+*/
 
-// --
+/**
+ * @module settings
+ * @description Settings CountryOperatorEdit START
+*/
 export class GsCountryOperatorEdit_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -116,8 +152,14 @@ export class GsCountryOperatorEdit_Data {
     default_senderid: string;
     senderid_type: number;
 }
+/**
+ ************************* @description Settings CountryOperatorEdit END
+*/
 
-// --
+/**
+ * @module settings
+ * @description Settings Users START
+*/
 export class SettingsUsers_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -129,22 +171,40 @@ export class SettingsUsers_Data {
     currency_id: number;
     timezone_id: number;
 }
+/**
+ ************************* @description Settings Users END
+*/
 
-// --
+/**
+ * @module settings
+ * @description Settings Userupdate START
+*/
 export class GsUserupdate_ApiResponse {
     responsecode: number;
     responsestatus: string;
     message: string;
 }
+/**
+ ************************* @description Settings Userupdate END
+*/
 
-// --
+/**
+ * @module settings
+ * @description Settings CountryOperatorupdate START
+*/
 export class GsCountryOperatorupdate_ApiResponse {
     responsecode: number;
     responsestatus: string;
     message: string;
 }
+/**
+ ************************* @description Settings CountryOperatorupdate END
+*/
 
-// --
+/**
+ * @module settings
+ * @description Settings Invoiceconversion START
+*/
 export class GsInvoiceconversion_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -162,7 +222,14 @@ export class GsInvoiceconversion_TableDataList {
     status: string;
     tocurrencyid: number;
 }
-// --
+/**
+ ************************* @description Settings Invoiceconversion END
+*/
+
+/**
+ * @module settings
+ * @description Settings ConversionView START
+*/
 export class GsConversionView_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -183,7 +250,14 @@ export class GsConversionView_TableDataList {
     conversiondate: string;
     conversiontime: string;
 }
-// --
+/**
+ ************************* @description Settings ConversionView END
+*/
+
+/**
+ * @module settings
+ * @description Settings ConversionAdd START
+*/
 export class GsConversionAdd_ApiResponse {
     responsecode: number;
     responsestatus: string;
@@ -194,3 +268,6 @@ export class GsConversionAdd_Data {
     data: GsInvoiceconversion_Data;
     mode: string;
 }
+/**
+ ************************* @description Settings ConversionAdd END
+*/
