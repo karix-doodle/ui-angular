@@ -24,8 +24,8 @@ export class TokenInterceptor implements HttpInterceptor {
         // 401 Unauthorized access token.
         return this.handle401Error(request, next);
       } else if (error instanceof HttpErrorResponse && (error.status === 403 || error.status === 402)) {
-        // 403 Access token not found.
-        // 402 Refresh token not found.
+        // 403 Access and Refresh token not found.
+        // 402 Unauthorized Refresh token.
         this.authGuard.setIsUserAuthorizedState(false);
         return EMPTY;
       } else {
