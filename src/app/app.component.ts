@@ -8,6 +8,7 @@ import { environment } from '../environments/environment';
 import { errorAlert } from './shared/sweet-alert/sweet-alert';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { RequestType } from './auth-management/models/tokens';
 
 @Component({
   selector: 'app-root',
@@ -40,16 +41,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoggedIn = true;
+    this.isLogoutEvent = false;
     this.initIsAuthorizedUserSub();
     this.initIsAccessTokenAvailableSub();
   }
-  getAuthorizationState() {
+  getAuthorizationState(requestRouteType?: string) {
     this.authorizationService.getAuthorizationState().subscribe(
       (res: AuthorizationState) => {
         if (res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code) {
           this.stateBoolean = true;
           this.state = res.data;
+          console.log(requestRouteType);
+          if (requestRouteType === 'billplan') {
+            this.router.navigate(['/billplan-management']);
+          }
         } else if (res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code) {
           this.stateBoolean = false;
@@ -71,22 +77,32 @@ export class AppComponent implements OnInit, OnDestroy {
         this.isLoggedIn = isAuthorized;
         if (!this.isLogoutEvent) {
           this.message = environment.invalidSessionMsg;
+          // console.log(isAuthorized, this.isLogoutEvent);
+          if (!isAuthorized) {
+            this.removeTokens();
+          }
         }
       }
     });
   }
   initIsAccessTokenAvailableSub() {
-    this.sub = this.authService.isAccessTokenAvailableObs.subscribe((isTokenAvailable) => {
-      if (isTokenAvailable) {
+    this.sub = this.authService.isAccessTokenAvailableObs.subscribe((isTokenAvailable: RequestType) => {
+      // console.log(isTokenAvailable);
+      if (isTokenAvailable.state === true) {
         // this.stateBoolean = true;
-        this.getAuthorizationState();
+        this.getAuthorizationState(isTokenAvailable.reqType);
         this.isLogoutEvent = false;
-      } else if (isTokenAvailable === false) {
+      } else if (isTokenAvailable.state === false) {
         // console.log(isTokenAvailable);
         this.isLogoutEvent = true;
         this.message = environment.userLoggedOutMsg;
       }
     });
+  }
+  removeTokens() {
+    localStorage.removeItem(this.authService.JWT_TOKEN);
+    localStorage.removeItem(this.authService.REFRESH_TOKEN);
+    this.router.navigate(['/']);
   }
   getJwtToken() {
     return localStorage.getItem(this.authService.JWT_TOKEN);

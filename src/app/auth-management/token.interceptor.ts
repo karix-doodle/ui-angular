@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, EMPTY } from 'rxjs';
 import { catchError, filter, take, switchMap, tap } from 'rxjs/operators';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -21,13 +21,13 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
+        // 401 Unauthorized access token.
         return this.handle401Error(request, next);
-      } else if (error instanceof HttpErrorResponse && error.status === 403) {
+      } else if (error instanceof HttpErrorResponse && (error.status === 403 || error.status === 402)) {
+        // 403 Access and Refresh token not found.
+        // 402 Unauthorized Refresh token.
         this.authGuard.setIsUserAuthorizedState(false);
-        return throwError(error);
-      } else if (error instanceof HttpErrorResponse && error.status === 404) {
-        this.authGuard.setIsUserAuthorizedState(false);
-        return throwError(error);
+        return EMPTY;
       } else {
         return throwError(error);
       }
@@ -48,8 +48,12 @@ export class TokenInterceptor implements HttpInterceptor {
       this.refreshTokenSubject.next(null);
 
       return this.authService.refreshToken().pipe(
+        // tap(t => {
+        //   console.log(request.url);
+        //   return t;
+        // }),
         switchMap((token: any) => {
-          console.log(token);
+          // console.log(token);
           this.isRefreshing = false;
           this.refreshTokenSubject.next(token.accesstoken);
           return next.handle(this.addToken(request, token.accesstoken));
@@ -59,7 +63,7 @@ export class TokenInterceptor implements HttpInterceptor {
       // console.log('else block');
       return this.refreshTokenSubject.pipe(
         // tap(t => {
-        //   console.log(t);
+        //   console.log(request.url);
         //   return t;
         // }),
         filter(token => token != null),

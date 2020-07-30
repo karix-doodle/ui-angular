@@ -108,9 +108,13 @@
                             [ngClass]="{'disable-wrapper' : priceListFormGroup.get('is_autocompile').value == false }">
                             <input type="text" class="col-12 bg-grey form-control mt-4" formControlName="notify_email"
                                 name="notify_email" placeholder="Enter Notification Mail Id" />
-                            <div class="text-danger pl-0 f-12"
+                            <div class="text-danger pl-0 f-12 text-left"
                                 *ngIf="priceListFormGroup.get('notify_email').hasError('required') && isGtPriceUpdateValid">
                                 Notify email is required
+                            </div>
+                            <div class="text-danger pl-0 f-12 text-left"
+                                *ngIf="priceListFormGroup.get('notify_email').hasError('pattern') && isGtPriceUpdateValid">
+                                Please enter valid input
                             </div>
                         </div>
                     </div>
@@ -118,7 +122,7 @@
                         [ngClass]="{'disable-wrapper' : priceListFormGroup.get('is_autocompile').value == false }">
                         <div class="row">
                             <div class="col-4 px-0 auto-compile-div">
-                                <label class="checkbox-label ml-15 mt-1" for="from-email">From E-Mail ID
+                                <label class="checkbox-label ml-15 mt-1 mb-2 pb-2" for="from-email">From E-Mail ID
                                     <input type="checkbox" id="from-email"
                                         (click)="emailsubjectCheck($event.target.checked,'isfrom_email', 'from_email')"
                                         [checked]="isfrom_email">
@@ -128,7 +132,11 @@
                                     *ngIf="priceListFormGroup.get('from_email').hasError('required') && isGtPriceUpdateValid">
                                     E-mail ID is required
                                 </div>
-                                <label class="checkbox-label ml-15" for="from-subject">From Subject
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('from_email').hasError('pattern') && isGtPriceUpdateValid">
+                                    Please enter valid input
+                                </div>
+                                <label class="checkbox-label ml-15 mb-2 pb-2" for="from-subject">From Subject
                                     <input type="checkbox" id="from-subject"
                                         (click)="emailsubjectCheck($event.target.checked,'isfrom_subject', 'from_subject')"
                                         [checked]="isfrom_subject">
@@ -138,7 +146,7 @@
                                     *ngIf="priceListFormGroup.get('from_subject').hasError('required') && isGtPriceUpdateValid">
                                     Subject is required
                                 </div>
-                                <label class="checkbox-label ml-15" for="from-body">From Body
+                                <label class="checkbox-label ml-15 mb-2 pb-2" for="from-body">From Body
                                     <input type="checkbox" id="from-body" formControlName="read_body" disabled
                                         name="read_body" [checked]="priceListFormGroup.get('read_body').value == 1">
                                     <span class="checkmark"></span>
@@ -147,7 +155,7 @@
                                     *ngIf="priceListFormGroup.get('read_body').hasError('required') && isGtPriceUpdateValid">
                                     Read body is required
                                 </div>
-                                <label class="checkbox-label ml-15" for="from-attachment">From Attachment
+                                <label class="checkbox-label ml-15 mb-2 pb-2" for="from-attachment">From Attachment
                                     <input type="checkbox" id="from-attachment"
                                         (click)="checkboxToggle($event.target.checked, 'read_attachment')"
                                         [checked]="priceListFormGroup.get('read_attachment').value == 1">

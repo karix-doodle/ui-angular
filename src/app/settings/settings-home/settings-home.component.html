@@ -71,15 +71,15 @@
             </div>
             <section class="main-section">
                 <div class="row">
-                    <div class="col-9 position-relative">
+                    <div class="col-9 position-relative invoice-block">
                         <div class="row">
-                            <div class="col-12" formArrayName="currency_list"
+                            <div class="col-12 invoice-list" formArrayName="currency_list"
                                 *ngFor="let X of invoiceFormGroup['controls'].currency_list['controls']; let indexCurrency=index">
                                 <div class="row" formGroupName="{{indexCurrency}}">
                                     <div class="col-4 form-group" *ngIf="X.get('status').value != 'delete'">
                                         <label>From Currency</label>
-                                        <select class="dropdown-select w-100" formControlName="fromcurrencyid"
-                                            (change)="handleInvoiceCurrencyChange()"
+                                        <select class="dropdown-select w-100" [value]="X.get('fromcurrencyid').value"
+                                            (change)="handleInvoiceCurrencyChange('fromcurrencyid', X.get('fromcurrencyid').value, indexCurrency, $event)"
                                             *ngIf="X.get('status').value != 'view'">
                                             <option value="" default disabled>Select Gateway Currency</option>
                                             <option value="{{item.currency_id}}"
@@ -103,12 +103,13 @@
                                     </div>
                                     <div class="col-4 form-group" *ngIf="X.get('status').value != 'delete'">
                                         <label>To Currency</label>
-                                        <select class="dropdown-select w-100" formControlName="tocurrencyid"
-                                            (change)="handleInvoiceCurrencyChange()"
+                                        <select class="dropdown-select w-100" [value]="X.get('tocurrencyid').value"
+                                            (change)="handleInvoiceCurrencyChange('tocurrencyid', X.get('fromcurrencyid').value, indexCurrency, $event)"
                                             *ngIf="X.get('status').value != 'view'">
                                             <option value="" default disabled>Select Gateway Currency</option>
                                             <option value="{{item.currency_id}}"
-                                                *ngFor="let item of settingsCurrencyData?.data"
+                                                *ngFor="let item of currencyObj[X.get('fromcurrencyid').value]"
+                                                [disabled]="item.isSelected == true"
                                                 [innerHTML]="( item.currency_name ) + ' - ' + (item.currency_symbol)">
                                             </option>
                                         </select>
@@ -130,10 +131,11 @@
                                         <label>Conversion Rate</label>
                                         <input type="search" class="form-control" formControlName="rate"
                                             (blur)="checkRate(X.get('rate').value, X, 'rate')"
-                                            *ngIf="X.get('status').value != 'view'"
+                                            *ngIf="X.get('status').value != 'view' && invoiceFormGroup.get('invoiceBillplan').value != 'auto'"
                                             placeholder="Enter Conversion Rate" />
                                         <input type="search" class="form-control light-bg" disabled
-                                            [value]="X.get('rate').value" *ngIf="X.get('status').value == 'view'"
+                                            [value]="X.get('rate').value"
+                                            *ngIf="X.get('status').value == 'view' || invoiceFormGroup.get('invoiceBillplan').value == 'auto'"
                                             placeholder="Enter Conversion Rate" />
                                         <span class="text-danger pl-1 f-12"
                                             *ngIf="X.get('rate').hasError('required') && isConversionRateValid">

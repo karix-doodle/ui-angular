@@ -13,6 +13,11 @@ export function addValidators(form: FormGroup, key: string) {
     form.get(key).updateValueAndValidity();
 }
 
+export function addMultipleEmailValidators(form: FormGroup, key: string) {
+    form.get(key).setValidators([Validators.required, Validators.pattern(/^([\w+-.%]+@[\w-.]+\.[A-Za-z]{2,4},?)+$/)]);
+    form.get(key).updateValueAndValidity();
+}
+
 export function removeValidators(form: FormGroup, key: string) {
     form.get(key).clearValidators();
     form.get(key).updateValueAndValidity();

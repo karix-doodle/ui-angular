@@ -52,6 +52,8 @@ export class SettingsHomeComponent implements OnInit {
 
   StMgmtAuthControls = null
 
+  currencyObj: object = {}
+
   constructor(
     config: NgbModalConfig,
     private settingsService: SettingsService,
@@ -125,6 +127,7 @@ export class SettingsHomeComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.settingsCurrencyDataRes = res;
           this.settingsCurrencyData = JSON.parse(JSON.stringify(this.settingsCurrencyDataRes));
+          this.setCurrencyObj(this.settingsCurrencyData.data)
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
@@ -132,6 +135,48 @@ export class SettingsHomeComponent implements OnInit {
         errorAlert(error.message, error.statusText)
       }
     );
+  }
+
+  setCurrencyObj(value) {
+
+    value.map((items) => {
+      this.currencyObj[items.currency_id] = [];
+
+      let currencyArray = []
+
+      value.map((item) => {
+        if (item.currency_id == items.currency_id) {
+          currencyArray.push({
+            'currency_id': item.currency_id,
+            'currency_name': item.currency_name,
+            'currency_symbol': item.currency_symbol,
+            'isSelected': true
+          })
+        } else {
+          currencyArray.push({
+            'currency_id': item.currency_id,
+            'currency_name': item.currency_name,
+            'currency_symbol': item.currency_symbol,
+            'isSelected': false
+          })
+        }
+      })
+      this.currencyObj[items.currency_id] = currencyArray;
+    })
+  }
+
+  updateCurrencyObj(value) {
+    setTimeout(() => {
+      value.forEach((items) => {
+        if (items.tocurrencyid != '') {
+          this.currencyObj[items.fromcurrencyid].filter((item) => {
+            if (items.tocurrencyid == item.currency_id) {
+              item.isSelected = true
+            }
+          })
+        }
+      })
+    }, 100)
   }
 
   Globalsetting_users() {
@@ -161,11 +206,23 @@ export class SettingsHomeComponent implements OnInit {
     if (currencyListControl.valid || value) {
       this.isConversionRateValid = false;
       currencyListControl.push(this.createCurrencyItem());
+      if (this.invoiceFormGroup.value['invoiceBillplan'] == 'auto') {
+        const currencyListControl = this.currencyListFormArray();
+        [...Array(currencyListControl.value.length)].map((item, index) => {
+          currencyListControl.at(index).get('rate').clearValidators();
+          currencyListControl.at(index).get('rate').updateValueAndValidity();
+        });
+      }
     }
   }
 
   removeFromCurrencyRow(indexCurrency) {
     const currencyListControl = this.currencyListFormArray();
+    this.currencyObj[currencyListControl.at(indexCurrency).value['fromcurrencyid']].map((item) => {
+      if (item.currency_id == currencyListControl.at(indexCurrency).value['tocurrencyid']) {
+        item.isSelected = false
+      }
+    })
     if (currencyListControl.at(indexCurrency).value['status'] == 'view') {
       currencyListControl.at(indexCurrency).patchValue({
         status: 'delete'
@@ -217,8 +274,48 @@ export class SettingsHomeComponent implements OnInit {
     return ConversionRate;
   }
 
-  handleInvoiceCurrencyChange() {
+  handleInvoiceCurrencyChange(key, from, index, event) {
+    const currencyListControl = this.currencyListFormArray();
 
+    if (key == 'tocurrencyid') {
+      this.currencyObj[from].filter((item) => {
+        if (item.currency_id == event.target.value) {
+          item.isSelected = true
+        }
+      })
+    }
+
+    if (key == 'fromcurrencyid') {
+      if (currencyListControl.at(index).value['tocurrencyid'] != "") {
+        this.currencyObj[from].filter((item) => {
+          if (item.currency_id == currencyListControl.at(index).value['tocurrencyid']) {
+            item.isSelected = false
+          }
+        })
+      }
+      currencyListControl.at(index).patchValue({
+        tocurrencyid: ''
+      })
+    }
+
+    let obj = {}
+    obj[key] = event.target.value != null ? event.target.value : '';
+    currencyListControl.at(index).patchValue(obj)
+
+    if (this.invoiceFormGroup.value['invoiceBillplan'] == 'auto') {
+      [...Array(currencyListControl.value.length)].map((item, index) => {
+        currencyListControl.at(index).get('rate').clearValidators();
+        currencyListControl.at(index).get('rate').updateValueAndValidity();
+      });
+      this.isConversionRateValid = true;
+      if (this.invoiceFormGroup.invalid) {
+        return;
+      }
+      else {
+        this.isConversionRateValid = false;
+        this.GsInvoiceconversion_viewAuto()
+      }
+    }
   }
 
   GsInvoiceconversion_viewAuto() {
@@ -240,7 +337,12 @@ export class SettingsHomeComponent implements OnInit {
             this.addToCurrencyList(true);
           });
           const currencyListControl = this.currencyListFormArray();
-          currencyListControl.patchValue(this.settingsInvoiceconversionData.data.conversiondetails)
+          this.updateCurrencyObj(this.settingsInvoiceconversionData.data.conversiondetails)
+          currencyListControl.patchValue(this.settingsInvoiceconversionData.data.conversiondetails);
+          [...Array(currencyListControl.value.length)].map((item, index) => {
+            currencyListControl.at(index).get('rate').clearValidators();
+            currencyListControl.at(index).get('rate').updateValueAndValidity();
+          });
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
           this.invoiceFormGroup.patchValue({
@@ -264,6 +366,7 @@ export class SettingsHomeComponent implements OnInit {
             this.addToCurrencyList(true);
           });
           const currencyListControl = this.currencyListFormArray();
+          this.updateCurrencyObj(this.settingsInvoiceconversionData.data.conversiondetails)
           currencyListControl.patchValue(this.settingsInvoiceconversionData.data.conversiondetails)
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
@@ -291,7 +394,7 @@ export class SettingsHomeComponent implements OnInit {
 
   GsConversionRate_add(data) {
     this.isConversionRateValid = true;
-    if (this.currencyTimezoneFormGroup.invalid) {
+    if (this.invoiceFormGroup.invalid) {
       return;
     }
     else {
