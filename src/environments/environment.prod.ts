@@ -37,5 +37,8 @@ export const environment = {
   defaultCharsetEncode: 'GSM',
   dlrType: ['No DLR', 'Handset DLR', 'SMSC DLR'],
   customerTypes: ['Direct', 'Premium', 'Wholesale'],
-  dateTimePickerTimeDifference: 10
+  dateTimePickerTimeDifference: 10,
+  invalidSessionMsg: 'Invalid session. please try <b>login</b> again.',
+  userLoggedOutMsg: 'You have been successfully logged out!',
+  basePortUrl: 'http://localhost:4200/'
 };

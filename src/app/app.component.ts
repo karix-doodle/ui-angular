@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
           res.responsecode > environment.APIStatus.success.code) {
           this.stateBoolean = true;
           this.state = res.data;
-          console.log(requestRouteType);
+          // console.log(requestRouteType);
           if (requestRouteType === 'billplan') {
             this.router.navigate(['/billplan-management']);
           }

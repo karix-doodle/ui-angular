@@ -81,10 +81,12 @@ export class AuthService {
   //   this.removeTokens();
   // }
 
-  // removeTokens() {
-  //   this.setIsAccessTokenAvailableState(false);
-  //   localStorage.removeItem(this.JWT_TOKEN);
-  //   localStorage.removeItem(this.REFRESH_TOKEN);
-  //   this.router.navigate(['/']);
-  // }
+  removeTokens() {
+    this.requestTypeInput.reqType = null;
+    this.requestTypeInput.state = false;
+    this.setIsAccessTokenAvailableState(this.requestTypeInput);
+    localStorage.removeItem(this.JWT_TOKEN);
+    localStorage.removeItem(this.REFRESH_TOKEN);
+    this.router.navigate(['/']);
+  }
 }
