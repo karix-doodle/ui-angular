@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
+  production: false,
   //serverUrl: '/erpinternationallogin/api',
   serverUrl: 'http://115.114.108.242/api/intlmgmt',
   //FileUploadUrl: 'http://10.20.59.248:8989/api/intlmgmt',
