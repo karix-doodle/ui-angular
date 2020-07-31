@@ -23,16 +23,6 @@ export const environment = {
     2: 'Static',
     3: 'Numeric',
   },
-  createClonePoolRouteFieldLength: {
-    routeNameInputBox: {
-      min: 3,
-      max: 15
-    },
-    commentsTextArea: {
-      min: 3,
-      max: 1000
-    }
-  },
   charsetEncode: ['GSM', 'ISO-8859-1', 'ASCII'],
   defaultCharsetEncode: 'GSM',
   dlrType: ['No DLR', 'Handset DLR', 'SMSC DLR'],

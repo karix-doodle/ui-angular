@@ -11,6 +11,7 @@ import { GenericService } from '../../services/RouteManagement/Generic/generic.s
 import { NewRoutesList, NewRowRoutesList, CloneAPoolRouteRes, CloneAPoolRouteData } from '../../models/RouteManagement/PoolRoute/poolRoute';
 import { Params, ActivatedRoute } from '@angular/router';
 import { AuthorizationService } from '../../../service/auth/authorization.service';
+import { poolRouteHelper } from '../../../shared/helper/globalVariables';
 
 @Component({
   selector: 'app-create-pool',
@@ -24,6 +25,7 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   previousGatewayType: string;
   routeNameMin: number;
   routeNameMax: number;
+  gatewaysNameList: any;
   gatewaysListBody: GatewaysListBody = new GatewaysListBody();
   // gatewaysList: GatewaysListData[];
   gatewaysList: Subject<GatewaysListData[]> = new Subject<GatewaysListData[]>();
@@ -38,6 +40,7 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   childDataReset: Subject<number> = new Subject<number>();
   previewDeleteClick: Subject<void> = new Subject<void>();
   searchText: any;
+
   constructor(
     private formBuilder: FormBuilder,
     public poolRouteService: PoolRouteService,
@@ -46,8 +49,9 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     public authService: AuthorizationService
   ) {
     this.createForm();
-    this.routeNameMin = environment.createClonePoolRouteFieldLength.routeNameInputBox.min;
-    this.routeNameMax = environment.createClonePoolRouteFieldLength.routeNameInputBox.max;
+    this.routeNameMin = poolRouteHelper.createClonePoolRouteFieldLength.routeNameInputBox.min;
+    this.routeNameMax = poolRouteHelper.createClonePoolRouteFieldLength.routeNameInputBox.max;
+    this.gatewaysNameList = poolRouteHelper.createClonePoolRouteGatewaysList;
   }
 
   ngOnInit() {

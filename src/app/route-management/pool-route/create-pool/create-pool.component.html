@@ -27,10 +27,12 @@
             </div>
             <div class="col-3 text-right">
                 <select class="dropdown-select w-100" formControlName="gw_type" (change)="loadGatewaysList('onChange')">
-                    <option value="" disabled>Select Route Type</option>
+                    <!-- <option value="" disabled>Select Route Type</option>
                     <option value="direct" default>Direct</option>
                     <option value="premium">Premium</option>
-                    <option value="wholesale">Wholesale</option>
+                    <option value="wholesale">Wholesale</option> -->
+                    <option value="" disabled>Select Route Type</option>
+                    <option *ngFor="let obj of gatewaysNameList" [ngValue]="obj.val"> {{ obj.name }}</option>
                 </select>
                 <span class="text-danger pl-1 f-12"
                     *ngIf="parentFormGroup.get('gw_type').hasError('required') && submitted">

@@ -17,6 +17,7 @@ import {
 } from '../../models/RouteManagement/PoolRoute/poolRoute';
 import { Router } from '@angular/router';
 import { AuthorizationService } from '../../../service/auth/authorization.service';
+import { poolRouteHelper } from '../../../shared/helper/globalVariables';
 
 @Component({
    selector: 'app-route-stepper-form',
@@ -63,8 +64,8 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       private authService: AuthorizationService
    ) {
       this.createSecondFormGroup();
-      this.commentsTextAreaMin = environment.createClonePoolRouteFieldLength.commentsTextArea.min;
-      this.commentsTextAreaMax = environment.createClonePoolRouteFieldLength.commentsTextArea.max;
+      this.commentsTextAreaMin = poolRouteHelper.createClonePoolRouteFieldLength.commentsTextArea.min;
+      this.commentsTextAreaMax = poolRouteHelper.createClonePoolRouteFieldLength.commentsTextArea.max;
    }
 
    openPreviewModel(content) {
