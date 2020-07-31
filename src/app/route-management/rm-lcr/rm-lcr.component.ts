@@ -122,8 +122,7 @@ export class RmLcrComponent implements OnInit {
   /**
    * @param e consists of change events of gateway toggle switch.
    * @param mcc consists of particular gateway mcc no. .
-   * @param gateway consists of change events of gateway toggle switch.
-   * @param gateways consists of particular gateway list data.
+   * @param gateway consists of particular gateway list data.
    * @description 1) to switch the toggle switch, 2) to add the new gateways into the request
    *               body for updateGatewayStatus api.
    */
