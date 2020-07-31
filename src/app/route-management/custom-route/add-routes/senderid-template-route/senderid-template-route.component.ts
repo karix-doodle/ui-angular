@@ -23,6 +23,7 @@ import { AuthorizationService } from '../../../../service/auth/authorization.ser
 import { MobileBlackList_AddResponse, MobileBlackList_AddData } from 'src/app/route-management/models/BlackList/blacklist.model';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { accountType, senderidPattern, esmeddrPattern, priority } from 'src/app/shared/helper/globalVariables';
 
 @Component({
   selector: "app-senderid-template-route",
@@ -31,8 +32,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class SenderidTemplateRouteComponent implements OnInit {
   whitelist_type: string;
-  accounts: string[] = ["Global", "Account"];
-  priorities: number[] = [0, 1, 2, 3, 4, 5];
+  accounts: string[] = accountType
+  priorities: number[] = priority
   submitted = false;
   cmobilesenderUpload: any = null;
   senderContentFrom: FormGroup;
@@ -72,7 +73,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
       template: [""],
       senderid: [
         "",
-        [Validators.required, Validators.pattern("[a-zA-Z0-9]{4,8}")],
+        [Validators.required, Validators.pattern(senderidPattern)],
       ],
       // senderid: ["", Validators.required],
       primary_gw_id: [null, [Validators.required]],
@@ -94,7 +95,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
       case "Account": {
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern("[0-9]{3,14}"),
+          Validators.pattern(esmeddrPattern),
         ]);
 
         this.fromReset();
@@ -294,7 +295,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
             successAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("2323232323232323")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }
@@ -303,7 +303,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
             errorAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("23234234234234234234")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }
