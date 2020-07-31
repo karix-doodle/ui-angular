@@ -17,7 +17,7 @@ export const poolRouteHelper = {
         },
         commentsTextArea: {
             min: 3,
-            max: 1000
+            max: 500
         }
     },
     createClonePoolRouteGatewaysList: [
