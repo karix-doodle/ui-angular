@@ -19,6 +19,7 @@ import {
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { blacklistAccountType, mobilePattern, esmeddrPattern } from 'src/app/shared/helper/globalVariables';
 
 @Component({
   selector: "app-bl-mobile-route",
@@ -26,7 +27,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ["./bl-mobile-route.component.css"],
 })
 export class BlMobileRouteComponent implements OnInit {
-  accounts: string[] = ["Global", "Gateway", "Account"];
+  accounts: string[] = blacklistAccountType
   submitted = false;
   gatewayList: BlackListGateway_Data;
   gatewayListApiResponse: BlackListGateway_ApiResponse;
@@ -60,7 +61,7 @@ filResponseData: MobileBlackList_AddData
   private intForm() {
     this.blacklistMobileAddForm = this.formBuilder.group({
       blacklist_type: ["Global", [Validators.required]],
-      mobile: ["", [Validators.required, Validators.pattern("[0-9]{10,14}")]],
+      mobile: ["", [Validators.required, Validators.pattern(mobilePattern)]],
       esmeaddr: [""],
       gw_id: [null],
     });
@@ -85,7 +86,7 @@ filResponseData: MobileBlackList_AddData
         this.control.gw_id.setErrors(null);
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern("[0-9]{3,14}"),
+          Validators.pattern(esmeddrPattern),
         ]);
         this.fromReset();
         break;
