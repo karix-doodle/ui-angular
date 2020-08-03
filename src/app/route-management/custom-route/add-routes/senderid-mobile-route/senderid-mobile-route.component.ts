@@ -19,6 +19,7 @@ import { AuthorizationService } from '../../../../service/auth/authorization.ser
 import { MobileBlackList_AddResponse, MobileBlackList_AddData } from 'src/app/route-management/models/BlackList/blacklist.model';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { accountType, senderidPattern, mobilePattern, esmeddrPattern } from 'src/app/shared/helper/globalVariables';
 
 @Component({
   selector: "app-senderid-mobile-route",
@@ -27,7 +28,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class SenderidMobileRouteComponent implements OnInit {
   whitelist_type: string;
-  accounts: string[] = ["Global", "Account"];
+  accounts: string[] = accountType
   submitted = false;
   cmobilesenderUpload: any;
   senderIdFrom: FormGroup;
@@ -66,12 +67,12 @@ export class SenderidMobileRouteComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(5),
-          Validators.pattern("[0-9]{10,14}"),
+          Validators.pattern(mobilePattern),
         ],
       ],
       senderid: [
         "",
-        [Validators.required, Validators.pattern("[a-zA-Z0-9]{4,8}")],
+        [Validators.required, Validators.pattern(senderidPattern)],
       ],
       primary_gw_id: [null, [Validators.required]],
       fallback_gw_id: [null, [Validators.required]],
@@ -90,7 +91,7 @@ export class SenderidMobileRouteComponent implements OnInit {
       case "Account": {
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern("[0-9]{3,14}"),
+          Validators.pattern(esmeddrPattern),
         ]);
         this.fromReset();
         break;

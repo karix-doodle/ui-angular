@@ -117,97 +117,77 @@
         <form>
 
             <div class="row">
-                <div class="col-4">
+                <div class="col-7">
                     <label class="mr-2"><b>Country</b></label>
                     <span class="border-right">&nbsp;</span>
                     <span class="ml-3"><b>{{Gateways.country}}</b></span>
                 </div>
-                <div class="col-4">
+                <div class="col-5">
                     <label class="mr-2"><b>MCC</b></label>
                     <span class="border-right">&nbsp;</span>
                     <span class="ml-3"><b>{{Gateways.mcc}}</b></span>
                 </div>
             </div>
             <div class="row">
-                <!-- *ngIf="Gateways?.direct.length" -->
                 <div class="card lcr-popup-card" *ngIf="Gateways?.direct.length">
-                    <div class="card-header">Direct</div>
-                    <div class="card-body">
-                        <div *ngFor="let direct of Gateways?.direct; index as i" class="row"
-                            [ngClass]="{'mt-2':i === 0 || i === -1}">
-                            <label class="col-9">{{direct.gw_id}} - {{direct.gw_name}}</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn" [checked]="direct.status === 1"
-                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
-                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
+                        <div class="card-header">Direct</div>
+                        <div class="card-body">
+                            <div *ngFor="let direct of Gateways?.direct; index as i" class="row"
+                                [ngClass]="{'mt-2':i === 0 || i === -1}">
+                                <label class="col-9">{{direct.gw_id}} - {{direct.gw_name}}</label>
+                                <div class="form-group col-3">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" class="switch-btn" [checked]="direct.status === 1"
+                                            [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                            (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
                                         toggleStatus($event, Gateways.mcc , direct)">
-                                    <span class="slider round"></span>
-                                </label>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- *ngIf="Gateways?.premium.length" -->
-                <div class="card lcr-popup-card" *ngIf="Gateways?.premium.length">
-                    <div class="card-header">Premium</div>
-                    <div class="card-body">
-                        <div *ngFor="let premium of Gateways?.premium; index as i" class="row"
-                            [ngClass]="{'mt-2':i === 0 || i === -1}">
-                            <label class="col-9">{{premium.gw_id}} - {{premium.gw_name}}</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn" [checked]="premium.status === 1"
-                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
-                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled && 
+                    <div class="card lcr-popup-card" *ngIf="Gateways?.premium.length">
+                        <div class="card-header">Premium</div>
+                        <div class="card-body">
+                            <div *ngFor="let premium of Gateways?.premium; index as i" class="row"
+                                [ngClass]="{'mt-2':i === 0 || i === -1}">
+                                <label class="col-9">{{premium.gw_id}} - {{premium.gw_name}}</label>
+                                <div class="form-group col-3">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" class="switch-btn" [checked]="premium.status === 1"
+                                            [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                            (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled && 
                                         toggleStatus($event, Gateways.mcc , premium)">
-                                    <span class="slider round"></span>
-                                </label>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- *ngIf="Gateways?.wholesale.length" -->
-                <div class="card lcr-popup-card" *ngIf="Gateways?.wholesale.length">
-                    <div class="card-header">Wholesale</div>
-                    <div class="card-body">
-                        <div *ngFor="let wholesale of Gateways?.wholesale; index as i" class="row"
-                            [ngClass]="{'mt-2':i === 0 || i === -1}">
-                            <label class="col-9">{{wholesale.gw_id}} - {{wholesale.gw_name}}</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn" [checked]="wholesale.status === 1"
-                                        [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
-                                        (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
+                    <div class="card lcr-popup-card" *ngIf="Gateways?.wholesale.length">
+                        <div class="card-header">Wholesale</div>
+                        <div class="card-body">
+                            <div *ngFor="let wholesale of Gateways?.wholesale; index as i" class="row"
+                                [ngClass]="{'mt-2':i === 0 || i === -1}">
+                                <label class="col-9">{{wholesale.gw_id}} - {{wholesale.gw_name}}</label>
+                                <div class="form-group col-3">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" class="switch-btn" [checked]="wholesale.status === 1"
+                                            [disabled]=!authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled
+                                            (change)="authorizationService.authorizationState.route_mgmt.lcr_gw_activate_or_deactivate_enabled &&
                                         toggleStatus($event, Gateways.mcc , wholesale)">
-                                    <span class="slider round"></span>
-                                </label>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- <div class="card lcr-popup-card" *ngIf="Gateways?.nonlcr.length">
-                    <div class="card-header">Non-LCR</div>
-                    <div class="card-body">
-                        <div *ngFor="let nonlcr of Gateways?.nonlcr; index as i" class="row"
-                            [ngClass]="{'mt-2':i === 0 || i === -1}">
-                            <label class="col-9">{{nonlcr.gw_id}} - {{nonlcr.gw_name}}</label>
-                            <div class="form-group col-3">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="switch-btn" [checked]="nonlcr.status === 1"
-                                        (change)="toggleStatus($event, Gateways.mcc , nonlcr)">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <div class="row">
                 <div class="col-12 text-center mt-3">
                     <input type="button" class="btn btn-basic mr-3" value="Cancel"
                         (click)="onPopupCancel(Gateways.mcc)">
-                    <!-- <input type="reset" class="btn btn-basic mr-3" value="Cancel" (click)="onPopupCancel(Gateways.mcc)"> -->
                     <input type="button" class="btn erp-intl-btn" value="Save" (click)="onSave()">
                 </div>
             </div>

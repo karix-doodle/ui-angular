@@ -18,6 +18,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { blacklistAccountType, templatePattern, senderidPattern, esmeddrPattern } from 'src/app/shared/helper/globalVariables';
 
 @Component({
   selector: "app-bl-senderid-route",
@@ -25,7 +26,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ["./bl-senderid-route.component.css"],
 })
 export class BlSenderidRouteComponent implements OnInit {
-  accounts: string[] = ["Global", "Gateway", "Account"];
+  accounts: string[] = blacklistAccountType
   submitted = false;
   gatewayList: BlackListGateway_Data;
   gatewayListApiResponse: BlackListGateway_ApiResponse;
@@ -59,11 +60,11 @@ filResponseData: MobileBlackList_AddData
       blacklist_type: ["Global", [Validators.required]],
       template: [
         "",
-        [Validators.required, Validators.pattern("[a-zA-Z0-9]{0,7}")],
+        [Validators.required, Validators.pattern(templatePattern)],
       ],
       senderid: [
         "",
-        [Validators.required, Validators.pattern("[a-zA-Z0-9]{4,8}")],
+        [Validators.required, Validators.pattern(senderidPattern)],
       ],
       esmeaddr: [""],
       gw_id: [null],
@@ -87,7 +88,7 @@ filResponseData: MobileBlackList_AddData
         this.control.gw_id.setErrors(null);
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern("[0-9]{3,14}"),
+          Validators.pattern(esmeddrPattern),
         ]);
         this.fromReset();
         break;
