@@ -2,6 +2,8 @@
     .lcr-popup-card,
     .lcr-popup-card .card-header {
         background-color: #E9EDF4;
+        flex            : auto;
+        align-self      : baseline;
     }
 
     .lcr-popup-card .card-header {
