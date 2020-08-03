@@ -75,7 +75,7 @@
             [routerLink]="billPlanMgmtAuthControls.billplan_view_enabled 
               ? ['/billplan-management/postpaid', tableData.id] : []">{{tableData.billplanname}}</a>
         </td>
-        <td>{{tableData.ratecardname}}</td>
+        <td>{{tableData.ratecardname ? tableData.ratecardname : '-'}}</td>
         <td>
           {{tableData.billingtype}}
         </td>
