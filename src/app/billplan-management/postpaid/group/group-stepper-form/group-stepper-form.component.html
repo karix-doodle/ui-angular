@@ -287,14 +287,14 @@
                                     formControlName="discount_type"
                                     [attr.disabled]="parentForm.get('discount_type').value == '' ? true : null"
                                     formControlName="discount_rate" />
-                                <span class="text-danger pl-1 f-12"
-                                    *ngIf="parentForm.get('discount_rate').hasError('pattern') && submitGroupValid">
+                                <span class="text-danger pl-1 f-12" *ngIf="parentForm.get('discount_rate').hasError('pattern') && submitGroupValid
+                                    || submitGroupValid && !parentForm.get('discount_rate').valid">
                                     Invalid Input Value
                                 </span>
-                                <span class="text-danger pl-1 f-12"
+                                <!-- <span class="text-danger pl-1 f-12"
                                     *ngIf="parentForm.get('discount_rate').hasError('required') && submitGroupValid">
                                     Discount rate is required
-                                </span>
+                                </span> -->
                             </div>
                         </div>
                         <div class="col-6 discount-select">

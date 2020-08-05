@@ -190,7 +190,13 @@ export class CreateRatecardComponent implements OnInit {
    }
    handleDiscountType() {
       if (this.fixedRateFrom.value.discount_type == 'percentage') {
-         this.fixedRateFrom.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+         this.fixedRateFrom.get('discount_rate').setValidators(
+            [
+               Validators.required,
+               Validators.pattern('(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)'),
+               Validators.max(99.99), Validators.min(0.01)
+            ]
+         );
          this.fixedRateFrom.get('discount_rate').updateValueAndValidity();
       } else if (this.fixedRateFrom.value.discount_type == 'unit') {
          this.fixedRateFrom.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);

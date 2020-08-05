@@ -261,7 +261,12 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     if (this.parentForm.value.discount_type == "percentage") {
       this.parentForm
         .get("discount_rate")
-        .setValidators([Validators.required, Validators.pattern("^[0-9]+$")]);
+        .setValidators(
+          [
+            Validators.required,
+             Validators.pattern("(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)"),
+             Validators.max(99.99), Validators.min(0.01)
+            ]);
       this.parentForm.get("discount_rate").updateValueAndValidity();
     } else if (this.parentForm.value.discount_type == "unit") {
       this.parentForm

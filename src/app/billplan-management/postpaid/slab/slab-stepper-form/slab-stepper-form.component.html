@@ -245,12 +245,12 @@
                                     formControlName="discount_rate"
                                     [readonly]="secondFormGroup.get('discount_type').value === ''" />
                             </div>
-                            <span class="text-danger pl-1 f-12"
+                            <!-- <span class="text-danger pl-1 f-12"
                                 *ngIf="secondFormGroup.get('discount_rate').hasError('required') && secondStepSubmitted">
                                 Discount rate is required
-                            </span>
-                            <span class="text-danger pl-1 f-12"
-                                *ngIf="secondFormGroup.get('discount_rate').hasError('pattern') && secondStepSubmitted">
+                            </span> -->
+                            <span class="text-danger pl-1 f-12" *ngIf="secondFormGroup.get('discount_rate').hasError('pattern') && secondStepSubmitted
+                                || secondStepSubmitted && !secondFormGroup.get('discount_rate').valid">
                                 Invalid Input Value
                             </span>
                         </div>

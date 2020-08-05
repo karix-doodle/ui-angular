@@ -518,7 +518,13 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
    handleDiscountType() {
       // console.log(this.secondFormGroup.value);
       if (this.secondFormGroup.value.discount_type === 'percentage') {
-         this.secondFormGroup.get('discount_rate').setValidators([Validators.required, Validators.pattern('^[0-9]+$')]);
+         this.secondFormGroup.get('discount_rate').setValidators(
+            [
+               Validators.required,
+               Validators.pattern('(^100(\.0{1,2})?$)|(^([1-9]([0-9])?|0)(\.[0-9]{1,2})?$)'),
+               Validators.max(99.99), Validators.min(0.01)
+            ]
+         );
          this.secondFormGroup.get('discount_rate').updateValueAndValidity();
       } else if (this.secondFormGroup.value.discount_type === 'unit') {
          this.secondFormGroup.get('discount_rate').setValidators([Validators.required, Validators.pattern('^([0-9]+(\.[0-9]+)?)')]);

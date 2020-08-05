@@ -92,7 +92,7 @@ export class CmEditComponent implements OnInit {
       selectedDlrType: new FormControl(),
       selectedCustomerType: new FormControl({ value: this.selectedCustomerType }, [Validators.required]),
       lcrOnly: new FormControl(),
-      selectedRouteType: new FormControl({ value: this.selectedRouteType }, [Validators.required]),
+      selectedRouteType: new FormControl({ value: this.selectedRouteType, disabled: true }, [Validators.required]),
       primary_gwid: new FormControl(),
       fallback_gwid: new FormControl(),
       selectedPoolRouteId: new FormControl(),

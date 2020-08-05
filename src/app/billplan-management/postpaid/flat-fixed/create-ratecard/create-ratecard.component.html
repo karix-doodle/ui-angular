@@ -76,14 +76,14 @@
                     formControlName="discount_type"
                     [attr.disabled]="fixedRateFrom.get('discount_type').value == '' ? true : null"
                     formControlName="discount_rate" />
-                  <span class="text-danger pl-1 f-12"
-                    *ngIf="fixedRateFrom.get('discount_rate').hasError('pattern') && Submitted">
+                  <span class="text-danger pl-1 f-12" *ngIf="fixedRateFrom.get('discount_rate').hasError('pattern') && Submitted
+                    || Submitted && !fixedRateFrom.get('discount_rate').valid">
                     Invalid Input Value
                   </span>
-                  <span class="text-danger pl-1 f-12"
+                  <!-- <span class="text-danger pl-1 f-12"
                     *ngIf="fixedRateFrom.get('discount_rate').hasError('required') && Submitted">
                     Discount rate is required
-                  </span>
+                  </span> -->
                 </div>
               </div>
               <div class="col-6 mt-31 discount-select">
@@ -123,9 +123,9 @@
 </div>
 <div class="pt-3 center-block h-100" *ngIf="!billPlanMgmtAuthControls.billplan_create_ratecard_enabled">
   <div class="d-block">
-      <img style="width: 150px;" src="assets/icons/icon-lock.png" />
-      <span class="w-100 d-block">
-          Your are not <b>Authorized</b> to access this page
-      </span>
+    <img style="width: 150px;" src="assets/icons/icon-lock.png" />
+    <span class="w-100 d-block">
+      Your are not <b>Authorized</b> to access this page
+    </span>
   </div>
 </div>
