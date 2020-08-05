@@ -40,8 +40,8 @@
                     <td>{{user.intl_routetype}}</td>
                     <td>{{user.salespersonname}}</td>
                     <td>{{user.submissiondateandtime}}</td>
-                    <td><a [routerLink]="['/customer-management/customer-management-edit', user.esmeaddr, 'pending']"><i
-                                class="fa fa-paperclip" aria-hidden="true"></i></a></td>
+                    <td><a [routerLink]="CmAuthControls.cust_pending_acct_review_enabled ? ['/customer-management/customer-management-edit', user.esmeaddr, 'pending'] : []"><i
+                               [ngClass]="{'isDisabled': !CmAuthControls.cust_pending_acct_review_enabled}" class="fa fa-paperclip" aria-hidden="true"></i></a></td>
                 </tr>
                 <tr *ngIf="apiResponse?.data.totalpendingesmes === 0">
                     <td colspan="7" class="text-center py-3 main-heading">No data Found</td>

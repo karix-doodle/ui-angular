@@ -119,6 +119,15 @@ export class CustomerMgmt {
     cust_existing_customer_detailed_view_listing_blocked_senderids_enabled: boolean;
     cust_existing_customer_detailed_view_listing_allowed_countries_operators_list_enabled: boolean;
     cust_existing_customer_detailed_view_allowed_countries_operators_add_or_delete_alternate_senderids_enabled: boolean;
+
+    cust_pending_acct_review_enabled: boolean;
+    cust_pending_routing_change_enabled: boolean;
+    cust_pending_view_billplan_ratecard_enabled: boolean;
+    cust_pending_additional_settings_enabled: boolean;
+    cust_existing_routing_change_enabled: boolean;
+    cust_existing_view_billplan_ratecard_enabled: boolean;
+    cust_existing_additional_settings_enabled: boolean;
+    cust_existing_customer_detailed_view_activity_logs_enabled: boolean;
 }
 export class Settings {
     settings_standard_rate_card_view_enabled: boolean;

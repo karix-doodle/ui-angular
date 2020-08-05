@@ -41,13 +41,13 @@
         <div class="row border-bottom pb-4">
             <div class=" form-group col-4">
                 <label>Bill Plan</label>
-                <input type="search" class="form-control" formControlName="billplanName" />
+                <input type="text" class="form-control" formControlName="billplanName" />
             </div>
             <div class="col-1 billplan-view mr-4">
-                <a (click)="CmAuthControls.cust_existing_customer_detailed_view_enabled && openNewTab(usersData.ratecard_id,usersData.ratecard_type)"
-                    [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_detailed_view_enabled}">
-                    <!-- [routerLink]="!CmAuthControls.cust_existing_view_billpplan_ratecard_enabled 
-                    ? ['/billplan-management/postpaid/country/assigned-ratecard-view',usersData.ratecard_id,usersData.ratecard_type]: []" -->
+                <a (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_view_billplan_ratecard_enabled 
+                || fromTabName === 'pending' && CmAuthControls.cust_pending_view_billplan_ratecard_enabled && openNewTab(usersData?.ratecard_id, usersData?.ratecard_type)"
+                    [ngClass]="{'isDisabled':fromTabName === 'existing' && !CmAuthControls.cust_existing_view_billplan_ratecard_enabled 
+                || fromTabName === 'pending' && !CmAuthControls.cust_pending_view_billplan_ratecard_enabled}">
                     <i class="fa fa-eye"></i></a>
             </div>
             <div class="col-3 border-left pl-4">
@@ -68,9 +68,13 @@
             <div class="col-5">
                 <div class="row bg-grey">
                     <div class="col-9 border-right">
-                        <label>Intl. Customer Type -<span>
-                                <select class="dropdown-select" (change)="onChangeCustomerType($event)"
-                                    formControlName="selectedCustomerType">
+                        <label>Intl. Customer Type - <span>
+                                <select class="dropdown-select"
+                                    (change)="fromTabName === 'existing' && CmAuthControls.cust_existing_routing_change_enabled
+                                || fromTabName === 'pending' && CmAuthControls.cust_pending_routing_change_enabled && onChangeCustomerType($event)"
+                                    formControlName="selectedCustomerType"
+                                    [attr.disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_routing_change_enabled
+                                    || fromTabName === 'pending' && !CmAuthControls.cust_pending_routing_change_enabled ? '' : null">
                                     <option [value]=ctype *ngFor="let ctype of customerTypes"> {{ctype}} </option>
                                 </select></span>
                         </label>
@@ -78,7 +82,10 @@
                     <div class="col-3 mt-2">
                         <label class="checkbox-label col-4 ml-15" for="lcr_only" title="LCR only">LCR
                             <input type="checkbox" [checked]="lcrOnly === 1" id="lcr_only"
-                                (click)="onChangeLcrOnly($event)" formControlName="lcrOnly">
+                                (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_routing_change_enabled
+                                || fromTabName === 'pending' && CmAuthControls.cust_pending_routing_change_enabled && onChangeLcrOnly($event)" formControlName="lcrOnly"
+                                [attr.disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_routing_change_enabled
+                                    || fromTabName === 'pending' && !CmAuthControls.cust_pending_routing_change_enabled ? '' : null">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -222,8 +229,9 @@
                 (click)="set('permanent')">
             <button class="btn btn-basic mr-3" *ngIf="!isSelected('lcr')"
                 (click)="open(selectedRouteModal)">Save</button>
-            <button class="btn erp-intl-btn mr-3" [ngClass]="{'isDisabled':fromTabName === 'existing' && !CmAuthControls.cust_existing_customer_show_margin_enabled ||
-            fromTabName === 'pending' && !CmAuthControls.cust_pending_for_activation_show_margin_enabled}" [disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_customer_show_margin_enabled ||
+            <button class="btn erp-intl-btn mr-3" [ngClass]="{'isDisabled':fromTabName === 'existing' && !CmAuthControls.cust_existing_customer_show_margin_enabled 
+             || fromTabName === 'pending' && !CmAuthControls.cust_pending_for_activation_show_margin_enabled}"
+                [disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_customer_show_margin_enabled ||
                 fromTabName === 'pending' && !CmAuthControls.cust_pending_for_activation_show_margin_enabled"
                 (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_customer_show_margin_enabled ||
                 fromTabName === 'pending' && CmAuthControls.cust_pending_for_activation_show_margin_enabled ? set('showmargin') : ''">Show

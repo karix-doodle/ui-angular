@@ -195,7 +195,7 @@ export class SlabStepperFormComponent implements OnInit, OnDestroy {
          }
       }
 
-      const dotIndex = NormalizedRate.toString().indexOf('.')
+      const dotIndex = NormalizedRate.toString().indexOf('.');
 
       if (dotIndex === 0) {
          NormalizedRate = '0' + NormalizedRate;
