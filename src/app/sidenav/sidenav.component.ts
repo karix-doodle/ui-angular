@@ -13,7 +13,7 @@ export class SidenavComponent implements OnInit {
   constructor(
     public authorizationService: AuthorizationService,
   ) {
-    this.sideNavAuthControls = this.authorizationService.authorizationState.main_panel;
+    // this.sideNavAuthControls = this.authorizationService.authorizationState.main_panel;
   }
 
   ngOnInit() {
