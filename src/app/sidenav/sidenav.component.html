@@ -1,58 +1,70 @@
 <nav id="sidebar">
     <ul class="list-unstyled components">
         <li>
-            <a routerLinkActive="active" routerLink="/dashboard">
+            <a (click)="onRouterNavigate('/dashboard')" [ngClass]="topUrl.includes('/dashboard') ? 'active' : ''">
                 <img src="assets/icons/dashboard.png" alt="sidebar-icons" />
                 <img src="assets/icons/selected/dashboard.png" class="d-none selected-icon" alt="sidebar-icons" />
                 <span>Dashboard</span>
             </a>
         </li>
         <li>
-            <a routerLinkActive="active" routerLink="/gateway-management">
+            <a (click)="sideNavAuthControls?.gw_mgmt_enabled && onRouterNavigate('/gateway-management')"
+                [ngClass]="topUrl.includes('/gateway-management') ? 'active' : sideNavAuthControls?.gw_mgmt_enabled ? '' : 'isDisabled' ">
                 <img src="assets/icons/gateway.png" alt="sidebar-icons" />
                 <img src="assets/icons/selected/gateway.png" class="d-none selected-icon" alt="sidebar-icons" />
                 <span>Gateway Management</span>
             </a>
         </li>
         <li class="route-mngmnt-link d-none">
-            <a routerLinkActive="active" routerLink="/route-management">
+            <a (click)="sideNavAuthControls?.route_mgmt_enabled && onRouterNavigate('/route-management')"
+                [ngClass]="topUrl.includes('/route-management') ? 'active' : sideNavAuthControls?.route_mgmt_enabled ? '' : 'isDisabled' ">
                 <img src="assets/icons/route.png" alt="sidebar-icons" />
                 <img src="assets/icons/selected/route.png" class="d-none selected-icon" alt="sidebar-icons" />
                 <span>Route Management</span>
             </a>
         </li>
         <li class="route-mngmnt-dropdown">
-            <a routerLinkActive="active" routerLink="/route-management" class="dropdown-toggle"
-                (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
-                aria-controls="route-management">
+            <a (click)="sideNavAuthControls?.route_mgmt_enabled && onRouterNavigate('/route-management')"
+                [ngClass]="topUrl.includes('/route-management') ? 'active' : sideNavAuthControls?.route_mgmt_enabled ? '' : 'isDisabled'"
+                class="dropdown-toggle" aria-controls="route-management">
                 <img src="assets/icons/route.png" alt="sidebar-icons" />
                 <img src="assets/icons/selected/route.png" class="d-none selected-icon" alt="sidebar-icons" />
                 <span>Route Management</span>
             </a>
-            <ul id="route-management" [ngbCollapse]="isCollapsed">
+            <ul id="route-management" *ngIf="isCollapsed">
                 <li>
-                    <a routerLinkActive="active" routerLink="/route-management/least-cost-route">Least Cost Routing</a>
+                    <a (click)="sideNavAuthControls?.route_mgmt_enabled && onRouterNavigate('/route-management/least-cost-route')"
+                        [ngClass]="topUrl.includes('/route-management/least-cost-route') ? 'active' : sideNavAuthControls?.route_mgmt_enabled ? '' : 'isDisabled'">Least
+                        Cost
+                        Routing</a>
                 </li>
                 <li>
-                    <a routerLinkActive="active" routerLink="/route-management/pool-route">Pool Route</a>
+                    <a (click)="sideNavAuthControls?.route_mgmt_enabled && onRouterNavigate('/route-management/pool-route')"
+                        [ngClass]="topUrl.includes('/route-management/pool-route') ? 'active' : sideNavAuthControls?.route_mgmt_enabled ? '' : 'isDisabled'">Pool
+                        Route</a>
                 </li>
                 <li>
-                    <a routerLinkActive="active" routerLink="/route-management/custom-route">Custom Route</a>
+                    <a (click)="sideNavAuthControls?.route_mgmt_enabled && onRouterNavigate('/route-management/custom-route')"
+                        [ngClass]="topUrl.includes('/route-management/custom-route') ? 'active' : sideNavAuthControls?.route_mgmt_enabled ? '' : 'isDisabled'">Custom
+                        Route</a>
                 </li>
                 <li>
-                    <a routerLinkActive="active" routerLink="/route-management/blacklist">Blacklist</a>
+                    <a (click)="sideNavAuthControls?.route_mgmt_enabled && onRouterNavigate('/route-management/blacklist')"
+                        [ngClass]="topUrl.includes('/route-management/blacklist') ? 'active' : sideNavAuthControls?.route_mgmt_enabled ? '' : 'isDisabled'">Blacklist</a>
                 </li>
             </ul>
         </li>
         <li>
-            <a routerLinkActive="active" routerLink="/billplan-management">
+            <a (click)="sideNavAuthControls?.bill_plan_mgmt_enabled && onRouterNavigate('/billplan-management')"
+                [ngClass]="topUrl.includes('/billplan-management') ? 'active' : sideNavAuthControls?.bill_plan_mgmt_enabled ? '' : 'isDisabled'">
                 <img src="assets/icons/billplan.png" alt="sidebar-icons" />
                 <img src="assets/icons/selected/billplan.png" class="d-none selected-icon" alt="sidebar-icons" />
                 <span>Bill Plan Management</span>
             </a>
         </li>
         <li>
-            <a routerLinkActive="active" routerLink="/customer-management">
+            <a (click)="sideNavAuthControls?.cust_mgmt_enabled && onRouterNavigate('/customer-management')"
+                [ngClass]="topUrl.includes('/customer-management') ? 'active' : sideNavAuthControls?.cust_mgmt_enabled ? '' : 'isDisabled'">
                 <img src="assets/icons/customer.png" alt="sidebar-icons" />
                 <img src="assets/icons/selected/customer.png" class="d-none selected-icon" alt="sidebar-icons" />
                 <span>Customer Management</span>
@@ -66,7 +78,8 @@
             </a>
         </li>
         <li>
-            <a routerLinkActive="active" routerLink="/settings">
+            <a (click)="sideNavAuthControls?.global_settings_enabled && onRouterNavigate('/settings')"
+                [ngClass]="topUrl.includes('/settings') ? 'active' : sideNavAuthControls?.global_settings_enabled ? '' : 'isDisabled'">
                 <img src="assets/icons/configure.png" alt="sidebar-icons" />
                 <img src="assets/icons/selected/configure.png" class="d-none selected-icon" alt="sidebar-icons" />
                 <span>Settings</span>

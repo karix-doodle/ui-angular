@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { AuthorizationService } from './service/auth/authorization.service';
 import { AuthService } from './auth-management/services/auth.service';
 import { AuthGuard } from './auth-management/guards/auth.guard';
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   stateBoolean: boolean;
   message: string;
   isLogoutEvent: boolean;
+  sideNavAuthData: Subject<AuthorizationState> = new Subject<AuthorizationState>();
 
   constructor(
     private authGuard: AuthGuard,
@@ -52,6 +53,9 @@ export class AppComponent implements OnInit, OnDestroy {
           res.responsecode > environment.APIStatus.success.code) {
           this.stateBoolean = true;
           this.state = res.data;
+          setTimeout(() => {
+            this.sideNavAuthData.next(res);
+          }, 100);
           // console.log(requestRouteType);
           if (requestRouteType === 'billplan') {
             this.router.navigate(['/billplan-management']);

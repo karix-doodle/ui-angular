@@ -16,7 +16,7 @@
         <div class="container-fluid mt-100">
             <div class="row">
                 <div class="col-3 sidebar-div" [class.active]="classApplied">
-                    <app-sidenav></app-sidenav>
+                    <app-sidenav [sideNavAuthDataObs]="sideNavAuthData.asObservable()"></app-sidenav>
                 </div>
                 <div class="col-12 detail-container" [class.active]="classApplied">
                     <router-outlet></router-outlet>

@@ -94,7 +94,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    }
    // ------------------------------------- 1st Step --------------------------------
    initPreviewDeleteSubscribtion() {
-      this.previewDeleteClickObs.subscribe(() => {
+      this.sub = this.previewDeleteClickObs.subscribe(() => {
          if (!this.poolRouteService.previewList.length) {
             if (this.stepper.selectedIndex === 1) {
                this.stepper.previous();
@@ -104,7 +104,7 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    }
    initPreviewEditSubscribtion() {
       this.editModeState = false;
-      this.previewEditObs.subscribe(([value, index, countryName, prePopulatedGateway]) => {
+      this.sub = this.previewEditObs.subscribe(([value, index, countryName, prePopulatedGateway]) => {
          this.onScrollTop();
          if (this.stepper.selectedIndex === 1) {
             this.stepper.previous();
