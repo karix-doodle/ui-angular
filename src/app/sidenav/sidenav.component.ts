@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthorizationService } from '../service/auth/authorization.service';
-import { MainPanel } from '../model/authorization.model';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,12 +7,7 @@ import { MainPanel } from '../model/authorization.model';
 })
 export class SidenavComponent implements OnInit {
   public isCollapsed = true;
-  sideNavAuthControls: MainPanel;
-  constructor(
-    public authorizationService: AuthorizationService,
-  ) {
-    this.sideNavAuthControls = this.authorizationService.authorizationState.main_panel;
-  }
+  constructor() { }
 
   ngOnInit() {
   }
