@@ -163,7 +163,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
    * @description gets the operator list
    */
   getCountryBasedOperator(country) {
-    console.log(country);
+    // console.log(country);
     let countryCode = this.countriesData.find((c) => c.country === country)
       .country_code;
     countryCode = { country_code: countryCode };
@@ -213,7 +213,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
         .priority;
         this.senderContentFrom.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
       // this.senderContentFrom.value.whitelist_type = this.whitelist_type.toLowerCase();
-      console.log(this.senderContentFrom.value)
+      // console.log(this.senderContentFrom.value)
       this.onAddRoute({ ...this.senderContentFrom.value });
     }
   }

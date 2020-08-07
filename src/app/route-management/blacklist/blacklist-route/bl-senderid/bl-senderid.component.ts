@@ -42,7 +42,7 @@ export class BlSenderidComponent implements OnInit {
   getAllBlSenderData() {
     this.blSenderService.getBlSenderData().subscribe(
       (res: MobileSenderidCotentBlackList_ApiResponse) => {
-        console.log(res);
+        // console.log(res);
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code

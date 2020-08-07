@@ -127,7 +127,7 @@ filResponseData: MobileBlackList_AddData
   getAllGateways() {
     this.blackListService.getBlackListGatewayList().subscribe(
       (res: BlackListGateway_ApiResponse) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
@@ -239,7 +239,7 @@ filResponseData: MobileBlackList_AddData
             successAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("2323232323232323")
+            // console.log("2323232323232323")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }
@@ -248,7 +248,7 @@ filResponseData: MobileBlackList_AddData
             errorAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("23234234234234234234")
+            // console.log("23234234234234234234")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }

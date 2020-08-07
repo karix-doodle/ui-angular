@@ -16,7 +16,7 @@ import {
 export class BlackListAddSenderidService {
   constructor(
     public http: HttpClient,
-    private authorizationService: AuthorizationService) {}
+    private authorizationService: AuthorizationService) { }
 
   baseUrl = environment.serverUrl + "/routemgmt/blacklist/mobile/senderid";
   httpOptions = {
@@ -36,7 +36,6 @@ export class BlackListAddSenderidService {
    */
   getBlMobileSenderData(): Observable<MobileSenderidBlackList_ApiResponse> {
     return this.http.post(this.baseUrl + "/list", this.user).pipe(
-      tap((data) => console.log(data)),
       map((data) => data as MobileSenderidBlackList_ApiResponse)
     );
   }

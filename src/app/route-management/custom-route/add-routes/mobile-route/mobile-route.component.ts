@@ -226,7 +226,7 @@ filResponseData: MobileBlackList_AddData
             successAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("2323232323232323")
+            // console.log("2323232323232323")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }
@@ -235,7 +235,7 @@ filResponseData: MobileBlackList_AddData
             errorAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("23234234234234234234")
+            // console.log("23234234234234234234")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }

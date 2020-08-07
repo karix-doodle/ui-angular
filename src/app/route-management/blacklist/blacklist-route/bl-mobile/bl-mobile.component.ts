@@ -41,7 +41,7 @@ export class BlMobileComponent implements OnInit {
   getAllBlMobileData() {
     this.blMobileService.getBlackListMobile().subscribe(
       (res: MobileBlackList_ApiResponse) => {
-        console.log(res);
+        // console.log(res);
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code

@@ -84,7 +84,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     this.getCountryList();
     this.eventGroupsListEvent = this.countryOperatorListEvent.subscribe(
       ([value, indexed]) => {
-        console.log(value, indexed, "asdasdas");
+        // console.log(value, indexed, "asdasdas");
         this.countryOperatorListData(value, indexed);
       }
     );
@@ -101,7 +101,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
 
   handleCurrencyData(value) {
     this.currencySybmol = value;
-    console.log(value, "asdasd");
+    // console.log(value, "asdasd");
   }
 
   countryArrayForm(): FormGroup {
@@ -135,7 +135,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     });
   }
   getOperatorList(value, name) {
-    console.log(value, "12345");
+    // console.log(value, "12345");
     let data = {
       country_code: value,
     };
@@ -143,7 +143,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
     if (!countryOptData.includes(name)) {
       this.billPlanservice.getOperatorList(data).subscribe(
         (res: BillPlanOperator_ApiRespone) => {
-          console.log(res);
+          // console.log(res);
           if (
             res.responsestatus === environment.APIStatus.success.text &&
             res.responsecode > environment.APIStatus.success.code
@@ -172,7 +172,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
         }
       );
     }
-    console.log(this.operatorObj, "asdasd");
+    // console.log(this.operatorObj, "asdasd");
   }
 
   getCountryList() {
@@ -182,7 +182,7 @@ export class CountryOperatorStepperFormComponent implements OnInit {
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
         ) {
-          console.log(res);
+          // console.log(res);
           this.billPalnApiResponse = res;
           this.billPlanCountryList = JSON.parse(
             JSON.stringify(this.billPalnApiResponse.data)
@@ -204,11 +204,11 @@ export class CountryOperatorStepperFormComponent implements OnInit {
   }
 
   handleCountryOperator(indexCountries, key, event, country) {
-    console.log(indexCountries, key, event);
+    // console.log(indexCountries, key, event);
     let value = event.target.options[
       event.target["selectedIndex"]
     ].getAttribute("data-value");
-    console.log(value);
+    // console.log(value);
     const countriesControl = this.getcountryControl();
     if (key == "mcc") {
       if (countriesControl.value[indexCountries].mnc != "") {

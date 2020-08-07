@@ -212,7 +212,7 @@ export class CreateRatecardComponent implements OnInit {
 
 
    onSubmit() {
-      console.log(this.fixedRateFrom.value)
+      // console.log(this.fixedRateFrom.value)
       this.Submitted = true
       if (this.fixedRateFrom.valid) {
          this.Submitted = false

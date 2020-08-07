@@ -29,7 +29,7 @@ blacklistSummary: BlackListSummary_Data;
 
   getBlackListSummary(){
     this.blackListService.getBlackListSummary().subscribe((res: BlackListSummary_ApiResponse) => {
-      console.log(res);
+      // console.log(res);
       if (
         res.responsestatus === environment.APIStatus.success.text &&
         res.responsecode > environment.APIStatus.success.code

@@ -46,7 +46,7 @@ export class AssignedRatecardViewComponent implements OnInit {
     this.Route.params.subscribe((data: Params) => {
       this.ratecardviewservice.getRatecardSlabView(data).subscribe((res: RateCardSlabView_ApiRResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-          console.log(res, '123456')
+          // console.log(res, '123456')
           this.row_billplan = res.data.row_billplan;
         this.totalCountries = res.data.totalcountry;
         this.totalOperator = res.data.totaloperator;

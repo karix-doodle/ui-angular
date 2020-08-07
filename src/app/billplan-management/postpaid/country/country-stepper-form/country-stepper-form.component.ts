@@ -84,7 +84,7 @@ export class CountryStepperFormComponent implements OnInit {
     this.getCountryList();
     this.eventGroupsListEvent = this.countryListEvent.subscribe(
       ([value, indexed]) => {
-        console.log(value, indexed, "asdasdas");
+        // console.log(value, indexed, "asdasdas");
         this.countryListData(value, indexed);
       }
     );
@@ -122,7 +122,7 @@ export class CountryStepperFormComponent implements OnInit {
             JSON.stringify(this.billPalnApiResponse.data)
           );
 
-          console.log(this.billPlanCountryList);
+          // console.log(this.billPlanCountryList);
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code
@@ -137,11 +137,11 @@ export class CountryStepperFormComponent implements OnInit {
   }
   handleCurrencyData(value) {
     this.currencySybmol = value;
-    console.log(value, "asdasd");
+    // console.log(value, "asdasd");
   }
 
   handleCountryOperator(indexCountries, key, event, country) {
-    console.log(country);
+    // console.log(country);
 
     let value = event.target.options[
       event.target["selectedIndex"]

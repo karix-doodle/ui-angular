@@ -124,7 +124,7 @@ export class SenderidMobileRouteComponent implements OnInit {
   getGatewayList() {
     this.customService.getCustomRouteGateways().subscribe(
       (res: CustomGateway_ApiResponse) => {
-        console.log(res);
+        // console.log(res);
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code
@@ -249,7 +249,7 @@ export class SenderidMobileRouteComponent implements OnInit {
             successAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("2323232323232323")
+            // console.log("2323232323232323")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }
@@ -258,7 +258,7 @@ export class SenderidMobileRouteComponent implements OnInit {
             errorAlert(res.responsestatus, res.message)
             this.fromReset()
           } else {
-            console.log("23234234234234234234")
+            // console.log("23234234234234234234")
             this.modalService.open(this.priceListSubmitSuccess)
             this.fromReset()
           }

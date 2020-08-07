@@ -152,7 +152,7 @@ export class CountryOperatorListComponent implements OnInit {
         res.responsestatus === environment.APIStatus.success.text &&
         res.responsecode > environment.APIStatus.success.code
       ) {
-        console.log(res, '23456')
+        // console.log(res, '23456')
         if (res.data.hasdata) {
           this.hasdata = res.data.hasdata
           this.senderidForm.patchValue({
@@ -223,7 +223,7 @@ export class CountryOperatorListComponent implements OnInit {
         ) {
           this.allowedCountyrOperatorList = res.data.list;
           this.allowedCoutryOpertorDetails = res.data;
-          console.log(res, "12345");
+          // console.log(res, "12345");
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code
@@ -275,7 +275,7 @@ export class CountryOperatorListComponent implements OnInit {
           this.operatorList = JSON.parse(
             JSON.stringify(this.getOperatorListApiaResponse.data)
           );
-          console.log(res, "12345");
+          // console.log(res, "12345");
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code

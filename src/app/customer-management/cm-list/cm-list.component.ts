@@ -34,7 +34,7 @@ export class CmListComponent implements OnInit {
     ];
   }
   ngOnInit(): void {
-    console.log(this.navLinks.indexOf(this.navLinks.find((tab) => tab.auth)));
+    // console.log(this.navLinks.indexOf(this.navLinks.find((tab) => tab.auth)));
     if (this.navLinks.indexOf(this.navLinks.find((tab) => tab.auth)) === 0) {
       this.router.navigate(['customer-management']);
     } else if (this.navLinks.indexOf(this.navLinks.find((tab) => tab.auth)) === 1) {

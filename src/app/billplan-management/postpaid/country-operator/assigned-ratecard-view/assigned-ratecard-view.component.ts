@@ -49,7 +49,7 @@ export class AssignedRatecardViewComponent implements OnInit {
 
   ngOnInit() {
     this.Route.params.subscribe((data: Params) => {
-      console.log(data);
+      // console.log(data);
       this.ratecardviewservice.getRatecardCountryOperatorView(data).subscribe(
         (res: RateCardCountryOperatorView_ApiRResponse) => {
           if (

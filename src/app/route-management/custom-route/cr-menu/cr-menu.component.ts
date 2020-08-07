@@ -35,7 +35,7 @@ export class CrMenuComponent implements OnInit {
   getSummaryData() {
     this.customService.getCustomRouteSummary().subscribe(
       (res: CustomSummary_ApiResponse) => {
-        console.log(res);
+        // console.log(res);
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code

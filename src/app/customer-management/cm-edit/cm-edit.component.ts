@@ -392,7 +392,7 @@ export class CmEditComponent implements OnInit {
 
   setPoolRoute(): void {
     let pool_name = this.updateAccountFormGroup.value.selectedPoolRouteName;
-    console.log(`pool_name=${pool_name}`);
+    // console.log(`pool_name=${pool_name}`);
     if (!_.isUndefined(pool_name) && !_.isNull(pool_name) && !_.isEmpty(_.trim(pool_name))) {
       if (_.size(this.poolRoutes) > 0) {
         _.forEach(this.poolRoutes, (route) => {

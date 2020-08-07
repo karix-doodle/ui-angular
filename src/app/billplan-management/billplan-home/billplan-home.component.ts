@@ -32,7 +32,7 @@ export class BillplanHomeComponent implements OnInit {
   getBillPalnSummary() {
     this.BillplanService.getBillPlanMgmtSummary().subscribe(
       (res: BlillPlanSumary_ApiResponse) => {
-        console.log(res);
+        // console.log(res);
         if (
           res.responsestatus === environment.APIStatus.success.text &&
           res.responsecode > environment.APIStatus.success.code

@@ -80,7 +80,7 @@ export class CmViewLogComponent implements OnInit {
   }
 
   getDateSelection(e) {
-    console.log(e, '12344')
+    // console.log(e, '12344')
     let startDate = e.startDate;
     let todate = e.endDate;
     let dayDiffer = todate.diff(startDate, 'days') + 1;
@@ -93,7 +93,7 @@ export class CmViewLogComponent implements OnInit {
     if (startDate && todate) {
       this.CustomerMangaementzViewLog();
     }
-    console.log(this.params, '12344')
+    // console.log(this.params, '12344')
   }
 
 }
