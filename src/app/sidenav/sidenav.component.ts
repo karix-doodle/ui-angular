@@ -38,6 +38,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
         if (authorizationServiceRes.responsestatus === environment.APIStatus.success.text &&
           authorizationServiceRes.responsecode > environment.APIStatus.success.code) {
           this.sideNavAuthControls = authorizationServiceRes.data.main_panel;
+          this.topUrl = this.router.url;
         } else if (authorizationServiceRes.responsestatus === environment.APIStatus.error.text &&
           authorizationServiceRes.responsecode < environment.APIStatus.error.code) {
           errorAlert(authorizationServiceRes.message, authorizationServiceRes.responsestatus);
