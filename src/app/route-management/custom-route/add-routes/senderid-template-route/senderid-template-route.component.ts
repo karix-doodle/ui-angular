@@ -235,7 +235,9 @@ export class SenderidTemplateRouteComponent implements OnInit {
     this.cmobilesenderUpload = file.name;
     form.append("file", file, file.name);
     form.append("req_type", "fileupload");
-    form.append("whitelist_type", this.whitelist_type.toLowerCase());
+    // ID-84 - whitelist_type always going as global
+    //form.append("whitelist_type", this.whitelist_type.toLowerCase());
+    form.append("whitelist_type", this.control.whitelist_type.value.toLowerCase());
     form.append("createdby", "1234");
     this.selectedFile = form;
   }

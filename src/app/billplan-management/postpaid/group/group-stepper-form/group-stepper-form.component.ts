@@ -339,8 +339,9 @@ export class GroupStepperFormComponent implements OnInit, OnDestroy {
    }
 
    createGroupsItem(): FormGroup { // init = x
+      let groupnamePattern = '[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{4,100}';
       return this.formBuilder.group({
-         group_name: ['', [Validators.required]],
+         group_name: ['', [Validators.required, Validators.pattern(groupnamePattern)]],
          continent_name: [''],
          //Ys = countries
          countries: this.formBuilder.array([this.createGroupCountriesItem()]) //init y
