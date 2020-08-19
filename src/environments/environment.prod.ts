@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  serverUrl: 'http://115.114.108.242/api/intlmgmt',
-  //serverUrl: 'http://10.20.59.222:8383/api/intlmgmt',
-  FileUploadUrl: 'http://10.20.51.182:8484/api/intlmgmt',
+ // serverUrl: 'http://115.114.108.242/api/intlmgmt',
+  serverUrl: '/erpinternational/api',
+  FileUploadUrl: '/erpinternational/api',
   loggedinusername: 'testuser',
   loggedinempid: 1234,
   UTC: "+05:30",
