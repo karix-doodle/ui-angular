@@ -92,7 +92,8 @@ export class CmEditComponent implements OnInit {
       selectedDlrType: new FormControl(),
       selectedCustomerType: new FormControl({ value: this.selectedCustomerType }, [Validators.required]),
       lcrOnly: new FormControl(),
-      selectedRouteType: new FormControl({ value: this.selectedRouteType, disabled: true }, [Validators.required]),
+      //selectedRouteType: new FormControl({ value: this.selectedRouteType, disabled: true }, [Validators.required]),
+      selectedRouteType: new FormControl({ value: this.selectedRouteType }, [Validators.required]),
       primary_gwid: new FormControl(),
       fallback_gwid: new FormControl(),
       selectedPoolRouteId: new FormControl(),
@@ -106,13 +107,6 @@ export class CmEditComponent implements OnInit {
       notifyclient: new FormControl(),
       effectiveTill: new FormControl(),
     });
-    /*
-    let effectiveDate = moment().utcOffset(environment.UTC).format('DD:MM:YYYY');
-    let effectiveTime = moment().utcOffset(environment.UTC).format('hh:mm am');
-    this.params = {
-      effectiveDate: effectiveDate,
-      effectiveTime: effectiveTime
-    }*/
   }
 
   open(content) {
@@ -120,7 +114,7 @@ export class CmEditComponent implements OnInit {
   }
 
   openNewTab(id, type) {
-    window.open(environment.basePortUrl + '/billplan-management/postpaid/country/assigned-ratecard-view/' + id + '/' + type, '_blank');
+    window.open(environment.basePortUrl + '#/billplan-management/postpaid/country/assigned-ratecard-view/' + id + '/' + type, '_blank');
   }
 
   ngOnInit() {
@@ -314,6 +308,9 @@ export class CmEditComponent implements OnInit {
           if (this.usersData.process_at_loss == 0) {
             this.updateAccountFormGroup.controls['max_loss_per_sms'].setValue('');
             this.updateAccountFormGroup.controls['max_loss_per_sms'].disable({ onlySelf: true });
+          }else{
+            this.updateAccountFormGroup.controls['process_at_loss'].setValue('1');
+            this.updateAccountFormGroup.controls['max_loss_per_sms'].setValue(this.usersData.max_loss_per_sms);
           }
 
           if (!_.isEmpty(_.trim(this.usersData.timezone)) && !_.isEmpty(_.trim(this.usersData.timezone_offset))) {
@@ -343,6 +340,13 @@ export class CmEditComponent implements OnInit {
           this.params = {
             'effective_till': this.usersData.effective_till
           }
+
+          if(this.usersData.lcrOnly == 0){
+            this.gwRadioEnabled = true;
+            this.lcrRadioEnabled = false;
+            this.prRadioEnabled = false;
+          }
+
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
@@ -549,8 +553,8 @@ export class CmEditComponent implements OnInit {
     if (_.isUndefined(json.process_row) || _.isNull(json.process_row)) {
       payload['process_row'] = 0;
     } else {
-      if (_.isBoolean(json.process_row)) {
-        payload['process_row'] = json.process_row ? 1 : 0;
+      if (json.process_row == 1 || json.process_row === '1' || json.process_row) {
+        payload['process_row'] = 1;
       } else {
         payload['process_row'] = 0;
       }

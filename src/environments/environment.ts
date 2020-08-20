@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   //serverUrl: '/erpinternationallogin/api',
-  serverUrl: 'http://10.20.51.182:8484/api/intlmgmt',
+  serverUrl: 'http://10.20.59.174:8383/api/intlmgmt',
   //FileUploadUrl: 'http://10.20.59.248:8989/api/intlmgmt',
   //serverUrl: 'http://10.20.59.232:8383/api/intlmgmt',
-  FileUploadUrl: 'http://10.20.51.182:8484/api/intlmgmt',
+  FileUploadUrl: 'http://10.20.59.174:8383/api/intlmgmt',
   //FileUploadUrl: 'http://10.20.59.232:8383/api/intlmgmt',
   loggedinusername: 'testuser',
   loggedinempid: 1234,
