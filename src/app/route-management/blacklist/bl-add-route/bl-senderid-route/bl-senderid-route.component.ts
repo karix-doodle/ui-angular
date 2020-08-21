@@ -59,7 +59,7 @@ filResponseData: MobileBlackList_AddData
     this.blacklistSenderTemplateAddForm = this.formBuilder.group({
       blacklist_type: ["Global", [Validators.required]],
       template: [
-        "",
+        ".*",
         [Validators.required, Validators.pattern(templatePattern)],
       ],
       senderid: [
@@ -273,7 +273,7 @@ filResponseData: MobileBlackList_AddData
 
   emtyForm() {
     this.blacklistSenderTemplateAddForm.patchValue({
-      template: "",
+      template: ".*",
       senderid: "",
       esmeaddr: "",
       gw_id: null,

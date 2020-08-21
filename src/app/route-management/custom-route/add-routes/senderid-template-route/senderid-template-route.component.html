@@ -75,10 +75,18 @@
               <div class="form-group col-4">
                 <label>Type Template</label>
                 <input type="text" class="form-control"  maxlength="500"  formControlName="template" placeholder="Type Template" />
+                <div *ngIf="control.template.errors && (submitted || control.template.touched || control.template.dirty)" class="text-danger">
+                  <div *ngIf="control.template.errors.required">
+                    Template is required
+                  </div>
+                  <div *ngIf="control.template.errors.pattern">
+                    Invalid Template.
+                  </div>
+                </div>
               </div>
               <div class="form-group col-4">
                 <label>SenderId</label>
-                <input type="text" class="form-control" placeholder="Enter SenderID" formControlName="senderid" />
+                <input type="text" class="form-control" placeholder="Enter SenderId" formControlName="senderid" />
                 <div *ngIf="
                   control.senderid.errors &&
                   (submitted ||
@@ -256,12 +264,20 @@
             </div>
             <div class="row">
               <div class="form-group col-4">
-                <label>Template</label>
+                <label>Type Template</label>
                 <input type="text" class="form-control"  maxlength="500" formControlName="template" placeholder="Type Template" />
-              </div>
+                <div *ngIf="control.template.errors && (submitted || control.template.touched || control.template.dirty)" class="text-danger">
+                  <div *ngIf="control.template.errors.required">
+                    Template is required
+                  </div>
+                  <div *ngIf="control.template.errors.pattern">
+                    Invalid Template.
+                  </div>
+                </div>
+              </div>              
               <div class="form-group col-4">
-                <label>SenderID</label>
-                <input type="text" class="form-control" formControlName="senderid" placeholder="Type SenderID" />
+                <label>SenderId</label>
+                <input type="text" class="form-control" formControlName="senderid" placeholder="Type SenderId" />
                 <div *ngIf="
                   control.senderid.errors &&
                   (submitted ||

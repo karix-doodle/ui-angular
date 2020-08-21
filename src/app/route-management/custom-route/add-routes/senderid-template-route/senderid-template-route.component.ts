@@ -23,7 +23,7 @@ import { AuthorizationService } from '../../../../service/auth/authorization.ser
 import { MobileBlackList_AddResponse, MobileBlackList_AddData } from 'src/app/route-management/models/BlackList/blacklist.model';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { accountType, senderidPattern, esmeddrPattern, priority } from 'src/app/shared/helper/globalVariables';
+import { accountType, senderidPattern, templatePattern, esmeddrPattern, priority } from 'src/app/shared/helper/globalVariables';
 
 @Component({
   selector: "app-senderid-template-route",
@@ -70,7 +70,10 @@ export class SenderidTemplateRouteComponent implements OnInit {
       operator: [null, [Validators.required]],
       priority: [null, [Validators.required]],
       default_senderid: null,
-      template: [""],
+      template: [
+        ".*",
+        [Validators.required, Validators.pattern(templatePattern)],
+      ],
       senderid: [
         "",
         [Validators.required, Validators.pattern(senderidPattern)],
@@ -340,7 +343,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
       operator: null,
       priority: null,
       default_senderid: true,
-      template: "",
+      template: ".*",
       senderid: [""],
       primary_gw_id: null,
       fallback_gw_id: null,
