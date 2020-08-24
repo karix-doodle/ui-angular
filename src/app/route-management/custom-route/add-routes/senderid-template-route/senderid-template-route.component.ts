@@ -20,10 +20,12 @@ import {
 import { SenderCustomService } from "src/app/route-management/services/RouteManagement/custom-route/sender-custom.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { ValidationConfigs } from '../../../../model/authorization.model';
 import { MobileBlackList_AddResponse, MobileBlackList_AddData } from 'src/app/route-management/models/BlackList/blacklist.model';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { accountType, senderidPattern, templatePattern, esmeddrPattern, priority } from 'src/app/shared/helper/globalVariables';
+import { accountType, priority } from 'src/app/shared/helper/globalVariables';
+import * as _ from 'lodash';
 
 @Component({
   selector: "app-senderid-template-route",
@@ -46,6 +48,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
   filResponseData: MobileBlackList_AddData
   @ViewChild('priceListSubmitSuccess', { static: true })
     priceListSubmitSuccess: TemplateRef<any>;
+    validationConfigs: ValidationConfigs;
   constructor(
     public router: Router,
     public customService: CustomService,
@@ -54,7 +57,9 @@ export class SenderidTemplateRouteComponent implements OnInit {
     public formBuilder: FormBuilder,
     private modalService: NgbModal,
     public authService: AuthorizationService
-  ) {}
+  ) {
+    this.validationConfigs = authService.authorizationState.validation_configs;
+  }
 
   ngOnInit() {
     this.whitelist_type = this.accounts[0];
@@ -72,11 +77,11 @@ export class SenderidTemplateRouteComponent implements OnInit {
       default_senderid: null,
       template: [
         ".*",
-        [Validators.required, Validators.pattern(templatePattern)],
+        [Validators.required, Validators.pattern(this.validationConfigs.template_pattern)],
       ],
       senderid: [
         "",
-        [Validators.required, Validators.pattern(senderidPattern)],
+        [Validators.required, Validators.pattern(this.validationConfigs.senderid_pattern)],
       ],
       // senderid: ["", Validators.required],
       primary_gw_id: [null, [Validators.required]],
@@ -98,7 +103,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
       case "Account": {
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern(esmeddrPattern),
+          Validators.pattern(this.validationConfigs.esmeaddr_pattern),
         ]);
 
         this.fromReset();
@@ -206,9 +211,10 @@ export class SenderidTemplateRouteComponent implements OnInit {
       this.senderContentFrom.value.mcc = this.countriesData.find(
         (c) => c.country === this.senderContentFrom.value.country
       ).mcc;
-      this.senderContentFrom.value.mnc = this.operatorList.find(
-        (op) => op.operator === this.senderContentFrom.value.operator
-      ).mnc;
+      this.senderContentFrom.value.mnc = this.senderContentFrom.value.operator;
+      this.senderContentFrom.value.operator = this.operatorList.find(
+        (op) => _.isEqual(_.trim(op.mnc),this.senderContentFrom.value.operator)
+      ).operator;
       this.senderContentFrom.value.createdby = "1234";
       this.senderContentFrom.value.req_type = "single_req";
       this.senderContentFrom.value.default_senderid = true;

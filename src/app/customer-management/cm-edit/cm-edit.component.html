@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-3">
                     <label>Intl. Route Type <span
-                            class="badge badge-dark ml-2"><b>{{usersData?.intl_routetype}}</b></span></label>
+                            class="badge badge-dark ml-2"><b>{{usersData?.intl_routetype | titlecase}}</b></span></label>
                 </div>
                 <div class="col-3">
                     <label>Billing Currency <span class="badge badge-dark ml-2"><b
@@ -82,7 +82,7 @@
                                         formControlName="selectedCustomerType"
                                         [attr.disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_routing_change_enabled
                                         || fromTabName === 'pending' && !CmAuthControls.cust_pending_routing_change_enabled ? '' : null">
-                                        <option [value]=ctype *ngFor="let ctype of customerTypes"> {{ctype}} </option>
+                                        <option [value]=ctype *ngFor="let ctype of customerTypes"> {{ctype | titlecase}} </option>
                                     </select></span>
                             </label>
                         </div>
@@ -112,7 +112,7 @@
                     <div class="route-edit-div" *ngIf="isSelected('lcr')">
                         <div class="triangle-up"></div>
                         <select class="dropdown-select w-100" disabled>
-                            <option [value]=rtype *ngFor="let rtype of lcrRouteType"> {{rtype}} </option>
+                            <option [value]=rtype *ngFor="let rtype of lcrRouteType"> {{rtype | titlecase}} </option>
                         </select>
                     </div>
                 </div>

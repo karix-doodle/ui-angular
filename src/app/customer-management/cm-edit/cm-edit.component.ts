@@ -319,7 +319,12 @@ export class CmEditComponent implements OnInit {
             this.selectedTimezone = _.trim(this.usersData.timezone);
             this.selectedTimezoneOffset = _.trim(this.usersData.timezone_offset);
           }
-          this.selectedCustomerType = this.usersData.intl_routetype;
+          if(!_.isUndefined(this.usersData.intl_routetype) && !_.isNull(this.usersData.intl_routetype)){
+            this.selectedCustomerType = _.trim(_.toLower(this.usersData.intl_routetype));
+          }else{
+            this.selectedCustomerType = '';
+          }
+          
           this.selectedLink = rtype;
           this.selectedRouteType = rtype;
 
@@ -361,7 +366,7 @@ export class CmEditComponent implements OnInit {
     this.updateAccountFormGroup.patchValue({
       selectedCharSetEncoding: this.usersData.charsetEncoding,
       selectedDlrType: this.usersData.dlrType,
-      selectedCustomerType: this.usersData.intl_routetype,
+      selectedCustomerType: _.trim(_.toLower(this.usersData.intl_routetype)),
       lcrOnly: this.usersData.lcrOnly,
       billplanName: this.usersData.billplan_name,
       selectedRouteType: rtype,

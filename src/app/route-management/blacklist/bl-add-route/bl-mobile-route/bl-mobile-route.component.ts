@@ -19,7 +19,8 @@ import {
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { blacklistAccountType, mobilePattern, esmeddrPattern } from 'src/app/shared/helper/globalVariables';
+import { blacklistAccountType } from 'src/app/shared/helper/globalVariables';
+import { ValidationConfigs } from '../../../../model/authorization.model';
 
 @Component({
   selector: "app-bl-mobile-route",
@@ -38,6 +39,7 @@ fileResponse: MobileBlackList_AddResponse
 filResponseData: MobileBlackList_AddData
 @ViewChild('priceListSubmitSuccess', { static: true })
   priceListSubmitSuccess: TemplateRef<any>;
+  validationConfigs: ValidationConfigs;
   constructor(
     public blackListService: BlackListService,
     public mobileService: BlackListAddMobileService,
@@ -46,7 +48,9 @@ filResponseData: MobileBlackList_AddData
     public formBuilder: FormBuilder,
     private modalService: NgbModal,
     public authService: AuthorizationService
-  ) {}
+  ) {
+    this.validationConfigs = authService.authorizationState.validation_configs;
+  }
 
   ngOnInit() {
     this.getAllGateways();
@@ -61,7 +65,7 @@ filResponseData: MobileBlackList_AddData
   private intForm() {
     this.blacklistMobileAddForm = this.formBuilder.group({
       blacklist_type: ["Global", [Validators.required]],
-      mobile: ["", [Validators.required, Validators.pattern(mobilePattern)]],
+      mobile: ["", [Validators.required, Validators.pattern(this.validationConfigs.mobile_pattern)]],
       esmeaddr: [""],
       gw_id: [null],
     });
@@ -86,7 +90,7 @@ filResponseData: MobileBlackList_AddData
         this.control.gw_id.setErrors(null);
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern(esmeddrPattern),
+          Validators.pattern(this.validationConfigs.esmeaddr_pattern),
         ]);
         this.fromReset();
         break;

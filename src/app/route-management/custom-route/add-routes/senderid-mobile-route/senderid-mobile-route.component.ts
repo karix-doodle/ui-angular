@@ -16,10 +16,11 @@ import {
 } from "../../../../shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { ValidationConfigs } from '../../../../model/authorization.model';
 import { MobileBlackList_AddResponse, MobileBlackList_AddData } from 'src/app/route-management/models/BlackList/blacklist.model';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { accountType, senderidPattern, mobilePattern, esmeddrPattern } from 'src/app/shared/helper/globalVariables';
+import { accountType } from 'src/app/shared/helper/globalVariables';
 
 @Component({
   selector: "app-senderid-mobile-route",
@@ -39,6 +40,7 @@ export class SenderidMobileRouteComponent implements OnInit {
   filResponseData: MobileBlackList_AddData
   @ViewChild('priceListSubmitSuccess', { static: true })
     priceListSubmitSuccess: TemplateRef<any>;
+    validationConfigs: ValidationConfigs;
   constructor(
     public router: Router,
     public customService: CustomService,
@@ -47,7 +49,9 @@ export class SenderidMobileRouteComponent implements OnInit {
     public formBuilder: FormBuilder,
     private modalService: NgbModal,
     public authService: AuthorizationService
-  ) {}
+  ) {
+    this.validationConfigs = authService.authorizationState.validation_configs;
+  }
 
   ngOnInit() {
     this.whitelist_type = this.accounts[0];
@@ -67,12 +71,12 @@ export class SenderidMobileRouteComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(5),
-          Validators.pattern(mobilePattern),
+          Validators.pattern(this.validationConfigs.mobile_pattern),
         ],
       ],
       senderid: [
         "",
-        [Validators.required, Validators.pattern(senderidPattern)],
+        [Validators.required, Validators.pattern(this.validationConfigs.senderid_pattern)],
       ],
       primary_gw_id: [null, [Validators.required]],
       fallback_gw_id: [null, [Validators.required]],
@@ -91,7 +95,7 @@ export class SenderidMobileRouteComponent implements OnInit {
       case "Account": {
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern(esmeddrPattern),
+          Validators.pattern(this.validationConfigs.esmeaddr_pattern),
         ]);
         this.fromReset();
         break;

@@ -43,7 +43,7 @@
                     <td>{{existinguser.ratecardtype}}</td>
                     <td>{{existinguser.ratecardname}}</td>
                     <td><span class="font-weight-bold">{{existinguser.routingtype | uppercase}}</span> -
-                        {{existinguser.intlaccttype}}</td>
+                        {{existinguser.intlaccttype | titlecase}}</td>
                     <td><a [routerLink]="['/customer-management/customer-management-edit', existinguser.esmeaddr, 'existing']"><img
                                 src="assets/icons/edit-icon.svg" alt="edit" /></a></td>
                 </tr>

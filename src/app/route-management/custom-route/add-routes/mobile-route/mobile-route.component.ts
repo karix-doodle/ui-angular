@@ -15,10 +15,11 @@ import {
 } from "../../../../shared/sweet-alert/sweet-alert";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
+import { ValidationConfigs } from '../../../../model/authorization.model';
 import Swal from 'sweetalert2';
 import { MobileBlackList_AddResponse, MobileBlackList_AddData } from 'src/app/route-management/models/BlackList/blacklist.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { accountType, mobilePattern, esmeddrPattern } from 'src/app/shared/helper/globalVariables';
+import { accountType } from 'src/app/shared/helper/globalVariables';
 
 @Component({
   selector: "app-mobile-route",
@@ -37,6 +38,7 @@ export class MobileRouteComponent implements OnInit {
 filResponseData: MobileBlackList_AddData
 @ViewChild('priceListSubmitSuccess', { static: true })
   priceListSubmitSuccess: TemplateRef<any>;
+  validationConfigs: ValidationConfigs;
   constructor(
     public router: Router,
     public customService: CustomService,
@@ -45,7 +47,9 @@ filResponseData: MobileBlackList_AddData
     public formBuilder: FormBuilder,
     private modalService: NgbModal,
     public authService: AuthorizationService
-  ) {}
+  ) {
+    this.validationConfigs = authService.authorizationState.validation_configs;
+  }
 
   ngOnInit() {
     this.getGatewayList();
@@ -57,7 +61,7 @@ filResponseData: MobileBlackList_AddData
   private initForm() {
     this.mobileRouteForm = this.formBuilder.group({
       whitelist_type: ["Global", [Validators.required]],
-      mobile: ["", [Validators.required, Validators.pattern(mobilePattern)]],
+      mobile: ["", [Validators.required, Validators.pattern(this.validationConfigs.mobile_pattern)]],
       primary_gw_id: [null, [Validators.required]],
       fallback_gw_id: [null, [Validators.required]],
       comments: [""],
@@ -75,7 +79,7 @@ filResponseData: MobileBlackList_AddData
       case "Account": {
         this.control.esmeaddr.setValidators([
           Validators.required,
-          Validators.pattern(esmeddrPattern),
+          Validators.pattern(this.validationConfigs.esmeaddr_pattern),
         ]);
         this.fromReset();
         break;
