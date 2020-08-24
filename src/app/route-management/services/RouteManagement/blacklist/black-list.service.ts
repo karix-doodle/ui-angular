@@ -43,8 +43,8 @@ export class BlackListService {
   getBlackListGatewayList(): Observable<BlackListGateway_ApiResponse> {
     return this.http
       .post(
-        this.baseUrl + "/listgateways",
-        { ...this.user, ...{ gw_type: "direct" } },
+        this.baseUrl + "/blacklist/listgateways",
+        { ...this.user, ...{ gw_type: "" } },
         this.httpOptions
       )
       .pipe(map((data) => data as BlackListGateway_ApiResponse));
