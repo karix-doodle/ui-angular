@@ -711,6 +711,7 @@ box-shadow: 4px 6px 6px #00000029;
 
 .gt-detail-modal .modal-content {
   width: max-content;
+  min-width: 500px !important;
 }
 
 .gt-preview-modal .modal-dialog {
