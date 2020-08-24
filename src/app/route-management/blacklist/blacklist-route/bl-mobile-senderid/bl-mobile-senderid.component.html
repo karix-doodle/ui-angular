@@ -41,25 +41,30 @@
         <table class="table table-borderless erp-list-table row-hover-effect">
             <thead>
                 <tr>
-                    <th (click)="sort('mobile')">
+                    <th class="cursor-pointer" (click)="sort('mobile')">
                         Mobile Number
                         <i *ngIf="sortingName==='mobile' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
                         <i *ngIf="sortingName==='mobile' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
                     </th>
-                    <th (click)="sort('blacklist_type')">
+                    <th class="cursor-pointer" (click)="sort('blacklist_type')">
                         Blacklisting Type
                         <i *ngIf="sortingName==='blacklist_type' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
                         <i *ngIf="sortingName==='blacklist_type' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
                     </th>
-                    <th (click)="sort('cts')">
+                    <th class="cursor-pointer" (click)="sort('cts')">
                         Blacklisted Date & Time
                         <i *ngIf="sortingName==='cts' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
                         <i *ngIf="sortingName==='cts' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
                     </th>
-                    <th (click)="sort('senderid')">
+                    <th class="cursor-pointer" (click)="sort('senderid')">
                         SenderID
                         <i *ngIf="sortingName==='senderid' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
                         <i *ngIf="sortingName==='senderid' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
+                    </th>
+                    <th class="cursor-pointer" (click)="sort('createduser')">
+                        Blacklisted By
+                        <i *ngIf="sortingName==='createduser' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
+                        <i *ngIf="sortingName==='createduser' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
                     </th>
                     <th>&nbsp;</th>
                 </tr>
@@ -71,6 +76,7 @@
                     <td>{{blmobilesender.blacklist_type}}</td>
                     <td>{{blmobilesender.cts}}</td>
                     <td>{{blmobilesender.senderid}}</td>
+                    <td>{{blmobilesender.createduser}}</td>
                     <td><img [ngClass]="{'isDisabled': !authService.authorizationState.route_mgmt.blacklist_mobilesenderid_delete_enabled}"
                             src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"
                             (click)="authService.authorizationState.route_mgmt.blacklist_mobilesenderid_delete_enabled && deleteBlMobileSender(blmobilesender)" />

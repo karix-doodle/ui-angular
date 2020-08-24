@@ -28,6 +28,8 @@ export class GtListing_TableDataList {
     lasttime: string;
     pricedate: string;
     pricetime: string;
+    modifydatelong :number;
+    pricedatelong :number;
 }
 /**
  ************************* @description Gateway listing END
