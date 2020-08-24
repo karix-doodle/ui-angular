@@ -204,11 +204,14 @@ export class GtSenderIdWhiteListComponent implements OnInit {
     this.gatewayManagementService.Gateway_addSenderId(data, type).subscribe(
       (res: GtAddSenderId_ApiResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
-
-          successAlert(res.message, res.responsestatus)
+          this.removeSenderIdFile()
           this.resetSenderIdForm()
+          successAlert(res.message, res.responsestatus)
+          
 
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
+          this.removeSenderIdFile()
+          this.resetSenderIdForm()
           errorAlert(res.message, res.responsestatus)
         }
       }, (error: HttpErrorResponse) => {

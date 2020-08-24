@@ -41,6 +41,7 @@ export class CmViewLogComponent implements OnInit {
 
   ngOnInit() {
     this.fromTabName = this.route.snapshot.params.from;
+      console.log('this.fromTabName ==== '+this.fromTabName)
     this.CustomerMangaementzViewLog();
   }
 
