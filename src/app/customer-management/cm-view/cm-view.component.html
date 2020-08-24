@@ -274,7 +274,7 @@
         <div class="col-6 text-right f-12">
             <!-- 
                 [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? ['/customer-management/customer-management-view-log', esmeaddr,esmeddrDetails?.data.clientname] : []" -->
-            <a [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? ['/customer-management/customer-management-view-log', esmeaddr, esmeddrDetails?.data.clientname]: []"
+            <a [routerLink]="CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled ? ['/customer-management/customer-management-view-log', esmeaddr, esmeddrDetails?.data.clientname, 'existinguser']: []"
                 class="font-weight-bold"
                 [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_detailed_view_activity_logs_enabled }">
                 View Activities Logs<i class="fa fa-angle-double-right ml-1"></i>

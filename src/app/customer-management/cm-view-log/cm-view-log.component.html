@@ -2,8 +2,7 @@
     >
     <div class="col-12">
         <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT /</a></label>
-        <span><a
-                [routerLink]="['/customer-management/customer-management-edit', viewLogData.data.esmeaddr, fromTabName]">
+        <span><a routerLink="/customer-management/customer-management-edit/{{viewLogData.data.esmeaddr}}/existing">
                 {{viewLogData.data.esmeaddr}} /</a> VIEWLOG</span>
     </div>
 </div>
@@ -31,7 +30,7 @@
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Time<i class="fa fa-caret-down"></i></th>
+                <th>Time</th>
                 <th>User</th>
                 <th>Module</th>
                 <th>Comments</th>
