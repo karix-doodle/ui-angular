@@ -71,6 +71,7 @@ export class GtListingComponent implements OnInit {
   }
 
   selectType(type) {
+   // console.log(" ============= "+type +"===  this.sortingName "+ this.sortingName +"===== this.isDesc "+this.isDesc);
     if (type === 'All') {
       this.GtListing_list();
     } else if (type == 'Only InActive' || type == 'Only Active') {
@@ -78,13 +79,19 @@ export class GtListingComponent implements OnInit {
       this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.status == statusVal);
       this.gatewayData.data.tabledata = this.selectedType;
     } else if (type == 'Recently Modified') {
-      this.selectedType = this.gatewayDataRes.data.tabledata.sort((val1, val2) => {
-        let formatdate1 = val1.lastdate.split('/')[2] + '-' + val1.lastdate.split('/')[1] + '-' + val1.lastdate.split('/')[0]
-        let formatdate2 = val2.lastdate.split('/')[2] + '-' + val2.lastdate.split('/')[1] + '-' + val2.lastdate.split('/')[0]
-        let val1Format = formatdate1 + ' ' + val1.lasttime + '.0'
-        let val2Format = formatdate2 + ' ' + val2.lasttime + '.0'
+     
+      this.selectedType = this.gatewayDataRes.data.tabledata.sort((val1, val2) => { 
+      //  console.log(" ============= "+type+" ==== "+JSON.stringify(val1)+"==== "+JSON.stringify(val2));
+       // let formatdate1 = val1.lastdate.split('/')[2] + '-' + val1.lastdate.split('/')[1] + '-' + val1.lastdate.split('/')[0]
+       // let formatdate2 = val2.lastdate.split('/')[2] + '-' + val2.lastdate.split('/')[1] + '-' + val2.lastdate.split('/')[0]
+       // let val1Format = formatdate1 + ' ' + val1.lasttime + '.0'
+      //  let val2Format = formatdate2 + ' ' + val2.lasttime + '.0'
+        let val1Format = val1.modifydatelong
+        let val2Format = val2.modifydatelong
+     //   console.log(" ============= "+val1Format+" ==== "+val2Format +"Date ==== "+JSON.stringify(new Date(val1Format))+"==== "+JSON.stringify(new Date(val2Format)));
         return <any>new Date(val1Format) - <any>new Date(val2Format);
       });
+     // console.log(" =============  this.selectedType"+ JSON.stringify(this.selectedType));
       this.gatewayData.data.tabledata = this.selectedType.reverse();
     } else {
       this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type.toLowerCase() === type.toLowerCase());
