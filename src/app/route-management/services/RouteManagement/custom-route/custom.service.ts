@@ -52,13 +52,15 @@ export class CustomService {
    */
 
   getCustomRouteGateways(): Observable<CustomGateway_ApiResponse> {
-    return this.http
+    return this.http.get(`${this.baseUrl}/custom/listgateways?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}`, this.httpOptions)
+    .pipe(map((data) => data as CustomGateway_ApiResponse));
+   /* return this.http
       .post(
         this.baseUrl + "/custom/listgateways",
         { ...this.user, ...{ gw_type: "" } },
         this.httpOptions
       )
-      .pipe(map((data) => data as CustomGateway_ApiResponse));
+      .pipe(map((data) => data as CustomGateway_ApiResponse)); */
   }
 
   /**

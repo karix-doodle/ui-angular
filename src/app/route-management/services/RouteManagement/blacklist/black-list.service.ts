@@ -41,12 +41,14 @@ export class BlackListService {
    * @description gets the Blacklist route summary
    */
   getBlackListGatewayList(): Observable<BlackListGateway_ApiResponse> {
-    return this.http
+    return this.http.get(`${this.baseUrl}/blacklist/listgateways?loggedinusername=${this.user.loggedinusername}&loggedinempid=${this.user.loggedinempid}`, this.httpOptions)
+    .pipe(map((data) => data as BlackListGateway_ApiResponse));
+  /*  return this.http
       .post(
         this.baseUrl + "/blacklist/listgateways",
         { ...this.user, ...{ gw_type: "" } },
         this.httpOptions
       )
-      .pipe(map((data) => data as BlackListGateway_ApiResponse));
+      .pipe(map((data) => data as BlackListGateway_ApiResponse)); */
   }
 }
