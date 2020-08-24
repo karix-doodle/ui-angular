@@ -37,7 +37,7 @@
                     <td class="font-weight-semi-bold">{{user.esmeaddr}}</td>
                     <td>{{user.username}}</td>
                     <td>{{user.orgname}}</td>
-                    <td>{{user.intl_routetype}}</td>
+                    <td>{{user.intl_routetype | titlecase}}</td>
                     <td>{{user.salespersonname}}</td>
                     <td>{{user.submissiondateandtime}}</td>
                     <td><a [routerLink]="CmAuthControls.cust_pending_acct_review_enabled ? ['/customer-management/customer-management-edit', user.esmeaddr, 'pending'] : []"><i

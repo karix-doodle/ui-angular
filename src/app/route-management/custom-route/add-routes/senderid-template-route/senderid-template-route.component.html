@@ -55,7 +55,7 @@
                 <label>Operator</label>
                 <select class="dropdown-select w-100" formControlName="operator">
                   <option value="null" disabled>Select operator</option>
-                  <option *ngFor="let op of operatorList" [value]="op.operator">
+                  <option *ngFor="let op of operatorList" [value]="op.mnc">
                     {{ op.operator }}
                   </option>
                 </select>

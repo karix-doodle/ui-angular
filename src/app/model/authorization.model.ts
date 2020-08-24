@@ -16,6 +16,7 @@ export class AuthorizationStateData {
     role: string;
     timezone: string;
     timeoffset: string;
+    validation_configs: ValidationConfigs;
 }
 export class MainPanel {
     gw_mgmt_enabled: boolean;
@@ -141,4 +142,10 @@ export class Settings {
     settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled: boolean;
     settings_set_or_update_normalize_rate_currency_enabled: boolean;
     settings_set_or_update_timezone_enabled: boolean;
+}
+export class ValidationConfigs {
+    mobile_pattern: string;
+    esmeaddr_pattern: string;
+    senderid_pattern: string;
+    template_pattern: string;
 }
