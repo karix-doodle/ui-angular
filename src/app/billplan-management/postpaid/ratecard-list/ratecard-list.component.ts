@@ -76,7 +76,7 @@ export class RatecardListComponent implements OnInit {
     this.cardName = rateCardname;
   }
   initRateCardSearchForm() {
-    let ratecardnamePattern = '[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{5,20}';
+    let ratecardnamePattern = '[0-9a-zA-Z !@#$%^&*()_+-=:;"<>/?{}\'.,/\n/\r/\t/\s]{5,100}';
     this.rateCardSearchForm = this.formBuilder.group({
       billplanid: ['', Validators.required],
       ratecardid: [''],

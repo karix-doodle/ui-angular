@@ -15,6 +15,10 @@
                                     *ngIf="X.get('group_name').hasError('required') && groupSubmitted">
                                     Group Name is required
                                 </span>
+                                <span class="text-danger pl-1 f-12"
+                                    *ngIf="X.get('group_name').hasError('pattern')">
+                                    Group Name is not valid
+                                </span>
                             </div>
                         </div>
                         <div class="col-3 mb-2 offset-6">

@@ -45,7 +45,8 @@
                     <input type="text" class="form-control" formControlName="billplanName" />
                 </div>
                 <div class="col-1 billplan-view mr-4">
-                    <a (click)="openNewTab(usersData?.ratecard_id, usersData?.ratecard_type)"
+                    <a (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_view_billplan_ratecard_enabled 
+                    || fromTabName === 'pending' && CmAuthControls.cust_pending_view_billplan_ratecard_enabled && openNewTab(usersData?.ratecard_id, usersData?.ratecard_type)"
                         [ngClass]="{'isDisabled':fromTabName === 'existing' && !CmAuthControls.cust_existing_view_billplan_ratecard_enabled 
                     || fromTabName === 'pending' && !CmAuthControls.cust_pending_view_billplan_ratecard_enabled}">
                         <i class="fa fa-eye"></i></a>
@@ -78,7 +79,8 @@
                         <div class="col-9 border-right">
                             <label>Intl. Customer Type - <span>
                                     <select class="dropdown-select"
-                                        (change)="onChangeCustomerType($event)"
+                                        (change)="fromTabName === 'existing' && CmAuthControls.cust_existing_routing_change_enabled
+                                    || fromTabName === 'pending' && CmAuthControls.cust_pending_routing_change_enabled && onChangeCustomerType($event)"
                                         formControlName="selectedCustomerType"
                                         [attr.disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_routing_change_enabled
                                         || fromTabName === 'pending' && !CmAuthControls.cust_pending_routing_change_enabled ? '' : null">
@@ -89,7 +91,8 @@
                         <div class="col-3 mt-2">
                             <label class="checkbox-label col-4 ml-15" for="lcr_only" title="LCR only">LCR
                                 <input type="checkbox" [checked]="lcrOnly === 1" id="lcr_only"
-                                    (click)="onChangeLcrOnly($event)" formControlName="lcrOnly"
+                                    (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_routing_change_enabled
+                                    || fromTabName === 'pending' && CmAuthControls.cust_pending_routing_change_enabled && onChangeLcrOnly($event)" formControlName="lcrOnly"
                                     [attr.disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_routing_change_enabled
                                         || fromTabName === 'pending' && !CmAuthControls.cust_pending_routing_change_enabled ? '' : null">
                                 <span class="checkmark"></span>
@@ -106,7 +109,8 @@
                         [attr.disabled]="lcrRadioEnabled == true ? true : null" value="lcr" id="lcr"
                         [checked]="selectedRouteType === 'lcr'" formControlName="selectedRouteType">
                     <label class="" for="lcr"
-                        (click)="lcrRadioEnabled == true ? setradio('lcr') : isSelected('gw')">Least
+                        (click)="lcrRadioEnabled && fromTabName === 'existing' && CmAuthControls.cust_existing_routing_change_enabled
+                        || fromTabName === 'pending' && CmAuthControls.cust_pending_routing_change_enabled ? setradio('lcr') : isSelected('gw')">Least
                         Cost Routing</label>
 
                     <div class="route-edit-div" *ngIf="isSelected('lcr')">
@@ -120,7 +124,8 @@
                     <input type="radio" class="custom-control-input" value="gt" id="gt"
                         [checked]="selectedRouteType === 'gt'" formControlName="selectedRouteType">
                     <label for="gt"
-                        (click)="setradio('gt')">Gateway</label>
+                        (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_routing_change_enabled
+                    || fromTabName === 'pending' && CmAuthControls.cust_pending_routing_change_enabled && setradio('gt')">Gateway</label>
                     <div class="route-edit-div" *ngIf="isSelected('gt')">
                         <div class="triangle-up"></div>
                         <select class="dropdown-select mb-3 w-100" formControlName="primary_gwid">
@@ -140,7 +145,8 @@
                         [attr.disabled]="prRadioEnabled == true ? true : null" value="pr" id="pr"
                         [checked]="selectedRouteType === 'pr'" formControlName="selectedRouteType">
                     <label for="pr"
-                        (click)="prRadioEnabled == true ? setradio('pr') : isSelected('gw')">Pool
+                        (click)="prRadioEnabled && fromTabName === 'existing' && CmAuthControls.cust_existing_routing_change_enabled
+                    || fromTabName === 'pending' && CmAuthControls.cust_pending_routing_change_enabled ? setradio('pr') : isSelected('gw')">Pool
                         Routing</label>
                     <div class="route-edit-div" *ngIf="isSelected('pr')">
                         <div class="triangle-up"></div>
@@ -165,7 +171,7 @@
                     <div class="text-right mt-3">
                         <a class="erp-intl-modal-link"
                             [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_test_routing_enabled }"
-                            (click)="open(routingTestModal)">Test
+                            (click)="CmAuthControls.cust_existing_customer_test_routing_enabled && open(routingTestModal)">Test
                             Routing</a>
                     </div>
                 </div>
@@ -250,7 +256,8 @@
                  || fromTabName === 'pending' && !CmAuthControls.cust_pending_for_activation_show_margin_enabled}"
                     [disabled]="fromTabName === 'existing' && !CmAuthControls.cust_existing_customer_show_margin_enabled ||
                     fromTabName === 'pending' && !CmAuthControls.cust_pending_for_activation_show_margin_enabled"
-                    (click)="set('showmargin')">Show
+                    (click)="fromTabName === 'existing' && CmAuthControls.cust_existing_customer_show_margin_enabled ||
+                    fromTabName === 'pending' && CmAuthControls.cust_pending_for_activation_show_margin_enabled ? set('showmargin') : ''">Show
                     Margin</button>
                 <a [ngClass]="{'isDisabled': !CmAuthControls.cust_existing_customer_audit_logs_enabled }"
                     [routerLink]="CmAuthControls.cust_existing_customer_audit_logs_enabled ? ['/customer-management/customer-management-audit-log', esmeaddr, fromTabName] : []"
