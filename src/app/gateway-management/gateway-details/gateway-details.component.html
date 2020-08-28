@@ -207,10 +207,10 @@
                 <div class="form-group col-3 gateway-activity-detail">
                     <label class="col-12">Creation Date & Time</label>
                     <div class="row ml-1 font-weight-bold">
-                        <div class="col-7 border-right">
+                        <div class="col-5 border-right">
                             <span>{{GtDetailsData?.data.cdate}}</span>
                         </div>
-                        <div class="col-5">
+                        <div class="col-7">
                             <span>{{GtDetailsData?.data.ctime}}</span>
                         </div>
                     </div>
@@ -219,10 +219,10 @@
                 <div class="form-group col-3 gateway-activity-detail">
                     <label class="col-12">Last Modification Date & Time</label>
                     <div class="row font-weight-bold ml-1">
-                        <div class="col-7 border-right">
+                        <div class="col-5 border-right">
                             <span>{{GtDetailsData?.data.mdate}}</span>
                         </div>
-                        <div class="col-5">
+                        <div class="col-7">
                             <span>{{GtDetailsData?.data.mtime}}</span>
                         </div>
                         <span *ngIf="!(GtDetailsData?.data.mdate && GtDetailsData?.data.mtime)"
@@ -240,10 +240,10 @@
                 <div class="form-group col-3">
                     <label class="col-12">Last Price Change Date & Time</label>
                     <div class="row ml-1 font-weight-bold">
-                        <div class="col-6 border-right">
+                        <div class="col-5 border-right">
                             <span>{{GtDetailsData?.data.pdate}}</span>
                         </div>
-                        <div class="col-6">
+                        <div class="col-7">
                             <span>{{GtDetailsData?.data.ptime}}</span>
                         </div>
                         <span *ngIf="!(GtDetailsData?.data.pdate && GtDetailsData?.data.ptime)"
@@ -341,12 +341,12 @@
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
-                <div class="col-4 border-right"><label>Gateway Name</label></div>
-                <div class="col-7 ml-1"><span>{{GtAddedCountryListData?.data.gw_name}}</span></div>
+                <div class="col-2 border-right"><label>Gateway Name</label></div>
+                <div class="col-8 ml-1"><span>{{GtAddedCountryListData?.data.gw_name}}</span></div>
             </div>
             <div class="row my-2 f-14">
-                <div class="col-3"><label>Total Countries</label></div>
-                <div class="col-9"><span class="badge badge-dark">{{GtAddedCountryListData?.data.total}}</span>
+                <div class="col-4"><label>No. of Countries Added In Current Month</label></div>
+                <div class="col-7"><span class="badge badge-dark">{{GtAddedCountryListData?.data.total}}</span>
                 </div>
             </div>
             <div class="row">
@@ -369,12 +369,12 @@
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
-                <div class="col-4 border-right"><label>Gateway Name</label></div>
-                <div class="col-7 ml-1"><span>{{GtInactiveCountryListData?.data.gw_name}}</span></div>
+                <div class="col-2 border-right"><label>Gateway Name</label></div>
+                <div class="col-8 ml-1"><span>{{GtInactiveCountryListData?.data.gw_name}}</span></div>
             </div>
             <div class="row my-2 f-14">
-                <div class="col-3"><label>Total Countries</label></div>
-                <div class="col-9"><span class="badge badge-dark">{{GtInactiveCountryListData?.data.total}}</span>
+                <div class="col-4"><label>No. of Countries Inactivated In Current Month</label></div>
+                <div class="col-7"><span class="badge badge-dark">{{GtInactiveCountryListData?.data.total}}</span>
                 </div>
             </div>
             <div class="row">
@@ -397,12 +397,12 @@
     <div class="modal-body">
         <form action="">
             <div class="row font-weight-bold">
-                <div class="col-4 border-right"><label>Gateway Name</label></div>
-                <div class="col-7 ml-1"><span>{{GtPriceChangeCountryListData?.data.gw_name}}</span></div>
+                <div class="col-2 border-right"><label>Gateway Name</label></div>
+                <div class="col-8 ml-1"><span>{{GtPriceChangeCountryListData?.data.gw_name}}</span></div>
             </div>
             <div class="row my-2 f-14">
-                <div class="col-3"><label>Total Countries</label></div>
-                <div class="col-9"><span class="badge badge-dark">{{GtPriceChangeCountryListData?.data.total}}</span>
+                <div class="col-5"><label>Price Changed for No. of Countries In Current Month</label></div>
+                <div class="col-7"><span class="badge badge-dark">{{GtPriceChangeCountryListData?.data.total}}</span>
                 </div>
             </div>
             <div class="row">

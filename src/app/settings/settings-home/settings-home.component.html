@@ -266,12 +266,12 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let tableData of settingsConversionViewData?.data.tabledata">
-                            <td class="font-weight-semi-bold">Inr (₹)</td>
-                            <td class="font-weight-semi-bold">Euro (€)</td>
-                            <td>14.567</td>
-                            <td>Manual</td>
-                            <td>28/10/2019 | 23:25:00</td>
-                            <td>Nawal</td>
+                            <td class="font-weight-semi-bold"><span [innerHTML]="tableData.fromcurrency"></span></td> 
+                            <td class="font-weight-semi-bold"><span [innerHTML]="tableData.tocurrency"></span></td> 
+                            <td>{{tableData.conversionrate}}</td>
+                            <td>{{tableData.conversiontype}}</td>
+                            <td>{{tableData.conversiondate}} | {{tableData.conversiontime}}</td>
+                            <td>{{tableData.convertedbyuser}}</td>
                         </tr>
                         <tr *ngIf="settingsConversionViewData?.data.tabledata.length == 0">
                             <td colspan="6" class="text-center py-3 main-heading">No data Found</td>
