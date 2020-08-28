@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  serverUrl: '/erpinternational/api',
-  FileUploadUrl: '/erpinternational/api',
+  //serverUrl: '/erpinternational/api',
+  //FileUploadUrl: '/erpinternational/api',
   //serverUrl: 'http://115.114.108.242/api/intlmgmt',
   //FileUploadUrl: 'http://10.20.59.248:8989/api/intlmgmt',
-  //serverUrl: 'http://10.20.59.232:8383/api/intlmgmt',
+  serverUrl: 'http://localhost:8383/api/intlmgmt',
   //FileUploadUrl: 'http://10.20.51.182:8484/api/intlmgmt',
-  //FileUploadUrl: 'http://10.20.59.232:8383/api/intlmgmt',
+  FileUploadUrl: 'http://localhost:8383/api/intlmgmt',
   loggedinusername: 'testuser',
   loggedinempid: 1234,
   UTC: "+05:30",
