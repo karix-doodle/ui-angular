@@ -365,10 +365,13 @@ export class UpdateGatewayComponent implements OnInit {
       addValidators(this.priceListFormGroup, 'from_subject')
       addValidators(this.priceListFormGroup, 'read_attachment')
     } else {
-      addMultipleEmailValidators(this.priceListFormGroup, 'notify_email')
-      addMultipleEmailValidators(this.priceListFormGroup, 'from_email')
+      // ID-129
+      //addMultipleEmailValidators(this.priceListFormGroup, 'notify_email')
+      //addMultipleEmailValidators(this.priceListFormGroup, 'from_email')
       removeValidators(this.priceListFormGroup, 'from_subject')
       removeValidators(this.priceListFormGroup, 'read_attachment')
+      removeValidators(this.priceListFormGroup, 'notify_email')
+      removeValidators(this.priceListFormGroup, 'from_email')
     }
 
     if (this.priceListFormGroup.invalid) {

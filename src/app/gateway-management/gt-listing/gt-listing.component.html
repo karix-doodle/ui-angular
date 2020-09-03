@@ -3,8 +3,8 @@
         <label class="main-heading">GATEWAY MANAGEMENT</label>
     </div>
     <div class="col-4 text-right">
-        <a [routerLink]="GtMgmtAuthControls.gw_create_enabled ? ['create-gateway'] : []" class="btn erp-intl-btn">Create
-            Gateway</a>
+        <a [routerLink]="GtMgmtAuthControls.gw_create_enabled ? ['create-gateway'] : []" class="btn erp-intl-btn" 
+        [ngClass]="GtMgmtAuthControls.gw_create_enabled ? '':'isDisabled'">Create Gateway</a>
     </div>
 </div>
 <div class="row btm-border second-row-det" *ngIf="GtMgmtAuthControls.gw_listing_enabled">
