@@ -171,8 +171,10 @@
                 </div>
                 <div class="form-group col-6">
                     <label class="font-weight-semi-bold">Default Sender ID</label>
-                    <input type="text" [ngClass]="StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled ? '':'isDisabled'" class="form-control" formControlName="default_senderid"
-                        placeholder="Enter Default Sender ID" />
+                    <input type="text" *ngIf="!StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled" class="form-control" formControlName="default_senderid"
+                        placeholder="Enter Default Sender ID" disabled />
+                        <input type="text" *ngIf="StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled" class="form-control" formControlName="default_senderid"
+                        placeholder="Enter Default Sender ID" />    
                 </div>
             </div>
             <div class="row">
