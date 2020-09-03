@@ -46,6 +46,7 @@ background-color:#fff;
     border-radius:5px;
     max-height:150px;
     overflow-y:auto;
+    min-height:50px;
 }
 .mobile-series-value{
     background:#E9EDF4;
@@ -57,4 +58,8 @@ background-color:#fff;
 }
 .mobile-series-value span{
     color:#B4282E;
+}
+
+.country-popup-width {
+    min-width: 700px !important;
 }

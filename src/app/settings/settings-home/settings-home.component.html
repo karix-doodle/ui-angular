@@ -54,18 +54,22 @@
             </div>
         </div>
     </section> -->
-    <form [formGroup]="invoiceFormGroup" (ngSubmit)="GsConversionRate_add(invoiceFormGroup.value)">
+    <form [formGroup]="invoiceFormGroup">
         <!-- <pre>{{invoiceFormGroup.value | json}}</pre> -->
         <div class="d-block">
             <div class="row">
                 <label class="gateway-section-heading col-6">INVOICE BILL PLAN CONVERSION RATE<span
                         class="badge rounded-question" title="tooltip data">?</span></label>
                 <div class="col-6 text-right setting-select">
-                    <input type="radio" name="invoiceBillplan" id="manual2" formControlName="invoiceBillplan"
+                    <input type="radio" *ngIf="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled" name="invoiceBillplan" id="manual2" formControlName="invoiceBillplan"
                         value="manual" (click)="changeType('manual')" />
+                        <input type="radio" *ngIf="!StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled" disabled  name="invoiceBillplan" id="manual2" formControlName="invoiceBillplan"
+                        value="manual"  />    
                     <label for="manual2" class="mr-2">Manual</label>
-                    <input type="radio" name="invoiceBillplan" id="automatic2" formControlName="invoiceBillplan"
+                    <input type="radio" *ngIf="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled" name="invoiceBillplan" id="automatic2" formControlName="invoiceBillplan"
                         value="auto" (click)="changeType('auto')" />
+                        <input type="radio" *ngIf="!StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled" disabled  name="invoiceBillplan" id="automatic2" formControlName="invoiceBillplan"
+                        value="auto" />    
                     <label for="automatic2">Automatic</label>
                 </div>
             </div>
@@ -148,15 +152,16 @@
                                     </div>
                                     <div *ngIf="invoiceFormGroup.get('currency_list').value.length >= 2 && X.get('status').value != 'delete'"
                                         class="custom-delete add-div-btn ml-0">
-                                        <button type="button" class="btn btn-light"
-                                            (click)="removeFromCurrencyRow(indexCurrency)">-</button>
+                                        <button type="button" class="btn btn-light" [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled }"
+                                            (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? removeFromCurrencyRow(indexCurrency) :''">-</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-1 add-div-btn d-flex align-items-end justify-content-end mb-3 px-0">
-                        <button type="button" class="btn btn-light" (click)="addToCurrencyList(false)">+</button>
+                        <button type="button" class="btn btn-light" [ngClass]="{'isDisabled': !StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled }" 
+                        (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? addToCurrencyList(false) : ''">+</button>
                     </div>
                     <div class="col-2 text-right pt-4">
                         <button class="btn btn-light" type="button"
@@ -167,7 +172,8 @@
                 </div>
             </section>
             <div class="col-12 text-left">
-                <button type="submit" class="btn erp-intl-btn">Save</button>
+                <button type="submit" [ngClass]="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? '':'isDisabled'" 
+                class="btn erp-intl-btn" (click)="StMgmtAuthControls.settings_billplan_invoice_currency_conversion_rates_view_audit_log_enabled ? GsConversionRate_add(invoiceFormGroup.value) : ''">Save</button>
             </div>
         </div>
     </form>
@@ -266,8 +272,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let tableData of settingsConversionViewData?.data.tabledata">
-                            <td class="font-weight-semi-bold"><span [innerHTML]="tableData.fromcurrency"></span></td> 
-                            <td class="font-weight-semi-bold"><span [innerHTML]="tableData.tocurrency"></span></td> 
+                            <td class="font-weight-semi-bold"><p [innerHTML]="tableData.fromcurrency"></p></td> 
+                            <td class="font-weight-semi-bold"><p [innerHTML]="tableData.tocurrency"></p></td> 
                             <td>{{tableData.conversionrate}}</td>
                             <td>{{tableData.conversiontype}}</td>
                             <td>{{tableData.conversiondate}} | {{tableData.conversiontime}}</td>
