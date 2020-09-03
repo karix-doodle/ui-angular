@@ -218,7 +218,8 @@
             <div class="col-12 text-center mt-3">
                 <input type="button" class="btn btn-basic mr-3" value="Cancel" aria-label="Close"
                     (click)="d('Cross click')">
-                <input type="submit" class="btn erp-intl-btn save-btn" value="Save">
+                <input type="button" [ngClass]="(StMgmtAuthControls.settings_global_country_operator_add_mobile_series_enabled || StMgmtAuthControls.settings_global_country_operator_delete_mobile_series_enabled || StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled)? '':'isDisabled'" 
+                class="btn erp-intl-btn save-btn"  (click)="(StMgmtAuthControls.settings_global_country_operator_add_mobile_series_enabled || StMgmtAuthControls.settings_global_country_operator_delete_mobile_series_enabled || StMgmtAuthControls.settings_global_country_operator_add_senderids_enabled)? onSubmitEditGlobalCountryOperatorFormGroup(editGlobalCountryOperatorFormGroup.value) :''" value="Save">
             </div>
         </form>
     </div>
