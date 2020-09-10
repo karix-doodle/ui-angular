@@ -70,10 +70,10 @@
                     </section>
                 </div>
             </div>
-            <div class="col-4" [ngClass]="{'disable-wrapper' : rateCardSearchForm.get('ratecardid').value == '' }">
+            <div class="col-4">
                 <div class="form-group date-div">
                     <label>Effective Date & Time from</label>
-                    <div class="d-flex align-items-center date-wrapper">
+                    <div class="d-flex align-items-center date-wrapper" [ngClass]="{'disable-wrapper' : rateCardSearchForm.get('ratecardid').value == '' }">
                         <div class="col-5">
                             <div class="row single-date">
                                 <app-calendar-picker [handleDateParams]="handleDateParams.asObservable()"
@@ -151,7 +151,7 @@
                     <td>
                         <img [ngClass]="{'isDisabled': !billPlanMgmtAuthControls.billplan_delete_ratecard_enabled}"
                             *ngIf="item.deleteenabled"
-                            (click)="billPlanMgmtAuthControls.billplan_delete_ratecard_enabled && delete(item.billplanid, item.ratecardid)"
+                            (click)="billPlanMgmtAuthControls.billplan_delete_ratecard_enabled && delete(item.billplanid, item.ratecardid, item.id)"
                             src="assets/icons/delete-icon.svg" class="img-fluid cursor-pointer" alt="delete icon" />
                     </td>
                 </tr>

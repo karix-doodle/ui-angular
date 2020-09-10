@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { errorAlert } from '../../../shared/sweet-alert/sweet-alert';
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 import { CustomerMgmt } from '../../../model/authorization.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-cm-list-table',
@@ -18,7 +19,7 @@ export class CmListTableComponent implements OnInit {
   apiResponse: APIResponse;
   existingUsersList: ExistingUsers[];
   searchvalue: any = '';
-
+  hasUsersList: boolean = false;
   CmAuthControls: CustomerMgmt;
 
   constructor(
@@ -41,6 +42,9 @@ export class CmListTableComponent implements OnInit {
         if (apiResponse.responsecode > environment.APIStatus.success.code) {
           this.existingUserData = apiResponse.data;
           this.existingUsersList = this.existingUserData.existing_esme_lists;
+          if(!_.isUndefined(this.existingUserData) && !_.isNull(this.existingUserData)){
+            this.hasUsersList = _.get(this.existingUserData,'totalexistingesmes',0) > 0 ? true : false;
+          }
         } else {
           errorAlert(apiResponse.message, apiResponse.responsestatus)
         }

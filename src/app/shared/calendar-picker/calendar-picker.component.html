@@ -1,5 +1,5 @@
 <input style="width: 100%;" type="text" class="form-control date-select-div" ngxDaterangepickerMd [minDate]="minDate"
   [maxDate]="maxDate" [singleDatePicker]="singleDatePicker" [ngClass]="{'single-picker': singleDatePicker == true}"
-  [(ngModel)]="selected" readonly [showCustomRangeLabel]="showCustomRangeLabel" [ranges]="ranges"
+  [(ngModel)]="selected" readonly [showCustomRangeLabel]="showCustomRangeLabel" [ranges]="ranges" [locale]="{'format':'DD/MM/YYYY', 'displayFormat':'DD/MM/YYYY'}"
   [linkedCalendars]="linkedCalendars" [autoApply]="autoApply" placeholder="&#xf073;" (change)="change($event)"
   (startDateChanged)="eventClicked($event)" />

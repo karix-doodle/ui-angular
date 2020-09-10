@@ -84,13 +84,15 @@ export class CalendarPickerComponent implements OnInit {
 
   change(e): void {
     if (this.params['type'] == undefined && this.params['type'] != 'dateOnly') {
-      this.selectDate.emit(e)
+      //this.selectDate.emit(e);
+      this.selectDate.emit(moment(e.startDate).format('DD/MM/YYYY HH:mm:ss'));
     }
   }
 
   eventClicked(e): void {
     if (this.params["type"] && this.params["type"] == "dateOnly") {
-      this.selectDate.emit(e);
+      //this.selectDate.emit(e);
+      this.selectDate.emit(moment(e.startDate).format('DD/MM/YYYY HH:mm:ss'));
     }
   }
 }

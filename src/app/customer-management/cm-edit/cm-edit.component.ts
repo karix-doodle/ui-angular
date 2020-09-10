@@ -62,6 +62,8 @@ export class CmEditComponent implements OnInit {
   gwRadioEnabled: boolean = true;
   lcrRadioEnabled: boolean = true;
   prRadioEnabled: boolean = true;
+  billplanViewEnabled: boolean = false;
+  billplanViewMessage: string = '';
 
   routeTypeUiMapping: any = {
     "lcr": "lcr", "gateway": "gt", "pool": "pr"
@@ -114,7 +116,13 @@ export class CmEditComponent implements OnInit {
   }
 
   openNewTab(id, type) {
-    window.open(environment.basePortUrl + '#/billplan-management/postpaid/country/assigned-ratecard-view/' + id + '/' + type, '_blank');
+    console.log('location='+JSON.stringify(window.location));
+    if(this.billplanViewEnabled){
+      this.billplanViewMessage = ``;
+      window.open(window.location.origin + '#/billplan-management/postpaid/country/assigned-ratecard-view/' + id + '/' + type, '_blank');
+    }else{
+      this.billplanViewMessage = `No ratecard created/assigned for this billplan`;
+    }
   }
 
   ngOnInit() {
@@ -299,6 +307,9 @@ export class CmEditComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.apiResponse = res;
           this.usersData = JSON.parse(JSON.stringify(this.apiResponse.data));
+          if(!_.isUndefined(this.usersData.ratecard_id) && !_.isNull(this.usersData.ratecard_id) && this.usersData.ratecard_id > 0){
+            this.billplanViewEnabled = true;
+          }
 
           let rtype = this.routeTypeUiMapping[_.toLower(this.usersData.routetype)];
           if (_.isEqual(rtype, 'lcr')) {

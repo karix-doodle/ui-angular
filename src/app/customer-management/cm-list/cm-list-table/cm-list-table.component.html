@@ -26,7 +26,7 @@
                     <th>&nbsp;</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="hasUsersList">
                 <tr
                     *ngFor="let existinguser of existingUsersList | filter: { esmeaddr: searchvalue, username: searchvalue } ">
                     <td class="font-weight-semi-bold">
@@ -46,6 +46,11 @@
                         {{existinguser.intlaccttype | titlecase}}</td>
                     <td><a [routerLink]="['/customer-management/customer-management-edit', existinguser.esmeaddr, 'existing']"><img
                                 src="assets/icons/edit-icon.svg" alt="edit" /></a></td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="!hasUsersList">
+                <tr>
+                    <td colspan="9" class="text-center py-3 main-heading">No data found</td>
                 </tr>
             </tbody>
         </table>

@@ -2,7 +2,7 @@
     <div class="col-12">
         <label class="main-heading"><a routerLink="/customer-management">CUSTOMER MANAGEMENT</a></label> /
         <!-- <span><a routerLink="/customer-management/customer-management-edit"> 70000 100000011 /</a> MARGIN</span> -->
-        <span><a href="javascript:void(0)" (click)="onClick()"> {{pageData.esmeaddr}} /</a> MARGIN</span>
+        <span><a href="javascript:void(0)" (click)="onClick()"> {{esmeAddr}} /</a> MARGIN</span>
     </div>
 </div>
 <div class="row btm-border second-row-det">
@@ -11,7 +11,7 @@
             <div class="col-5">
                 <label class="mr-2"><b>ESME Addr.</b></label>
                 <span class="border-right">&nbsp;</span>
-                <span class="ml-3 badge badge-dark esme-addr"><b>{{pageData.esmeaddr}}</b></span>
+                <span class="ml-3 badge badge-dark esme-addr"><b>{{esmeAddr}}</b></span>
             </div>
             <div class="col-7">
                 <label class="mr-2">Company Name</label>
@@ -21,13 +21,13 @@
         </div>
         <div class="row gateway-count">
             <div class="col-4 gateway-detail">
-                <label>Intl. Cust Type <span class="badge badge-dark ml-2"><b>{{intl_acc_type}}</b></span></label>
+                <label>Intl. Cust Type <span class="badge badge-dark ml-2"><b>{{intl_acc_type  | titlecase}}</b></span></label>
             </div>
             <div class="col-4 gateway-detail">
-                <label>Billing Type <span class="badge badge-dark ml-2"><b>{{pageData.billing_type}}</b></span></label>
+                <label>Billing Type <span class="badge badge-dark ml-2"><b>{{pageData.billing_type | titlecase}}</b></span></label>
             </div>
             <div class="col-4 gateway-detail">
-                <label>Route Type <span class="badge badge-dark ml-2"><b>{{routetype}}</b></span></label>
+                <label>Route Type <span class="badge badge-dark ml-2"><b>{{routetype | titlecase}}</b></span></label>
             </div>
         </div>
 

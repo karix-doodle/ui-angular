@@ -92,3 +92,7 @@
 }
 
 /* searchSuggestion */
+
+.disable-wrapper:before {
+    background: #f2f4f8;
+}

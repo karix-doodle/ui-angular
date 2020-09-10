@@ -21,6 +21,7 @@ import { BillManagementService } from '../../services/BillManagement/billplan-ma
 import { GetNameCheck_ApiResponse } from '../../models/BillManagement/blillplan.models';
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
 import { BillplanMgmt } from '../../../model/authorization.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-ratecard-list',
@@ -40,6 +41,8 @@ export class RatecardListComponent implements OnInit {
 
   billPlanMgmtAuthControls: BillplanMgmt;
 
+  effective_date: string;
+
   rateCardValid: boolean = false
   showdropdown: boolean = false
   ratecardName: string = '';
@@ -56,7 +59,7 @@ export class RatecardListComponent implements OnInit {
 
     this.params = {
       type: 'dateOnly',
-      startdate: moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(1, "days"),
+      startdate: moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(0, "days"),
     }
   }
 
@@ -97,12 +100,24 @@ export class RatecardListComponent implements OnInit {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.billPlanDetailsViewDataRes = res;
           this.billPlanDetailsViewData = JSON.parse(JSON.stringify(this.billPlanDetailsViewDataRes));
+          let days:number = 0;
+          if(_.isUndefined(this.billPlanDetailsViewData.data.tabledata) || _.isNull(this.billPlanDetailsViewData.data.tabledata) || _.size(this.billPlanDetailsViewData.data.tabledata) == 0){
+            // this is first ratecard, hence allow todays date to be selected in calander
+            days = 0;
+          }else{
+            days = 1;
+          }
+
           this.rateCardSearchForm.patchValue({
             billplanid: this.billPlanDetailsViewData.data.billplanid,
             currencyid: this.billPlanDetailsViewData.data.currency_id,
             ratecardtype: this.billPlanDetailsViewData.data.ratecardtype ? this.billPlanDetailsViewData.data.ratecardtype : '',
+            effectdate: moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(days, "days")
             // ratecardname: this.rateCardName !== undefined ? this.ratecardName : ''
           });
+          this.params.startdate = moment().utcOffset(environment.UTC).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).add(days, "days");
+          this.handleDateParams.next([this.params]);
+
         } else if (res.responsestatus === environment.APIStatus.error.text && res.responsecode < environment.APIStatus.error.code) {
           errorAlert(res.message, res.responsestatus)
         }
@@ -162,10 +177,11 @@ export class RatecardListComponent implements OnInit {
     this.showdropdown = false
   }
 
-  delete(billplanid, ratecardid) {
+  delete(billplanid, ratecardid, id) {
     let data = {
       billplanid: billplanid,
-      ratecardid: ratecardid
+      ratecardid: ratecardid,
+      id:id
     }
     confirmAlert(`You won't be able to revert !`)
       .then((result) => {
@@ -196,7 +212,7 @@ export class RatecardListComponent implements OnInit {
       }
     } else {
       if (this.billPlanMgmtAuthControls.billplan_assign_ratecard_enabled) {
-        this.assignRatecard(data)
+        this.assignRatecard(data);
       }
     }
   }
@@ -229,7 +245,9 @@ export class RatecardListComponent implements OnInit {
   }
 
   getDateSelection(e) {
-    let startDate = e.startDate;
+    //let startDate = e.startDate;
+    let startDate = e;
+    this.effective_date = e;
     this.rateCardSearchForm.patchValue({
       effectdate: moment(startDate)
     })
@@ -241,7 +259,9 @@ export class RatecardListComponent implements OnInit {
       return;
     } else {
       this.rateCardValid = false;
-      data.effectdate = moment(data.effectdate).format('DD/MM/YYYY HH:mm:ss')
+      // date format changing for some random request when it coming as moment obj, so converting it to string at calendar it self
+      //data.effectdate = moment(data.effectdate).format('DD/MM/YYYY HH:mm:ss');
+      data.effectdate = this.effective_date;
       this.createAssignRateCardService.assigendRateCard(data).subscribe(
         (res: AssigendRateCard_ApiResponse) => {
           if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {

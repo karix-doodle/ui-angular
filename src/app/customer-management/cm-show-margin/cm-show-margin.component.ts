@@ -26,7 +26,7 @@ export class CmShowMarginComponent implements OnInit {
 
   ngOnInit() {
   }
-  //@Input('marginPageInput') marginPageInput: object;
+  @Input() esmeAddr: string;
   marginPageInputs:string;
   @Input('marginPageInput') set marginPageInput(inputs: string){
     //console.log(`inputs = ${inputs}`);
