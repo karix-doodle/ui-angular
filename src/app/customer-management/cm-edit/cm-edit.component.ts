@@ -119,9 +119,13 @@ export class CmEditComponent implements OnInit {
     console.log('location='+JSON.stringify(window.location));
     if(this.billplanViewEnabled){
       this.billplanViewMessage = ``;
-      window.open(window.location.origin + '#/billplan-management/postpaid/country/assigned-ratecard-view/' + id + '/' + type, '_blank');
+      // ID-134
+      let urlParts = _.split(window.location.href,'#');
+      if(_.size(urlParts) > 0){
+        window.open(urlParts[0] + '#/billplan-management/postpaid/country/assigned-ratecard-view/' + id + '/' + type, '_blank');
+      }
     }else{
-      this.billplanViewMessage = `No ratecard created/assigned for this billplan`;
+      this.billplanViewMessage = `No ratecard created/assigned under this billplan`;
     }
   }
 
