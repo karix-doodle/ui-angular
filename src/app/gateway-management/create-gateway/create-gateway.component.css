@@ -8,3 +8,26 @@
     margin-top:30px;
 
 }
+
+.ng-select.custom ::ng-deep .ng-select-container  {            
+    background-color: #e9edf4;
+    color: #3e4b5b;
+}
+ 
+.ng-select.custom ::ng-deep:focus {         
+    outline: none;   
+    border: none !important;
+}
+ 
+.ng-select.custom ::ng-deep {
+    outline: none !important;            
+    border: none !important;
+}
+ 
+.ng-select.custom ::ng-deep .ng-option  {            
+    background-color: #e9edf4;
+    color: #3e4b5b;
+}
+.ng-select.custom ::ng-deep .ng-option:hover  {            
+    background-color: #009aff;
+}

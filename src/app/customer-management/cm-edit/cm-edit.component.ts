@@ -116,7 +116,7 @@ export class CmEditComponent implements OnInit {
   }
 
   openNewTab(id, type) {
-    console.log('location='+JSON.stringify(window.location));
+  //  console.log('location='+JSON.stringify(window.location));
     if(this.billplanViewEnabled){
       this.billplanViewMessage = ``;
       // ID-134
@@ -394,7 +394,9 @@ export class CmEditComponent implements OnInit {
       selectedTzString: this.selectedTzString,
       comments: this.usersData.comments,
       notifysales: this.usersData.notifysales,
-      notifyclient: this.usersData.notifyclient
+      notifyclient: this.usersData.notifyclient,
+      process_at_loss : this.usersData.process_at_loss,
+      max_loss_per_sms : this.usersData.max_loss_per_sms
     });
   };
 
@@ -490,6 +492,7 @@ export class CmEditComponent implements OnInit {
   errorMessageProcessAtLoss: string = '';
   validateAndconstructPayloadForSave(payload, isFormSubmit): boolean {
     let json = this.updateAccountFormGroup.value;
+    console.log(" json   "+JSON.stringify(json));
     let validationSuccess = true;
     this.effectiveTillError = false;
     this.routeTypeError = '';
@@ -579,13 +582,12 @@ export class CmEditComponent implements OnInit {
         payload['process_row'] = 0;
       }
     }
-
     if (_.isUndefined(json.process_at_loss) || _.isNull(json.process_at_loss)) {
       payload['process_at_loss'] = 0;
       payload['max_loss_per_sms'] = null;
     } else {
-      if (_.isBoolean(json.process_at_loss)) {
-        if (json.process_at_loss) {
+      if (_.isBoolean(json.process_at_loss) || json.process_at_loss == 1 ) {  //ID-153
+        if (json.process_at_loss || json.process_at_loss == 1) {  //ID-153
           payload['process_at_loss'] = 1;
           if (_.isUndefined(json.max_loss_per_sms) || _.isNull(json.max_loss_per_sms) || _.isEmpty(_.trim(json.max_loss_per_sms))) {
             validationSuccess = false;
@@ -709,7 +711,6 @@ export class CmEditComponent implements OnInit {
       this.showEditPage = true;
       this.showMargin = false;
     }
-
 
     if (this.updateAccountFormGroup.value.process_row || this.updateAccountFormGroup.value.process_row == 1) {
       this.process_row = 1;

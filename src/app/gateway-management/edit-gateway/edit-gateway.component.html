@@ -54,11 +54,14 @@
             <div class="row">
                 <div class="col-4 form-group">
                     <label>Gateway Timezone</label>
-                    <select class="dropdown-select w-100" formControlName="timezone" name="timezone">
+                  <!-- <select class="dropdown-select w-100" formControlName="timezone" name="timezone">
                         <option value="" default>Select Gateway Timezone</option>
                         <option *ngFor="let item of gatewayTimeZoneData?.data" value="{{item.id}}">{{item.timezone}}
                         </option>
-                    </select>
+                    </select>--> 
+                    <ng-select [(ngModel)]="selectedValue" formControlName="timezone" name="timezone" class="custom" placeholder="Select Gateway Timezone">
+                        <ng-option *ngFor="let item of gatewayTimeZoneData?.data" [value]="item.id">{{item.timezone}}</ng-option>
+                     </ng-select>
                     <span class="text-danger pl-1 f-12"
                         *ngIf="updateGatewayFormGroup.get('timezone').hasError('required') && isUpdateValid">
                         Gateway Timezone is required

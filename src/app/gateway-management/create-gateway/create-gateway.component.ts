@@ -23,6 +23,9 @@ export class CreateGatewayComponent implements OnInit {
   gatewayCurrencyDataRes: GtCurrency_ApiResponse;
   gatewayCurrencyData: GtCurrency_Data;
 
+  selectedValue: number;
+
+
   createGatewayFormGroup: FormGroup;
   isCreateValid: boolean = false;
   currency_id = environment.currencyDefault;
@@ -69,7 +72,7 @@ export class CreateGatewayComponent implements OnInit {
     this.Gateway_currency();
   }
 
-  Gateway_timezone() {
+   Gateway_timezone() {
     this.gatewayManagementService.Gateway_timezone().subscribe(
       (res: GtTimeZone_ApiResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
@@ -133,6 +136,7 @@ export class CreateGatewayComponent implements OnInit {
   }
 
   onSubmitCreateGateway(data) {
+  //  console.log('selectedValue----->>>>',this.createGatewayFormGroup.value)
     this.isCreateValid = true;
     // for (let el in this.createGatewayFormGroup.controls) {
     //   if (this.createGatewayFormGroup.controls[el].errors) {

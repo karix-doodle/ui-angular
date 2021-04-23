@@ -196,7 +196,7 @@
                         <div class="col-4">
                             <label class="toggle-switch">
                                 <input type="checkbox" class="switch-btn" formControlName="process_at_loss"
-                                    [checked]="process_at_loss === 1" (change)="handleStatus($event)">
+                                    [checked]="process_at_loss === 1" (change)="handleStatus($event)"  [value]="process_at_loss">
                                 <span class="slider round"></span>
                             </label>
                         </div>

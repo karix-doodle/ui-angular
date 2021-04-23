@@ -28,6 +28,9 @@ export class EditGatewayComponent implements OnInit {
   gatewayCurrencyDataRes: GtCurrency_ApiResponse;
   gatewayCurrencyData: GtCurrency_Data;
 
+  selectedValue: number;
+
+
   updateGatewayFormGroup: FormGroup;
   isUpdateValid: boolean = false;
 

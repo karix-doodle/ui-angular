@@ -20,6 +20,7 @@ import { GtCountryListViewLogComponent } from './gt-country-list-view-log/gt-cou
 import { GtSenderIdWhiteListComponent } from './gt-sender-id-white-list/gt-sender-id-white-list.component';
 import { GtSenderidContentComponent } from './gt-senderid-content/gt-senderid-content.component';
 import { GtESMEAddrRoutedComponent } from './gt-esmeaddr-route/gt-esmeaddr-route.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes),
     CommonModule,
+    NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,

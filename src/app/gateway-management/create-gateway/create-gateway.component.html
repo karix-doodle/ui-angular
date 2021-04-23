@@ -2,6 +2,10 @@
     <div class="col-12">
         <label class="main-heading"> <a routerLink="/gateway-management">GATEWAY MANAGEMENT / </a></label>
         <span> CREATE GATEWAY</span>
+
+        <!-- <ng-select [(ngModel)]="selectedCar">
+            <ng-option *ngFor="let car of cars" [value]="car.id">{{car.name}}</ng-option>
+         </ng-select> -->
     </div>
 </div>
 <div class="main-container p-15" *ngIf="GtMgmtAuthControls.gw_create_enabled">
@@ -56,15 +60,45 @@
             <div class="row">
                 <div class="col-4 form-group">
                     <label>Gateway Timezone</label>
-                    <select class="dropdown-select w-100" formControlName="timezone" name="timezone">
+                    <section class="search-suggestion-wrapper">
+                        <!-- <input formControlName="timezone" type="search" maxlength="150"
+                            class="form-control dropdown-select w-100-input search-suggestion-input" placeholder="Select Gateway Timezone"
+                            autocomplete="off" />
+                        <div class="pad-r-3" >
+                            <span class="suggestion-select">
+                                <span *ngFor="let item of gatewayTimeZoneData?.data" class="filter-select-list"  >
+                                    <span class="filter-product-wrapper">
+                                        <a class="">
+                                            {{item.timezone }}
+                                        </a>
+                                    </span>
+                                </span>
+                            </span>
+                        </div> -->
+                        <ng-select [(ngModel)]="selectedValue" formControlName="timezone" name="timezone" class="custom" placeholder="Select Gateway Timezone">
+                            <ng-option *ngFor="let item of gatewayTimeZoneData?.data" [value]="item.id">{{item.timezone}}</ng-option>
+                         </ng-select>
+                        <!-- <ng-select 
+                            [items]="gatewayTimeZoneData.data" 
+                            bindLabel="timezone" 
+                            bindValue="id" 
+                            [searchable]="true"
+                            [(ngModel)]="selectedValue">
+                        </ng-select> -->
+                        <span class="text-danger pl-1 f-12"
+                            *ngIf="createGatewayFormGroup.get('timezone').hasError('required') && isCreateValid">
+                            Gateway Timezone is required
+                        </span>
+                    </section>
+                <!--   <select class="dropdown-select w-100" formControlName="timezone" name="timezone">
                         <option value="" default>Select Gateway Timezone</option>
                         <option *ngFor="let item of gatewayTimeZoneData?.data" value="{{item.id}}">{{item.timezone}}
                         </option>
-                    </select>
+                    </select> 
                     <span class="text-danger pl-1 f-12"
                         *ngIf="createGatewayFormGroup.get('timezone').hasError('required') && isCreateValid">
                         Gateway Timezone is required
-                    </span>
+                    </span> --> 
                 </div>
                 <div class="col-4 form-group">
                     <label>Gateway Type</label>
