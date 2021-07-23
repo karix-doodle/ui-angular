@@ -31,7 +31,8 @@ export class GatewayDetailsComponent implements OnInit {
 
   GtMgmtAuthControls = null
   gwId = null
-
+  currency: string = '';
+  
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
@@ -58,6 +59,7 @@ export class GatewayDetailsComponent implements OnInit {
       (res: GtDetails_ApiResponse) => {
         if (res.responsestatus === environment.APIStatus.success.text && res.responsecode > environment.APIStatus.success.code) {
           this.GtDetailsDataRes = res;
+          this.currency=encodeURIComponent(res.data.currency_symbol);
           this.GtDetailsData = JSON.parse(JSON.stringify(this.GtDetailsDataRes));
           this.GtAddedCountry_list();
           this.GtInactiveCountry_list();

@@ -50,7 +50,7 @@ const GMroutes: Routes = [
         component: GatewayDetailsComponent
       },
       {
-        path: 'country-list/:id/:name',
+        path: 'country-list/:id/:name/:currency',
         component: GtCountrylistComponent
       },
       {

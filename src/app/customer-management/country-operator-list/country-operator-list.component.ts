@@ -22,7 +22,7 @@ import {
 import { HttpErrorResponse } from "@angular/common/http";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
-
+import { HttpClient } from "@angular/common/http";
 @Component({
   selector: "app-country-operator-list",
   templateUrl: "./country-operator-list.component.html",
@@ -45,14 +45,15 @@ export class CountryOperatorListComponent implements OnInit {
   billSubmitted: boolean = false
 
   CmAuthControls = null
-
+  default_sender_id: string = '';
   constructor(
     config: NgbModalConfig,
     private modalService: NgbModal,
     private route: ActivatedRoute,
     private service: CustomerManagementService,
     private fb: FormBuilder,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private httpClient: HttpClient
   ) {
     this.CmAuthControls = this.authorizationService.authorizationState.customer_management;
 
@@ -76,18 +77,33 @@ export class CountryOperatorListComponent implements OnInit {
   }
 
   private initForm() {
-    this.senderidForm = this.fb.group({
-      country: ["", Validators.required],
-      mcc: ["", Validators.required],
-      operator: ["", Validators.required],
-      mnc: ["", Validators.required],
-      senderid_type: ["", Validators.required],
-      default_senderid: [
-        "",
-        [Validators.required, Validators.pattern("^.{6,8}$")],
-      ],
-      alternate_senderid: ["", [Validators.pattern("^.{6,8}$")]],
-    });
+
+    this.httpClient.get("assets/config.json").subscribe(data =>{
+      let response: any = data;
+      console.log("http client"+response.default_sender_id);
+      this.default_sender_id=response.default_sender_id;
+      let default_senderid = this.default_sender_id;
+      console.log("default_senderid"+default_senderid);
+
+      this.senderidForm = this.fb.group({
+        country: ["", Validators.required],
+        mcc: ["", Validators.required],
+        operator: ["", Validators.required],
+        mnc: ["", Validators.required],
+        senderid_type: ["", Validators.required],
+        default_senderid: [
+          "",
+          [Validators.required, Validators.pattern(default_senderid)],
+        ],
+        alternate_senderid: ["", [Validators.pattern(default_senderid)]],
+      });
+     
+      
+     });
+
+    
+
+
   }
 
   private initialForm() {

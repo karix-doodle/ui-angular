@@ -487,9 +487,13 @@ export class CountryOperatorStepperFormComponent implements OnInit {
               res.responsecode > environment.APIStatus.success.code
             ) {
               successAlert(res.message, res.responsestatus);
-              this.router.navigate([
-                "billplan-management/postpaid/" + data.billplan_id, + '/' + this.parentForm.value.ratecard_name
-              ]);
+            //  this.router.navigate([
+            //    "billplan-management/postpaid/" + data.billplan_id, + '/' + this.parentForm.value.ratecard_name
+            //  ]);
+            //ID-145 fix
+            this.router.navigate([
+              "billplan-management/postpaid/" + data.billplan_id + '/' + data.ratecard_name
+            ]);
             } else if (
               res.responsestatus === environment.APIStatus.error.text &&
               res.responsecode < environment.APIStatus.error.code

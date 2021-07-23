@@ -7,10 +7,16 @@
     <div class="col-7 text-right">
         <div class="row">
             <div class="col-8 border-right">
-                <a [ngClass]="{'disabled': GtMgmtAuthControls.gw_countries_list_enabled ? null : true }"
+              
+
+                    <a [ngClass]="{'disabled': GtMgmtAuthControls.gw_countries_list_enabled ? null : true }"
                     *ngIf="GtDetailsData"
-                    [routerLink]="GtMgmtAuthControls.gw_countries_list_enabled ? ['/gateway-management/country-list/', GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name] : ''"
+                    [routerLink]="GtMgmtAuthControls.gw_countries_list_enabled ? ['/gateway-management/country-list/', GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name,currency] : ''"
                     class="btn btn-basic mr-2 ">Countries List</a>
+
+                   
+                  
+
                 <a [ngClass]="{'disabled': GtMgmtAuthControls.gw_rate_files_audit_logs_enabled ? null : true }"
                     *ngIf="GtDetailsData"
                     [routerLink]="GtMgmtAuthControls.gw_rate_files_audit_logs_enabled ? ['/gateway-management/file-audit-log/',GtDetailsData?.data.gw_id,GtDetailsData?.data.gw_name]: []"

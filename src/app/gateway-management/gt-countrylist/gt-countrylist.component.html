@@ -77,7 +77,7 @@
                 <th>MCC + MNC</th>
                 <th>SenderID Type</th>
                 <th>Default SenderID</th>
-                <th>Current Rate (€)</th>
+                <th [innerHTML]="toHTML(currency)"></th>
                 <th>&nbsp;</th>
                 <th class="text-center">Status (Active/ Inactive)</th>
             </tr>

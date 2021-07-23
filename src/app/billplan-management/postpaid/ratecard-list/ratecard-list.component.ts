@@ -46,7 +46,7 @@ export class RatecardListComponent implements OnInit {
   rateCardValid: boolean = false
   showdropdown: boolean = false
   ratecardName: string = '';
-  cardName: string;
+  cardName: string = '';
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -154,7 +154,8 @@ export class RatecardListComponent implements OnInit {
               this.showdropdown = false;
             }
           });
-          this.cardName = undefined;
+         // this.cardName = undefined;
+          this.cardName = '';
         }
       } else if (
         res.responsestatus === environment.APIStatus.error.text &&

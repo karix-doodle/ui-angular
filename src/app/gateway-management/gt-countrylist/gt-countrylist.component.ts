@@ -14,6 +14,10 @@ import {
 } from "../../shared/sweet-alert/sweet-alert";
 import { addValidators, removeValidators } from '../../shared/helper/helperFunctions';
 import { AuthorizationService } from 'src/app/service/auth/authorization.service';
+//import * as SampleJson from "../../../../src/assets/config.json";
+import { HttpClient } from "@angular/common/http";
+
+
 
 @Component({
   selector: 'app-gt-countrylist',
@@ -23,6 +27,8 @@ import { AuthorizationService } from 'src/app/service/auth/authorization.service
 
 export class GtCountrylistComponent implements OnInit {
   sendTestMsg: any[] = [1, 2, 3];
+  default_sender_id: string = '';
+  currency: string = '';
 
   GtDetailsCountryListRes: GtDetailsCountryList_ApiResponse;
   GtDetailsCountryList: GtDetailsCountryList_Data;
@@ -44,28 +50,25 @@ export class GtCountrylistComponent implements OnInit {
   sortingName: string;
   isDesc: boolean;
 
-  GtMgmtAuthControls = null
-
+  GtMgmtAuthControls = null;
+  toHTML(input) : any {
+    return new DOMParser().parseFromString(input, "text/html").documentElement.textContent;
+  }
   constructor(
     private modalService: NgbModal,
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private gatewayManagementService: GatewayManagementService,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private httpClient: HttpClient
   ) {
 
     this.GtMgmtAuthControls = authorizationService.authorizationState.gw_mgmt
+    
+   
 
-    let default_senderid = '^.{6,8}$';
-    this.addSenderIdConfigFormGroup = this.formBuilder.group({
-      gw_id: [this.activeRoute.snapshot.params.id],
-      country: new FormControl('', [Validators.required]),
-      mcc: new FormControl('', [Validators.required]),
-      operator: new FormControl('', [Validators.required]),
-      mnc: new FormControl('', [Validators.required]),
-      senderid_type: new FormControl('', [Validators.required]),
-      default_senderid: new FormControl('', [Validators.required, Validators.pattern(default_senderid)]),
-    });
+ 
+  
 
   }
 
@@ -78,6 +81,27 @@ export class GtCountrylistComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.httpClient.get("assets/config.json").subscribe(data =>{
+     let response: any = data;
+     console.log("http client"+response.default_sender_id);
+     this.default_sender_id=response.default_sender_id;
+     let default_senderid = this.default_sender_id;
+     console.log("default_senderid"+default_senderid);
+     this.addSenderIdConfigFormGroup = this.formBuilder.group({
+       gw_id: [this.activeRoute.snapshot.params.id],
+       country: new FormControl('', [Validators.required]),
+       mcc: new FormControl('', [Validators.required]),
+       operator: new FormControl('', [Validators.required]),
+       mnc: new FormControl('', [Validators.required]),
+       senderid_type: new FormControl('', [Validators.required]),
+       default_senderid: new FormControl('', [Validators.required, Validators.pattern(default_senderid)]),
+     });
+
+     
+    });
+    this.currency = "Current Rate "+decodeURIComponent(this.activeRoute.snapshot.paramMap.get('currency'));
+    
     this.Gateway_CountryList();
     this.GtSenderIdConfigCountry_list()
   }
@@ -174,10 +198,25 @@ export class GtCountrylistComponent implements OnInit {
   }
 
   countryOperatorSelect(countryId, operatorID, checkOperator) {
-    let countryValue = countryId ? countryId.split('-')[1] : '';
-    let operatorValue = operatorID ? operatorID.split('-')[1] : '';
-    countryId = countryId ? countryId.split('-')[0] : '';
+   // let countryValue = countryId ? countryId.split('-')[1] : '';
+   // let operatorValue = operatorID ? operatorID.split('-')[1] : '';
+  //  countryId = countryId ? countryId.split('-')[0] : '';
+  //  operatorID = operatorID ? operatorID.split('-')[0] : '';
+  //ID-160 fix
+  let countryValue = countryId ? countryId.split('-')[1] : '';
+  countryId = countryId ? countryId.split('-')[0] : '';
+  let operatorValue =operatorID;
+  if(operatorID.charAt(0)=="-")
+  {
+    operatorID = operatorID ? operatorID.split('-')[1] : '';
+    operatorValue = operatorValue ? operatorValue.split('-')[2] : '';
+
+  }
+  else
+  {
     operatorID = operatorID ? operatorID.split('-')[0] : '';
+    operatorValue = operatorValue ? operatorValue.split('-')[1] : '';
+  }
 
     this.addSenderIdConfigFormGroup.patchValue({
       senderid_type: '',
