@@ -208,7 +208,7 @@ export class GtCountrylistComponent implements OnInit {
   let operatorValue =operatorID;
   if(operatorID.charAt(0)=="-")
   {
-    operatorID = operatorID ? operatorID.split('-')[1] : '';
+    operatorID = operatorID ? '-'+operatorID.split('-')[1] : '';
     operatorValue = operatorValue ? operatorValue.split('-')[2] : '';
 
   }
