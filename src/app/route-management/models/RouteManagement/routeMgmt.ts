@@ -18,6 +18,7 @@ export class LcrObj {
     direct: number;
     premium: number;
     wholesale: number;
+    mixed:number; /** ID-173 */
 }
 
 export class PoolObj {

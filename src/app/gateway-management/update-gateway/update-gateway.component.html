@@ -146,6 +146,18 @@
                                     *ngIf="priceListFormGroup.get('from_subject').hasError('required') && isGtPriceUpdateValid">
                                     Subject is required
                                 </div>
+                                <!-- ID-166 -->
+                                <label class="checkbox-label ml-15 mb-2 pb-2" for="from-keyword">KeyWord
+                                    <input type="checkbox" id="from-keyword"
+                                        (click)="emailsubjectCheck($event.target.checked,'isfrom_keyword', 'from_keyword')"
+                                        [checked]="isfrom_keyword">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="text-danger pl-3 pb-3 f-12"
+                                    *ngIf="priceListFormGroup.get('from_keyword').hasError('required') && isGtPriceUpdateValid">
+                                    Keyword is required
+                                </div>
+                                <!-- ID-166 -->
                                 <label class="checkbox-label ml-15 mb-2 pb-2" for="from-body">From Body
                                     <input type="checkbox" id="from-body" formControlName="read_body" disabled
                                         name="read_body" [checked]="priceListFormGroup.get('read_body').value == 1">
@@ -170,10 +182,15 @@
                                 <input type="text" class="col-12 bg-grey form-control mb-2"
                                     [attr.readonly]="isfrom_email == false  ? true : null" formControlName="from_email"
                                     name="from_email" placeholder="Enter Mail ID" />
-                                <input type="text" class="col-12 bg-grey form-control"
+                                <input type="text" class="col-12 bg-grey form-control  mb-2"
                                     [attr.readonly]="isfrom_subject == false  ? true : null"
                                     formControlName="from_subject" name="from_subject"
                                     placeholder="Enter Subject Line" />
+                                    <!-- ID-166-->
+                                    <input type="text" class="col-12 bg-grey form-control"
+                                    [attr.readonly]="isfrom_keyword == false  ? true : null"
+                                    formControlName="from_keyword" name="from_keyword"
+                                    placeholder="Enter Keyword Line" />
                             </div>
                         </div>
                     </div>

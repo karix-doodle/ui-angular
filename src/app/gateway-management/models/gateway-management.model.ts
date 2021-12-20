@@ -15,7 +15,8 @@ export class GtListing_Data {
     total: number;
     direct: number;
     premium: number;
-    wholesale: number;
+    wholesale: number;   
+    mixed: number; /** ID-173 */
     tabledata: GtListing_TableDataList[];
 }
 export class GtListing_TableDataList {
@@ -719,6 +720,7 @@ export class GtDefaultTemplate_Data {
     is_autocompile: number;
     from_email: string;
     from_subject: string;
+    from_keyword: string; // ID-166
     read_body: string;
     read_attachment: number;
     comment: string;

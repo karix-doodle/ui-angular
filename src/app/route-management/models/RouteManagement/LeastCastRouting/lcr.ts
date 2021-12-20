@@ -12,6 +12,7 @@ export class LCRListData {
     direct: number;
     premium: number;
     wholesale: number;
+    mixed: number; /** ID-173 */
     nonlcr: number;
     countries: string[];
     gateways: GatewayList[];
@@ -23,6 +24,7 @@ export class GatewayList {
     direct: Gateway[];
     premium: Gateway[];
     wholesale: Gateway[];
+    mixed: Gateway[]; /** ID-173 */
     nonlcr: Gateway[];
 }
 export class Gateway {

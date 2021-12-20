@@ -30,7 +30,8 @@ export const poolRouteHelper = {
     createClonePoolRouteGatewaysList: [
         { name: 'Direct', val: 'direct' },
         { name: 'Premium', val: 'premium' },
-        { name: 'Wholesale', val: 'wholesale' }
+        { name: 'Wholesale', val: 'wholesale' },
+        { name: 'Mixed', val: 'mixed' }  /** ID-173 */
     ]
 };
 /* Route management Pool route */

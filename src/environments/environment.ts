@@ -35,7 +35,7 @@ export const environment = {
   charsetEncode: ['GSM', 'ISO-8859-1', 'ASCII'],
   defaultCharsetEncode: 'GSM',
   dlrType: ['No DLR', 'Handset DLR', 'SMSC DLR'],
-  customerTypes: ['direct', 'premium', 'wholesale'],
+  customerTypes: ['direct', 'premium', 'wholesale','mixed'],
   dateTimePickerTimeDifference: 10,
   invalidSessionMsg: 'Invalid session. please try <b>login</b> again.',
   userLoggedOutMsg: 'You have been successfully logged out!',

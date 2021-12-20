@@ -27,6 +27,10 @@
                 <div class="col-3 gateway-detail">
                     <label>Wholesale <span class="badge badge-dark"><b>{{LCRListRes?.data.wholesale}}</b></span></label>
                 </div>
+                <!-- ID-173 -->
+                <div class="col-3 gateway-detail">
+                    <label>Mixed <span class="badge badge-dark"><b>{{LCRListRes?.data.mixed}}</b></span></label>
+                </div>
                 <div class="col-3 gateway-detail">
                     <label>Non LCR <span class="badge badge-dark"><b>{{LCRListRes?.data.nonlcr}}</b></span></label>
                 </div>
@@ -68,7 +72,8 @@
                     <th>Direct Gateway</th>
                     <th>Premium Gateway</th>
                     <th>Wholesale Gateway</th>
-                    <th>Non-LCR Gateway</th>
+                    <th>Mixed Gateway</th> <!-- ID-173 -->
+                     <th>Non-LCR Gateway</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,6 +92,10 @@
                     <td>
                         <span class="badge gt-badges" [ngClass]="wholesale.status === 1? 'badge-success':'badge-danger'"
                             *ngFor="let wholesale of gateway.wholesale">{{wholesale.gw_id}}</span>
+                    </td>
+                    <td> <!-- ID-173-->
+                        <span class="badge gt-badges" [ngClass]="mixed.status === 1? 'badge-success':'badge-danger'"
+                            *ngFor="let mixed of gateway.mixed">{{mixed.gw_id}}</span>
                     </td>
                     <td>
                         <span class="badge gt-badges" [ngClass]="nonlcr.status === 1? 'badge-success':'badge-danger'"

@@ -71,7 +71,7 @@ export class GtListingComponent implements OnInit {
   }
 
   selectType(type) {
-   // console.log(" ============= "+type +"===  this.sortingName "+ this.sortingName +"===== this.isDesc "+this.isDesc);
+    console.log(" ============= "+type +"===  this.sortingName "+ this.sortingName +"===== this.isDesc "+this.isDesc);
     if (type === 'All') {
       this.GtListing_list();
     } else if (type == 'Only InActive' || type == 'Only Active') {
@@ -94,7 +94,9 @@ export class GtListingComponent implements OnInit {
      // console.log(" =============  this.selectedType"+ JSON.stringify(this.selectedType));
       this.gatewayData.data.tabledata = this.selectedType.reverse();
     } else {
+      console.log(" <<<<<<<<>>>>>>>>type  "+ type+"   <<<<<<<<<<>>>>>>>> this.gatewayDataRes.data.tabledata "+JSON.stringify(this.gatewayDataRes.data.tabledata));
       this.selectedType = this.gatewayDataRes.data.tabledata.filter(item => item.gw_type.toLowerCase() === type.toLowerCase());
+      console.log(" <<<<<<<<>>>>>>>>type  "+ type+"   <<<<<<<<<<>>>>>>>> this.selectedType "+JSON.stringify(this.selectedType));
       this.gatewayData.data.tabledata = this.selectedType;
     }
   }

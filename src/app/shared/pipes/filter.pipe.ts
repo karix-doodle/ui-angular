@@ -19,6 +19,7 @@ export class FilterPipe implements PipeTransform {
           || it.direct.find(({ gw_id }) => gw_id.toLowerCase().includes(searchText))
           || it.premium.find(({ gw_id }) => gw_id.toLowerCase().includes(searchText))
           || it.wholesale.find(({ gw_id }) => gw_id.toLowerCase().includes(searchText))
+          || it.mixed.find(({ gw_id }) => gw_id.toLowerCase().includes(searchText))   /** ID-173 */
           || it.nonlcr.find(({ gw_id }) => gw_id.toLowerCase().includes(searchText));
       });
     } else if (filterId === 2) { // Bill plan management -> postpaid -> group

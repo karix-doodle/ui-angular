@@ -27,6 +27,10 @@
             <div class="col-3 gateway-detail">
                 <label>Wholesale <span class="badge badge-dark"><b>{{gatewayData?.data.wholesale}}</b></span></label>
             </div>
+            <!-- ID-173-->
+            <div class="col-3 gateway-detail">
+                <label>Mixed <span class="badge badge-dark"><b>{{gatewayData?.data.mixed}}</b></span></label>
+            </div>
         </div>
     </div>
     <div class="col-2 mt-1 w-100">
@@ -36,6 +40,7 @@
             <option value="Direct">Direct</option>
             <option value="Premium">Premium</option>
             <option value="Wholesale">Wholesale</option>
+            <option value="Mixed">Mixed</option> <!-- ID-173 -->
             <option value="Only Active">Only Active</option>
             <option value="Only InActive">Only InActive</option>
         </select>

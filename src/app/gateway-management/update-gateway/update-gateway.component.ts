@@ -42,6 +42,7 @@ export class UpdateGatewayComponent implements OnInit {
   disableWrapper: boolean = false
   isfrom_email: boolean = false
   isfrom_subject: boolean = false
+  isfrom_keyword: boolean = false  //ID-166
   selectedFileName: string = ''
 
   gt_id: string
@@ -125,13 +126,16 @@ export class UpdateGatewayComponent implements OnInit {
       mcc_mnc_column: [''],
       newprice_column: ['', [Validators.required]],
       oldprice_column: [''],
-      effectivefrom_column: ['', [Validators.required]],
-      effective_ts_format: ['', [Validators.required]],
+     // effectivefrom_column: ['', [Validators.required]],
+     // effective_ts_format: ['', [Validators.required]],
+      effectivefrom_column: [''],
+      effective_ts_format: [''],
       changetype_column: [''],
       is_autocompile: [''],
       notify_email: [''],
       from_email: [''],
       from_subject: [''],
+      from_keyword: [''], // ID-166
       read_body: [''],
       read_attachment: [''],
       comment: [''],
@@ -182,8 +186,10 @@ export class UpdateGatewayComponent implements OnInit {
   emailsubjectCheck(value, key, field) {
     if (key == 'isfrom_email') {
       this.isfrom_email = value
-    } else {
+    } else if (key == 'isfrom_subject') {  //ID-166
       this.isfrom_subject = value
+    } else {
+      this.isfrom_keyword = value
     }
     let obj = {}
     if (value == false) {
@@ -226,6 +232,7 @@ export class UpdateGatewayComponent implements OnInit {
               notify_email: this.GtDefaultTemplateDataRes.data.notify_email,
               from_email: this.GtDefaultTemplateDataRes.data.from_email,
               from_subject: this.GtDefaultTemplateDataRes.data.from_subject,
+              from_keyword: this.GtDefaultTemplateDataRes.data.from_keyword, // ID-166
               read_body: this.GtDefaultTemplateDataRes.data.read_body,
               read_attachment: this.GtDefaultTemplateDataRes.data.read_attachment ? 1 : '',
               comment: this.GtDefaultTemplateDataRes.data.comment,
@@ -235,6 +242,7 @@ export class UpdateGatewayComponent implements OnInit {
 
             this.isfrom_email = this.GtDefaultTemplateDataRes.data.from_email != null && this.GtDefaultTemplateDataRes.data.from_email != '' ? true : false;
             this.isfrom_subject = this.GtDefaultTemplateDataRes.data.from_subject != null && this.GtDefaultTemplateDataRes.data.from_subject != '' ? true : false;
+            this.isfrom_keyword = this.GtDefaultTemplateDataRes.data.from_keyword != null && this.GtDefaultTemplateDataRes.data.from_keyword != '' ? true : false;  // ID-166
 
             this.draggableListLeft = []
             let headerValue = []
@@ -363,12 +371,14 @@ export class UpdateGatewayComponent implements OnInit {
       addMultipleEmailValidators(this.priceListFormGroup, 'notify_email')
       addMultipleEmailValidators(this.priceListFormGroup, 'from_email')
       addValidators(this.priceListFormGroup, 'from_subject')
+      addValidators(this.priceListFormGroup, 'from_keyword')  // ID-166
       addValidators(this.priceListFormGroup, 'read_attachment')
     } else {
       // ID-129
       //addMultipleEmailValidators(this.priceListFormGroup, 'notify_email')
       //addMultipleEmailValidators(this.priceListFormGroup, 'from_email')
       removeValidators(this.priceListFormGroup, 'from_subject')
+      removeValidators(this.priceListFormGroup, 'from_keyword')  // ID-166
       removeValidators(this.priceListFormGroup, 'read_attachment')
       removeValidators(this.priceListFormGroup, 'notify_email')
       removeValidators(this.priceListFormGroup, 'from_email')
