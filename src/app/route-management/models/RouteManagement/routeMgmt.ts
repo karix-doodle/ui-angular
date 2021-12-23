@@ -28,6 +28,7 @@ export class CustomObj {
     mobile: number;
     mobile_senderid: number;
     senderid_template: number;
+    country_operator:number;
 }
 
 export class BlackListObj {

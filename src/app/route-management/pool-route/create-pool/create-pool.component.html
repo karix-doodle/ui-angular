@@ -6,7 +6,8 @@
         <span>
             <a routerLink="/route-management/pool-route"> POOL ROUTE /</a>
         </span>
-        <span> CREATE ROUTE </span>
+        <!-- POOL EDIT -->
+        <span>  {{ pageName == 'edit-pool' ? 'EDIT' : 'CREATE' }} ROUTE </span>
     </div>
 </div>
 <div *ngIf="authService.authorizationState?.route_mgmt.poolroute_create_enabled 

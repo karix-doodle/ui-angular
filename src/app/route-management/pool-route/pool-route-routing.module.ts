@@ -27,6 +27,10 @@ const poolRoutes: Routes = [
         path: 'clone-pool/:id',
         component: CreatePoolComponent
       },
+      { // POOL EDIT
+        path: 'edit-pool/:id',
+        component: CreatePoolComponent
+      },
       {
         path: 'account-wise-view/:id',
         component: PrActWiseViewComponent

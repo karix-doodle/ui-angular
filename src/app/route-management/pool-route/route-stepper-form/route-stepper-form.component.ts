@@ -15,7 +15,8 @@ import { debounceTime, startWith, pairwise, distinctUntilChanged } from 'rxjs/op
 import {
    NewRoutesList, CreateAPoolRouteBody, CloneAPoolRouteData, PoolRouteRes, NewRowRoutesList
 } from '../../models/RouteManagement/PoolRoute/poolRoute';
-import { Router } from '@angular/router';
+// POOL Edit
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthorizationService } from '../../../service/auth/authorization.service';
 import { poolRouteHelper } from '../../../shared/helper/globalVariables';
 
@@ -54,6 +55,9 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    isClone: boolean;
    continentsCount: number;
    countryCount: number;
+   // POOL Edit
+   routeID: number;
+   pageName: string;
    constructor(
       private formBuilder: FormBuilder,
       config: NgbModalConfig,
@@ -61,7 +65,8 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       public poolRouteService: PoolRouteService,
       private genericService: GenericService,
       private router: Router,
-      private authService: AuthorizationService
+      private authService: AuthorizationService,
+      private activeRoute: ActivatedRoute,
    ) {
       this.createSecondFormGroup();
       this.commentsTextAreaMin = poolRouteHelper.createClonePoolRouteFieldLength.commentsTextArea.min;
@@ -91,6 +96,11 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
       this.initCloneDataSubscribtion();
       this.initResetSubscribtion();
       this.initPreviewDeleteSubscribtion();
+      // POOL EDIT
+      this.routeID=this.activeRoute.snapshot.params.id;
+      let urlSegments=this.activeRoute.snapshot.url.join().split(',');
+      this.pageName=urlSegments[0];
+      
    }
    // ------------------------------------- 1st Step --------------------------------
    initPreviewDeleteSubscribtion() {
@@ -572,8 +582,11 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
    }
    createPoolRouteOnSubmit() {
       if (this.secondFormGroup.valid) {
+         let urlSegments=this.activeRoute.snapshot.url.join().split(',');
          this.secondStepSubmitted = false;
          const loggedInEmpId = this.secondFormGroup.value.loggedinempid.toString();
+         this.createAPoolRouteBody.route_id = this.activeRoute.snapshot.params.id;
+         this.createAPoolRouteBody.page_name = urlSegments[0];
          this.createAPoolRouteBody.route_name = this.parentFormGroup.value.route_name;
          this.createAPoolRouteBody.gw_type = this.parentFormGroup.value.gw_type;
          this.createAPoolRouteBody.fallback_gw_type = this.parentFormGroup.value.fallback_gw_type;

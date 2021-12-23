@@ -192,7 +192,8 @@
                     </div>
                     <div class="col-6 text-center">
                         <button type="button" class="btn btn-basic mr-3" mat-button matStepperPrevious>Back</button>
-                        <button type="submit" class="btn erp-intl-btn" mat-button>Save & Back To Listing</button>
+                        <!-- POOL EDIT -->
+                        <button type="submit" class="btn erp-intl-btn" mat-button> {{ pageName == 'edit-pool' ? 'Update' : 'Save' }} & Back To Listing</button>
                     </div>
                 </div>
 

@@ -17,7 +17,6 @@ import {
   CountriesListRes,
   OperatorsListRes,
 } from "src/app/route-management/models/RouteManagement/Generic/generic";
-import { SenderCustomService } from "src/app/route-management/services/RouteManagement/custom-route/sender-custom.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { AuthorizationService } from '../../../../service/auth/authorization.service';
 import { ValidationConfigs } from '../../../../model/authorization.model';
@@ -26,15 +25,14 @@ import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { accountType, priority } from 'src/app/shared/helper/globalVariables';
 import * as _ from 'lodash';
-import { PoolRouteService } from "src/app/route-management/services/RouteManagement/poolRoute/pool-route.service";
-import { PoolRouteListRes } from "src/app/route-management/models/RouteManagement/PoolRoute/poolRoute";
+import { CountryOperatorCustomService } from "src/app/route-management/services/RouteManagement/custom-route/country-custom-operator.service";
 
 @Component({
-  selector: "app-senderid-template-route",
-  templateUrl: "./senderid-template-route.component.html",
-  styleUrls: ["./senderid-template-route.component.css"],
+  selector: "app-country-operator-route",
+  templateUrl: "./country-operator-route.component.html",
+  styleUrls: ["./country-operator-route.component.css"],
 })
-export class SenderidTemplateRouteComponent implements OnInit {
+export class CountryOperatorRouteComponent implements OnInit {
   whitelist_type: string;
   accounts: string[] = accountType
   priorities: number[] = priority
@@ -44,7 +42,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
   selectedFile: FormData = null;
   gatewayListApiResponse: CustomGateway_ApiResponse;
   gatewayListData: CustomGateway_Data;
-  poolListRes: PoolRouteListRes;
   countriesData: any = [];
   operatorList: any = [];
   fileResponse: MobileBlackList_AddResponse
@@ -55,8 +52,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
   constructor(
     public router: Router,
     public customService: CustomService,
-    public mobileSenderTemplateService: SenderCustomService,
-    private poolRouteService: PoolRouteService,
+    public countryOperatorSevice: CountryOperatorCustomService,
     public route: ActivatedRoute,
     public formBuilder: FormBuilder,
     private modalService: NgbModal,
@@ -68,7 +64,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
   ngOnInit() {
     this.whitelist_type = this.accounts[0];
     this.getGatewayList();
-    this.getrouteList();
     this.initForm();
     this.getCountriesList();
   }
@@ -78,17 +73,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
       whitelist_type: ["Global", [Validators.required]],
       country: [null, [Validators.required]],
       operator: [null, [Validators.required]],
-      priority: [null, [Validators.required]],
-      default_senderid: null,
-      template: [
-        ".*",
-        [Validators.required, Validators.pattern(this.validationConfigs.template_pattern)],
-      ],
-      senderid: [
-        "",
-        [Validators.required, Validators.pattern(this.validationConfigs.senderid_pattern)],
-      ],
-      // senderid: ["", Validators.required],
+      priority: 0,
       primary_gw_id: [null, [Validators.required]],
       fallback_gw_id: [null, [Validators.required]],
       comments: [""],
@@ -130,7 +115,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
    * @description navigates back to list page
    */
   cancel() {
-    this.router.navigateByUrl("/route-management/custom-route/sender-id");
+    this.router.navigateByUrl("/route-management/custom-route/country");
     // this.router.navigate(['/custom-route/mobile-sender-id']);
   }
 
@@ -161,27 +146,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
     );
   }
 
-      /**
-   * @description gets the pool route list
-   */
-       getrouteList() {
-        this.poolRouteService.getPoolRouteList().subscribe(
-          (res: PoolRouteListRes) => {
-            if (res.responsestatus === environment.APIStatus.success.text
-              && res.responsecode > environment.APIStatus.success.code) {
-              // console.log(res);
-              this.poolListRes = res;
-            } else if (
-              res.responsestatus === environment.APIStatus.error.text
-              && res.responsecode < environment.APIStatus.error.code
-            ) {
-              errorAlert(res.message, res.responsestatus);
-            }
-          }, (error: HttpErrorResponse) => {
-            errorAlert(error.message, error.statusText);
-          }
-        );
-      }
   /**
    * @description gets the country list
    */
@@ -222,11 +186,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
     if (!this.senderContentFrom.valid) {
       this.submitted = true;
     } else {
-
-      this.senderContentFrom.value.template = this.senderContentFrom.value
-        .template
-        ? this.senderContentFrom.value.template
-        : ".*";
       this.senderContentFrom.value.esmeaddr = this.senderContentFrom.value
         .esmeaddr
         ? this.senderContentFrom.value.esmeaddr
@@ -244,7 +203,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
       ).operator;
       this.senderContentFrom.value.createdby = "1234";
       this.senderContentFrom.value.req_type = "single_req";
-      this.senderContentFrom.value.default_senderid = true;
       this.senderContentFrom.value.priority = +this.senderContentFrom.value
         .priority;
         this.senderContentFrom.value.whitelist_type = this.control.whitelist_type.value.toLowerCase();
@@ -278,52 +236,10 @@ export class SenderidTemplateRouteComponent implements OnInit {
     this.selectedFile = form;
   }
 
-  /**
-   *
-   * @param body contains the addroute data
-   * @description checks wheather the formtype is form or fomdata
-   */
-
-  // onAddRoute(body) {
-  //   const formType = this.selectedFile ? true : false;
-  //   this.mobileSenderTemplateService
-  //     .addCustomSenderTemplate(body, formType)
-  //     .subscribe(
-  //       (data: MobileBlackList_AddResponse) => {
-  //         if (data.responsestatus === "failure") {
-  //           Swal.fire({
-  //             icon: 'error',
-  //             title: data.responsestatus,
-  //             text: `Success:${data.data.success}
-  //                    Duplicate:${data.data.duplicate}
-  //                    Failed:${data.data.failed}
-  //                    Invalid:${data.data.invalid}
-  //                    Total:${data.data.total}`
-  //           });
-  //           this.fromReset();
-  //         } else {
-  //           Swal.fire({
-  //             icon: 'success',
-  //             title: data.responsestatus,
-  //             text: `Success:${data.data.success}
-  //                    Duplicate:${data.data.duplicate}
-  //                    Failed:${data.data.failed}
-  //                    Invalid:${data.data.invalid}
-  //                    Total:${data.data.total}`
-  //           });
-  //           this.cancel();
-  //         }
-  //       },
-  //       (error: HttpErrorResponse) => {
-  //         errorAlert(error.message, error.statusText);
-  //         this.fromReset();
-  //       }
-  //     );
-  // }
 
   onAddRoute(body) {
     const formType = this.selectedFile ? true : false;
-    this.mobileSenderTemplateService.addCustomSenderTemplate(body, formType).subscribe(
+    this.countryOperatorSevice.addCustomCountryOperator(body, formType).subscribe(
       (res: MobileBlackList_AddResponse) => {
         this.fileResponse = res;
         this.filResponseData = JSON.parse(JSON.stringify(this.fileResponse));
@@ -375,9 +291,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
       country: null,
       operator: null,
       priority: null,
-      default_senderid: true,
-      template: ".*",
-      senderid: [""],
       primary_gw_id: null,
       fallback_gw_id: null,
       comments: "",

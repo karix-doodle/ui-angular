@@ -14,6 +14,7 @@
       <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/mobile-route">Mobile Number</a>
       <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/senderid-mobile-route">
         Mobile + SenderID</a>
+      <a class="dropdown-item" routerLink="/route-management/custom-route/add-route/country-operator-route">Country + Operator</a>
     </div>
   </div>
 </div>
@@ -126,12 +127,9 @@
                 <label>Primary Gateway</label>
                 <select class="dropdown-select w-100" formControlName="primary_gw_id">
                   <option value="null" disabled>Select Primary Gateway</option>
-                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
-                    control.fallback_gw_id.value &&
-                    gateway.gw_id === control.fallback_gw_id.value
-                  ">
-                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
-                    {{ gateway.gw_name }}
+                  <option *ngFor="let gateway of poolListRes?.data.routes_list" [value]="gateway.route_name">
+                    <!-- <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span> -->
+                    {{ gateway.route_name }}
                   </option>
                 </select>
 
@@ -317,12 +315,9 @@
                 <label>Primary Gateway</label>
                 <select class="dropdown-select w-100" formControlName="primary_gw_id">
                   <option value="null" disabled>Select Primary Gateway</option>
-                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
-                    control.fallback_gw_id.value &&
-                    gateway.gw_id === control.fallback_gw_id.value
-                  ">
-                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
-                    {{ gateway.gw_name }}
+                  <option *ngFor="let gateway of poolListRes?.data.routes_list" [value]="gateway.route_name">
+                    <!-- <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span> -->
+                    {{ gateway.route_name }}
                   </option>
                 </select>
 

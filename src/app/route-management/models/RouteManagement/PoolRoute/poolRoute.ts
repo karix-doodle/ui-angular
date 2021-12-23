@@ -73,6 +73,9 @@ export class PoolRouteRes {
 
 // Route Management create a Pool Route //
 export class CreateAPoolRouteBody {
+    // POOL EDIT
+    route_id: string;
+    page_name: string;
     route_name: string;
     gw_type: string;
     fallback_gw_type: string;

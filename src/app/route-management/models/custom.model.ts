@@ -30,6 +30,8 @@ export class CustomSummary_Data {
   unique_mobile_senderid_senderid_count: number;
   unique_country_count: number;
   unique_operator_count: number;
+  unique_country_list_count:number;
+  unique_operator_list_count:number;
 }
 
 /**
@@ -122,6 +124,34 @@ export class SenderCustomList {
   id: number;
   senderid: string;
   template: string;
+  whitelist_type: string;
+  country: string;
+  operator: string;
+  mcc: number;
+  mnc: number;
+  priority: number;
+  primary_route: CustomGateway_Data;
+  fallback_route: CustomGateway_Data;
+  cts: Date;
+  createdby: string;
+  comments: string;
+}
+
+export class CountryCustomApiResponse {
+  responsecode: number;
+  responsestatus: string;
+  data: CountryOperatorCustomData;
+}
+
+export class CountryOperatorCustomData {
+  total: number;
+  unique_country_count: number;
+  unique_operator_count: number;
+  country_operator_list: CountryOperatorCustomList[];
+}
+
+export class CountryOperatorCustomList {
+  id: number;
   whitelist_type: string;
   country: string;
   operator: string;

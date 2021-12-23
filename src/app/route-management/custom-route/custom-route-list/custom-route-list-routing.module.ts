@@ -5,6 +5,7 @@ import { CustomRouteListComponent } from './custom-route-list.component';
 import { CrRmMobileComponent } from './cr-rm-mobile/cr-rm-mobile.component';
 import { CrRmSenderidComponent } from './cr-rm-senderid/cr-rm-senderid.component';
 import { CrRmMobileSenderidComponent } from './cr-rm-mobile-senderid/cr-rm-mobile-senderid.component';
+import { CrRmCountryComponent } from './cr-rm-country/cr-rm-country.component';
 import { AuthGuard } from '../../../auth-management/guards/auth.guard';
 
 
@@ -26,7 +27,11 @@ const crListroutes: Routes = [
       {
         path: 'mobile-sender-id',
         component: CrRmMobileSenderidComponent
-      }
+      },
+      {
+        path: 'country',
+        component: CrRmCountryComponent
+      },
     ]
   }
 ];

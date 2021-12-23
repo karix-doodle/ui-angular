@@ -55,6 +55,7 @@
                     </th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -80,6 +81,12 @@
                             {{row.tagged_accounts_count}}</a></td>
                     <td>{{row.created_date}} | {{row.created_time}}</td>
                     <td>{{row.createduser}}</td>
+                    <td>
+                        <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled}"
+                            [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled ? ['/route-management/pool-route/edit-pool', row.route_id] : []">
+                            <img src="assets/icons/edit-icon.svg" class="img-fluid" alt="copy-icon" />
+                        </a>
+                    </td>
                     <td>
                         <a [ngClass]="{'isDisabled': !authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled}"
                             [routerLink]="authorizationService.authorizationState.route_mgmt.poolroute_clone_enabled ? ['/route-management/pool-route/clone-pool', row.route_id] : []">

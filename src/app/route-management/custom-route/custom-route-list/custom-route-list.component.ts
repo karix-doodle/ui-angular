@@ -27,7 +27,12 @@ export class CustomRouteListComponent implements OnInit {
           label: 'MOBILE AND SENDERID',
           link: './mobile-sender-id',
           index: 2
-      } 
+      } ,
+      {
+        label: 'COUNTRY AND OPERATOR',
+        link: './country',
+        index: 3
+    }
     ];
 }
 ngOnInit(): void {

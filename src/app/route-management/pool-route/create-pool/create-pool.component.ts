@@ -40,6 +40,9 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
   childDataReset: Subject<number> = new Subject<number>();
   previewDeleteClick: Subject<void> = new Subject<void>();
   searchText: any;
+  // POOL Edit
+  routeID: number;
+  pageName: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,6 +64,10 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
     this.editModeStatus = false;
     this.searchText = '';
     this.initCloneAPoolRouteParams(); // clone a pool route
+    // POOL EDIT
+    this.routeID=this.route.snapshot.params.id;
+    let urlSegments=this.route.snapshot.url.join().split(',');
+    this.pageName=urlSegments[0];
   }
   initCloneAPoolRouteParams() {
     this.route.params
@@ -86,7 +93,14 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
           ) {
             this.clonedRouteData = res.data;
             // console.log(res.data);
+            let urlSegments=this.route.snapshot.url.join().split(',');
+            let routeName="";
+            if(urlSegments[0]=="edit-pool")
+            {
+              routeName=res.data.route_name;
+            }
             this.parentFormGroup.patchValue({
+              route_name: routeName,
               gw_type: res.data.gw_type,
               fallback_gw_type: res.data.fallback_route
             });
@@ -179,6 +193,8 @@ export class CreatePoolComponent implements OnInit, OnDestroy {
               // this.clonedRouteData = undefined;
               // this.parentFormGroupReset();
               this.childDataReset.next(2);
+              this.continentsCount=0;
+              this.countryCount=0;
               this.loadList();
               // this.poolRouteService.changeSubjectData(2);
 
