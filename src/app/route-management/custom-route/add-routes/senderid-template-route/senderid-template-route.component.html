@@ -125,12 +125,19 @@
             <div class="row">
               <div class="form-group col-4">
                 <label>Primary Gateway</label>
-                <select class="dropdown-select w-100" formControlName="primary_gw_id">
+                <select class="dropdown-select w-100" formControlName="primary_gw_id" (change)="checkGateway(control.primary_gw_id.value)">
                   <option value="null" disabled>Select Primary Gateway</option>
-                  <option *ngFor="let gateway of poolListRes?.data.routes_list" [value]="gateway.route_name">
-                    <!-- <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span> -->
+                  <option *ngFor="let gateway of poolListRes?.data.routes_list" [value]="gateway.route_id">
+                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.route_id }}&nbsp;-</span>
                     {{ gateway.route_name }}
                   </option>
+                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
+                  control.fallback_gw_id.value &&
+                  gateway.gw_id === control.fallback_gw_id.value
+                ">
+                  <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
+                  {{ gateway.gw_name }}
+                </option>
                 </select>
 
                 <div *ngIf="
@@ -170,7 +177,7 @@
               </div>
             </div>
           </div>
-          <div class="row p-3">
+          <!-- <div class="row p-3">
             <label class="w-100">Add File List</label>
             <div class="form-group">
               <div class="upload-btn-wrapper">
@@ -186,7 +193,7 @@
                 </span>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <label class="col-12">Comments</label>
             <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4" formControlName="comments"></textarea>
@@ -313,12 +320,19 @@
             <div class="row">
               <div class="form-group col-4">
                 <label>Primary Gateway</label>
-                <select class="dropdown-select w-100" formControlName="primary_gw_id">
+                <select class="dropdown-select w-100" formControlName="primary_gw_id" (change)="checkGateway(control.primary_gw_id.value)">
                   <option value="null" disabled>Select Primary Gateway</option>
-                  <option *ngFor="let gateway of poolListRes?.data.routes_list" [value]="gateway.route_name">
-                    <!-- <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span> -->
+                  <option *ngFor="let gateway of poolListRes?.data.routes_list" [value]="gateway.route_id">
+                    <span class="mr-1" style="font-weight: bolder;">{{ gateway.route_id }}&nbsp;-</span>
                     {{ gateway.route_name }}
                   </option>
+                  <option *ngFor="let gateway of gatewayListData" [value]="gateway.gw_id" [disabled]="
+                  control.fallback_gw_id.value &&
+                  gateway.gw_id === control.fallback_gw_id.value
+                ">
+                  <span class="mr-1" style="font-weight: bolder;">{{ gateway.gw_id }}&nbsp;-</span>
+                  {{ gateway.gw_name }}
+                </option>
                 </select>
 
                 <div *ngIf="
@@ -358,7 +372,7 @@
               </div>
             </div>
           </div>
-          <div class="row p-3">
+          <!-- <div class="row p-3">
             <label class="w-100">Add File List</label>
             <div class="form-group">
               <div class="upload-btn-wrapper">
@@ -374,7 +388,7 @@
                 </span>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <label class="col-12">Comments</label>
             <textarea class="w-100 ml-15" placeholder="Enter Comment" rows="4" formControlName="comments"></textarea>

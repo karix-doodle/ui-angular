@@ -47,6 +47,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
   poolListRes: PoolRouteListRes;
   countriesData: any = [];
   operatorList: any = [];
+  gatewayData :any = [];
   fileResponse: MobileBlackList_AddResponse
   filResponseData: MobileBlackList_AddData
   @ViewChild('priceListSubmitSuccess', { static: true })
@@ -148,6 +149,9 @@ export class SenderidTemplateRouteComponent implements OnInit {
           this.gatewayListData = JSON.parse(
             JSON.stringify(this.gatewayListApiResponse.data)
           );
+          this.gatewayData = JSON.parse(
+            JSON.stringify(this.gatewayListApiResponse.data)
+          );
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code
@@ -169,7 +173,6 @@ export class SenderidTemplateRouteComponent implements OnInit {
           (res: PoolRouteListRes) => {
             if (res.responsestatus === environment.APIStatus.success.text
               && res.responsecode > environment.APIStatus.success.code) {
-              // console.log(res);
               this.poolListRes = res;
             } else if (
               res.responsestatus === environment.APIStatus.error.text
@@ -364,6 +367,15 @@ export class SenderidTemplateRouteComponent implements OnInit {
     this.selectedFile = null;
     this.cmobilesenderUpload = null;
     this.emptyForm();
+  }
+
+  checkGateway(id) {
+    let index = this.gatewayData.findIndex(data => data.gw_id === id)
+    if(index > 0){
+      this.senderContentFrom.get('fallback_gw_id').enable();
+    } else {
+      this.senderContentFrom.get('fallback_gw_id').disable();
+    } 
   }
 
   /**
