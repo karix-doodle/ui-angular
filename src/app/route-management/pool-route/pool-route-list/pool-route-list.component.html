@@ -158,6 +158,12 @@
                                 [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='esmeaddr' && !isDeselect}"></i>
 
                         </th>
+                        <th class="cursor-pointer" (click)="sort('uname', true)">Username
+                            <i [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='uname' && isDeselect}"></i>
+                            <i
+                                [ngClass]="{'fa fa-arrow-down sorticon m-1': headerName==='uname' && !isDeselect}"></i>
+
+                        </th>
                         <th class="cursor-pointer" (click)="sort('tagged_date', true)">Tagged Date
                             <i
                                 [ngClass]="{'fa fa-arrow-up sorticon m-1': headerName==='tagged_date' && isDeselect}"></i>
@@ -178,6 +184,7 @@
                     | filter: { tagged_by: popupSearchText, esmeaddr: popupSearchText,
                          tagged_date: popupSearchText } | sort: headerName: !isDeselect">
                         <td class="font-weight-semi-bold">{{account.esmeaddr}}</td>
+                        <td class="font-weight-semi-bold">{{account.uname}}</td>
                         <td>{{account.tagged_date}}</td>
                         <td>{{account.tagged_by}}</td>
                     </tr>
