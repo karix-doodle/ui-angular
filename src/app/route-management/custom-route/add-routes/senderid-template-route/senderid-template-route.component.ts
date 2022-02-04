@@ -48,6 +48,7 @@ export class SenderidTemplateRouteComponent implements OnInit {
   countriesData: any = [];
   operatorList: any = [];
   gatewayData :any = [];
+  fallbackGatewayRequired:Boolean = false;
   fileResponse: MobileBlackList_AddResponse
   filResponseData: MobileBlackList_AddData
   @ViewChild('priceListSubmitSuccess', { static: true })
@@ -111,12 +112,13 @@ export class SenderidTemplateRouteComponent implements OnInit {
           Validators.required,
           Validators.pattern(this.validationConfigs.esmeaddr_pattern),
         ]);
-
+        this.fallbackGatewayRequired = false;
         this.fromReset();
         break;
       }
       case "Global": {
         this.control.esmeaddr.setValidators(null);
+        this.fallbackGatewayRequired = false;
         this.fromReset();
         break;
       }
@@ -371,10 +373,12 @@ export class SenderidTemplateRouteComponent implements OnInit {
 
   checkGateway(id) {
     let index = this.gatewayData.findIndex(data => data.gw_id === id)
-    if(index > 0){
-      this.senderContentFrom.get('fallback_gw_id').enable();
+    if(index >= 0){
+      this.fallbackGatewayRequired = true;
+      console.log(index,this.fallbackGatewayRequired)
     } else {
-      this.senderContentFrom.get('fallback_gw_id').disable();
+      this.fallbackGatewayRequired = false;
+      console.log(index,this.fallbackGatewayRequired)
     } 
   }
 

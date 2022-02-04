@@ -151,7 +151,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group col-4">
+              <div class="form-group col-4" *ngIf="fallbackGatewayRequired">
                 <label>Fallback Gateway</label>
                 <select class="dropdown-select w-100" formControlName="fallback_gw_id">
                   <option value="null" disabled>Select Fallback Gateway</option>
@@ -346,7 +346,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group col-4">
+              <div class="form-group col-4" *ngIf="fallbackGatewayRequired">
                 <label>Fallback Gateway</label>
                 <select class="dropdown-select w-100" formControlName="fallback_gw_id">
                   <option value="null" disabled>Select Fallback Gateway</option>
