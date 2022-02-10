@@ -160,14 +160,18 @@
                 <td>{{data.operator}}</td>
                 <td>{{data.ratecard_rate}} <b [innerHTML]="(pageData.billplan.currency_symbol)"></b></td>
                 <td>
+                    <div *ngIf="data.gateway?.length > 0">
                     <div class="row mb-2 ml-0" *ngFor="let gw of data.gateway">
                         <span class="badge badge-success mr-1" title='{{gw.gw_id}}'>{{gw.gw_name}} - {{gw.ratio_in_percentage}}%</span><span>{{gw.rate}} <b [innerHTML]="(gwidWiseCurrency[gw.gw_id])"></b></span>
                     </div>
+                    </div>
                 </td>
                 <td class="text-green">
+                    <div *ngIf="data.gateway?.length > 0">
                     <div class="row mb-2 ml-0" *ngFor="let gw of data.gateway">
                         <span [ngClass]="(gw.difference > 0)?'text-green':'text-red'" class="mr-1">{{gw.difference}}</span> <b [innerHTML]="(pageData.billplan.currency_symbol)"></b>
                     </div>
+                </div>
                 </td>
                 <td>{{data.bill_on_submission}}</td>
             </tr>

@@ -73,7 +73,6 @@ export class CountryOperatorRouteComponent implements OnInit {
       whitelist_type: ["Global", [Validators.required]],
       country: [null, [Validators.required]],
       operator: [null, [Validators.required]],
-      priority: 0,
       primary_gw_id: [null, [Validators.required]],
       fallback_gw_id: [null, [Validators.required]],
       comments: [""],

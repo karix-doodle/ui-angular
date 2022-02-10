@@ -67,11 +67,11 @@
             <i *ngIf="sortingName === 'fallback_route.gw_id' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
             <i *ngIf="sortingName === 'fallback_route.gw_id' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
           </th>
-          <th (click)="sort('priority')">
+          <!-- <th (click)="sort('priority')">
             Priority
             <i *ngIf="sortingName === 'priority' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
             <i *ngIf="sortingName === 'priority' && !isDesc" class="fa fa-arrow-up sorticon m-1"></i>
-          </th>
+          </th> -->
           <th (click)="sort('cts')">
             Creation Date & Time
             <i *ngIf="sortingName === 'cts' && isDesc" class="fa fa-arrow-down sorticon m-1"></i>
@@ -92,7 +92,7 @@
           <td>{{ senderroute.mcc }}-{{ senderroute.mnc }}</td>
           <td>{{ senderroute.primary_route.gw_id }}</td>
           <td>{{ senderroute.fallback_route.gw_id }}</td>
-          <td>{{ senderroute.priority }}</td>
+          <!-- <td>{{ senderroute.priority }}</td> -->
           <td>{{ senderroute.cts }}</td>
           <td>
             <img src="assets/icons/delete-icon.svg" class="img-fluid" alt="delete icon"

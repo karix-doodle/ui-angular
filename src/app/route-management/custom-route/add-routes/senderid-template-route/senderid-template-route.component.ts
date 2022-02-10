@@ -375,10 +375,10 @@ export class SenderidTemplateRouteComponent implements OnInit {
     let index = this.gatewayData.findIndex(data => data.gw_id === id)
     if(index >= 0){
       this.fallbackGatewayRequired = true;
-      console.log(index,this.fallbackGatewayRequired)
+      this.senderContentFrom.get('fallback_gw_id').enable();
     } else {
       this.fallbackGatewayRequired = false;
-      console.log(index,this.fallbackGatewayRequired)
+      this.senderContentFrom.get('fallback_gw_id').disable();
     } 
   }
 
