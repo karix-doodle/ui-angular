@@ -318,7 +318,12 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
          this.addNewRouteInput.country = this.parentFormGroup.value.country;
          this.addNewRouteInput.mcc = this.parentFormGroup.value.mcc;
          this.addNewRouteInput.operator = this.parentFormGroup.value.operator;
-         this.addNewRouteInput.mnc = this.parentFormGroup.value.mnc;
+         if(this.parentFormGroup.value.mnc==-2 && this.parentFormGroup.value.operator=="All Operator") {
+            this.addNewRouteInput.mnc = null;
+         }else{
+            this.addNewRouteInput.mnc = this.parentFormGroup.value.mnc;
+         }
+           
          this.addNewRouteInput.ratios = this.firstStepFormArray.value;
          // console.log(this.addNewRouteInput);
          const obj = JSON.parse(JSON.stringify(this.addNewRouteInput));
@@ -341,6 +346,11 @@ export class RouteStepperFormComponent implements OnInit, OnDestroy {
                         element.continent = obj.continent;
                         element.country = obj.country;
                         element.mcc = obj.mcc;
+                        if(obj.mnc==-2 && obj.operator=="All Operator") {
+                           element.mnc = null;
+                        }else {
+                           element.mnc = obj.mnc;
+                        }
                         element.operator = obj.operator;
                         element.ratios = obj.ratios;
                      }

@@ -48,6 +48,7 @@ export class CrRmSenderidComponent implements OnInit {
         ) {
           this.senderidApiResponse = res;
           this.senderidCustomData = res.data;
+          this.senderidCustomData.senderid_template_list = this.senderidCustomData.senderid_template_list.sort((a, b) => new Date(b.cts).getTime() - new Date(a.cts).getTime());
         } else if (
           res.responsestatus === environment.APIStatus.error.text &&
           res.responsecode < environment.APIStatus.error.code
